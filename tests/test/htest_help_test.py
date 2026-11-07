@@ -175,7 +175,7 @@ class HTestHelpTest(htest_test_utils.TestCase):
     """Verifies correct behavior when internal testing flag is specified.
 
     Verifies that the tests are run and no help message is printed when
-    a flag starting with Google Test prefix and 'internal_' is supplied.
+    a flag starting with Hawk Test prefix and 'internal_' is supplied.
     """
 
     exit_code, output = run_with_flag(INTERNAL_FLAG_FOR_TESTING)

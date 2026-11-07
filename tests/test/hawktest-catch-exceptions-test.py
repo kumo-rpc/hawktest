@@ -28,11 +28,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Tests Google Test's exception catching behavior.
+"""Tests Hawk Test's exception catching behavior.
 
 This script invokes hawktest-catch-exceptions-test_ and
 hawktest-catch-exceptions-ex-test_ (programs written with
-Google Test) and verifies their output.
+Hawk Test) and verifies their output.
 """
 
 from tests.test import htest_test_utils
@@ -61,7 +61,7 @@ SetEnvVar = htest_test_utils.SetEnvVar
 # Tests in this file run a Google-Test-based test program and expect it
 # to terminate prematurely.  Therefore they are incompatible with
 # the premature-exit-file protocol by design.  Unset the
-# premature-exit filepath to prevent Google Test from creating
+# premature-exit filepath to prevent Hawk Test from creating
 # the file.
 SetEnvVar(htest_test_utils.PREMATURE_EXIT_FILE_ENV_VAR, None)
 
@@ -298,7 +298,7 @@ class CatchCxxExceptionsTest(htest_test_utils.TestCase):
     # Filters out SEH exception tests on Windows. Unhandled SEH exceptions
     # cause tests to show pop-up windows there.
     filter_out_seh_tests_flag = FILTER_FLAG + '=-*Seh*'
-    # By default, Google Test doesn't catch the exceptions.
+    # By default, Hawk Test doesn't catch the exceptions.
     uncaught_exceptions_ex_binary_output = htest_test_utils.Subprocess(
         [EX_EXE_PATH, NO_CATCH_EXCEPTIONS_FLAG, filter_out_seh_tests_flag],
         env=environ,

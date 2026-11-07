@@ -706,7 +706,7 @@ class [[nodiscard]] ParameterizedTestSuiteRegistry {
     if (item_it != suite_name_to_info_index_.end()) {
       auto* test_suite_info = test_suite_infos_[item_it->second];
       if (test_suite_info->GetTestSuiteTypeId() != GetTypeId<TestSuite>()) {
-        // Complain about incorrect usage of Google Test facilities
+        // Complain about incorrect usage of Hawk Test facilities
         // and terminate the program since we cannot guaranty correct
         // test suite setup and tear-down in this case.
         ReportInvalidTestSuiteType(test_suite_name.c_str(), code_location);

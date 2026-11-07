@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Macros and functions for implementing parameterized tests
-// in Google C++ Testing and Mocking Framework (Google Test)
+// in Google C++ Testing and Mocking Framework (Hawk Test)
 
 #pragma once
 
@@ -68,7 +68,7 @@ TEST_P(FooTest, HasBlahBlah) {
 }
 
 // Finally, you can use INSTANTIATE_TEST_SUITE_P to instantiate the test
-// case with any set of parameters you want. Google Test defines a number
+// case with any set of parameters you want. Hawk Test defines a number
 // of functions for generating test parameters. They return what we call
 // (surprise!) parameter generators. Here is a summary of them, which
 // are all in the testing namespace:
@@ -132,7 +132,7 @@ INSTANTIATE_TEST_SUITE_P(AnotherInstantiationName, FooTest, ValuesIn(pets));
 // generators) are evaluated in init_hawk_test(), after main() has started.
 // This allows the user on one hand, to adjust generator parameters in order
 // to dynamically determine a set of tests to run and on the other hand,
-// give the user a chance to inspect the generated tests with Google Test
+// give the user a chance to inspect the generated tests with Hawk Test
 // reflection API before RUN_ALL_TESTS() is executed.
 //
 // You can see samples/sample7_unittest.cc and samples/sample8_unittest.cc
@@ -182,9 +182,9 @@ namespace testing {
 
     // Functions producing parameter generators.
     //
-    // Google Test uses these generators to produce parameters for value-
+    // Hawk Test uses these generators to produce parameters for value-
     // parameterized tests. When a parameterized test suite is instantiated
-    // with a particular generator, Google Test creates and runs tests
+    // with a particular generator, Hawk Test creates and runs tests
     // for each element in the sequence produced by the generator.
     //
     // In the following sample, tests from test suite FooTest are instantiated

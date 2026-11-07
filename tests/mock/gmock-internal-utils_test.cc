@@ -48,7 +48,7 @@
 #include <hawktest/test/spi.h>
 #include <hawktest/test/htest.h>
 
-// Indicates that this translation unit is part of Google Test's
+// Indicates that this translation unit is part of Hawk Test's
 // implementation.  It must come before htest-internal-inl.h is
 // included, or there will be a compiler error.  This trick is to
 // prevent a user from accidentally including htest-internal-inl.h in

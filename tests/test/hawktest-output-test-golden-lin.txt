@@ -120,7 +120,7 @@ Stack trace: (omitted)
 hawktest-output-test_.cc:#: Failure
 Failed
 Just checking that all these values work fine.
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: (null)
 hawktest-output-test_.cc:#: 1337
 hawktest-output-test_.cc:#: std::string
@@ -138,7 +138,7 @@ Stack trace: (omitted)
 hawktest-output-test_.cc:#: Failure
 Failed
 This failure is expected, and should have a trace.
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: Expected trace
 Stack trace: (omitted)
 
@@ -155,7 +155,7 @@ Expected equality of these values:
   2
   n
     Which is: 1
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: i = 1
 Stack trace: (omitted)
 
@@ -164,7 +164,7 @@ Expected equality of these values:
   1
   n
     Which is: 2
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: i = 2
 Stack trace: (omitted)
 
@@ -176,7 +176,7 @@ Expected equality of these values:
   2
   n
     Which is: 1
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: n = 1
 Stack trace: (omitted)
 
@@ -185,7 +185,7 @@ Expected equality of these values:
   1
   n
     Which is: 2
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: n = 2
 Stack trace: (omitted)
 
@@ -197,7 +197,7 @@ Expected equality of these values:
   1
   n
     Which is: 2
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: n = 2
 hawktest-output-test_.cc:#: 
 Stack trace: (omitted)
@@ -208,14 +208,14 @@ Stack trace: (omitted)
 hawktest-output-test_.cc:#: Failure
 Failed
 This failure is expected, and should contain trace point A.
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: A
 Stack trace: (omitted)
 
 hawktest-output-test_.cc:#: Failure
 Failed
 This failure is expected, and should contain trace point A and B.
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: B
 hawktest-output-test_.cc:#: A
 Stack trace: (omitted)
@@ -223,7 +223,7 @@ Stack trace: (omitted)
 hawktest-output-test_.cc:#: Failure
 Failed
 This failure is expected, and should contain trace point A, B, and C.
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: C
 hawktest-output-test_.cc:#: B
 hawktest-output-test_.cc:#: A
@@ -232,7 +232,7 @@ Stack trace: (omitted)
 hawktest-output-test_.cc:#: Failure
 Failed
 This failure is expected, and should contain trace point A, B, and D.
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: D
 hawktest-output-test_.cc:#: B
 hawktest-output-test_.cc:#: A
@@ -244,21 +244,21 @@ Stack trace: (omitted)
 hawktest-output-test_.cc:#: Failure
 Failed
 Expected failure #1 (in thread B, only trace B alive).
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: Trace B
 Stack trace: (omitted)
 
 hawktest-output-test_.cc:#: Failure
 Failed
 Expected failure #2 (in thread A, trace A & B both alive).
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: Trace A
 Stack trace: (omitted)
 
 hawktest-output-test_.cc:#: Failure
 Failed
 Expected failure #3 (in thread B, trace A & B both alive).
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: Trace B
 Stack trace: (omitted)
 
@@ -270,7 +270,7 @@ Stack trace: (omitted)
 hawktest-output-test_.cc:#: Failure
 Failed
 Expected failure #5 (in thread A, only trace A alive).
-Google Test trace:
+Hawk Test trace:
 hawktest-output-test_.cc:#: Trace A
 Stack trace: (omitted)
 
@@ -285,7 +285,7 @@ Stack trace: (omitted)
 hawktest-output-test_.cc:#: Failure
 Failed
 Check that the trace is attached to a particular location.
-Google Test trace:
+Hawk Test trace:
 explicit_file.cc:123: expected trace message
 Stack trace: (omitted)
 
@@ -1117,7 +1117,7 @@ Stack trace: (omitted)
  1 FAILED TEST SUITE
 [0;33m  YOU HAVE 1 DISABLED TEST
 
-[mNote: Google Test filter = FatalFailureTest.*:LoggingTest.*
+[mNote: Hawk Test filter = FatalFailureTest.*:LoggingTest.*
 [==========] Running 4 tests from 2 test suites.
 [----------] Global test environment set-up.
 [----------] 3 tests from FatalFailureTest
@@ -1180,7 +1180,7 @@ Stack trace: (omitted)
 [  FAILED  ] LoggingTest.InterleavingLoggingAndAssertions
 
  4 FAILED TESTS
-Note: Google Test filter = *DISABLED_*
+Note: Hawk Test filter = *DISABLED_*
 [==========] Running 1 test from 1 test suite.
 [----------] Global test environment set-up.
 [----------] 1 test from DisabledTestsWarningTest
@@ -1189,7 +1189,7 @@ Note: Google Test filter = *DISABLED_*
 [----------] Global test environment tear-down
 [==========] 1 test from 1 test suite ran.
 [  PASSED  ] 1 test.
-Note: Google Test filter = PassingTest.*
+Note: Hawk Test filter = PassingTest.*
 Note: This is test shard 2 of 2.
 [==========] Running 1 test from 1 test suite.
 [----------] Global test environment set-up.

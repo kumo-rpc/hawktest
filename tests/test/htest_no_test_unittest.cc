@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Tests that a Google Test program that has no test defined can run
+// Tests that a Hawk Test program that has no test defined can run
 // successfully.
 
 #include <hawktest/test/htest.h>

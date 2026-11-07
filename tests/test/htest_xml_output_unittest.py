@@ -290,7 +290,7 @@ SUPPORTS_TYPED_TESTS = (
 
 
 class HTestXMLOutputUnitTest(htest_xml_test_utils.HTestXMLTestCase):
-  """Unit test for Google Test's XML output functionality."""
+  """Unit test for Hawk Test's XML output functionality."""
 
   # This test currently breaks on platforms that do not support typed and
   # type-parameterized tests, so we don't run it under them.
@@ -305,7 +305,7 @@ class HTestXMLOutputUnitTest(htest_xml_test_utils.HTestXMLTestCase):
       self._TestXmlOutput(HTEST_PROGRAM_NAME, EXPECTED_NON_EMPTY_XML, 1)
 
   def testNoTestXmlOutput(self):
-    """Verifies XML output for a Google Test binary without actual tests.
+    """Verifies XML output for a Hawk Test binary without actual tests.
 
     Runs a test program that generates an XML output for a binary without tests,
     and tests that the XML output is expected.
@@ -344,7 +344,7 @@ class HTestXMLOutputUnitTest(htest_xml_test_utils.HTestXMLTestCase):
   def testDefaultOutputFile(self):
     """Tests XML file with default name is created when name is not specified.
 
-    Confirms that Google Test produces an XML output file with the expected
+    Confirms that Hawk Test produces an XML output file with the expected
     default name if no name is explicitly specified.
     """
     output_file = os.path.join(

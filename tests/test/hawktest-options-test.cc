@@ -27,10 +27,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Google Test UnitTestOptions tests
+// Hawk Test UnitTestOptions tests
 //
 // This file tests classes and functions used internally by
-// Google Test.  They are subject to change without notice.
+// Hawk Test.  They are subject to change without notice.
 //
 // This file is #included from htest.cc, to avoid changing build or
 // make-files on Windows and other platforms. Do not #include this file

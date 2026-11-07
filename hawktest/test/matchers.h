@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// The Google C++ Testing and Mocking Framework (Google Test)
+// The Google C++ Testing and Mocking Framework (Hawk Test)
 //
 // This file implements just enough of the matcher interface to allow
 // EXPECT_DEATH and friends to accept a matcher argument.
@@ -164,7 +164,7 @@ namespace testing {
         //
         // You should override this method when defining a new matcher.
         //
-        // It's the responsibility of the caller (Google Test) to guarantee
+        // It's the responsibility of the caller (Hawk Test) to guarantee
         // that 'listener' is not NULL.  This helps to simplify a matcher's
         // implementation when it doesn't care about the performance, as it
         // can talk to 'listener' without checking its validity first.

@@ -27,9 +27,9 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //
-// The Google C++ Testing and Mocking Framework (Google Test)
+// The Google C++ Testing and Mocking Framework (Hawk Test)
 //
-// This file verifies Google Test event listeners receive events at the
+// This file verifies Hawk Test event listeners receive events at the
 // right times.
 
 #include <iterator>

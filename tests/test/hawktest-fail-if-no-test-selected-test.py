@@ -28,7 +28,7 @@
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-"""Tests for Google Test's --htest_fail_if_no_test_selected flag."""
+"""Tests for Hawk Test's --htest_fail_if_no_test_selected flag."""
 
 from tests.test import htest_test_utils
 

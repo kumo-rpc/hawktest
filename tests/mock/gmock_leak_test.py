@@ -44,7 +44,7 @@ SetEnvVar = gmock_test_utils.SetEnvVar
 # Tests in this file run a Google-Test-based test program and expect it
 # to terminate prematurely.  Therefore they are incompatible with
 # the premature-exit-file protocol by design.  Unset the
-# premature-exit filepath to prevent Google Test from creating
+# premature-exit filepath to prevent Hawk Test from creating
 # the file.
 SetEnvVar(gmock_test_utils.PREMATURE_EXIT_FILE_ENV_VAR, None)
 

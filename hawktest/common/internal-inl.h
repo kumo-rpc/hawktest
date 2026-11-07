@@ -65,14 +65,14 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 // Declares the flags.
 //
 // We don't want the users to modify this flag in the code, but want
-// Google Test's own unit tests to be able to access it. Therefore we
+// Hawk Test's own unit tests to be able to access it. Therefore we
 // declare it here as opposed to in htest.h.
 HTEST_DECLARE_bool_(death_test_use_fork);
 
 namespace testing {
 namespace internal {
 
-// The value of GetTestTypeId() as seen from within the Google Test
+// The value of GetTestTypeId() as seen from within the Hawk Test
 // library.  This is solely for testing GetTestTypeId().
 HTEST_API_ extern const TypeId kTestTypeIdInHawkTest;
 
@@ -86,7 +86,7 @@ HTEST_API_ extern bool g_help_flag;
 // Returns the current time in milliseconds.
 HTEST_API_ TimeInMillis GetTimeInMillis();
 
-// Returns true if and only if Google Test should use colors in the output.
+// Returns true if and only if Hawk Test should use colors in the output.
 HTEST_API_ bool ShouldUseColor(bool stdout_is_tty);
 
 // Formats the given time in milliseconds as seconds. If the input is an exact N
@@ -132,7 +132,7 @@ inline int GetNextRandomSeed(int seed) {
   return (next_seed > kMaxRandomSeed) ? 1 : next_seed;
 }
 
-// This class saves the values of all Google Test flags in its c'tor, and
+// This class saves the values of all Hawk Test flags in its c'tor, and
 // restores them in its d'tor.
 class HTestFlagSaver {
  public:
@@ -412,13 +412,13 @@ class OsStackTraceGetterInterface {
   //                against max_depth.
   virtual std::string CurrentStackTrace(int max_depth, int skip_count) = 0;
 
-  // UponLeavingHTest() should be called immediately before Google Test calls
+  // UponLeavingHTest() should be called immediately before Hawk Test calls
   // user code. It saves some information about the current stack that
-  // CurrentStackTrace() will use to find and hide Google Test stack frames.
+  // CurrentStackTrace() will use to find and hide Hawk Test stack frames.
   virtual void UponLeavingHTest() = 0;
 
   // This string is inserted in place of stack frames that are part of
-  // Google Test's implementation.
+  // Hawk Test's implementation.
   static const char* const kElidedFramesMarker;
 
  private:
@@ -441,7 +441,7 @@ class OsStackTraceGetter : public OsStackTraceGetterInterface {
   OsStackTraceGetter& operator=(const OsStackTraceGetter&) = delete;
 };
 
-// Information about a Google Test trace point.
+// Information about a Hawk Test trace point.
 struct TraceInfo {
   const char* file;
   int line;
@@ -745,7 +745,7 @@ class HTEST_API_ UnitTestImpl {
   // before/after the tests are run.
   std::vector<Environment*>& environments() { return environments_; }
 
-  // Getters for the per-thread Google Test trace stack.
+  // Getters for the per-thread Hawk Test trace stack.
   std::vector<TraceInfo>& htest_trace_stack() {
     return *(htest_trace_stack_.pointer());
   }
@@ -896,14 +896,14 @@ class HTEST_API_ UnitTestImpl {
   int last_death_test_suite_;
 
   // This points to the TestSuite for the currently running test.  It
-  // changes as Google Test goes through one test suite after another.
-  // When no test is running, this is set to NULL and Google Test
+  // changes as Hawk Test goes through one test suite after another.
+  // When no test is running, this is set to NULL and Hawk Test
   // stores assertion results in ad_hoc_test_result_.  Initially NULL.
   TestSuite* current_test_suite_;
 
   // This points to the TestInfo for the currently running test.  It
-  // changes as Google Test goes through one test after another.  When
-  // no test is running, this is set to NULL and Google Test stores
+  // changes as Hawk Test goes through one test after another.  When
+  // no test is running, this is set to NULL and Hawk Test stores
   // assertion results in ad_hoc_test_result_.  Initially NULL.
   TestInfo* current_test_info_;
 
@@ -913,12 +913,12 @@ class HTEST_API_ UnitTestImpl {
   // associate such an assertion with the test it belongs to.
   //
   // If an assertion is encountered when no TEST or TEST_F is running,
-  // Google Test attributes the assertion result to an imaginary "ad hoc"
+  // Hawk Test attributes the assertion result to an imaginary "ad hoc"
   // test, and records the result in ad_hoc_test_result_.
   TestResult ad_hoc_test_result_;
 
   // The list of event listeners that can be used to track events inside
-  // Google Test.
+  // Hawk Test.
   TestEventListeners listeners_;
 
   // The OS stack trace getter.  Will be deleted when the UnitTest
@@ -988,8 +988,8 @@ HTEST_API_ bool MatchRegexAnywhere(const char* regex, const char* str);
 
 #endif  // HTEST_USES_SIMPLE_RE
 
-// Parses the command line for Google Test flags, without initializing
-// other parts of Google Test.
+// Parses the command line for Hawk Test flags, without initializing
+// other parts of Hawk Test.
 HTEST_API_ void parse_hawk_test_flags_only(int* argc, char** argv);
 HTEST_API_ void parse_hawk_test_flags_only(int* argc, wchar_t** argv);
 
@@ -1033,10 +1033,10 @@ bool ParseNaturalNumber(const ::std::string& str, Integer* number) {
 #endif  // HTEST_HAS_DEATH_TEST
 
 // TestResult contains some private methods that should be hidden from
-// Google Test user but are required for testing. This class allow our tests
+// Hawk Test user but are required for testing. This class allow our tests
 // to access them.
 //
-// This class is supplied only for the purpose of testing Google Test's own
+// This class is supplied only for the purpose of testing Hawk Test's own
 // constructs. Do not use it in user tests, either directly or indirectly.
 class TestResultAccessor {
  public:
@@ -1139,7 +1139,7 @@ class StreamingListener : public EmptyTestEventListener {
   }
 
   void OnTestProgramEnd(const UnitTest& unit_test) override {
-    // Note that Google Test current only report elapsed time for each
+    // Note that Hawk Test current only report elapsed time for each
     // test iteration, not for the entire test program.
     SendLn("event=TestProgramEnd&passed=" + FormatBool(unit_test.Passed()));
 

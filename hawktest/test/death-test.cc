@@ -646,7 +646,7 @@ namespace testing {
 #ifdef HTEST_OS_WINDOWS
         // WindowsDeathTest implements death tests on Windows. Due to the
         // specifics of starting new processes on Windows, death tests there are
-        // always threadsafe, and Google Test considers the
+        // always threadsafe, and Hawk Test considers the
         // --htest_death_test_style=fast setting to be equivalent to
         // --htest_death_test_style=threadsafe there.
         //

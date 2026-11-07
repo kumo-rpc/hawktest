@@ -37,7 +37,7 @@ HTEST_DEFAULT_OUTPUT_FILE = 'test_detail.xml'
 
 
 class HTestXMLTestCase(htest_test_utils.TestCase):
-  """Base class for tests of Google Test's XML output functionality."""
+  """Base class for tests of Hawk Test's XML output functionality."""
 
   def AssertEquivalentNodes(self, expected_node, actual_node):
     """Asserts that actual_node is equivalent to expected_node.
@@ -186,7 +186,7 @@ class HTestXMLTestCase(htest_test_utils.TestCase):
   def NormalizeXml(self, element):
     """Normalizes XML that may change from run to run.
 
-    Normalizes Google Test's XML output to eliminate references to transient
+    Normalizes Hawk Test's XML output to eliminate references to transient
     information that may change from run to run.
 
     *  The "time" attribute of <testsuites>, <testsuite> and <testcase>

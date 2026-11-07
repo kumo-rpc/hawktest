@@ -27,10 +27,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// The Google C++ Testing and Mocking Framework (Google Test)
+// The Google C++ Testing and Mocking Framework (Hawk Test)
 //
 // This header file provides classes and functions used internally
-// for testing Google Test itself.
+// for testing Hawk Test itself.
 
 #pragma once
 

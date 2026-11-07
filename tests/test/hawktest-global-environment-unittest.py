@@ -25,14 +25,14 @@
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-"""Unit test for Google Test's global test environment behavior.
+"""Unit test for Hawk Test's global test environment behavior.
 
 A user can specify a global test environment via
 testing::AddGlobalTestEnvironment. Failures in the global environment should
 result in all unit tests being skipped.
 
 This script tests such functionality by invoking
-hawktest-global-environment-unittest_ (a program written with Google Test).
+hawktest-global-environment-unittest_ (a program written with Hawk Test).
 """
 
 import re

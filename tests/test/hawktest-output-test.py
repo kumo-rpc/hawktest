@@ -100,10 +100,10 @@ def ToUnixLineEnding(s):
 
 
 def RemoveLocations(test_output):
-  """Removes all file location info from a Google Test program's output.
+  """Removes all file location info from a Hawk Test program's output.
 
   Args:
-       test_output:  the output of a Google Test program.
+       test_output:  the output of a Hawk Test program.
 
   Returns:
        output with all file location info (in the form of
@@ -120,7 +120,7 @@ def RemoveLocations(test_output):
 
 
 def RemoveStackTraceDetails(output):
-  """Removes all stack traces from a Google Test program's output."""
+  """Removes all stack traces from a Hawk Test program's output."""
 
   # *? means "find the shortest string that matches".
   return re.sub(
@@ -129,23 +129,23 @@ def RemoveStackTraceDetails(output):
 
 
 def RemoveStackTraces(output):
-  """Removes all traces of stack traces from a Google Test program's output."""
+  """Removes all traces of stack traces from a Hawk Test program's output."""
 
   # *? means "find the shortest string that matches".
   return re.sub(r'Stack trace:(.|\n)*?\n', '', output)
 
 
 def RemoveTime(output):
-  """Removes all time information from a Google Test program's output."""
+  """Removes all time information from a Hawk Test program's output."""
 
   return re.sub(r'\(\d+ ms', '(? ms', output)
 
 
 def RemoveTypeInfoDetails(test_output):
-  """Removes compiler-specific type info from Google Test program's output.
+  """Removes compiler-specific type info from Hawk Test program's output.
 
   Args:
-       test_output:  the output of a Google Test program.
+       test_output:  the output of a Hawk Test program.
 
   Returns:
        output with type information normalized to canonical form.
@@ -170,7 +170,7 @@ def NormalizeToCurrentPlatform(test_output):
 
 
 def RemoveTestCounts(output):
-  """Removes test counts from a Google Test program's output."""
+  """Removes test counts from a Hawk Test program's output."""
 
   output = re.sub(r'\d+ tests?, listed below', '? tests, listed below', output)
   output = re.sub(r'\d+ FAILED TESTS', '? FAILED TESTS', output)
@@ -182,7 +182,7 @@ def RemoveTestCounts(output):
 
 
 def RemoveMatchingTests(test_output, pattern):
-  """Removes output of specified tests from a Google Test program's output.
+  """Removes output of specified tests from a Hawk Test program's output.
 
   This function strips not only the beginning and the end of a test but also
   all output in between.

@@ -36,7 +36,7 @@ def normalize(obj):
   """Normalize output object.
 
   Args:
-     obj: Google Test's JSON output object to normalize.
+     obj: Hawk Test's JSON output object to normalize.
 
   Returns:
      Normalized output without any references to transient information that may

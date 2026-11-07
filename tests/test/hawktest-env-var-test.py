@@ -29,7 +29,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Verifies that Google Test correctly parses environment variables."""
+"""Verifies that Hawk Test correctly parses environment variables."""
 
 import os
 from tests.test import htest_test_utils

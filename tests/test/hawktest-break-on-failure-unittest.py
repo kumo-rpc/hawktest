@@ -29,13 +29,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Unit test for Google Test's break-on-failure mode.
+"""Unit test for Hawk Test's break-on-failure mode.
 
-A user can ask Google Test to seg-fault when an assertion fails, using
+A user can ask Hawk Test to seg-fault when an assertion fails, using
 either the HTEST_BREAK_ON_FAILURE environment variable or the
 --htest_break_on_failure flag.  This script tests such functionality
 by invoking hawktest-break-on-failure-unittest_ (a program written with
-Google Test) with different environments and command line flags.
+Hawk Test) with different environments and command line flags.
 """
 
 import os
@@ -69,7 +69,7 @@ SetEnvVar = htest_test_utils.SetEnvVar
 # Tests in this file run a Google-Test-based test program and expect it
 # to terminate prematurely.  Therefore they are incompatible with
 # the premature-exit-file protocol by design.  Unset the
-# premature-exit filepath to prevent Google Test from creating
+# premature-exit filepath to prevent Hawk Test from creating
 # the file.
 SetEnvVar(htest_test_utils.PREMATURE_EXIT_FILE_ENV_VAR, None)
 

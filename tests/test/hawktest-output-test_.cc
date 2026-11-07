@@ -27,9 +27,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// The purpose of this file is to generate Google Test output under
+// The purpose of this file is to generate Hawk Test output under
 // various conditions.  The output will then be verified by
-// hawktest-output-test.py to ensure that Google Test generates the
+// hawktest-output-test.py to ensure that Hawk Test generates the
 // desired messages.  Therefore, most tests in this file are MEANT TO
 // FAIL.
 
@@ -86,7 +86,7 @@ class FailingParamTest : public testing::TestWithParam<int> {};
 
 TEST_P(FailingParamTest, Fails) { EXPECT_EQ(1, GetParam()); }
 
-// This generates a test which will fail. Google Test is expected to print
+// This generates a test which will fail. Hawk Test is expected to print
 // its parameter when it outputs the list of all failed tests.
 INSTANTIATE_TEST_SUITE_P(PrintingFailingParams, FailingParamTest,
                          testing::Values(2));
@@ -145,7 +145,7 @@ TEST(FatalFailureTest, NonfatalFailureInSubroutine) {
   ASSERT_FALSE(HasFatalFailure());  // This should succeed.
 }
 
-// Tests interleaving user logging and Google Test assertions.
+// Tests interleaving user logging and Hawk Test assertions.
 TEST(LoggingTest, InterleavingLoggingAndAssertions) {
   static const int a[4] = {3, 9, 2, 6};
 
@@ -459,7 +459,7 @@ TEST(GtestFailAtTest, MessageContainsSpecifiedFileAndLineNumber) {
   HTEST_FAIL_AT("foo.cc", 42) << "Expected fatal failure in foo.cc";
 }
 
-// The MixedUpTestSuiteTest test case verifies that Google Test will fail a
+// The MixedUpTestSuiteTest test case verifies that Hawk Test will fail a
 // test if it uses a different fixture class than what other tests in
 // the same test case use.  It deliberately contains two fixture
 // classes with the same name but defined in different namespaces.
@@ -488,20 +488,20 @@ namespace bar {
 class MixedUpTestSuiteTest : public testing::Test {};
 
 // The following two tests are expected to fail.  We rely on the
-// golden file to check that Google Test generates the right error message.
+// golden file to check that Hawk Test generates the right error message.
 TEST_F(MixedUpTestSuiteTest, ThisShouldFail) {}
 TEST_F(MixedUpTestSuiteTest, ThisShouldFailToo) {}
 
 class MixedUpTestSuiteWithSameTestNameTest : public testing::Test {};
 
-// Expected to fail.  We rely on the golden file to check that Google Test
+// Expected to fail.  We rely on the golden file to check that Hawk Test
 // generates the right error message.
 TEST_F(MixedUpTestSuiteWithSameTestNameTest,
        TheSecondTestWithThisNameShouldFail) {}
 
 }  // namespace bar
 
-// The following two test cases verify that Google Test catches the user
+// The following two test cases verify that Hawk Test catches the user
 // error of mixing TEST and TEST_F in the same test case.  The first
 // test case checks the scenario where TEST_F appears before TEST, and
 // the second one checks where TEST appears before TEST_F.
@@ -510,7 +510,7 @@ class TEST_F_before_TEST_in_same_test_case : public testing::Test {};
 
 TEST_F(TEST_F_before_TEST_in_same_test_case, DefinedUsingTEST_F) {}
 
-// Expected to fail.  We rely on the golden file to check that Google Test
+// Expected to fail.  We rely on the golden file to check that Hawk Test
 // generates the right error message.
 TEST(TEST_F_before_TEST_in_same_test_case, DefinedUsingTESTAndShouldFail) {}
 
@@ -518,7 +518,7 @@ class TEST_before_TEST_F_in_same_test_case : public testing::Test {};
 
 TEST(TEST_before_TEST_F_in_same_test_case, DefinedUsingTEST) {}
 
-// Expected to fail.  We rely on the golden file to check that Google Test
+// Expected to fail.  We rely on the golden file to check that Hawk Test
 // generates the right error message.
 TEST_F(TEST_before_TEST_F_in_same_test_case, DefinedUsingTEST_FAndShouldFail) {}
 
@@ -1016,7 +1016,7 @@ TEST_F(TestSuiteThatSkipsInSetUp, ShouldNotRun) { std::abort(); }
 
 // The main function.
 //
-// The idea is to use Google Test to run all the tests we have defined (some
+// The idea is to use Hawk Test to run all the tests we have defined (some
 // of them are intended to fail), and then compare the test results
 // with the "golden" file.
 int main(int argc, char** argv) {

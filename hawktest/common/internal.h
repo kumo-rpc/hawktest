@@ -146,7 +146,7 @@ HTEST_API_ std::string AppendUserMessage(const std::string& htest_msg,
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(
     4275 /* an exported class was derived from a class that was not exported */)
 
-// This exception is thrown by (and only by) a failed Google Test
+// This exception is thrown by (and only by) a failed Hawk Test
 // assertion when HTEST_FLAG(throw_on_failure) is true (if exceptions
 // are enabled).  We derive it from std::runtime_error, which is for
 // errors presumably detectable only at run time.  Since
@@ -416,7 +416,7 @@ TypeId GetTypeId() {
 // Returns the type ID of ::testing::Test.  Always call this instead
 // of GetTypeId< ::testing::Test>() to get the type ID of
 // ::testing::Test, as the latter may give the wrong result due to a
-// suspected linker bug when compiling Google Test as a Mac OS X
+// suspected linker bug when compiling Hawk Test as a Mac OS X
 // framework.
 HTEST_API_ TypeId GetTestTypeId();
 
@@ -535,7 +535,7 @@ struct SuiteApiResolver : T {
   }
 };
 
-// Creates a new TestInfo object and registers it with Google Test;
+// Creates a new TestInfo object and registers it with Hawk Test;
 // returns the created object.
 //
 // Arguments:
@@ -676,7 +676,7 @@ std::vector<std::string> GenerateNames() {
 }
 
 // TypeParameterizedTest<Fixture, TestSel, Types>::Register()
-// registers a list of type-parameterized tests with Google Test.  The
+// registers a list of type-parameterized tests with Hawk Test.  The
 // return value is insignificant - we just need to return something
 // such that we can call this function in a namespace scope.
 //

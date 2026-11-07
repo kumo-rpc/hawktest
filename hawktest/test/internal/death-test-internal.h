@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// The Google C++ Testing and Mocking Framework (Google Test)
+// The Google C++ Testing and Mocking Framework (Hawk Test)
 //
 // This header file defines internal utilities needed for implementing
 // death tests.  They are subject to change without notice.
@@ -51,7 +51,7 @@ HTEST_DECLARE_string_(internal_run_death_test);
 namespace testing {
 namespace internal {
 
-// Name of the flag (needed for parsing Google Test flag).
+// Name of the flag (needed for parsing Hawk Test flag).
 const char kInternalRunDeathTestFlag[] = "internal_run_death_test";
 
 // A string passed to EXPECT_DEATH (etc.) is caught by one of these overloads

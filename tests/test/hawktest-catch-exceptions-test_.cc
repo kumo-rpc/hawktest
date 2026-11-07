@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //
-// Tests for Google Test itself. Tests in this file throw C++ or SEH
+// Tests for Hawk Test itself. Tests in this file throw C++ or SEH
 // exceptions, and the output is verified by
 // hawktest-catch-exceptions-test.py.
 

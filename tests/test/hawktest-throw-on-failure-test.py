@@ -29,10 +29,10 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Tests Google Test's throw-on-failure mode with exceptions disabled.
+"""Tests Hawk Test's throw-on-failure mode with exceptions disabled.
 
 This script invokes hawktest-throw-on-failure-test_ (a program written with
-Google Test) with different environments and command line flags.
+Hawk Test) with different environments and command line flags.
 """
 
 import os

@@ -27,9 +27,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Unit test for Google Test XML output.
+// Unit test for Hawk Test XML output.
 //
-// A user can specify XML output in a Google Test program to run via
+// A user can specify XML output in a Hawk Test program to run via
 // either the HTEST_OUTPUT environment variable or the --htest_output
 // flag.  This is used for testing such functionality.
 //

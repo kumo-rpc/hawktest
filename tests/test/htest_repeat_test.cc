@@ -38,8 +38,8 @@
 
 namespace {
 
-// We need this when we are testing Google Test itself and therefore
-// cannot use Google Test assertions.
+// We need this when we are testing Hawk Test itself and therefore
+// cannot use Hawk Test assertions.
 #define HTEST_CHECK_INT_EQ_(expected, actual)                      \
   do {                                                             \
     const int expected_val = (expected);                           \
@@ -129,14 +129,14 @@ void CheckCounts(int expected) {
   HTEST_CHECK_INT_EQ_(expected * kNumberOfParamTests, g_param_test_count);
 }
 
-// Tests the behavior of Google Test when --htest_repeat is not specified.
+// Tests the behavior of Hawk Test when --htest_repeat is not specified.
 void TestRepeatUnspecified() {
   ResetCounts();
   HTEST_CHECK_INT_EQ_(1, RUN_ALL_TESTS());
   CheckCounts(1);
 }
 
-// Tests the behavior of Google Test when --htest_repeat has the given value.
+// Tests the behavior of Hawk Test when --htest_repeat has the given value.
 void TestRepeat(int repeat) {
   HTEST_FLAG_SET(repeat, repeat);
   HTEST_FLAG_SET(recreate_environments_when_repeating, true);

@@ -76,7 +76,7 @@ _htest_flags_are_parsed = False
 
 
 def _ParseAndStripHTestFlags(argv):
-  """Parses and strips Google Test flags from argv.  This is idempotent."""
+  """Parses and strips Hawk Test flags from argv.  This is idempotent."""
 
   global _htest_flags_are_parsed
   if _htest_flags_are_parsed:

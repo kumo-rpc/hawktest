@@ -27,9 +27,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Unit test for Google Test's --htest_list_tests flag.
+// Unit test for Hawk Test's --htest_list_tests flag.
 //
-// A user can ask Google Test to list all tests that will run
+// A user can ask Hawk Test to list all tests that will run
 // so that when using a filter, a user will know what
 // tests to look for. The tests will not be run after listing.
 //
@@ -76,7 +76,7 @@ class MyType {
   std::string value_;
 };
 
-// Teaches Google Test how to print a MyType.
+// Teaches Hawk Test how to print a MyType.
 void PrintTo(const MyType& x, std::ostream* os) { *os << x.value(); }
 
 class ValueParamTest : public testing::TestWithParam<MyType> {};

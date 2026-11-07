@@ -38,11 +38,11 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to 
 
 namespace testing {
 
-    // This helper class can be used to mock out Google Test failure reporting
-    // so that we can test Google Test or code that builds on Google Test.
+    // This helper class can be used to mock out Hawk Test failure reporting
+    // so that we can test Hawk Test or code that builds on Hawk Test.
     //
     // An object of this class appends a TestPartResult object to the
-    // TestPartResultArray object given in the constructor whenever a Google Test
+    // TestPartResultArray object given in the constructor whenever a Hawk Test
     // failure is reported. It can either intercept only failures that are
     // generated in the same thread that created this object or it can intercept
     // all generated failures. The scope of this mock object can be controlled with
@@ -57,7 +57,7 @@ namespace testing {
         };
 
         // The c'tor sets this object as the test part result reporter used
-        // by Google Test.  The 'result' parameter specifies where to report the
+        // by Hawk Test.  The 'result' parameter specifies where to report the
         // results. This reporter will only catch failures generated in the current
         // thread. DEPRECATED
         explicit ScopedFakeTestPartResultReporter(TestPartResultArray* result);
@@ -117,10 +117,10 @@ namespace testing {
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
 
-// A set of macros for testing Google Test assertions or code that's expected
-// to generate Google Test fatal failures (e.g. a failure from an ASSERT_EQ, but
+// A set of macros for testing Hawk Test assertions or code that's expected
+// to generate Hawk Test fatal failures (e.g. a failure from an ASSERT_EQ, but
 // not a non-fatal failure, as from EXPECT_EQ).  It verifies that the given
-// statement will cause exactly one fatal Google Test failure with 'substr'
+// statement will cause exactly one fatal Hawk Test failure with 'substr'
 // being part of the failure message.
 //
 // There are two different versions of this macro. EXPECT_FATAL_FAILURE only
@@ -176,10 +176,10 @@ HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
         }                                                                           \
     } while (::testing::internal::AlwaysFalse())
 
-// A macro for testing Google Test assertions or code that's expected to
-// generate Google Test non-fatal failures (e.g. a failure from an EXPECT_EQ,
+// A macro for testing Hawk Test assertions or code that's expected to
+// generate Hawk Test non-fatal failures (e.g. a failure from an EXPECT_EQ,
 // but not from an ASSERT_EQ). It asserts that the given statement will cause
-// exactly one non-fatal Google Test failure with 'substr' being part of the
+// exactly one non-fatal Hawk Test failure with 'substr' being part of the
 // failure message.
 //
 // There are two different versions of this macro. EXPECT_NONFATAL_FAILURE only

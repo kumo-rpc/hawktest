@@ -173,7 +173,7 @@ bool IsColorTerminal() {
   return 0 != _isatty(_fileno(stdout));
 #else
   // On non-Windows platforms, we rely on the TERM variable. This list of
-  // supported TERM values is copied from Google Test:
+  // supported TERM values is copied from Hawk Test:
   const char* const SUPPORTED_TERM_VALUES[] = {
       "xterm",
       "xterm-color",

@@ -29,9 +29,9 @@
 //
 // Author: david.schuldenfrei@gmail.com (David Schuldenfrei)
 
-// Unit test for Google Test's --htest_list_tests and --htest_output flag.
+// Unit test for Hawk Test's --htest_list_tests and --htest_output flag.
 //
-// A user can ask Google Test to list all tests that will run,
+// A user can ask Hawk Test to list all tests that will run,
 // and have the output saved in a Json/Xml file.
 // The tests will not be run after listing.
 //

@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Unit test for Google Test global test environments.
+// Unit test for Hawk Test global test environments.
 //
 // The program will be invoked from a Python unit test.  Don't run it
 // directly.

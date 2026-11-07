@@ -27,9 +27,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Unit test for Google Test's break-on-failure mode.
+// Unit test for Hawk Test's break-on-failure mode.
 //
-// A user can ask Google Test to seg-fault when an assertion fails, using
+// A user can ask Hawk Test to seg-fault when an assertion fails, using
 // either the HTEST_BREAK_ON_FAILURE environment variable or the
 // --htest_break_on_failure flag.  This file is used for testing such
 // functionality.

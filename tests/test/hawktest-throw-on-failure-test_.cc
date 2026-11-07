@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Tests Google Test's throw-on-failure mode with exceptions disabled.
+// Tests Hawk Test's throw-on-failure mode with exceptions disabled.
 //
 // This program must be compiled with exceptions disabled.  It will be
 // invoked by hawktest-throw-on-failure-test.py, and is expected to exit
@@ -55,10 +55,10 @@ int main(int argc, char** argv) {
 #endif
   testing::init_hawk_test(&argc, argv);
 
-  // We want to ensure that people can use Google Test assertions in
-  // other testing frameworks, as long as they initialize Google Test
+  // We want to ensure that people can use Hawk Test assertions in
+  // other testing frameworks, as long as they initialize Hawk Test
   // properly and set the throw-on-failure mode.  Therefore, we don't
-  // use Google Test's constructs for defining and running tests
+  // use Hawk Test's constructs for defining and running tests
   // (e.g. TEST and RUN_ALL_TESTS) here.
 
   // In the throw-on-failure mode with exceptions disabled, this

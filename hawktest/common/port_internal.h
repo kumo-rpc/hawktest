@@ -27,34 +27,34 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Low-level types and utilities for porting Google Test to various
+// Low-level types and utilities for porting Hawk Test to various
 // platforms.  All macros ending with _ and symbols defined in an
 // internal namespace are subject to change without notice.  Code
-// outside Google Test MUST NOT USE THEM DIRECTLY.  Macros that don't
-// end with _ are part of Google Test's public API and can be used by
-// code outside Google Test.
+// outside Hawk Test MUST NOT USE THEM DIRECTLY.  Macros that don't
+// end with _ are part of Hawk Test's public API and can be used by
+// code outside Hawk Test.
 //
-// This file is fundamental to Google Test.  All other Google Test source
+// This file is fundamental to Hawk Test.  All other Hawk Test source
 // files are expected to #include this.  Therefore, it cannot #include
-// any other Google Test header.
+// any other Hawk Test header.
 
 #pragma once
 
 // Environment-describing macros
 // -----------------------------
 //
-// Google Test can be used in many different environments.  Macros in
-// this section tell Google Test what kind of environment it is being
-// used in, such that Google Test can provide environment-specific
+// Hawk Test can be used in many different environments.  Macros in
+// this section tell Hawk Test what kind of environment it is being
+// used in, such that Hawk Test can provide environment-specific
 // features and implementations.
 //
-// Google Test tries to automatically detect the properties of its
+// Hawk Test tries to automatically detect the properties of its
 // environment, so users usually don't need to worry about these
 // macros.  However, the automatic detection is not perfect.
 // Sometimes it's necessary for a user to define some of the following
-// macros in the build script to override Google Test's decisions.
+// macros in the build script to override Hawk Test's decisions.
 //
-// If the user doesn't define a macro in the list, Google Test will
+// If the user doesn't define a macro in the list, Hawk Test will
 // provide a default definition.  After this header is #included, all
 // macros in this list will be defined to either 1 or 0.
 //
@@ -76,7 +76,7 @@
 //   HTEST_HAS_RTTI           - Define it to 1/0 to indicate that RTTI is/isn't
 //                              enabled.
 //   HTEST_HAS_STD_WSTRING    - Define it to 1/0 to indicate that
-//                              std::wstring does/doesn't work (Google Test can
+//                              std::wstring does/doesn't work (Hawk Test can
 //                              be used where std::wstring is unavailable).
 //   HTEST_HAS_FILE_SYSTEM    - Define it to 1/0 to indicate whether or not a
 //                              file system is/isn't available.
@@ -89,10 +89,10 @@
 //                              dup() and dup2().
 //   HTEST_LINKED_AS_SHARED_LIBRARY
 //                            - Define to 1 when compiling tests that use
-//                              Google Test as a shared library (known as
+//                              Hawk Test as a shared library (known as
 //                              DLL on Windows).
 //   HTEST_CREATE_SHARED_LIBRARY
-//                            - Define to 1 when compiling Google Test itself
+//                            - Define to 1 when compiling Hawk Test itself
 //                              as a shared library.
 //   HTEST_DEFAULT_DEATH_TEST_STYLE
 //                            - The default value of --htest_death_test_style.
@@ -104,10 +104,10 @@
 // Platform-indicating macros
 // --------------------------
 //
-// Macros indicating the platform on which Google Test is being used
+// Macros indicating the platform on which Hawk Test is being used
 // (a macro is defined to 1 if compiled on the given platform;
-// otherwise UNDEFINED -- it's never defined to 0.).  Google Test
-// defines these macros automatically.  Code outside Google Test MUST
+// otherwise UNDEFINED -- it's never defined to 0.).  Hawk Test
+// defines these macros automatically.  Code outside Hawk Test MUST
 // NOT define them.
 //
 //   HTEST_OS_AIX      - IBM AIX
@@ -138,7 +138,7 @@
 //   HTEST_OS_ZOS      - z/OS
 //
 // Among the platforms, Cygwin, Linux, Mac OS X, and Windows have the
-// most stable support.  Since core members of the Google Test project
+// most stable support.  Since core members of the Hawk Test project
 // don't have access to other platforms, support for them may be less
 // stable.
 //
@@ -147,10 +147,10 @@
 // Feature-indicating macros
 // -------------------------
 //
-// Macros indicating which Google Test features are available (a macro
+// Macros indicating which Hawk Test features are available (a macro
 // is defined to 1 if the corresponding feature is supported;
-// otherwise UNDEFINED -- it's never defined to 0.).  Google Test
-// defines these macros automatically.  Code outside Google Test MUST
+// otherwise UNDEFINED -- it's never defined to 0.).  Hawk Test
+// defines these macros automatically.  Code outside Hawk Test MUST
 // NOT define them.
 //
 // These macros are public so that portable tests can be written.
@@ -164,7 +164,7 @@
 //   HTEST_HAS_DEATH_TEST   - death tests
 //   HTEST_HAS_TYPED_TEST   - typed tests
 //   HTEST_HAS_TYPED_TEST_P - type-parameterized tests
-//   HTEST_IS_THREADSAFE    - Google Test is thread-safe.
+//   HTEST_IS_THREADSAFE    - Hawk Test is thread-safe.
 //   HTEST_USES_RE2         - the RE2 regular expression library is used
 //   HTEST_USES_POSIX_RE    - enhanced POSIX regex is used. Do not confuse with
 //                            HTEST_HAS_POSIX_RE (see above) which users can
@@ -176,13 +176,13 @@
 // ------------------
 //
 //   HTEST_FLAG(flag_name)  - references the variable corresponding to
-//                            the given Google Test flag.
+//                            the given Hawk Test flag.
 
 // Internal utilities
 // ------------------
 //
-// The following macros and utilities are for Google Test's INTERNAL
-// use only.  Code outside Google Test MUST NOT USE THEM DIRECTLY.
+// The following macros and utilities are for Hawk Test's INTERNAL
+// use only.  Code outside Hawk Test MUST NOT USE THEM DIRECTLY.
 //
 // Macros for basic C++ coding:
 //   HTEST_AMBIGUOUS_ELSE_BLOCKER_ - for disabling a gcc warning.
@@ -315,7 +315,7 @@
 #define HTEST_FLAG_PREFIX_ "htest_"
 #define HTEST_FLAG_PREFIX_DASH_ "htest-"
 #define HTEST_FLAG_PREFIX_UPPER_ "HTEST_"
-#define HTEST_NAME_ "Google Test"
+#define HTEST_NAME_ "Hawk Test"
 #define HTEST_PROJECT_URL_ "https://github.com/google/googletest/"
 #endif // !defined(HTEST_DEV_EMAIL_)
 
@@ -401,7 +401,7 @@ typedef struct _RTL_CRITICAL_SECTION HTEST_CRITICAL_SECTION;
 #include <android/api-level.h> // NOLINT
 #endif
 
-// Defines this to true if and only if Google Test can use POSIX regular
+// Defines this to true if and only if Hawk Test can use POSIX regular
 // expressions.
 #ifndef HTEST_HAS_POSIX_RE
 #ifdef HTEST_OS_LINUX_ANDROID
@@ -556,12 +556,12 @@ typedef struct _RTL_CRITICAL_SECTION HTEST_CRITICAL_SECTION;
 #include <typeinfo>
 #endif
 
-// Determines whether Google Test can use the pthreads library.
+// Determines whether Hawk Test can use the pthreads library.
 #ifndef HTEST_HAS_PTHREAD
 // The user didn't tell us explicitly, so we make reasonable assumptions about
 // which platforms have pthreads support.
 //
-// To disable threading support in Google Test, add -DHTEST_HAS_PTHREAD=0
+// To disable threading support in Hawk Test, add -DHTEST_HAS_PTHREAD=0
 // to your compiler flags.
 #if (defined(HTEST_OS_LINUX) || defined(HTEST_OS_MAC) || defined(HTEST_OS_HPUX) || defined(HTEST_OS_QNX) || defined(HTEST_OS_FREEBSD) || defined(HTEST_OS_NACL) || defined(HTEST_OS_NETBSD) || defined(HTEST_OS_FUCHSIA) || defined(HTEST_OS_DRAGONFLY) || defined(HTEST_OS_GNU_KFREEBSD) || defined(HTEST_OS_OPENBSD) || defined(HTEST_OS_HAIKU) || defined(HTEST_OS_GNU_HURD) || defined(HTEST_OS_SOLARIS) || defined(HTEST_OS_AIX) || defined(HTEST_OS_ZOS) || (defined(HTEST_OS_EMSCRIPTEN) && defined(__EMSCRIPTEN_PTHREADS__)))
 #define HTEST_HAS_PTHREAD 1
@@ -872,7 +872,7 @@ namespace testing {
 
     namespace internal {
 
-        // A secret type that Google Test users don't know about.  It has no
+        // A secret type that Hawk Test users don't know about.  It has no
         // accessible constructors on purpose.  Therefore it's impossible to create a
         // Secret object, which is what we want.
         class [[nodiscard]] Secret {
@@ -1194,7 +1194,7 @@ namespace testing {
 // threads until notified.  Instances of this class must be created
 // and destroyed in the controller thread.
 //
-// This class is only for testing Google Test's own constructs. Do not
+// This class is only for testing Hawk Test's own constructs. Do not
 // use it in user tests, either directly or indirectly.
 #ifdef HTEST_OS_WINDOWS_MINGW
         // GCC version < 13 with the win32 thread model does not provide std::mutex and
@@ -1286,7 +1286,7 @@ namespace testing {
             return nullptr;
         }
 
-        // Helper class for testing Google Test's multi-threading constructs.
+        // Helper class for testing Hawk Test's multi-threading constructs.
         // To use it, write:
         //
         //   void ThreadFunc(int param) { /* Do things with param */ }
@@ -1296,7 +1296,7 @@ namespace testing {
         //   ThreadWithParam<int> thread(&ThreadFunc, 5, &thread_can_start);
         //   thread_can_start.Notify();
         //
-        // These classes are only for testing Google Test's own constructs. Do
+        // These classes are only for testing Hawk Test's own constructs. Do
         // not use them in user tests, either directly or indirectly.
         template <typename T>
         class [[nodiscard]] ThreadWithParam : public ThreadWithParamBase {
@@ -1493,7 +1493,7 @@ namespace testing {
             AutoHandle thread_;
         };
 
-        // Helper class for testing Google Test's multi-threading constructs.
+        // Helper class for testing Hawk Test's multi-threading constructs.
         template <typename T>
         class [[nodiscard]] ThreadWithParam : public ThreadWithParamBase {
         public:
@@ -1547,10 +1547,10 @@ namespace testing {
         // destroying it. Otherwise, the per-thread objects managed for them by the
         // ThreadLocal instance are not guaranteed to be destroyed on all platforms.
         //
-        // Google Test only uses global ThreadLocal objects.  That means they
+        // Hawk Test only uses global ThreadLocal objects.  That means they
         // will die after main() has returned.  Therefore, no per-thread
-        // object managed by Google Test will be leaked as long as all threads
-        // using Google Test have exited when main() returns.
+        // object managed by Hawk Test will be leaked as long as all threads
+        // using Hawk Test have exited when main() returns.
         template <typename T>
         class [[nodiscard]] ThreadLocal : public ThreadLocalBase {
         public:
@@ -1859,8 +1859,8 @@ namespace testing {
 #else // HTEST_IS_THREADSAFE
 
         // A dummy implementation of synchronization primitives (mutex, lock,
-        // and thread-local variable).  Necessary for compiling Google Test where
-        // mutex is not supported - using Google Test in multiple threads is not
+        // and thread-local variable).  Necessary for compiling Hawk Test where
+        // mutex is not supported - using Hawk Test in multiple threads is not
         // supported on such platforms.
 
         class [[nodiscard]] Mutex {
@@ -2185,7 +2185,7 @@ namespace testing {
 
 #ifdef HTEST_OS_WINDOWS_MOBILE
             // Windows CE has no C library. The abort() function is used in
-            // several places in Google Test. This implementation provides a reasonable
+            // several places in Hawk Test. This implementation provides a reasonable
             // imitation of standard behaviour.
             [[noreturn]] void Abort();
 #else
@@ -2232,10 +2232,10 @@ namespace testing {
         // Such functionality should belong to STL, but I cannot find it
         // there.
         //
-        // Google Test uses this class in the implementation of floating-point
+        // Hawk Test uses this class in the implementation of floating-point
         // comparison.
         //
-        // For now it only handles UInt (unsigned int) as that's all Google Test
+        // For now it only handles UInt (unsigned int) as that's all Hawk Test
         // needs.  Other types can be easily added in the future if need
         // arises.
         template <size_t size>
@@ -2333,7 +2333,7 @@ namespace testing {
             int32_t* value);
 
         // Parses a bool/int32_t/string from the environment variable
-        // corresponding to the given Google Test flag.
+        // corresponding to the given Hawk Test flag.
         bool BoolFromHTestEnv(const char* flag, bool default_val);
         HTEST_API_ int32_t Int32FromHTestEnv(const char* flag, int32_t default_val);
         std::string OutputFlagAlsoCheckEnvVar();

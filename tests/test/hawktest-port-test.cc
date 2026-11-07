@@ -386,7 +386,7 @@ TEST(GtestCheckDeathTest, LivesSilentlyOnSuccess) {
 
 #endif  // HTEST_HAS_DEATH_TEST
 
-// Verifies that Google Test choose regular expression engine appropriate to
+// Verifies that Hawk Test choose regular expression engine appropriate to
 // the platform. The test will produce compiler errors in case of failure.
 // For simplicity, we only cover the most important platforms here.
 TEST(RegexEngineSelectionTest, SelectsCorrectRegexEngine) {

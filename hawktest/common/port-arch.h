@@ -27,14 +27,14 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// The Google C++ Testing and Mocking Framework (Google Test)
+// The Google C++ Testing and Mocking Framework (Hawk Test)
 //
 // This header file defines the HTEST_OS_* macro.
 // It is separate from htest-port.h so that custom/htest-port.h can include it.
 
 #pragma once
 
-// Determines the platform on which Google Test is compiled.
+// Determines the platform on which Hawk Test is compiled.
 #ifdef __CYGWIN__
 #define HTEST_OS_CYGWIN 1
 #elif defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__)

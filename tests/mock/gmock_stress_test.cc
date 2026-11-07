@@ -64,7 +64,7 @@ void JoinAndDelete(ThreadWithParam<T>* t) {
 struct Dummy {};
 
 // Tests that different mock objects can be used in their respective
-// threads.  This should generate no Google Test failure.
+// threads.  This should generate no Hawk Test failure.
 void TestConcurrentMockObjects(Dummy /* dummy */) {
   // Creates a mock and does some typical operations on it.
   MockFoo foo;
@@ -147,7 +147,7 @@ void Helper2(MockFoo* foo) {
   }
 }
 
-// This should generate no Google Test failures.
+// This should generate no Hawk Test failures.
 void TestPartiallyOrderedExpectationsWithThreads(Dummy /* dummy */) {
   MockFoo foo;
   Sequence s1, s2;

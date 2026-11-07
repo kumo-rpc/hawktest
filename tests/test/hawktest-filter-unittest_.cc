@@ -27,9 +27,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Unit test for Google Test test filters.
+// Unit test for Hawk Test test filters.
 //
-// A user can specify which test(s) in a Google Test program to run via
+// A user can specify which test(s) in a Hawk Test program to run via
 // either the HTEST_FILTER environment variable or the --htest_filter
 // flag.  This is used for testing such functionality.
 //

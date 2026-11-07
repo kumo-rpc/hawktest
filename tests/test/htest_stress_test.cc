@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Tests that SCOPED_TRACE() and various Google Test assertions can be
+// Tests that SCOPED_TRACE() and various Hawk Test assertions can be
 // used in a large number of threads concurrently.
 
 #include <algorithm>
@@ -47,7 +47,7 @@ using internal::Notification;
 using internal::TestPropertyKeyIs;
 using internal::ThreadWithParam;
 
-// In order to run tests in this file, for platforms where Google Test is
+// In order to run tests in this file, for platforms where Hawk Test is
 // thread safe, implement ThreadWithParam. See the description of its API
 // in htest-port.h, where it is defined for already supported platforms.
 
@@ -76,7 +76,7 @@ void ExpectKeyAndValueWereRecordedForId(
   EXPECT_STREQ(IdToString(id).c_str(), property->value());
 }
 
-// Calls a large number of Google Test assertions, where exactly one of them
+// Calls a large number of Hawk Test assertions, where exactly one of them
 // will fail.
 void ManyAsserts(int id) {
   HTEST_LOG_(INFO) << "Thread #" << id << " running...";
@@ -100,7 +100,7 @@ void ManyAsserts(int id) {
     Test::RecordProperty("shared_key", IdToString(id));
 
     // This assertion should fail kThreadCount times per thread.  It
-    // is for testing whether Google Test can handle failed assertions in a
+    // is for testing whether Hawk Test can handle failed assertions in a
     // multi-threaded context.
     EXPECT_LT(i, 0) << "This should always fail.";
   }
@@ -114,7 +114,7 @@ void CheckTestFailureCount(int expected_failures) {
       << " vs. " << expected_failures << " expected";
 }
 
-// Tests using SCOPED_TRACE() and Google Test assertions in many threads
+// Tests using SCOPED_TRACE() and Hawk Test assertions in many threads
 // concurrently.
 TEST(StressTest, CanUseScopedTraceAndAssertionsInManyThreads) {
   {

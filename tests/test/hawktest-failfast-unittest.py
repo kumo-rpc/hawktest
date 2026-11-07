@@ -28,15 +28,15 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Unit test for Google Test fail_fast.
+"""Unit test for Hawk Test fail_fast.
 
-A user can specify if a Google Test program should continue test execution
+A user can specify if a Hawk Test program should continue test execution
 after a test failure via the HTEST_FAIL_FAST environment variable or the
 --htest_fail_fast flag. The default value of the flag can also be changed
 by Bazel fail fast environment variable TESTBRIDGE_TEST_RUNNER_FAIL_FAST.
 
 This script tests such functionality by invoking hawktest-failfast-unittest_
-(a program written with Google Test) with different environments and command
+(a program written with Hawk Test) with different environments and command
 line flags.
 """
 
@@ -65,11 +65,11 @@ COMMAND = htest_test_utils.GetTestExecutablePath(
     'hawktest-failfast-unittest_'
 )
 
-# The command line flag to tell Google Test to output the list of tests it
+# The command line flag to tell Hawk Test to output the list of tests it
 # will run.
 LIST_TESTS_FLAG = '--htest_list_tests'
 
-# Indicates whether Google Test supports death tests.
+# Indicates whether Hawk Test supports death tests.
 SUPPORTS_DEATH_TESTS = (
     'HasDeathTest'
     in htest_test_utils.Subprocess([COMMAND, LIST_TESTS_FLAG]).output

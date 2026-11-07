@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Unit test for Google Test's --htest_fail_if_no_test_linked flag.
+// Unit test for Hawk Test's --htest_fail_if_no_test_linked flag.
 //
 // This program will be invoked from a Python test.
 // Don't run it directly.

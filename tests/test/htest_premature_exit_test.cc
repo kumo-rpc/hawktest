@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //
-// Tests that Google Test manipulates the premature-exit-detection
+// Tests that Hawk Test manipulates the premature-exit-detection
 // file correctly.
 
 #include <stdio.h>

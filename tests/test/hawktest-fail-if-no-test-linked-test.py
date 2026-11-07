@@ -29,7 +29,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Tests for Google Test's --htest_fail_if_no_test_linked flag."""
+"""Tests for Hawk Test's --htest_fail_if_no_test_linked flag."""
 
 import os
 from tests.test import htest_test_utils

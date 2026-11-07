@@ -62,7 +62,7 @@ def ToUnixLineEnding(s):
 
 
 def RemoveReportHeaderAndFooter(output):
-  """Removes Google Test result report's header and footer from the output."""
+  """Removes Hawk Test result report's header and footer from the output."""
 
   output = re.sub(r'.*htest_main.*\n', '', output)
   output = re.sub(r'\[.*\d+ tests.*\n', '', output)
@@ -73,10 +73,10 @@ def RemoveReportHeaderAndFooter(output):
 
 
 def RemoveLocations(output):
-  """Removes all file location info from a Google Test program's output.
+  """Removes all file location info from a Hawk Test program's output.
 
   Args:
-       output:  the output of a Google Test program.
+       output:  the output of a Hawk Test program.
 
   Returns:
        output with all file location info (in the form of

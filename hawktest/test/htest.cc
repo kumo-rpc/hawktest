@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //
-// The Google C++ Testing and Mocking Framework (Google Test)
+// The Google C++ Testing and Mocking Framework (Hawk Test)
 
 #include <hawktest/test/htest.h>
 
@@ -431,8 +431,8 @@ namespace testing {
         }
 
         // HTestIsInitialized() returns true if and only if the user has initialized
-        // Google Test.  Useful for catching the user mistake of not initializing
-        // Google Test before calling RUN_ALL_TESTS().
+        // Hawk Test.  Useful for catching the user mistake of not initializing
+        // Hawk Test before calling RUN_ALL_TESTS().
         static bool HTestIsInitialized() {
             return !GetArgvs().empty();
         }
@@ -919,7 +919,7 @@ namespace testing {
         }
 
         int UnitTestOptions::HTestProcessSEH(DWORD seh_code, const char* location) {
-            // Google Test should handle a SEH exception if:
+            // Hawk Test should handle a SEH exception if:
             //   1. the user wants it to, AND
             //   2. this is not a breakpoint exception or stack overflow, AND
             //   3. this is not a C++ exception (VC++ implements them via SEH,
@@ -946,7 +946,7 @@ namespace testing {
     } // namespace internal
 
     // The c'tor sets this object as the test part result reporter used by
-    // Google Test.  The 'result' parameter specifies where to report the
+    // Hawk Test.  The 'result' parameter specifies where to report the
     // results. Intercepts only failures from the current thread.
     ScopedFakeTestPartResultReporter::ScopedFakeTestPartResultReporter(
         TestPartResultArray* result)
@@ -956,7 +956,7 @@ namespace testing {
     }
 
     // The c'tor sets this object as the test part result reporter used by
-    // Google Test.  The 'result' parameter specifies where to report the
+    // Hawk Test.  The 'result' parameter specifies where to report the
     // results.
     ScopedFakeTestPartResultReporter::ScopedFakeTestPartResultReporter(
         InterceptMode intercept_mode, TestPartResultArray* result)
@@ -976,7 +976,7 @@ namespace testing {
         }
     }
 
-    // The d'tor restores the test part result reporter used by Google Test
+    // The d'tor restores the test part result reporter used by Hawk Test
     // before.
     ScopedFakeTestPartResultReporter::~ScopedFakeTestPartResultReporter() {
         internal::UnitTestImpl* const impl = internal::GetUnitTestImpl();
@@ -999,17 +999,17 @@ namespace testing {
         // Returns the type ID of ::testing::Test.  We should always call this
         // instead of GetTypeId< ::testing::Test>() to get the type ID of
         // testing::Test.  This is to work around a suspected linker bug when
-        // using Google Test as a framework on Mac OS X.  The bug causes
+        // using Hawk Test as a framework on Mac OS X.  The bug causes
         // GetTypeId< ::testing::Test>() to return different values depending
-        // on whether the call is from the Google Test framework itself or
+        // on whether the call is from the Hawk Test framework itself or
         // from user test code.  GetTestTypeId() is guaranteed to always
         // return the same value, as it always calls GetTypeId<>() from the
-        // htest.cc, which is within the Google Test framework.
+        // htest.cc, which is within the Hawk Test framework.
         TypeId GetTestTypeId() {
             return GetTypeId<Test>();
         }
 
-        // The value of GetTestTypeId() as seen from within the Google Test
+        // The value of GetTestTypeId() as seen from within the Hawk Test
         // library.  This is solely for testing GetTestTypeId().
         extern const TypeId kTestTypeIdInHawkTest = GetTestTypeId();
 
@@ -2578,10 +2578,10 @@ namespace testing {
 
     } // namespace internal
 
-    // Google Test requires all tests in the same test suite to use the same test
+    // Hawk Test requires all tests in the same test suite to use the same test
     // fixture class.  This function checks if the current test has the
     // same fixture class as the first test in the current test suite.  If
-    // yes, it returns true; otherwise it generates a Google Test failure and
+    // yes, it returns true; otherwise it generates a Hawk Test failure and
     // returns false.
     bool Test::HasSameFixtureClass() {
         internal::UnitTestImpl* const impl = internal::GetUnitTestImpl();
@@ -2699,7 +2699,7 @@ namespace testing {
         template <class T, typename Result>
         Result HandleExceptionsInMethodIfSupported(T* object, Result (T::*method)(),
             const char* location) {
-            // NOTE: The user code can affect the way in which Google Test handles
+            // NOTE: The user code can affect the way in which Hawk Test handles
             // exceptions by setting HTEST_FLAG(catch_exceptions), but only before
             // RUN_ALL_TESTS() starts. It is technically possible to check the flag
             // after the exception is caught and either report or re-throw the
@@ -2720,7 +2720,7 @@ namespace testing {
             // lost and the debugger will stop the program at the point of the
             // re-throw in this function -- instead of at the point of the original
             // throw statement in the code under test.  For this reason, we perform
-            // the check early, sacrificing the ability to affect Google Test's
+            // the check early, sacrificing the ability to affect Hawk Test's
             // exception handling in the method where the exception is thrown.
             if (internal::GetUnitTestImpl()->catch_exceptions()) {
 #if HTEST_HAS_EXCEPTIONS
@@ -2823,7 +2823,7 @@ namespace testing {
 
     namespace internal {
 
-        // Creates a new TestInfo object and registers it with Google Test;
+        // Creates a new TestInfo object and registers it with Hawk Test;
         // returns the created object.
         //
         // Arguments:
@@ -3310,7 +3310,7 @@ namespace testing {
 
 #endif // HTEST_OS_WINDOWS && !HTEST_OS_WINDOWS_MOBILE
 
-        // Returns true if and only if Google Test should use colors in the output.
+        // Returns true if and only if Hawk Test should use colors in the output.
         bool ShouldUseColor(bool stdout_is_tty) {
             std::string c = HTEST_FLAG_GET(color);
             const char* const htest_color = c.c_str();
@@ -3385,7 +3385,7 @@ namespace testing {
             va_end(args);
         }
 
-        // Text printed in Google Test's text output and --htest_list_tests
+        // Text printed in Hawk Test's text output and --htest_list_tests
         // output to label the type parameter and value parameter for a test.
         static const char kTypeParamLabel[] = "TypeParam";
         static const char kValueParamLabel[] = "GetParam()";
@@ -3708,7 +3708,7 @@ namespace testing {
                 ColoredPrintf(HTestColor::kYellow, "  YOU HAVE %d DISABLED %s\n\n",
                     num_disabled, num_disabled == 1 ? "TEST" : "TESTS");
             }
-            // Ensure that Google Test output is printed before, e.g., heapchecker output.
+            // Ensure that Hawk Test output is printed before, e.g., heapchecker output.
             fflush(stdout);
         }
 
@@ -3813,7 +3813,7 @@ namespace testing {
                 ColoredPrintf(HTestColor::kYellow, "  YOU HAVE %d DISABLED %s\n\n",
                     num_disabled, num_disabled == 1 ? "TEST" : "TESTS");
             }
-            // Ensure that Google Test output is printed before, e.g., heapchecker output.
+            // Ensure that Hawk Test output is printed before, e.g., heapchecker output.
             fflush(stdout);
         }
 
@@ -4147,7 +4147,7 @@ namespace testing {
         // The following routines generate an XML representation of a UnitTest
         // object.
         //
-        // This is how Google Test concepts map to the DTD:
+        // This is how Hawk Test concepts map to the DTD:
         //
         // <testsuites name="AllTests">        <-- corresponds to a UnitTest object
         //   <testsuite name="testcase-name">  <-- corresponds to a TestSuite object
@@ -5360,7 +5360,7 @@ namespace testing {
     }
 
     // Returns the list of event listeners that can be used to track events
-    // inside Google Test.
+    // inside Hawk Test.
     TestEventListeners& UnitTest::listeners() {
         return *impl()->listeners();
     }
@@ -5384,7 +5384,7 @@ namespace testing {
         return env;
     }
 
-    // Adds a TestPartResult to the current TestResult object.  All Google Test
+    // Adds a TestPartResult to the current TestResult object.  All Hawk Test
     // assertion macros (e.g. ASSERT_TRUE, EXPECT_EQ, etc) eventually call
     // this to report their results.  The user code should use the
     // assertion macros instead of calling this directly.
@@ -5423,7 +5423,7 @@ namespace testing {
         if (result_type != TestPartResult::kSuccess && result_type != TestPartResult::kSkip) {
             // htest_break_on_failure takes precedence over
             // htest_throw_on_failure.  This allows a user to set the latter
-            // in the code (perhaps in order to use Google Test assertions
+            // in the code (perhaps in order to use Hawk Test assertions
             // with another testing framework) and specify the former on the
             // command line for debugging.
             if (HTEST_FLAG_GET(break_on_failure)) {
@@ -5476,13 +5476,13 @@ namespace testing {
 #ifdef HTEST_INTERNAL_HAS_PREMATURE_EXIT_FILE
         const bool in_death_test_child_process = !HTEST_FLAG_GET(internal_run_death_test).empty();
 
-        // Google Test implements this protocol for catching that a test
-        // program exits before returning control to Google Test:
+        // Hawk Test implements this protocol for catching that a test
+        // program exits before returning control to Hawk Test:
         //
-        //   1. Upon start, Google Test creates a file whose absolute path
+        //   1. Upon start, Hawk Test creates a file whose absolute path
         //      is specified by the environment variable
         //      TEST_PREMATURE_EXIT_FILE.
-        //   2. When Google Test has finished its work, it deletes the file.
+        //   2. When Hawk Test has finished its work, it deletes the file.
         //
         // This allows a test runner to set TEST_PREMATURE_EXIT_FILE before
         // running a Google-Test-based test program and check the existence
@@ -5510,7 +5510,7 @@ namespace testing {
         impl()->set_catch_exceptions(HTEST_FLAG_GET(catch_exceptions));
 
 #ifdef HTEST_OS_WINDOWS
-        // Either the user wants Google Test to catch exceptions thrown by the
+        // Either the user wants Hawk Test to catch exceptions thrown by the
         // tests or this is executing in the context of death test child
         // process. In either case the user does not want to see pop-up dialogs
         // about crashes - they are expected.
@@ -5531,7 +5531,7 @@ namespace testing {
             // In the debug version, Visual Studio pops up a separate dialog
             // offering a choice to debug the aborted program. We need to suppress
             // this dialog or it will pop up for every EXPECT/ASSERT_DEATH statement
-            // executed. Google Test will notify the user of any unexpected
+            // executed. Hawk Test will notify the user of any unexpected
             // failure via stderr.
             if (!HTEST_FLAG_GET(break_on_failure))
                 _set_abort_behavior(
@@ -5616,14 +5616,14 @@ namespace testing {
     }
 
     // Pushes a trace defined by SCOPED_TRACE() on to the per-thread
-    // Google Test trace stack.
+    // Hawk Test trace stack.
     void UnitTest::PushHTestTrace(const internal::TraceInfo& trace)
         HTEST_LOCK_EXCLUDED_(mutex_) {
         internal::MutexLock lock(mutex_);
         impl_->htest_trace_stack().push_back(trace);
     }
 
-    // Pops a trace from the per-thread Google Test trace stack.
+    // Pops a trace from the per-thread Hawk Test trace stack.
     void UnitTest::PopHTestTrace() HTEST_LOCK_EXCLUDED_(mutex_) {
         internal::MutexLock lock(mutex_);
         impl_->htest_trace_stack().pop_back();
@@ -5874,7 +5874,7 @@ namespace testing {
         // All other functions called from RunAllTests() may safely assume that
         // parameterized tests are ready to be counted and run.
         bool UnitTestImpl::RunAllTests() {
-            // True if and only if Google Test is initialized before RUN_ALL_TESTS() is
+            // True if and only if Hawk Test is initialized before RUN_ALL_TESTS() is
             // called.
             const bool htest_is_initialized_before_run_all_tests = HTestIsInitialized();
 
@@ -6553,11 +6553,11 @@ namespace testing {
             return true;
         }
 
-        // Determines whether a string has a prefix that Google Test uses for its
+        // Determines whether a string has a prefix that Hawk Test uses for its
         // flags, i.e., starts with HTEST_FLAG_PREFIX_ or HTEST_FLAG_PREFIX_DASH_.
-        // If Google Test detects that a command line flag has its prefix but is not
+        // If Hawk Test detects that a command line flag has its prefix but is not
         // recognized, it will print its help message. Flags starting with
-        // HTEST_INTERNAL_PREFIX_ followed by "internal_" are considered Google Test
+        // HTEST_INTERNAL_PREFIX_ followed by "internal_" are considered Hawk Test
         // internal flags and do not trigger the help message.
         static bool HasHawkTestFlagPrefix(const char* str) {
             return (SkipPrefix("--", &str) || SkipPrefix("-", &str) || SkipPrefix("/", &str)) && !SkipPrefix(HTEST_FLAG_PREFIX_ "internal_", &str) && (SkipPrefix(HTEST_FLAG_PREFIX_, &str) || SkipPrefix(HTEST_FLAG_PREFIX_DASH_, &str));
@@ -6774,8 +6774,8 @@ namespace testing {
         }
 #endif // HTEST_USE_OWN_FLAGFILE_FLAG_ && HTEST_HAS_FILE_SYSTEM
 
-        // Parses the command line for Google Test flags, without initializing
-        // other parts of Google Test.  The type parameter CharType can be
+        // Parses the command line for Hawk Test flags, without initializing
+        // other parts of Hawk Test.  The type parameter CharType can be
         // instantiated to either char or wchar_t.
         template <typename CharType>
         void parse_hawk_test_flags_only_impl(int* argc, CharType** argv) {
@@ -6796,7 +6796,7 @@ namespace testing {
                     remove_flag = true;
 #endif // HTEST_USE_OWN_FLAGFILE_FLAG_ && HTEST_HAS_FILE_SYSTEM
                 } else if (arg_string == "--help" || HasHawkTestFlagPrefix(arg)) {
-                    // Both help flag and unrecognized Google Test flags (excluding
+                    // Both help flag and unrecognized Hawk Test flags (excluding
                     // internal ones) trigger help display.
                     g_help_flag = true;
                 }
@@ -6827,8 +6827,8 @@ namespace testing {
             }
         }
 
-        // Parses the command line for Google Test flags, without initializing
-        // other parts of Google Test. This function updates argc and argv by removing
+        // Parses the command line for Hawk Test flags, without initializing
+        // other parts of Hawk Test. This function updates argc and argv by removing
         // flags that are known to HawkTest. Other arguments
         // remain in place. Unrecognized flags are not reported and do not cause the
         // program to exit.
@@ -6874,12 +6874,12 @@ namespace testing {
 
     } // namespace internal
 
-    // Initializes Google Test.  This must be called before calling
+    // Initializes Hawk Test.  This must be called before calling
     // RUN_ALL_TESTS().  In particular, it parses a command line for the
-    // flags that Google Test recognizes.  Whenever a Google Test flag is
+    // flags that Hawk Test recognizes.  Whenever a Hawk Test flag is
     // seen, it is removed from argv, and *argc is decremented.
     //
-    // No value is returned.  Instead, the Google Test flag variables are
+    // No value is returned.  Instead, the Hawk Test flag variables are
     // updated.
     //
     // Calling the function for the second time has no user-visible effect.
@@ -6979,7 +6979,7 @@ namespace testing {
     // Class ScopedTrace
 
     // Pushes the given source file location and message onto a per-thread
-    // trace stack maintained by Google Test.
+    // trace stack maintained by Hawk Test.
     void ScopedTrace::PushTrace(const char* file, int line, std::string message) {
         internal::TraceInfo trace;
         trace.file = file;

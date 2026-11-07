@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Tests Google Test's throw-on-failure mode with exceptions enabled.
+// Tests Hawk Test's throw-on-failure mode with exceptions enabled.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,7 +38,7 @@
 #include <hawktest/test/htest.h>
 
 // Prints the given failure message and exits the program with
-// non-zero.  We use this instead of a Google Test assertion to
+// non-zero.  We use this instead of a Hawk Test assertion to
 // indicate a failure, as the latter is been tested and cannot be
 // relied on.
 void Fail(const char* msg) {
@@ -79,10 +79,10 @@ void TestFailureThrowsRuntimeError() {
 int main(int argc, char** argv) {
   testing::init_hawk_test(&argc, argv);
 
-  // We want to ensure that people can use Google Test assertions in
-  // other testing frameworks, as long as they initialize Google Test
+  // We want to ensure that people can use Hawk Test assertions in
+  // other testing frameworks, as long as they initialize Hawk Test
   // properly and set the thrown-on-failure mode.  Therefore, we don't
-  // use Google Test's constructs for defining and running tests
+  // use Hawk Test's constructs for defining and running tests
   // (e.g. TEST and RUN_ALL_TESTS) here.
 
   TestFailureThrowsRuntimeError();

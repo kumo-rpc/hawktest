@@ -29,12 +29,12 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Unit test for Google Test's --htest_list_tests flag.
+"""Unit test for Hawk Test's --htest_list_tests flag.
 
-A user can ask Google Test to list all tests by specifying the
+A user can ask Hawk Test to list all tests by specifying the
 --htest_list_tests flag.  This script tests such functionality
 by invoking hawktest-list-tests-unittest_ (a program written with
-Google Test) the command line flags.
+Hawk Test) the command line flags.
 """
 
 import re

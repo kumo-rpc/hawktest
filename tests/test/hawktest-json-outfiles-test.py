@@ -114,11 +114,11 @@ EXPECTED_2 = {
 
 
 class HTestJsonOutFilesTest(htest_test_utils.TestCase):
-  """Unit test for Google Test's JSON output functionality."""
+  """Unit test for Hawk Test's JSON output functionality."""
 
   def setUp(self):
     # We want the trailing '/' that the last "" provides in os.path.join, for
-    # telling Google Test to create an output directory instead of a single file
+    # telling Hawk Test to create an output directory instead of a single file
     # for xml output.
     self.output_dir_ = os.path.join(
         htest_test_utils.GetTempDir(), HTEST_OUTPUT_SUBDIR, ''

@@ -28,8 +28,8 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //
-// Tests for Google Test itself.  This verifies that the basic constructs of
-// Google Test work.
+// Tests for Hawk Test itself.  This verifies that the basic constructs of
+// Hawk Test work.
 
 #include <hawktest/test/htest.h>
 #include <tests/test/hawktest-param-test-test.h>

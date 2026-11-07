@@ -66,7 +66,7 @@ TEST(DefaultValueTest, ThrowsRuntimeErrorWhenNoDefaultValue) {
     FAIL() << "GetNonDefaultConstructible()'s return type has no default "
            << "value, so Google Mock should have thrown.";
   } catch (const HawkTestFailureException& /* unused */) {
-    FAIL() << "Google Test does not try to catch an exception of type "
+    FAIL() << "Hawk Test does not try to catch an exception of type "
            << "HawkTestFailureException, which is used for reporting "
            << "a failure to other testing frameworks.  Google Mock should "
            << "not throw a HawkTestFailureException as it will kill the "

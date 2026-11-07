@@ -27,8 +27,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// A helper program for testing how Google Test determines whether to use
-// colors in the output.  It prints "YES" and returns 1 if Google Test
+// A helper program for testing how Hawk Test determines whether to use
+// colors in the output.  It prints "YES" and returns 1 if Hawk Test
 // decides to use colors, and prints "NO" and returns 0 otherwise.
 
 #include <stdio.h>
@@ -48,12 +48,12 @@ int main(int argc, char** argv) {
   testing::init_hawk_test(&argc, argv);
 
   if (ShouldUseColor(true)) {
-    // Google Test decides to use colors in the output (assuming it
+    // Hawk Test decides to use colors in the output (assuming it
     // goes to a TTY).
     printf("YES\n");
     return 1;
   } else {
-    // Google Test decides not to use colors in the output.
+    // Hawk Test decides not to use colors in the output.
     printf("NO\n");
     return 0;
   }

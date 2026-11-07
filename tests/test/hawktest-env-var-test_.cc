@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// A helper program for testing that Google Test parses the environment
+// A helper program for testing that Hawk Test parses the environment
 // variables correctly.
 
 #include <iostream>

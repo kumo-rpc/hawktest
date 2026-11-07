@@ -47,11 +47,11 @@
 #include <iostream>
 
 // Most of the utilities needed for porting Google Mock are also
-// required for Google Test and are defined in htest-port.h.
+// required for Hawk Test and are defined in htest-port.h.
 //
 // Note to maintainers: to reduce code duplication, prefer adding
-// portability utilities to Google Test's htest-port.h instead of
-// here, as Google Mock depends on Google Test.  Only add a utility
+// portability utilities to Hawk Test's htest-port.h instead of
+// here, as Google Mock depends on Hawk Test.  Only add a utility
 // here if it's truly specific to Google Mock.
 
 #include <hawktest/mock/internal/custom/port.h>

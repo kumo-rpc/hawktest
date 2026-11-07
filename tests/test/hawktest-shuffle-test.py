@@ -297,7 +297,7 @@ class HTestShuffleUnitTest(htest_test_utils.TestCase):
 
   def testShuffleRestoresOrderAfterEachIteration(self):
     # Get the test lists in all 3 iterations, using random seed 1, 2,
-    # and 3 respectively.  Google Test picks a different seed in each
+    # and 3 respectively.  Hawk Test picks a different seed in each
     # iteration, and this test depends on the current implementation
     # picking successive numbers.  This dependency is not ideal, but
     # makes the test much easier to write.
@@ -316,7 +316,7 @@ class HTestShuffleUnitTest(htest_test_utils.TestCase):
     self.assertEqual(tests_in_iteration1, tests_with_seed1)
 
     # Make sure running the tests with random seed 2 gets the same
-    # order as in iteration 2 above.  Success means that Google Test
+    # order as in iteration 2 above.  Success means that Hawk Test
     # correctly restores the test order before re-shuffling at the
     # beginning of iteration 2.
     tests_with_seed2 = GetTestsForAllIterations(
@@ -325,7 +325,7 @@ class HTestShuffleUnitTest(htest_test_utils.TestCase):
     self.assertEqual(tests_in_iteration2, tests_with_seed2)
 
     # Make sure running the tests with random seed 3 gets the same
-    # order as in iteration 3 above.  Success means that Google Test
+    # order as in iteration 3 above.  Success means that Hawk Test
     # correctly restores the test order before re-shuffling at the
     # beginning of iteration 3.
     tests_with_seed3 = GetTestsForAllIterations(

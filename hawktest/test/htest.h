@@ -27,10 +27,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// The Google C++ Testing and Mocking Framework (Google Test)
+// The Google C++ Testing and Mocking Framework (Hawk Test)
 //
-// This header file defines the public API for Google Test.  It should be
-// included by any test program that uses Google Test.
+// This header file defines the public API for Hawk Test.  It should be
+// included by any test program that uses Hawk Test.
 //
 // IMPORTANT NOTE: Due to limitation of the C++ language, we have to
 // leave some internal implementation details in this header file.
@@ -42,7 +42,7 @@
 // to CHANGE WITHOUT NOTICE.  Therefore DO NOT DEPEND ON IT in a user
 // program!
 //
-// Acknowledgment: Google Test borrowed the idea of automatic test
+// Acknowledgment: Hawk Test borrowed the idea of automatic test
 // registration from Barthelemy Dagenais' (barthelemy@prologique.com)
 // easyUnit framework.
 
@@ -83,13 +83,13 @@ HTEST_DECLARE_bool_(also_run_disabled_tests);
 // This flag brings the debugger on an assertion failure.
 HTEST_DECLARE_bool_(break_on_failure);
 
-// This flag controls whether Google Test catches all test-thrown exceptions
+// This flag controls whether Hawk Test catches all test-thrown exceptions
 // and logs them as failures.
 HTEST_DECLARE_bool_(catch_exceptions);
 
 // This flag enables using colors in terminal output. Available values are
 // "yes" to enable colors, "no" (disable colors), or "auto" (the default)
-// to let Google Test decide.
+// to let Hawk Test decide.
 HTEST_DECLARE_string_(color);
 
 // This flag controls whether the test runner should continue execution past
@@ -100,26 +100,26 @@ HTEST_DECLARE_bool_(fail_fast);
 // the tests to run. If the filter is not given all tests are executed.
 HTEST_DECLARE_string_(filter);
 
-// This flag controls whether Google Test installs a signal handler that dumps
+// This flag controls whether Hawk Test installs a signal handler that dumps
 // debugging information when fatal signals are raised.
 HTEST_DECLARE_bool_(install_failure_signal_handler);
 
-// This flag causes the Google Test to list tests. None of the tests listed
+// This flag causes the Hawk Test to list tests. None of the tests listed
 // are actually run if the flag is provided.
 HTEST_DECLARE_bool_(list_tests);
 
-// This flag controls whether Google Test emits a detailed XML report to a file
+// This flag controls whether Hawk Test emits a detailed XML report to a file
 // in addition to its normal textual output.
 HTEST_DECLARE_string_(output);
 
-// This flags control whether Google Test prints only test failures.
+// This flags control whether Hawk Test prints only test failures.
 HTEST_DECLARE_bool_(brief);
 
-// This flags control whether Google Test prints the elapsed time for each
+// This flags control whether Hawk Test prints the elapsed time for each
 // test.
 HTEST_DECLARE_bool_(print_time);
 
-// This flags control whether Google Test prints UTF8 characters as text.
+// This flags control whether Hawk Test prints UTF8 characters as text.
 HTEST_DECLARE_bool_(print_utf8);
 
 // This flag specifies the random number seed.
@@ -129,7 +129,7 @@ HTEST_DECLARE_int32_(random_seed);
 // is 1. If the value is -1 the tests are repeating forever.
 HTEST_DECLARE_int32_(repeat);
 
-// This flag controls whether Google Test Environments are recreated for each
+// This flag controls whether Hawk Test Environments are recreated for each
 // repeat of the tests. The default value is true. If set to false the global
 // test Environment objects are only set up once, for the first iteration, and
 // only torn down once, for the last.
@@ -139,7 +139,7 @@ HTEST_DECLARE_bool_(recreate_environments_when_repeating);
 HTEST_DECLARE_int32_(shard_index);
 HTEST_DECLARE_int32_(total_shards);
 
-// This flag controls whether Google Test includes Google Test internal
+// This flag controls whether Hawk Test includes Hawk Test internal
 // stack frames in failure stack traces.
 HTEST_DECLARE_bool_(show_internal_stack_frames);
 
@@ -221,7 +221,7 @@ namespace testing {
 
     // The abstract class that all tests inherit from.
     //
-    // In Google Test, a unit test program contains one or many TestSuites, and
+    // In Hawk Test, a unit test program contains one or many TestSuites, and
     // each TestSuite contains one or many Tests.
     //
     // When you define a test using the TEST macro, you don't need to
@@ -251,7 +251,7 @@ namespace testing {
 
         // Sets up the stuff shared by all tests in this test suite.
         //
-        // Google Test will call Foo::SetUpTestSuite() before running the first
+        // Hawk Test will call Foo::SetUpTestSuite() before running the first
         // test in test suite Foo.  Hence a sub-class can define its own
         // SetUpTestSuite() method to shadow the one defined in the super
         // class.
@@ -259,7 +259,7 @@ namespace testing {
 
         // Tears down the stuff shared by all tests in this test suite.
         //
-        // Google Test will call Foo::TearDownTestSuite() after running the last
+        // Hawk Test will call Foo::TearDownTestSuite() after running the last
         // test in test suite Foo.  Hence a sub-class can define its own
         // TearDownTestSuite() method to shadow the one defined in the super
         // class.
@@ -339,7 +339,7 @@ namespace testing {
         const std::unique_ptr<HTEST_FLAG_SAVER_> htest_flag_saver_;
 
         // Often a user misspells SetUp() as Setup() and spends a long time
-        // wondering why it is never called by Google Test.  The declaration of
+        // wondering why it is never called by Hawk Test.  The declaration of
         // the following method is solely for catching such an error at
         // compile time:
         //
@@ -481,7 +481,7 @@ namespace testing {
         void RecordProperty(const std::string& xml_element,
             const TestProperty& test_property);
 
-        // Adds a failure if the key is a reserved attribute of Google Test
+        // Adds a failure if the key is a reserved attribute of Hawk Test
         // testsuite tags.  Returns true if the property is valid.
         // FIXME: Validate attribute names are legal and human readable.
         static bool ValidateTestProperty(const std::string& xml_element,
@@ -579,7 +579,7 @@ namespace testing {
         // disabled (or it is disabled but the also_run_disabled_tests flag has
         // been specified) and its full name matches the user-specified filter.
         //
-        // Google Test allows the user to filter the tests by their full names.
+        // Hawk Test allows the user to filter the tests by their full names.
         // The full name of a test Bar in test suite Foo is defined as
         // "Foo.Bar".  Only the tests that match the filter will run.
         //
@@ -891,7 +891,7 @@ namespace testing {
     // destructor, as:
     //
     //   1. You cannot safely throw from a destructor.  This is a problem
-    //      as in some cases Google Test is used where exceptions are enabled, and
+    //      as in some cases Hawk Test is used where exceptions are enabled, and
     //      we may want to implement ASSERT_* using exceptions where they are
     //      available.
     //   2. You cannot use ASSERT_* directly in a constructor or
@@ -1024,13 +1024,13 @@ namespace testing {
         void OnTestProgramEnd(const UnitTest& /*unit_test*/) override { }
     };
 
-    // TestEventListeners lets users add listeners to track events in Google Test.
+    // TestEventListeners lets users add listeners to track events in Hawk Test.
     class HTEST_API_ [[nodiscard]] TestEventListeners {
     public:
         TestEventListeners();
         ~TestEventListeners();
 
-        // Appends an event listener to the end of the list. Google Test assumes
+        // Appends an event listener to the end of the list. Hawk Test assumes
         // the ownership of the listener (i.e. it will delete the listener when
         // the test program finishes).
         void Append(TestEventListener* listener);
@@ -1232,7 +1232,7 @@ namespace testing {
         const TestResult& ad_hoc_test_result() const;
 
         // Returns the list of event listeners that can be used to track events
-        // inside Google Test.
+        // inside Hawk Test.
         TestEventListeners& listeners();
 
     private:
@@ -1248,7 +1248,7 @@ namespace testing {
         Environment* AddEnvironment(Environment* env);
 
         // Adds a TestPartResult to the current TestResult object.  All
-        // Google Test assertion macros (e.g. ASSERT_TRUE, EXPECT_EQ, etc)
+        // Hawk Test assertion macros (e.g. ASSERT_TRUE, EXPECT_EQ, etc)
         // eventually call this to report their results.  The user code
         // should use the assertion macros instead of calling this directly.
         void AddTestPartResult(TestPartResult::Type result_type,
@@ -1269,9 +1269,9 @@ namespace testing {
         TestSuite* GetMutableTestSuite(int i);
 
         // Invokes OsStackTrackGetterInterface::UponLeavingHTest. UponLeavingHTest()
-        // should be called immediately before Google Test calls user code. It saves
+        // should be called immediately before Hawk Test calls user code. It saves
         // some information about the current stack that CurrentStackTrace() will use
-        // to find and hide Google Test stack frames.
+        // to find and hide Hawk Test stack frames.
         void UponLeavingHTest();
 
         // Sets the TestSuite object for the test that's currently running.
@@ -1308,11 +1308,11 @@ namespace testing {
         virtual ~UnitTest();
 
         // Pushes a trace defined by SCOPED_TRACE() on to the per-thread
-        // Google Test trace stack.
+        // Hawk Test trace stack.
         void PushHTestTrace(const internal::TraceInfo& trace)
             HTEST_LOCK_EXCLUDED_(mutex_);
 
-        // Pops a trace from the per-thread Google Test trace stack.
+        // Pops a trace from the per-thread Hawk Test trace stack.
         void PopHTestTrace() HTEST_LOCK_EXCLUDED_(mutex_);
 
         // Protects mutable state in *impl_.  This is mutable as some const
@@ -1352,12 +1352,12 @@ namespace testing {
         return UnitTest::GetInstance()->AddEnvironment(env);
     }
 
-    // Initializes Google Test.  This must be called before calling
+    // Initializes Hawk Test.  This must be called before calling
     // RUN_ALL_TESTS().  In particular, it parses a command line for the
-    // flags that Google Test recognizes.  Whenever a Google Test flag is
+    // flags that Hawk Test recognizes.  Whenever a Hawk Test flag is
     // seen, it is removed from argv, and *argc is decremented.
     //
-    // No value is returned.  Instead, the Google Test flag variables are
+    // No value is returned.  Instead, the Hawk Test flag variables are
     // updated.
     //
     // Calling the function for the second time has no user-visible effect.
@@ -1861,7 +1861,7 @@ namespace testing {
     //    * {ASSERT|EXPECT}_GT(v1, v2): Tests that v1 > v2
     //    * {ASSERT|EXPECT}_GE(v1, v2): Tests that v1 >= v2
     //
-    // When they are not, Google Test prints both the tested expressions and
+    // When they are not, Hawk Test prints both the tested expressions and
     // their actual values.  The values must be compatible built-in types,
     // or you will get a compiler error.  By "compatible" we mean that the
     // values can be compared by the respective operator.
@@ -1994,7 +1994,7 @@ namespace testing {
     //    * {ASSERT|EXPECT}_NEAR(v1, v2, abs_error):
     //         Tests that v1 and v2 are within the given distance to each other.
     //
-    // Google Test uses ULP-based comparison to automatically pick a default
+    // Hawk Test uses ULP-based comparison to automatically pick a default
     // error bound that is appropriate for the operands.  See the
     // FloatingPoint template class in htest-internal.h if you are
     // interested in the implementation details.
@@ -2042,7 +2042,7 @@ namespace testing {
 //
 //    * {ASSERT|EXPECT}_HRESULT_{SUCCEEDED|FAILED}(expr)
 //
-// When expr unexpectedly fails or succeeds, Google Test prints the
+// When expr unexpectedly fails or succeeds, Hawk Test prints the
 // expected result and the actual result with both a human-readable
 // string representation of the error, if available, as well as the
 // hex result code.
@@ -2088,7 +2088,7 @@ namespace testing {
     class HTEST_API_ [[nodiscard]] ScopedTrace {
     public:
         // The c'tor pushes the given source file location and message onto
-        // a trace stack maintained by Google Test.
+        // a trace stack maintained by Hawk Test.
 
         // Template version. Uses Message() to convert the values into strings.
         // Slow, but flexible.
@@ -2192,12 +2192,12 @@ namespace testing {
 
 // Note that we call GetTestTypeId() instead of GetTypeId<
 // ::testing::Test>() here to get the type ID of testing::Test.  This
-// is to work around a suspected linker bug when using Google Test as
+// is to work around a suspected linker bug when using Hawk Test as
 // a framework on Mac OS X.  The bug causes GetTypeId<
 // ::testing::Test>() to return different values depending on whether
-// the call is from the Google Test framework itself or from user test
+// the call is from the Hawk Test framework itself or from user test
 // code.  GetTestTypeId() is guaranteed to always return the same
-// value, as it always calls GetTypeId<>() from the Google Test
+// value, as it always calls GetTypeId<>() from the Hawk Test
 // framework.
 #define HTEST_TEST(test_suite_name, test_name)               \
     HTEST_TEST_(test_suite_name, test_name, ::testing::Test, \

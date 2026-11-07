@@ -28,14 +28,14 @@
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-"""Unit test for Google Test's --htest_list_tests flag.
+"""Unit test for Hawk Test's --htest_list_tests flag.
 
-A user can ask Google Test to list all tests by specifying the
+A user can ask Hawk Test to list all tests by specifying the
 --htest_list_tests flag. If output is requested, via --htest_output=xml
 or --htest_output=json, the tests are listed, with extra information in the
 output file.
 This script tests such functionality by invoking htest_list_output_unittest_
- (a program written with Google Test) the command line flags.
+ (a program written with Hawk Test) the command line flags.
 """
 
 import os
@@ -224,10 +224,10 @@ EXPECTED_JSON = """{
 
 
 class HTestListTestsOutputUnitTest(htest_test_utils.TestCase):
-  """Unit test for Google Test's list tests with output to file functionality."""
+  """Unit test for Hawk Test's list tests with output to file functionality."""
 
   def testXml(self):
-    """Verifies XML output for listing tests in a Google Test binary.
+    """Verifies XML output for listing tests in a Hawk Test binary.
 
     Runs a test program that generates an empty XML output, and
     tests that the XML output is expected.
@@ -235,7 +235,7 @@ class HTestListTestsOutputUnitTest(htest_test_utils.TestCase):
     self._TestOutput('xml', EXPECTED_XML)
 
   def testJSON(self):
-    """Verifies XML output for listing tests in a Google Test binary.
+    """Verifies XML output for listing tests in a Hawk Test binary.
 
     Runs a test program that generates an empty XML output, and
     tests that the XML output is expected.

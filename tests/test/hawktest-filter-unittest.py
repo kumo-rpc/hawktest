@@ -28,12 +28,12 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Unit test for Google Test test filters.
+"""Unit test for Hawk Test test filters.
 
-A user can specify which test(s) in a Google Test program to run via either
+A user can specify which test(s) in a Hawk Test program to run via either
 the HTEST_FILTER environment variable or the --htest_filter flag.
 This script tests such functionality by invoking
-hawktest-filter-unittest_ (a program written with Google Test) with different
+hawktest-filter-unittest_ (a program written with Hawk Test) with different
 environments and command line flags.
 
 Note that test sharding may also influence which tests are filtered. Therefore,
@@ -112,20 +112,20 @@ COMMAND = htest_test_utils.GetTestExecutablePath('hawktest-filter-unittest_')
 # Regex for determining whether parameterized tests are enabled in the binary.
 PARAM_TEST_REGEX = re.compile(r'/ParamTest')
 
-# Regex for parsing test case names from Google Test's output.
+# Regex for parsing test case names from Hawk Test's output.
 TEST_CASE_REGEX = re.compile(r'^\[\-+\] \d+ tests? from (\w+(/\w+)?)')
 
-# Regex for parsing test names from Google Test's output.
+# Regex for parsing test names from Hawk Test's output.
 TEST_REGEX = re.compile(r'^\[\s*RUN\s*\].*\.(\w+(/\w+)?)')
 
-# Regex for parsing disabled banner from Google Test's output
+# Regex for parsing disabled banner from Hawk Test's output
 DISABLED_BANNER_REGEX = re.compile(r'^\[\s*DISABLED\s*\] (.*)')
 
-# The command line flag to tell Google Test to output the list of tests it
+# The command line flag to tell Hawk Test to output the list of tests it
 # will run.
 LIST_TESTS_FLAG = '--htest_list_tests'
 
-# Indicates whether Google Test supports death tests.
+# Indicates whether Hawk Test supports death tests.
 SUPPORTS_DEATH_TESTS = (
     'HasDeathTest'
     in htest_test_utils.Subprocess([COMMAND, LIST_TESTS_FLAG]).output
@@ -698,14 +698,14 @@ class HTestFilterUnitTest(htest_test_utils.TestCase):
           extra_env, RunAndReturnOutput, [LIST_TESTS_FLAG]
       )
     finally:
-      # This assertion ensures that Google Test enumerated the tests as
+      # This assertion ensures that Hawk Test enumerated the tests as
       # opposed to running them.
       self.assertTrue(
           '[==========]' not in output,
           (
               'Unexpected output during test enumeration.\n'
               'Please ensure that LIST_TESTS_FLAG is assigned the\n'
-              'correct flag value for listing Google Test tests.'
+              'correct flag value for listing Hawk Test tests.'
           ),
       )
 

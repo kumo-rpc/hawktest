@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Tests Google Test's assert-by-exception mode with exceptions enabled.
+// Tests Hawk Test's assert-by-exception mode with exceptions enabled.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,7 +46,7 @@ class ThrowListener : public testing::EmptyTestEventListener {
 };
 
 // Prints the given failure message and exits the program with
-// non-zero.  We use this instead of a Google Test assertion to
+// non-zero.  We use this instead of a Hawk Test assertion to
 // indicate a failure, as the latter is been tested and cannot be
 // relied on.
 void Fail(const char* msg) {

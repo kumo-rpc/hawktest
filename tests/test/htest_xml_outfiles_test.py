@@ -79,11 +79,11 @@ EXPECTED_XML_2 = """<?xml version="1.0" encoding="UTF-8"?>
 
 
 class HTestXMLOutFilesTest(htest_xml_test_utils.HTestXMLTestCase):
-  """Unit test for Google Test's XML output functionality."""
+  """Unit test for Hawk Test's XML output functionality."""
 
   def setUp(self):
     # We want the trailing '/' that the last "" provides in os.path.join, for
-    # telling Google Test to create an output directory instead of a single file
+    # telling Hawk Test to create an output directory instead of a single file
     # for xml output.
     self.output_dir_ = os.path.join(
         htest_test_utils.GetTempDir(), HTEST_OUTPUT_SUBDIR, ""

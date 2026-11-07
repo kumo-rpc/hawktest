@@ -28,8 +28,8 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //
-// Tests for Google Test itself.  This verifies that the basic constructs of
-// Google Test work.
+// Tests for Hawk Test itself.  This verifies that the basic constructs of
+// Hawk Test work.
 
 #include <hawktest/test/htest.h>
 
@@ -1601,9 +1601,9 @@ TEST(TestResultPropertyTest, GetTestProperty) {
 // Tests the Test class.
 //
 // It's difficult to test every public method of this class (we are
-// already stretching the limit of Google Test by using it to test itself!).
+// already stretching the limit of Hawk Test by using it to test itself!).
 // Fortunately, we don't have to do that, as we are already testing
-// the functionalities of the Test class extensively by using Google Test
+// the functionalities of the Test class extensively by using Hawk Test
 // alone.
 //
 // Therefore, this section only contains one test.
@@ -1612,7 +1612,7 @@ TEST(TestResultPropertyTest, GetTestProperty) {
 
 class HTestFlagSaverTest : public Test {
  protected:
-  // Saves the Google Test flags such that we can restore them later, and
+  // Saves the Hawk Test flags such that we can restore them later, and
   // then sets them to their default values.  This will be called
   // before the first test in this test case is run.
   static void SetUpTestSuite() {
@@ -1638,14 +1638,14 @@ class HTestFlagSaverTest : public Test {
     HTEST_FLAG_SET(throw_on_failure, false);
   }
 
-  // Restores the Google Test flags that the tests have modified.  This will
+  // Restores the Hawk Test flags that the tests have modified.  This will
   // be called after the last test in this test case is run.
   static void TearDownTestSuite() {
     delete saver_;
     saver_ = nullptr;
   }
 
-  // Verifies that the Google Test flags have their default values, and then
+  // Verifies that the Hawk Test flags have their default values, and then
   // modifies each of them.
   void VerifyAndModifyFlags() {
     EXPECT_FALSE(HTEST_FLAG_GET(also_run_disabled_tests));
@@ -1688,19 +1688,19 @@ class HTestFlagSaverTest : public Test {
   }
 
  private:
-  // For saving Google Test flags during this test case.
+  // For saving Hawk Test flags during this test case.
   static HTestFlagSaver* saver_;
 };
 
 HTestFlagSaver* HTestFlagSaverTest::saver_ = nullptr;
 
-// Google Test doesn't guarantee the order of tests.  The following two
+// Hawk Test doesn't guarantee the order of tests.  The following two
 // tests are designed to work regardless of their order.
 
-// Modifies the Google Test flags in the test body.
+// Modifies the Hawk Test flags in the test body.
 TEST_F(HTestFlagSaverTest, ModifyHTestFlags) { VerifyAndModifyFlags(); }
 
-// Verifies that the Google Test flags in the body of the previous test were
+// Verifies that the Hawk Test flags in the body of the previous test were
 // restored to their original values.
 TEST_F(HTestFlagSaverTest, VerifyHTestFlags) { VerifyAndModifyFlags(); }
 
@@ -3819,7 +3819,7 @@ TEST(AssertionTest, ASSERT_EQ_NULL) {
 
 // Tests ASSERT_EQ(0, non_pointer).  Since the literal 0 can be
 // treated as a null pointer by the compiler, we need to make sure
-// that ASSERT_EQ(0, non_pointer) isn't interpreted by Google Test as
+// that ASSERT_EQ(0, non_pointer) isn't interpreted by Hawk Test as
 // ASSERT_EQ(static_cast<void*>(NULL), non_pointer).
 TEST(ExpectTest, ASSERT_EQ_0) {
   int n = 0;
@@ -4316,32 +4316,32 @@ TEST(AssertionSyntaxTest, WorksWithConst) {
 
 namespace testing {
 
-// Tests that Google Test tracks SUCCEED*.
+// Tests that Hawk Test tracks SUCCEED*.
 TEST(SuccessfulAssertionTest, SUCCEED) {
   SUCCEED();
   SUCCEED() << "OK";
   EXPECT_EQ(2, GetUnitTestImpl()->current_test_result()->total_part_count());
 }
 
-// Tests that Google Test doesn't track successful EXPECT_*.
+// Tests that Hawk Test doesn't track successful EXPECT_*.
 TEST(SuccessfulAssertionTest, EXPECT) {
   EXPECT_TRUE(true);
   EXPECT_EQ(0, GetUnitTestImpl()->current_test_result()->total_part_count());
 }
 
-// Tests that Google Test doesn't track successful EXPECT_STR*.
+// Tests that Hawk Test doesn't track successful EXPECT_STR*.
 TEST(SuccessfulAssertionTest, EXPECT_STR) {
   EXPECT_STREQ("", "");
   EXPECT_EQ(0, GetUnitTestImpl()->current_test_result()->total_part_count());
 }
 
-// Tests that Google Test doesn't track successful ASSERT_*.
+// Tests that Hawk Test doesn't track successful ASSERT_*.
 TEST(SuccessfulAssertionTest, ASSERT) {
   ASSERT_TRUE(true);
   EXPECT_EQ(0, GetUnitTestImpl()->current_test_result()->total_part_count());
 }
 
-// Tests that Google Test doesn't track successful ASSERT_STR*.
+// Tests that Hawk Test doesn't track successful ASSERT_STR*.
 TEST(SuccessfulAssertionTest, ASSERT_STR) {
   ASSERT_STREQ("", "");
   EXPECT_EQ(0, GetUnitTestImpl()->current_test_result()->total_part_count());
@@ -4565,7 +4565,7 @@ TEST(ExpectTest, EXPECT_EQ_NULL) {
 
 // Tests EXPECT_EQ(0, non_pointer).  Since the literal 0 can be
 // treated as a null pointer by the compiler, we need to make sure
-// that EXPECT_EQ(0, non_pointer) isn't interpreted by Google Test as
+// that EXPECT_EQ(0, non_pointer) isn't interpreted by Hawk Test as
 // EXPECT_EQ(static_cast<void*>(NULL), non_pointer).
 TEST(ExpectTest, EXPECT_EQ_0) {
   int n = 0;
@@ -4748,7 +4748,7 @@ TEST(StreamableTest, int) { EXPECT_FATAL_FAILURE(FAIL() << 900913, "900913"); }
 
 // Tests using NULL char pointer as an assertion message.
 //
-// In MSVC, streaming a NULL char * causes access violation.  Google Test
+// In MSVC, streaming a NULL char * causes access violation.  Hawk Test
 // implemented a workaround (substituting "(null)" for NULL).  This
 // tests whether the workaround works.
 TEST(StreamableTest, NullCharPtr) {
@@ -5563,7 +5563,7 @@ TEST_F(SetUpTestSuiteTest, TestSetupTestSuite2) {
 
 // The ParseFlagsTest test case tests parse_hawk_test_flags_only.
 
-// The Flags struct stores a copy of all Google Test flags.
+// The Flags struct stores a copy of all Hawk Test flags.
 struct Flags {
   // Constructs a Flags struct where each flag has its default value.
   Flags()
@@ -5982,7 +5982,7 @@ TEST_F(ParseFlagsTest, DuplicatedFlags) {
 // Tests having an unrecognized flag on the command line.
 TEST_F(ParseFlagsTest, UnrecognizedFlag) {
   const char* argv[] = {"foo.exe", "--htest_break_on_failure",
-                        "bar",  // Unrecognized by Google Test.
+                        "bar",  // Unrecognized by Hawk Test.
                         "--htest_filter=b", nullptr};
 
   const char* argv2[] = {"foo.exe", "bar", nullptr};
@@ -6632,7 +6632,7 @@ TEST(StreamingAssertionsTest, AnyThrow) {
 
 #endif  // HTEST_HAS_EXCEPTIONS
 
-// Tests that Google Test correctly decides whether to use colors in the output.
+// Tests that Hawk Test correctly decides whether to use colors in the output.
 
 TEST(ColoredOutputTest, UsesColorsWhenHTestColorFlagIsYes) {
   HTEST_FLAG_SET(color, "yes");
@@ -7065,7 +7065,7 @@ TEST(EventListenerTest, SuppressEventForwarding) {
   EXPECT_EQ(0, on_start_counter);
 }
 
-// Tests that events generated by Google Test are not forwarded in
+// Tests that events generated by Hawk Test are not forwarded in
 // death test subprocesses.
 TEST(EventListenerDeathTest, EventsNotForwardedInDeathTestSubprocesses) {
   EXPECT_DEATH_IF_SUPPORTED(
