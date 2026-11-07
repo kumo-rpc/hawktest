@@ -58,7 +58,7 @@ EXPECTED_1 = {
         'testsuite': [{
             'name': 'TestSomeProperties',
             'file': 'htest_xml_outfile1_test_.cc',
-            'line': 41,
+            'line': 44,
             'status': 'RUN',
             'result': 'COMPLETED',
             'time': '*',
@@ -90,7 +90,7 @@ EXPECTED_2 = {
         'testsuite': [{
             'name': 'TestInt64ConvertibleProperties',
             'file': 'htest_xml_outfile2_test_.cc',
-            'line': 43,
+            'line': 46,
             'status': 'RUN',
             'result': 'COMPLETED',
             'timestamp': '*',

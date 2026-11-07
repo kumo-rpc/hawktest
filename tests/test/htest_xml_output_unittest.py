@@ -72,10 +72,10 @@ EXPECTED_NON_EMPTY_XML = """<?xml version="1.0" encoding="UTF-8"?>
     <property name="ad_hoc_property" value="42"/>
   </properties>
   <testsuite name="SuccessfulTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="Succeeds" file="htest_xml_output_unittest_.cc" line="53" status="run" result="completed" time="*" timestamp="*" classname="SuccessfulTest"/>
+    <testcase name="Succeeds" file="htest_xml_output_unittest_.cc" line="56" status="run" result="completed" time="*" timestamp="*" classname="SuccessfulTest"/>
   </testsuite>
   <testsuite name="FailedTest" tests="1" failures="1" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="Fails" file="htest_xml_output_unittest_.cc" line="61" status="run" result="completed" time="*" timestamp="*" classname="FailedTest">
+    <testcase name="Fails" file="htest_xml_output_unittest_.cc" line="64" status="run" result="completed" time="*" timestamp="*" classname="FailedTest">
       <failure message="htest_xml_output_unittest_.cc:*&#x0A;Expected equality of these values:&#x0A;  1&#x0A;  2%(stack_entity)s" type=""><![CDATA[htest_xml_output_unittest_.cc:*
 Expected equality of these values:
   1
@@ -83,8 +83,8 @@ Expected equality of these values:
     </testcase>
   </testsuite>
   <testsuite name="MixedResultTest" tests="3" failures="1" disabled="1" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="Succeeds" file="htest_xml_output_unittest_.cc" line="88" status="run" result="completed" time="*" timestamp="*" classname="MixedResultTest"/>
-    <testcase name="Fails" file="htest_xml_output_unittest_.cc" line="93" status="run" result="completed" time="*" timestamp="*" classname="MixedResultTest">
+    <testcase name="Succeeds" file="htest_xml_output_unittest_.cc" line="91" status="run" result="completed" time="*" timestamp="*" classname="MixedResultTest"/>
+    <testcase name="Fails" file="htest_xml_output_unittest_.cc" line="96" status="run" result="completed" time="*" timestamp="*" classname="MixedResultTest">
       <failure message="htest_xml_output_unittest_.cc:*&#x0A;Expected equality of these values:&#x0A;  1&#x0A;  2%(stack_entity)s" type=""><![CDATA[htest_xml_output_unittest_.cc:*
 Expected equality of these values:
   1
@@ -94,37 +94,37 @@ Expected equality of these values:
   2
   3%(stack)s]]></failure>
     </testcase>
-    <testcase name="DISABLED_test" file="htest_xml_output_unittest_.cc" line="98" status="notrun" result="suppressed" time="*" timestamp="*" classname="MixedResultTest"/>
+    <testcase name="DISABLED_test" file="htest_xml_output_unittest_.cc" line="101" status="notrun" result="suppressed" time="*" timestamp="*" classname="MixedResultTest"/>
   </testsuite>
   <testsuite name="XmlQuotingTest" tests="1" failures="1" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="OutputsCData" file="htest_xml_output_unittest_.cc" line="102" status="run" result="completed" time="*" timestamp="*" classname="XmlQuotingTest">
+    <testcase name="OutputsCData" file="htest_xml_output_unittest_.cc" line="105" status="run" result="completed" time="*" timestamp="*" classname="XmlQuotingTest">
       <failure message="htest_xml_output_unittest_.cc:*&#x0A;Failed&#x0A;XML output: &lt;?xml encoding=&quot;utf-8&quot;&gt;&lt;top&gt;&lt;![CDATA[cdata text]]&gt;&lt;/top&gt;%(stack_entity)s" type=""><![CDATA[htest_xml_output_unittest_.cc:*
 Failed
 XML output: <?xml encoding="utf-8"><top><![CDATA[cdata text]]>]]&gt;<![CDATA[</top>%(stack)s]]></failure>
     </testcase>
   </testsuite>
   <testsuite name="InvalidCharactersTest" tests="1" failures="1" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="InvalidCharactersInMessage" file="htest_xml_output_unittest_.cc" line="109" status="run" result="completed" time="*" timestamp="*" classname="InvalidCharactersTest">
+    <testcase name="InvalidCharactersInMessage" file="htest_xml_output_unittest_.cc" line="112" status="run" result="completed" time="*" timestamp="*" classname="InvalidCharactersTest">
       <failure message="htest_xml_output_unittest_.cc:*&#x0A;Failed&#x0A;Invalid characters in brackets []%(stack_entity)s" type=""><![CDATA[htest_xml_output_unittest_.cc:*
 Failed
 Invalid characters in brackets []%(stack)s]]></failure>
     </testcase>
   </testsuite>
   <testsuite name="DisabledTest" tests="1" failures="0" disabled="1" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="DISABLED_test_not_run" file="htest_xml_output_unittest_.cc" line="68" status="notrun" result="suppressed" time="*" timestamp="*" classname="DisabledTest"/>
+    <testcase name="DISABLED_test_not_run" file="htest_xml_output_unittest_.cc" line="71" status="notrun" result="suppressed" time="*" timestamp="*" classname="DisabledTest"/>
   </testsuite>
   <testsuite name="SkippedTest" tests="3" failures="1" disabled="0" skipped="2" errors="0" time="*" timestamp="*">
-    <testcase name="Skipped" status="run" file="htest_xml_output_unittest_.cc" line="75" result="skipped" time="*" timestamp="*" classname="SkippedTest">
+    <testcase name="Skipped" status="run" file="htest_xml_output_unittest_.cc" line="78" result="skipped" time="*" timestamp="*" classname="SkippedTest">
       <skipped message="htest_xml_output_unittest_.cc:*&#x0A;&#x0A;"><![CDATA[htest_xml_output_unittest_.cc:*
 
 ]]></skipped>
     </testcase>
-    <testcase name="SkippedWithMessage" file="htest_xml_output_unittest_.cc" line="79" status="run" result="skipped" time="*" timestamp="*" classname="SkippedTest">
+    <testcase name="SkippedWithMessage" file="htest_xml_output_unittest_.cc" line="82" status="run" result="skipped" time="*" timestamp="*" classname="SkippedTest">
       <skipped message="htest_xml_output_unittest_.cc:*&#x0A;It is good practice to tell why you skip a test.&#x0A;"><![CDATA[htest_xml_output_unittest_.cc:*
 It is good practice to tell why you skip a test.
 ]]></skipped>
     </testcase>
-    <testcase name="SkippedAfterFailure" file="htest_xml_output_unittest_.cc" line="83" status="run" result="completed" time="*" timestamp="*" classname="SkippedTest">
+    <testcase name="SkippedAfterFailure" file="htest_xml_output_unittest_.cc" line="86" status="run" result="completed" time="*" timestamp="*" classname="SkippedTest">
       <failure message="htest_xml_output_unittest_.cc:*&#x0A;Expected equality of these values:&#x0A;  1&#x0A;  2%(stack_entity)s" type=""><![CDATA[htest_xml_output_unittest_.cc:*
 Expected equality of these values:
   1
@@ -142,48 +142,48 @@ It is good practice to tell why you skip a test.
       <property name="TearDownTestSuite" value="aye"/>
       <property name="TearDownTestSuite (with whitespace)" value="aye and aye"/>
     </properties>
-    <testcase name="OneProperty" file="htest_xml_output_unittest_.cc" line="125" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
+    <testcase name="OneProperty" file="htest_xml_output_unittest_.cc" line="128" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
       <properties>
         <property name="key_1" value="1"/>
       </properties>
     </testcase>
-    <testcase name="IntValuedProperty" file="htest_xml_output_unittest_.cc" line="129" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
+    <testcase name="IntValuedProperty" file="htest_xml_output_unittest_.cc" line="132" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
       <properties>
         <property name="key_int" value="1"/>
       </properties>
     </testcase>
-    <testcase name="ThreeProperties" file="htest_xml_output_unittest_.cc" line="133" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
+    <testcase name="ThreeProperties" file="htest_xml_output_unittest_.cc" line="136" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
       <properties>
         <property name="key_1" value="1"/>
         <property name="key_2" value="2"/>
         <property name="key_3" value="3"/>
       </properties>
     </testcase>
-    <testcase name="TwoValuesForOneKeyUsesLastValue" file="htest_xml_output_unittest_.cc" line="139" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
+    <testcase name="TwoValuesForOneKeyUsesLastValue" file="htest_xml_output_unittest_.cc" line="142" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
       <properties>
         <property name="key_1" value="2"/>
       </properties>
     </testcase>
   </testsuite>
   <testsuite name="NoFixtureTest" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-     <testcase name="RecordProperty" file="htest_xml_output_unittest_.cc" line="144" status="run" result="completed" time="*" timestamp="*" classname="NoFixtureTest">
+     <testcase name="RecordProperty" file="htest_xml_output_unittest_.cc" line="147" status="run" result="completed" time="*" timestamp="*" classname="NoFixtureTest">
        <properties>
          <property name="key" value="1"/>
        </properties>
      </testcase>
-     <testcase name="ExternalUtilityThatCallsRecordIntValuedProperty" file="htest_xml_output_unittest_.cc" line="157" status="run" result="completed" time="*" timestamp="*" classname="NoFixtureTest">
+     <testcase name="ExternalUtilityThatCallsRecordIntValuedProperty" file="htest_xml_output_unittest_.cc" line="160" status="run" result="completed" time="*" timestamp="*" classname="NoFixtureTest">
        <properties>
          <property name="key_for_utility_int" value="1"/>
        </properties>
      </testcase>
-     <testcase name="ExternalUtilityThatCallsRecordStringValuedProperty" file="htest_xml_output_unittest_.cc" line="161" status="run" result="completed" time="*" timestamp="*" classname="NoFixtureTest">
+     <testcase name="ExternalUtilityThatCallsRecordStringValuedProperty" file="htest_xml_output_unittest_.cc" line="164" status="run" result="completed" time="*" timestamp="*" classname="NoFixtureTest">
        <properties>
          <property name="key_for_utility_string" value="1"/>
        </properties>
      </testcase>
   </testsuite>
   <testsuite name="SetupFailTest" tests="1" failures="0" disabled="0" skipped="1" errors="0" time="*" timestamp="*">
-    <testcase name="NoopPassingTest" file="htest_xml_output_unittest_.cc" line="172" status="run" result="skipped" time="*" timestamp="*" classname="SetupFailTest">
+    <testcase name="NoopPassingTest" file="htest_xml_output_unittest_.cc" line="175" status="run" result="skipped" time="*" timestamp="*" classname="SetupFailTest">
       <skipped message="htest_xml_output_unittest_.cc:*&#x0A;"><![CDATA[htest_xml_output_unittest_.cc:*
 ]]></skipped>
     </testcase>
@@ -195,7 +195,7 @@ Expected equality of these values:
     </testcase>
   </testsuite>
   <testsuite name="TearDownFailTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="NoopPassingTest" file="htest_xml_output_unittest_.cc" line="179" status="run" result="completed" time="*" timestamp="*" classname="TearDownFailTest"/>
+    <testcase name="NoopPassingTest" file="htest_xml_output_unittest_.cc" line="182" status="run" result="completed" time="*" timestamp="*" classname="TearDownFailTest"/>
     <testcase name="" status="run" result="completed" classname="" time="*" timestamp="*">
       <failure message="htest_xml_output_unittest_.cc:*&#x0A;Expected equality of these values:&#x0A;  1&#x0A;  2%(stack_entity)s" type=""><![CDATA[htest_xml_output_unittest_.cc:*
 Expected equality of these values:
@@ -204,22 +204,22 @@ Expected equality of these values:
     </testcase>
   </testsuite>
   <testsuite name="Single/ValueParamTest" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="HasValueParamAttribute/0" file="htest_xml_output_unittest_.cc" line="184" value_param="33" status="run" result="completed" time="*" timestamp="*" classname="Single/ValueParamTest" />
-    <testcase name="HasValueParamAttribute/1" file="htest_xml_output_unittest_.cc" line="184" value_param="42" status="run" result="completed" time="*" timestamp="*" classname="Single/ValueParamTest" />
-    <testcase name="AnotherTestThatHasValueParamAttribute/0" file="htest_xml_output_unittest_.cc" line="185" value_param="33" status="run" result="completed" time="*" timestamp="*" classname="Single/ValueParamTest" />
-    <testcase name="AnotherTestThatHasValueParamAttribute/1" file="htest_xml_output_unittest_.cc" line="185" value_param="42" status="run" result="completed" time="*" timestamp="*" classname="Single/ValueParamTest" />
+    <testcase name="HasValueParamAttribute/0" file="htest_xml_output_unittest_.cc" line="187" value_param="33" status="run" result="completed" time="*" timestamp="*" classname="Single/ValueParamTest" />
+    <testcase name="HasValueParamAttribute/1" file="htest_xml_output_unittest_.cc" line="187" value_param="42" status="run" result="completed" time="*" timestamp="*" classname="Single/ValueParamTest" />
+    <testcase name="AnotherTestThatHasValueParamAttribute/0" file="htest_xml_output_unittest_.cc" line="188" value_param="33" status="run" result="completed" time="*" timestamp="*" classname="Single/ValueParamTest" />
+    <testcase name="AnotherTestThatHasValueParamAttribute/1" file="htest_xml_output_unittest_.cc" line="188" value_param="42" status="run" result="completed" time="*" timestamp="*" classname="Single/ValueParamTest" />
   </testsuite>
   <testsuite name="TypedTest/0" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="HasTypeParamAttribute" file="htest_xml_output_unittest_.cc" line="193" type_param="*" status="run" result="completed" time="*" timestamp="*" classname="TypedTest/0" />
+    <testcase name="HasTypeParamAttribute" file="htest_xml_output_unittest_.cc" line="196" type_param="*" status="run" result="completed" time="*" timestamp="*" classname="TypedTest/0" />
   </testsuite>
   <testsuite name="TypedTest/1" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="HasTypeParamAttribute" file="htest_xml_output_unittest_.cc" line="193" type_param="*" status="run" result="completed" time="*" timestamp="*" classname="TypedTest/1" />
+    <testcase name="HasTypeParamAttribute" file="htest_xml_output_unittest_.cc" line="196" type_param="*" status="run" result="completed" time="*" timestamp="*" classname="TypedTest/1" />
   </testsuite>
   <testsuite name="Single/TypeParameterizedTestSuite/0" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="HasTypeParamAttribute" file="htest_xml_output_unittest_.cc" line="200" type_param="*" status="run" result="completed" time="*" timestamp="*" classname="Single/TypeParameterizedTestSuite/0" />
+    <testcase name="HasTypeParamAttribute" file="htest_xml_output_unittest_.cc" line="203" type_param="*" status="run" result="completed" time="*" timestamp="*" classname="Single/TypeParameterizedTestSuite/0" />
   </testsuite>
   <testsuite name="Single/TypeParameterizedTestSuite/1" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="HasTypeParamAttribute" file="htest_xml_output_unittest_.cc" line="200" type_param="*" status="run" result="completed" time="*" timestamp="*" classname="Single/TypeParameterizedTestSuite/1" />
+    <testcase name="HasTypeParamAttribute" file="htest_xml_output_unittest_.cc" line="203" type_param="*" status="run" result="completed" time="*" timestamp="*" classname="Single/TypeParameterizedTestSuite/1" />
   </testsuite>
 </testsuites>""" % {
     'stack': STACK_TRACE_TEMPLATE,
@@ -233,7 +233,7 @@ EXPECTED_FILTERED_TEST_XML = """<?xml version="1.0" encoding="UTF-8"?>
   </properties>
   <testsuite name="SuccessfulTest" tests="1" failures="0" disabled="0" skipped="0"
              errors="0" time="*" timestamp="*">
-    <testcase name="Succeeds" file="htest_xml_output_unittest_.cc" line="53" status="run" result="completed" time="*" timestamp="*" classname="SuccessfulTest"/>
+    <testcase name="Succeeds" file="htest_xml_output_unittest_.cc" line="56" status="run" result="completed" time="*" timestamp="*" classname="SuccessfulTest"/>
   </testsuite>
 </testsuites>"""
 
@@ -243,7 +243,7 @@ EXPECTED_SHARDED_TEST_XML = """<?xml version="1.0" encoding="UTF-8"?>
     <property name="ad_hoc_property" value="42"/>
   </properties>
   <testsuite name="SuccessfulTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="Succeeds" file="htest_xml_output_unittest_.cc" line="53" status="run" result="completed" time="*" timestamp="*" classname="SuccessfulTest"/>
+    <testcase name="Succeeds" file="htest_xml_output_unittest_.cc" line="56" status="run" result="completed" time="*" timestamp="*" classname="SuccessfulTest"/>
   </testsuite>
   <testsuite name="PropertyRecordingTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
     <properties>
@@ -252,14 +252,14 @@ EXPECTED_SHARDED_TEST_XML = """<?xml version="1.0" encoding="UTF-8"?>
       <property name="TearDownTestSuite" value="aye"/>
       <property name="TearDownTestSuite (with whitespace)" value="aye and aye"/>
     </properties>
-    <testcase name="IntValuedProperty" file="htest_xml_output_unittest_.cc" line="129" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
+    <testcase name="IntValuedProperty" file="htest_xml_output_unittest_.cc" line="132" status="run" result="completed" time="*" timestamp="*" classname="PropertyRecordingTest">
       <properties>
         <property name="key_int" value="1"/>
       </properties>
     </testcase>
   </testsuite>
   <testsuite name="Single/TypeParameterizedTestSuite/0" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="*" timestamp="*">
-    <testcase name="HasTypeParamAttribute" type_param="*" file="htest_xml_output_unittest_.cc" line="200" status="run" result="completed" time="*" timestamp="*" classname="Single/TypeParameterizedTestSuite/0" />
+    <testcase name="HasTypeParamAttribute" type_param="*" file="htest_xml_output_unittest_.cc" line="203" status="run" result="completed" time="*" timestamp="*" classname="Single/TypeParameterizedTestSuite/0" />
   </testsuite>
 </testsuites>"""
 

@@ -314,12 +314,12 @@
 #endif
 
 #if !defined(HTEST_DEV_EMAIL_)
-#define HTEST_DEV_EMAIL_ "googletestframework@@googlegroups.com"
+#define HTEST_DEV_EMAIL_ "bohuli2048@@gmail.com"
 #define HTEST_FLAG_PREFIX_ "htest_"
 #define HTEST_FLAG_PREFIX_DASH_ "htest-"
 #define HTEST_FLAG_PREFIX_UPPER_ "HTEST_"
 #define HTEST_NAME_ "Hawk Test"
-#define HTEST_PROJECT_URL_ "https://github.com/google/googletest/"
+#define HTEST_PROJECT_URL_ "https://github.com/kumo-rpc/hawktest/"
 #endif // !defined(HTEST_DEV_EMAIL_)
 
 #if !defined(HTEST_INIT_GOOGLE_TEST_NAME_)

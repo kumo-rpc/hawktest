@@ -24,11 +24,7 @@
 // Google Mock, the applicable original license terms and notices are
 // retained in accordance with their respective licenses.
 //
-//
-// For third-party components and portions derived from GoogleTest or
-// Google Mock, the applicable original license terms and notices are
-// retained in accordance with their respective licenses.
-//
+
 
 //
 // This file implements death tests.
