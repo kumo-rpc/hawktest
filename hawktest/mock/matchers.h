@@ -246,7 +246,7 @@
 // matchers can be defined by the user implementing the
 // MatcherInterface<T> interface if necessary.
 //
-// See googletest/include/gtest/gtest-matchers.h for the definition of class
+// See googletest/include/htest/htest-matchers.h for the definition of class
 // Matcher, class MatcherInterface, and others.
 
 // IWYU pragma: private, include "gmock/gmock.h"
@@ -284,7 +284,7 @@
 #define GMOCK_MAYBE_5046_
 #endif
 
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
 namespace proto2 {
 namespace internal {
 
@@ -320,9 +320,9 @@ T* DynamicCastMessageForGtest(proto2::MessageLite* msg) {
 
 }  // namespace internal
 }  // namespace proto2
-#endif  // GTEST_HAS_RTTI
+#endif  // HTEST_HAS_RTTI
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(
     4251 GMOCK_MAYBE_5046_ /* class A needs to have dll-interface to be used by
                               clients of class B */
     /* Symbol involving type with internal linkage not defined */)
@@ -592,8 +592,8 @@ inline Matcher<T> SafeMatcherCast(const Matcher<U>& matcher) {
                 "non-const reference if U is a non-const reference)");
   // In case both T and U are arithmetic types, enforce that the
   // conversion is not lossy.
-  typedef GTEST_REMOVE_REFERENCE_AND_CONST_(T) RawT;
-  typedef GTEST_REMOVE_REFERENCE_AND_CONST_(U) RawU;
+  typedef HTEST_REMOVE_REFERENCE_AND_CONST_(T) RawT;
+  typedef HTEST_REMOVE_REFERENCE_AND_CONST_(U) RawU;
   constexpr bool kTIsOther = GMOCK_KIND_OF_(RawT) == internal::kOther;
   constexpr bool kUIsOther = GMOCK_KIND_OF_(RawU) == internal::kOther;
   static_assert(
@@ -652,7 +652,7 @@ bool MatchPrintAndExplain(Value& value, const Matcher<T>& matcher,
   const bool match = matcher.MatchAndExplain(value, &inner_listener);
 
   UniversalPrint(value, listener->stream());
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
   const std::string& type_name = GetTypeName<Value>();
   if (IsReadableTypeName(type_name))
     *listener->stream() << " (of type " << type_name << ")";
@@ -799,7 +799,7 @@ OutIter TransformTupleValues(Func f, const Tuple& t, OutIter out) {
 // type T.
 class [[nodiscard]] AnythingMatcher {
  public:
-  using is_gtest_matcher = void;
+  using is_htest_matcher = void;
 
   template <typename T>
   bool MatchAndExplain(const T& /* x */, std::ostream* /* listener */) const {
@@ -1180,7 +1180,7 @@ class [[nodiscard]] EndsWithMatcher {
 // used as a Matcher<T> as long as T can be converted to a string.
 class [[nodiscard]] WhenBase64UnescapedMatcher {
  public:
-  using is_gtest_matcher = void;
+  using is_htest_matcher = void;
 
   explicit WhenBase64UnescapedMatcher(
       const Matcher<const std::string&>& internal_matcher)
@@ -1784,7 +1784,7 @@ class [[nodiscard]] FloatingEqMatcher {
       : expected_(expected),
         nan_eq_nan_(nan_eq_nan),
         max_abs_error_(max_abs_error) {
-    GTEST_CHECK_(max_abs_error >= 0)
+    HTEST_CHECK_(max_abs_error >= 0)
         << ", where max_abs_error is" << max_abs_error;
   }
 
@@ -2008,7 +2008,7 @@ class [[nodiscard]] PointeeMatcher {
   class Impl : public MatcherInterface<Pointer> {
    public:
     using Pointee =
-        typename std::pointer_traits<GTEST_REMOVE_REFERENCE_AND_CONST_(
+        typename std::pointer_traits<HTEST_REMOVE_REFERENCE_AND_CONST_(
             Pointer)>::element_type;
 
     explicit Impl(const InnerMatcher& matcher)
@@ -2067,7 +2067,7 @@ class [[nodiscard]] PointerMatcher {
   class Impl : public MatcherInterface<PointerType> {
    public:
     using Pointer =
-        const typename std::pointer_traits<GTEST_REMOVE_REFERENCE_AND_CONST_(
+        const typename std::pointer_traits<HTEST_REMOVE_REFERENCE_AND_CONST_(
             PointerType)>::element_type*;
 
     explicit Impl(const InnerMatcher& matcher)
@@ -2097,7 +2097,7 @@ class [[nodiscard]] PointerMatcher {
   const InnerMatcher matcher_;
 };
 
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
 // Implements the WhenDynamicCastTo<T>(m) matcher that matches a pointer or
 // reference that matches inner_matcher when dynamic_cast<T> is applied.
 // The result of dynamic_cast<To> is forwarded to the inner matcher.
@@ -2186,7 +2186,7 @@ WhenDynamicCastToMatcher<To&> : public WhenDynamicCastToMatcherBase<To&> {
     return MatchPrintAndExplain(*to, this->matcher_, listener);
   }
 };
-#endif  // GTEST_HAS_RTTI
+#endif  // HTEST_HAS_RTTI
 
 // Implements the Field() matcher for matching a field (i.e. member
 // variable) of an object.
@@ -2338,7 +2338,7 @@ struct CallableTraits<ResType (*)(ArgType)> {
   typedef ResType (*StorageType)(ArgType);
 
   static void CheckIsValid(ResType (*f)(ArgType)) {
-    GTEST_CHECK_(f != nullptr)
+    HTEST_CHECK_(f != nullptr)
         << "NULL function pointer is passed into ResultOf().";
   }
   template <typename T>
@@ -2501,7 +2501,7 @@ class [[nodiscard]] BeginEndDistanceIsMatcher {
   template <typename Container>
   class Impl : public MatcherInterface<Container> {
    public:
-    typedef internal::StlContainerView<GTEST_REMOVE_REFERENCE_AND_CONST_(
+    typedef internal::StlContainerView<HTEST_REMOVE_REFERENCE_AND_CONST_(
         Container)>
         ContainerView;
     typedef typename std::iterator_traits<
@@ -2653,7 +2653,7 @@ class [[nodiscard]] WhenSortedByMatcher {
   template <typename LhsContainer>
   class Impl : public MatcherInterface<LhsContainer> {
    public:
-    typedef internal::StlContainerView<GTEST_REMOVE_REFERENCE_AND_CONST_(
+    typedef internal::StlContainerView<HTEST_REMOVE_REFERENCE_AND_CONST_(
         LhsContainer)>
         LhsView;
     typedef typename LhsView::type LhsStlContainer;
@@ -2722,7 +2722,7 @@ class [[nodiscard]] WhenSortedByMatcher {
 template <typename TupleMatcher, typename RhsContainer>
 class [[nodiscard]] PointwiseMatcher {
   static_assert(
-      !IsHashTable<GTEST_REMOVE_REFERENCE_AND_CONST_(RhsContainer)>::value,
+      !IsHashTable<HTEST_REMOVE_REFERENCE_AND_CONST_(RhsContainer)>::value,
       "use UnorderedPointwise with hash tables");
 
  public:
@@ -2743,7 +2743,7 @@ class [[nodiscard]] PointwiseMatcher {
   template <typename LhsContainer>
   operator Matcher<LhsContainer>() const {
     static_assert(
-        !IsHashTable<GTEST_REMOVE_REFERENCE_AND_CONST_(LhsContainer)>::value,
+        !IsHashTable<HTEST_REMOVE_REFERENCE_AND_CONST_(LhsContainer)>::value,
         "use UnorderedPointwise with hash tables");
 
     return Matcher<LhsContainer>(
@@ -2753,7 +2753,7 @@ class [[nodiscard]] PointwiseMatcher {
   template <typename LhsContainer>
   class Impl : public MatcherInterface<LhsContainer> {
    public:
-    typedef internal::StlContainerView<GTEST_REMOVE_REFERENCE_AND_CONST_(
+    typedef internal::StlContainerView<HTEST_REMOVE_REFERENCE_AND_CONST_(
         LhsContainer)>
         LhsView;
     typedef typename LhsView::type LhsStlContainer;
@@ -2841,7 +2841,7 @@ class [[nodiscard]] PointwiseMatcher {
 template <typename Container>
 class [[nodiscard]] QuantifierMatcherImpl : public MatcherInterface<Container> {
  public:
-  typedef GTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
+  typedef HTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
   typedef StlContainerView<RawContainer> View;
   typedef typename View::type StlContainer;
   typedef typename View::const_reference StlContainerReference;
@@ -3190,7 +3190,7 @@ class [[nodiscard]] DistanceFromMatcher {
 template <typename PairType>
 class [[nodiscard]] KeyMatcherImpl : public MatcherInterface<PairType> {
  public:
-  typedef GTEST_REMOVE_REFERENCE_AND_CONST_(PairType) RawPairType;
+  typedef HTEST_REMOVE_REFERENCE_AND_CONST_(PairType) RawPairType;
   typedef typename RawPairType::first_type KeyType;
 
   template <typename InnerMatcher>
@@ -3260,7 +3260,7 @@ class [[nodiscard]] AddressMatcher {
   template <typename Type>
   class Impl : public MatcherInterface<Type> {
    public:
-    using Address = const GTEST_REMOVE_REFERENCE_AND_CONST_(Type) *;
+    using Address = const HTEST_REMOVE_REFERENCE_AND_CONST_(Type) *;
     explicit Impl(const InnerMatcher& matcher)
         : matcher_(MatcherCast<Address>(matcher)) {}
 
@@ -3292,7 +3292,7 @@ class [[nodiscard]] AddressMatcher {
 template <typename PairType>
 class [[nodiscard]] PairMatcherImpl : public MatcherInterface<PairType> {
  public:
-  typedef GTEST_REMOVE_REFERENCE_AND_CONST_(PairType) RawPairType;
+  typedef HTEST_REMOVE_REFERENCE_AND_CONST_(PairType) RawPairType;
   typedef typename RawPairType::first_type FirstType;
   typedef typename RawPairType::second_type SecondType;
 
@@ -3655,7 +3655,7 @@ template <typename Container>
 class [[nodiscard]] ElementsAreMatcherImpl
     : public MatcherInterface<Container> {
  public:
-  typedef GTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
+  typedef HTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
   typedef internal::StlContainerView<RawContainer> View;
   typedef typename View::type StlContainer;
   typedef typename View::const_reference StlContainerReference;
@@ -3829,7 +3829,7 @@ class [[nodiscard]] ElementsAreMatcherImpl
 // Initially, there are no edges.
 // Use NextGraph() to iterate over all possible edge configurations.
 // Use Randomize() to generate a random edge configuration.
-class GTEST_API_ [[nodiscard]] MatchMatrix {
+class HTEST_API_ [[nodiscard]] MatchMatrix {
  public:
   MatchMatrix(size_t num_elements, size_t num_matchers)
       : num_elements_(num_elements),
@@ -3873,7 +3873,7 @@ typedef ::std::vector<ElementMatcherPair> ElementMatcherPairs;
 
 // Returns a maximum bipartite matching for the specified graph 'g'.
 // The matching is represented as a vector of {element, matcher} pairs.
-GTEST_API_ ElementMatcherPairs FindMaxBipartiteMatching(const MatchMatrix& g);
+HTEST_API_ ElementMatcherPairs FindMaxBipartiteMatching(const MatchMatrix& g);
 
 struct UnorderedMatcherRequire {
   enum Flags {
@@ -3886,7 +3886,7 @@ struct UnorderedMatcherRequire {
 // Untyped base class for implementing UnorderedElementsAre.  By
 // putting logic that's not specific to the element type here, we
 // reduce binary bloat and increase compilation speed.
-class GTEST_API_ [[nodiscard]] UnorderedElementsAreMatcherImplBase {
+class HTEST_API_ [[nodiscard]] UnorderedElementsAreMatcherImplBase {
  protected:
   explicit UnorderedElementsAreMatcherImplBase(
       UnorderedMatcherRequire::Flags matcher_flags)
@@ -3930,7 +3930,7 @@ class [[nodiscard]] UnorderedElementsAreMatcherImpl
     : public MatcherInterface<Container>,
       public UnorderedElementsAreMatcherImplBase {
  public:
-  typedef GTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
+  typedef HTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
   typedef internal::StlContainerView<RawContainer> View;
   typedef typename View::type StlContainer;
   typedef typename View::const_reference StlContainerReference;
@@ -4007,7 +4007,7 @@ template <typename Container>
 class [[nodiscard]] ContainsSubsequenceMatcherImpl
     : public MatcherInterface<Container> {
  public:
-  typedef GTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
+  typedef HTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
   typedef internal::StlContainerView<RawContainer> View;
   typedef typename View::type StlContainer;
   typedef typename View::const_reference StlContainerReference;
@@ -4130,7 +4130,7 @@ class [[nodiscard]] ContainsSubsequenceMatcher {
   template <typename Container>
   // NOLINTNEXTLINE(google-explicit-constructor)
   operator Matcher<Container>() const {
-    typedef GTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
+    typedef HTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
     typedef typename internal::StlContainerView<RawContainer>::type View;
     typedef typename internal::RangeTraits<View>::value_type Element;
     typedef ::std::vector<Matcher<const Element&>> MatcherVec;
@@ -4156,7 +4156,7 @@ class [[nodiscard]] UnorderedElementsAreMatcher {
 
   template <typename Container>
   operator Matcher<Container>() const {
-    typedef GTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
+    typedef HTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
     typedef typename internal::RangeTraits<RawContainer>::value_type Element;
     typedef ::std::vector<Matcher<const Element&>> MatcherVec;
     MatcherVec matchers;
@@ -4182,11 +4182,11 @@ class [[nodiscard]] ElementsAreMatcher {
   template <typename Container>
   operator Matcher<Container>() const {
     static_assert(
-        !IsHashTable<GTEST_REMOVE_REFERENCE_AND_CONST_(Container)>::value ||
+        !IsHashTable<HTEST_REMOVE_REFERENCE_AND_CONST_(Container)>::value ||
             ::std::tuple_size<MatcherTuple>::value < 2,
         "use UnorderedElementsAre with hash tables");
 
-    typedef GTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
+    typedef HTEST_REMOVE_REFERENCE_AND_CONST_(Container) RawContainer;
     typedef typename internal::StlContainerView<RawContainer>::type View;
     typedef typename internal::RangeTraits<View>::value_type Element;
     typedef ::std::vector<Matcher<const Element&>> MatcherVec;
@@ -4233,7 +4233,7 @@ class [[nodiscard]] ElementsAreArrayMatcher {
   template <typename Container>
   operator Matcher<Container>() const {
     static_assert(
-        !IsHashTable<GTEST_REMOVE_REFERENCE_AND_CONST_(Container)>::value,
+        !IsHashTable<HTEST_REMOVE_REFERENCE_AND_CONST_(Container)>::value,
         "use UnorderedElementsAreArray with hash tables");
 
     return Matcher<Container>(new ElementsAreMatcherImpl<const Container&>(
@@ -4275,7 +4275,7 @@ class [[nodiscard]] BoundSecondMatcher {
   // However, this should never be called, so the implementation just
   // need to assert.
   void operator=(const BoundSecondMatcher& /*rhs*/) {
-    GTEST_LOG_(FATAL) << "BoundSecondMatcher should never be assigned.";
+    HTEST_LOG_(FATAL) << "BoundSecondMatcher should never be assigned.";
   }
 
  private:
@@ -4324,7 +4324,7 @@ BoundSecondMatcher<Tuple2Matcher, Second> MatcherBindSecond(
 // 'negation' is false; otherwise returns the description of the
 // negation of the matcher.  'param_values' contains a list of strings
 // that are the print-out of the matcher's parameters.
-GTEST_API_ std::string FormatMatcherDescription(
+HTEST_API_ std::string FormatMatcherDescription(
     bool negation, const char* matcher_name,
     const std::vector<const char*>& param_names, const Strings& param_values);
 
@@ -4358,7 +4358,7 @@ class [[nodiscard]] OptionalMatcher {
   template <typename Optional>
   class Impl : public MatcherInterface<Optional> {
    public:
-    typedef GTEST_REMOVE_REFERENCE_AND_CONST_(Optional) OptionalView;
+    typedef HTEST_REMOVE_REFERENCE_AND_CONST_(Optional) OptionalView;
     typedef typename OptionalView::value_type ValueType;
     explicit Impl(const ValueMatcher& value_matcher)
         : value_matcher_(MatcherCast<ValueType>(value_matcher)) {}
@@ -4450,8 +4450,8 @@ class [[nodiscard]] VariantMatcher {
 
  private:
   static std::string GetTypeName() {
-#if GTEST_HAS_RTTI
-    GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(
+#if HTEST_HAS_RTTI
+    HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(
         return internal::GetTypeName<T>());
 #endif
     return "the element type";
@@ -4511,8 +4511,8 @@ class [[nodiscard]] AnyCastMatcher {
 
  private:
   static std::string GetTypeName() {
-#if GTEST_HAS_RTTI
-    GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(
+#if HTEST_HAS_RTTI
+    HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(
         return internal::GetTypeName<T>());
 #endif
     return "the element type";
@@ -4843,7 +4843,7 @@ inline internal::PointeeMatcher<InnerMatcher> Pointee(
   return internal::PointeeMatcher<InnerMatcher>(inner_matcher);
 }
 
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
 // Creates a matcher that matches a pointer or reference that matches
 // inner_matcher when dynamic_cast<To> is applied.
 // The result of dynamic_cast<To> is forwarded to the inner matcher.
@@ -4856,7 +4856,7 @@ WhenDynamicCastTo(const Matcher<To>& inner_matcher) {
   return MakePolymorphicMatcher(
       internal::WhenDynamicCastToMatcher<To>(inner_matcher));
 }
-#endif  // GTEST_HAS_RTTI
+#endif  // HTEST_HAS_RTTI
 
 // Creates a matcher that matches an object whose given field matches
 // 'matcher'.  For example,
@@ -5732,7 +5732,7 @@ PolymorphicMatcher<internal::variant_matcher::VariantMatcher<T>> VariantWith(
       internal::variant_matcher::VariantMatcher<T>(matcher));
 }
 
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
 
 // Anything inside the `internal` namespace is internal to the implementation
 // and must not be used in user code!
@@ -5830,7 +5830,7 @@ class [[nodiscard]] ExceptionMatcherImpl {
       *listener << " ";
       return matcher_.MatchAndExplain(err, listener);
     } catch (DefaultExceptionType err) {
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
       *listener << "throws an exception of type " << GetTypeName(typeid(err));
       *listener << " ";
 #else
@@ -5900,7 +5900,7 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
       MatcherCast<std::string>(std::forward<MessageMatcher>(message_matcher))));
 }
 
-#endif  // GTEST_HAS_EXCEPTIONS
+#endif  // HTEST_HAS_EXCEPTIONS
 
 // These macros allow using matchers to check values in Google Test
 // tests.  ASSERT_THAT(value, matcher) and EXPECT_THAT(value, matcher)
@@ -6082,7 +6082,7 @@ using namespace no_adl;  // NOLINT
 
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251 5046
+HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251 5046
 
 // Include any custom callback matchers added by the local installation.
 // We must include this header at the end to make sure it can use the

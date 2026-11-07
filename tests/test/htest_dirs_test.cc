@@ -7,7 +7,7 @@
 #include <hawktest/test/htest.h>
 #include <hawktest/common/port.h>
 
-#if GTEST_HAS_FILE_SYSTEM
+#if HTEST_HAS_FILE_SYSTEM
 
 namespace {
 
@@ -23,18 +23,18 @@ class SetEnv {
       have_saved_value_ = true;
     }
     if (value == nullptr) {
-      GTEST_CHECK_POSIX_SUCCESS_(unsetenv(name));
+      HTEST_CHECK_POSIX_SUCCESS_(unsetenv(name));
     } else {
-      GTEST_CHECK_POSIX_SUCCESS_(setenv(name, value, 1 /*overwrite*/));
+      HTEST_CHECK_POSIX_SUCCESS_(setenv(name, value, 1 /*overwrite*/));
     }
   }
 
   ~SetEnv() {
     if (have_saved_value_) {
-      GTEST_CHECK_POSIX_SUCCESS_(
+      HTEST_CHECK_POSIX_SUCCESS_(
           setenv(name_.c_str(), saved_value_.c_str(), 1 /*overwrite*/));
     } else {
-      GTEST_CHECK_POSIX_SUCCESS_(unsetenv(name_.c_str()));
+      HTEST_CHECK_POSIX_SUCCESS_(unsetenv(name_.c_str()));
     }
   }
 
@@ -52,11 +52,11 @@ class MakeTempDir {
     // mkdtemp requires that the last 6 characters of the input pattern
     // are Xs, and the string is modified by replacing those characters.
     std::string pattern = "/tmp/" + testname + "_XXXXXX";
-    GTEST_CHECK_(mkdtemp(pattern.data()) != nullptr);
+    HTEST_CHECK_(mkdtemp(pattern.data()) != nullptr);
     dirname_ = pattern;
   }
 
-  ~MakeTempDir() { GTEST_CHECK_POSIX_SUCCESS_(rmdir(dirname_.c_str())); }
+  ~MakeTempDir() { HTEST_CHECK_POSIX_SUCCESS_(rmdir(dirname_.c_str())); }
 
   const char* DirName() const { return dirname_.c_str(); }
 
@@ -96,6 +96,6 @@ TEST(SrcDirTest, NotInEnvironment) {
   EXPECT_NE(testing::SrcDir(), "");
 }
 
-#endif  // GTEST_HAS_FILE_SYSTEM
+#endif  // HTEST_HAS_FILE_SYSTEM
 
 }  // namespace

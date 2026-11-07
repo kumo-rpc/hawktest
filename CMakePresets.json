@@ -16,7 +16,7 @@
     {
       "name": "deps-cpm",
       "hidden": true,
-      "description": "CPM: small projects, or test-only deps (gtest/doctest) not shipped with the product.",
+      "description": "CPM: small projects, or test-only deps (htest/doctest) not shipped with the product.",
       "cacheVariables": {
         "KMCMAKE_USE_CPM": "ON"
       }

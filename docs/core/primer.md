@@ -381,7 +381,7 @@ If a fatal failure happens the subsequent steps will be skipped.
 ## Writing the main() Function
 
 Most users should *not* need to write their own `main` function and instead link
-with `gtest_main` (as opposed to with `gtest`), which defines a suitable entry
+with `htest_main` (as opposed to with `htest`), which defines a suitable entry
 point. See the end of this section for details. The remainder of this section
 should only apply when you need to do something custom before the tests run that
 cannot be expressed within the framework of fixtures and test suites.
@@ -394,7 +394,7 @@ You can start from this boilerplate:
 ```c++
 #include "this/package/foo.h"
 
-#include <gtest/gtest.h>
+#include <htest/htest.h>
 
 namespace my {
 namespace project {
@@ -466,7 +466,7 @@ in programs compiled in `UNICODE` mode as well.
 But maybe you think that writing all those `main` functions is too much work? We
 agree with you completely, and that's why Google Test provides a basic
 implementation of main(). If it fits your needs, then just link your test with
-the `gtest_main` library and you are good to go.
+the `htest_main` library and you are good to go.
 
 {: .callout .note}
 NOTE: `ParseGUnitFlags()` is deprecated in favor of `InitGoogleTest()`.
@@ -479,4 +479,4 @@ NOTE: `ParseGUnitFlags()` is deprecated in favor of `InitGoogleTest()`.
     other systems (e.g. Windows). In most tests this is not an issue as usually
     the assertions are done in the main thread. If you want to help, you can
     volunteer to implement the necessary synchronization primitives in
-    `gtest-port.h` for your platform.
+    `htest-port.h` for your platform.

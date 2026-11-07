@@ -37,35 +37,35 @@
 #include <hawktest/common/port.h>
 #include <hawktest/test/message.h>
 
-#ifdef GTEST_OS_WINDOWS_MOBILE
+#ifdef HTEST_OS_WINDOWS_MOBILE
 #include <windows.h>
-#elif defined(GTEST_OS_WINDOWS)
+#elif defined(HTEST_OS_WINDOWS)
 #include <direct.h>
 #include <io.h>
 #else
 #include <limits.h>
 
 #include <climits> // Some Linux distributions define PATH_MAX here.
-#endif // GTEST_OS_WINDOWS_MOBILE
+#endif // HTEST_OS_WINDOWS_MOBILE
 
 #include <hawktest/common/string.h>
 
-#ifdef GTEST_OS_WINDOWS
-#define GTEST_PATH_MAX_ _MAX_PATH
+#ifdef HTEST_OS_WINDOWS
+#define HTEST_PATH_MAX_ _MAX_PATH
 #elif defined(PATH_MAX)
-#define GTEST_PATH_MAX_ PATH_MAX
+#define HTEST_PATH_MAX_ PATH_MAX
 #elif defined(_XOPEN_PATH_MAX)
-#define GTEST_PATH_MAX_ _XOPEN_PATH_MAX
+#define HTEST_PATH_MAX_ _XOPEN_PATH_MAX
 #else
-#define GTEST_PATH_MAX_ _POSIX_PATH_MAX
-#endif // GTEST_OS_WINDOWS
+#define HTEST_PATH_MAX_ _POSIX_PATH_MAX
+#endif // HTEST_OS_WINDOWS
 
-#if GTEST_HAS_FILE_SYSTEM
+#if HTEST_HAS_FILE_SYSTEM
 
 namespace testing {
     namespace internal {
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
         // On Windows, '\\' is the standard path separator, but many tools and the
         // Windows API also accept '/' as an alternate path separator. Unless otherwise
         // noted, a file path can contain either kind of path separators, or a mixture
@@ -73,7 +73,7 @@ namespace testing {
         const char kPathSeparator = '\\';
         const char kAlternatePathSeparator = '/';
         const char kAlternatePathSeparatorString[] = "/";
-#ifdef GTEST_OS_WINDOWS_MOBILE
+#ifdef HTEST_OS_WINDOWS_MOBILE
         // Windows CE doesn't have a current directory. You should not use
         // the current directory in tests on Windows CE, but this at least
         // provides a reasonable fallback.
@@ -82,15 +82,15 @@ namespace testing {
         const DWORD kInvalidFileAttributes = 0xffffffff;
 #else
         const char kCurrentDirectoryString[] = ".\\";
-#endif // GTEST_OS_WINDOWS_MOBILE
+#endif // HTEST_OS_WINDOWS_MOBILE
 #else
         const char kPathSeparator = '/';
         const char kCurrentDirectoryString[] = "./";
-#endif // GTEST_OS_WINDOWS
+#endif // HTEST_OS_WINDOWS
 
         // Returns whether the given character is a valid path separator.
         static bool IsPathSeparator(char c) {
-#if GTEST_HAS_ALT_PATH_SEP_
+#if HTEST_HAS_ALT_PATH_SEP_
             return (c == kPathSeparator) || (c == kAlternatePathSeparator);
 #else
             return c == kPathSeparator;
@@ -99,24 +99,24 @@ namespace testing {
 
         // Returns the current working directory, or "" if unsuccessful.
         FilePath FilePath::GetCurrentDir() {
-#if defined(GTEST_OS_WINDOWS_MOBILE) || defined(GTEST_OS_WINDOWS_PHONE) || defined(GTEST_OS_WINDOWS_RT) || defined(GTEST_OS_ESP8266) || defined(GTEST_OS_ESP32) || defined(GTEST_OS_XTENSA) || defined(GTEST_OS_QURT) || defined(GTEST_OS_NXP_QN9090) || defined(GTEST_OS_NRF52)
+#if defined(HTEST_OS_WINDOWS_MOBILE) || defined(HTEST_OS_WINDOWS_PHONE) || defined(HTEST_OS_WINDOWS_RT) || defined(HTEST_OS_ESP8266) || defined(HTEST_OS_ESP32) || defined(HTEST_OS_XTENSA) || defined(HTEST_OS_QURT) || defined(HTEST_OS_NXP_QN9090) || defined(HTEST_OS_NRF52)
             // These platforms do not have a current directory, so we just return
             // something reasonable.
             return FilePath(kCurrentDirectoryString);
-#elif defined(GTEST_OS_WINDOWS)
-            char cwd[GTEST_PATH_MAX_ + 1] = { '\0' };
+#elif defined(HTEST_OS_WINDOWS)
+            char cwd[HTEST_PATH_MAX_ + 1] = { '\0' };
             return FilePath(_getcwd(cwd, sizeof(cwd)) == nullptr ? "" : cwd);
 #else
-            char cwd[GTEST_PATH_MAX_ + 1] = { '\0' };
+            char cwd[HTEST_PATH_MAX_ + 1] = { '\0' };
             char* result = getcwd(cwd, sizeof(cwd));
-#ifdef GTEST_OS_NACL
+#ifdef HTEST_OS_NACL
             // getcwd will likely fail in NaCl due to the sandbox, so return something
             // reasonable. The user may have provided a shim implementation for getcwd,
             // however, so fallback only when failure is detected.
             return FilePath(result == nullptr ? kCurrentDirectoryString : cwd);
-#endif // GTEST_OS_NACL
+#endif // HTEST_OS_NACL
             return FilePath(result == nullptr ? "" : cwd);
-#endif // GTEST_OS_WINDOWS_MOBILE
+#endif // HTEST_OS_WINDOWS_MOBILE
         }
 
         // Returns a copy of the FilePath with the case-insensitive extension removed.
@@ -137,7 +137,7 @@ namespace testing {
         // separators. Returns NULL if no path separator was found.
         const char* FilePath::FindLastPathSeparator() const {
             const char* const last_sep = strrchr(c_str(), kPathSeparator);
-#if GTEST_HAS_ALT_PATH_SEP_
+#if HTEST_HAS_ALT_PATH_SEP_
             const char* const last_alt_sep = strrchr(c_str(), kAlternatePathSeparator);
             // Comparing two pointers of which only one is NULL is undefined.
             if (last_alt_sep != nullptr && (last_sep == nullptr || last_alt_sep > last_sep)) {
@@ -151,7 +151,7 @@ namespace testing {
             const auto& path = pathname_;
             auto s = path.begin();
             auto end = path.end();
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
             if (end - s >= 2 && s[1] == ':' && (end - s == 2 || IsPathSeparator(s[2])) && (('A' <= s[0] && s[0] <= 'Z') || ('a' <= s[0] && s[0] <= 'z'))) {
                 // A typical absolute path like "C:\Windows" or "D:"
                 s += 2;
@@ -242,7 +242,7 @@ namespace testing {
         // Returns true if pathname describes something findable in the file-system,
         // either a file, directory, or whatever.
         bool FilePath::FileOrDirectoryExists() const {
-#ifdef GTEST_OS_WINDOWS_MOBILE
+#ifdef HTEST_OS_WINDOWS_MOBILE
             LPCWSTR unicode = String::AnsiToUtf16(pathname_.c_str());
             const DWORD attributes = GetFileAttributes(unicode);
             delete[] unicode;
@@ -250,14 +250,14 @@ namespace testing {
 #else
             posix::StatStruct file_stat { };
             return posix::Stat(pathname_.c_str(), &file_stat) == 0;
-#endif // GTEST_OS_WINDOWS_MOBILE
+#endif // HTEST_OS_WINDOWS_MOBILE
         }
 
         // Returns true if pathname describes a directory in the file-system
         // that exists.
         bool FilePath::DirectoryExists() const {
             bool result = false;
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
             // Don't strip off trailing separator if path is a root directory on
             // Windows (like "C:\\").
             const FilePath& path(IsRootDirectory() ? *this
@@ -266,7 +266,7 @@ namespace testing {
             const FilePath& path(*this);
 #endif
 
-#ifdef GTEST_OS_WINDOWS_MOBILE
+#ifdef HTEST_OS_WINDOWS_MOBILE
             LPCWSTR unicode = String::AnsiToUtf16(path.c_str());
             const DWORD attributes = GetFileAttributes(unicode);
             delete[] unicode;
@@ -276,7 +276,7 @@ namespace testing {
 #else
             posix::StatStruct file_stat { };
             result = posix::Stat(path.c_str(), &file_stat) == 0 && posix::IsDir(file_stat);
-#endif // GTEST_OS_WINDOWS_MOBILE
+#endif // HTEST_OS_WINDOWS_MOBILE
 
             return result;
         }
@@ -340,19 +340,19 @@ namespace testing {
         // directory for any reason, including if the parent directory does not
         // exist. Not named "CreateDirectory" because that's a macro on Windows.
         bool FilePath::CreateFolder() const {
-#ifdef GTEST_OS_WINDOWS_MOBILE
+#ifdef HTEST_OS_WINDOWS_MOBILE
             FilePath removed_sep(this->RemoveTrailingPathSeparator());
             LPCWSTR unicode = String::AnsiToUtf16(removed_sep.c_str());
             int result = CreateDirectory(unicode, nullptr) ? 0 : -1;
             delete[] unicode;
-#elif defined(GTEST_OS_WINDOWS)
+#elif defined(HTEST_OS_WINDOWS)
             int result = _mkdir(pathname_.c_str());
-#elif defined(GTEST_OS_ESP8266) || defined(GTEST_OS_XTENSA) || defined(GTEST_OS_QURT) || defined(GTEST_OS_NXP_QN9090) || defined(GTEST_OS_NRF52)
+#elif defined(HTEST_OS_ESP8266) || defined(HTEST_OS_XTENSA) || defined(HTEST_OS_QURT) || defined(HTEST_OS_NXP_QN9090) || defined(HTEST_OS_NRF52)
             // do nothing
             int result = 0;
 #else
             int result = mkdir(pathname_.c_str(), 0777);
-#endif // GTEST_OS_WINDOWS_MOBILE
+#endif // HTEST_OS_WINDOWS_MOBILE
 
             if (result == -1) {
                 return this->DirectoryExists(); // An error is OK if the directory exists.
@@ -376,7 +376,7 @@ namespace testing {
             auto out = pathname_.begin();
 
             auto i = pathname_.cbegin();
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
             // UNC paths are treated specially
             if (pathname_.end() - i >= 3 && IsPathSeparator(*i) && IsPathSeparator(*(i + 1)) && !IsPathSeparator(*(i + 2))) {
                 *(out++) = kPathSeparator;
@@ -399,4 +399,4 @@ namespace testing {
     } // namespace internal
 } // namespace testing
 
-#endif // GTEST_HAS_FILE_SYSTEM
+#endif // HTEST_HAS_FILE_SYSTEM

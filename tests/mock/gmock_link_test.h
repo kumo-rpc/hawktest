@@ -116,7 +116,7 @@
 
 #include <hawktest/mock/hmock.h>
 
-#ifndef GTEST_OS_WINDOWS_MOBILE
+#ifndef HTEST_OS_WINDOWS_MOBILE
 #include <errno.h>
 #endif
 
@@ -181,11 +181,11 @@ using testing::WithArg;
 using testing::WithArgs;
 using testing::WithoutArgs;
 
-#ifndef GTEST_OS_WINDOWS_MOBILE
+#ifndef HTEST_OS_WINDOWS_MOBILE
 using testing::SetErrnoAndReturn;
 #endif
 
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
 using testing::Rethrow;
 using testing::Throw;
 #endif
@@ -307,7 +307,7 @@ TEST(LinkTest, TestSetArrayArgument) {
   mock.VoidFromString(&ch);
 }
 
-#ifndef GTEST_OS_WINDOWS_MOBILE
+#ifndef HTEST_OS_WINDOWS_MOBILE
 
 // Tests the linkage of the SetErrnoAndReturn action.
 TEST(LinkTest, TestSetErrnoAndReturn) {
@@ -319,7 +319,7 @@ TEST(LinkTest, TestSetErrnoAndReturn) {
   errno = saved_errno;
 }
 
-#endif  // !GTEST_OS_WINDOWS_MOBILE
+#endif  // !HTEST_OS_WINDOWS_MOBILE
 
 // Tests the linkage of the Invoke(function) and Invoke(object, method) actions.
 TEST(LinkTest, TestInvoke) {
@@ -338,12 +338,12 @@ TEST(LinkTest, TestInvokeWithoutArgs) {
   Mock mock;
   InvokeHelper test_invoke_helper;
 
-  GTEST_DISABLE_DEPRECATED_PUSH_()
+  HTEST_DISABLE_DEPRECATED_PUSH_()
   EXPECT_CALL(mock, VoidFromString(_))
       .WillOnce(&InvokeHelper::StaticVoidFromVoid)
       .WillOnce(
           InvokeWithoutArgs(&test_invoke_helper, &InvokeHelper::VoidFromVoid));
-  GTEST_DISABLE_DEPRECATED_POP_()
+  HTEST_DISABLE_DEPRECATED_POP_()
   mock.VoidFromString(nullptr);
   mock.VoidFromString(nullptr);
 }
@@ -411,7 +411,7 @@ TEST(LinkTest, TestIgnoreResult) {
   mock.VoidFromString(nullptr);
 }
 
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
 // Tests the linkage of the Throw action.
 TEST(LinkTest, TestThrow) {
   Mock mock;
@@ -427,14 +427,14 @@ TEST(LinkTest, TestRethrow) {
       .WillOnce(Rethrow(std::make_exception_ptr(42)));
   EXPECT_THROW(mock.VoidFromString(nullptr), int);
 }
-#endif  // GTEST_HAS_EXCEPTIONS
+#endif  // HTEST_HAS_EXCEPTIONS
 
 // The ACTION*() macros trigger warning C4100 (unreferenced formal
 // parameter) in MSVC with -W4.  Unfortunately they cannot be fixed in
 // the macro definition, as the warnings are generated when the macro
 // is expanded and macro expansion cannot contain #pragma.  Therefore
 // we suppress them here.
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
 
 // Tests the linkage of actions created using ACTION macro.
 namespace {
@@ -467,7 +467,7 @@ ACTION_P2(ReturnEqualsEitherOf, first, second) {
 }
 }  // namespace
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
 
 TEST(LinkTest, TestActionP2Macro) {
   Mock mock;

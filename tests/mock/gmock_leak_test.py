@@ -34,9 +34,9 @@
 from tests.mock import gmock_test_utils
 
 PROGRAM_PATH = gmock_test_utils.GetTestExecutablePath('gmock_leak_test_')
-TEST_WITH_EXPECT_CALL = [PROGRAM_PATH, '--gtest_filter=*ExpectCall*']
-TEST_WITH_ON_CALL = [PROGRAM_PATH, '--gtest_filter=*OnCall*']
-TEST_MULTIPLE_LEAKS = [PROGRAM_PATH, '--gtest_filter=*MultipleLeaked*']
+TEST_WITH_EXPECT_CALL = [PROGRAM_PATH, '--htest_filter=*ExpectCall*']
+TEST_WITH_ON_CALL = [PROGRAM_PATH, '--htest_filter=*OnCall*']
+TEST_MULTIPLE_LEAKS = [PROGRAM_PATH, '--htest_filter=*MultipleLeaked*']
 
 environ = gmock_test_utils.environ
 SetEnvVar = gmock_test_utils.SetEnvVar

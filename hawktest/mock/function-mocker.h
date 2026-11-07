@@ -514,6 +514,6 @@ using internal::FunctionMocker;
       (::testing::internal::identity_t<__VA_ARGS__>))
 
 #define GMOCK_MOCKER_(arity, constness, Method) \
-  GTEST_CONCAT_TOKEN_(gmock##constness##arity##_##Method##_, __LINE__)
+  HTEST_CONCAT_TOKEN_(gmock##constness##arity##_##Method##_, __LINE__)
 
 #endif  // GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_FUNCTION_MOCKER_H_

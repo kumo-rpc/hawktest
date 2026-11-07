@@ -431,7 +431,7 @@ stdout. This way, you can easily separate the two using redirection. For
 example:
 
 ```shell
-$ ./my_test > gtest_output.txt
+$ ./my_test > htest_output.txt
 ```
 
 ## Why should I prefer test fixtures over global variables?
@@ -613,7 +613,7 @@ better than commenting out the code or using `#if 0`, as disabled tests are
 still compiled (and thus won't rot).
 
 To include disabled tests in test execution, just invoke the test program with
-the `--gtest_also_run_disabled_tests` flag.
+the `--htest_also_run_disabled_tests` flag.
 
 ## Is it OK if I have two separate `TEST(Foo, Bar)` test methods defined in different namespaces?
 

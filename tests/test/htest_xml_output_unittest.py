@@ -41,19 +41,19 @@ from xml.dom import minidom
 from tests.test import htest_test_utils
 from tests.test import htest_xml_test_utils
 
-GTEST_FILTER_FLAG = '--gtest_filter'
-GTEST_LIST_TESTS_FLAG = '--gtest_list_tests'
-GTEST_OUTPUT_FLAG = '--gtest_output'
-GTEST_DEFAULT_OUTPUT_FILE = 'test_detail.xml'
-GTEST_PROGRAM_NAME = 'htest_xml_output_unittest_'
+HTEST_FILTER_FLAG = '--htest_filter'
+HTEST_LIST_TESTS_FLAG = '--htest_list_tests'
+HTEST_OUTPUT_FLAG = '--htest_output'
+HTEST_DEFAULT_OUTPUT_FILE = 'test_detail.xml'
+HTEST_PROGRAM_NAME = 'htest_xml_output_unittest_'
 
 # The flag indicating stacktraces are not supported
 NO_STACKTRACE_SUPPORT_FLAG = '--no_stacktrace_support'
 
 # The environment variables for test sharding.
-TOTAL_SHARDS_ENV_VAR = 'GTEST_TOTAL_SHARDS'
-SHARD_INDEX_ENV_VAR = 'GTEST_SHARD_INDEX'
-SHARD_STATUS_FILE_ENV_VAR = 'GTEST_SHARD_STATUS_FILE'
+TOTAL_SHARDS_ENV_VAR = 'HTEST_TOTAL_SHARDS'
+SHARD_INDEX_ENV_VAR = 'HTEST_SHARD_INDEX'
+SHARD_STATUS_FILE_ENV_VAR = 'HTEST_SHARD_STATUS_FILE'
 
 SUPPORTS_STACK_TRACES = NO_STACKTRACE_SUPPORT_FLAG not in sys.argv
 
@@ -279,17 +279,17 @@ Expected equality of these values:
     'stack_entity': STACK_TRACE_ENTITY_TEMPLATE,
 }
 
-GTEST_PROGRAM_PATH = htest_test_utils.GetTestExecutablePath(GTEST_PROGRAM_NAME)
+HTEST_PROGRAM_PATH = htest_test_utils.GetTestExecutablePath(HTEST_PROGRAM_NAME)
 
 SUPPORTS_TYPED_TESTS = (
     'TypedTest'
     in htest_test_utils.Subprocess(
-        [GTEST_PROGRAM_PATH, GTEST_LIST_TESTS_FLAG], capture_stderr=False
+        [HTEST_PROGRAM_PATH, HTEST_LIST_TESTS_FLAG], capture_stderr=False
     ).output
 )
 
 
-class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
+class HTestXMLOutputUnitTest(htest_xml_test_utils.HTestXMLTestCase):
   """Unit test for Google Test's XML output functionality."""
 
   # This test currently breaks on platforms that do not support typed and
@@ -302,7 +302,7 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
       Runs a test program that generates a non-empty XML output, and
       tests that the XML output is expected.
       """
-      self._TestXmlOutput(GTEST_PROGRAM_NAME, EXPECTED_NON_EMPTY_XML, 1)
+      self._TestXmlOutput(HTEST_PROGRAM_NAME, EXPECTED_NON_EMPTY_XML, 1)
 
   def testNoTestXmlOutput(self):
     """Verifies XML output for a Google Test binary without actual tests.
@@ -348,9 +348,9 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
     default name if no name is explicitly specified.
     """
     output_file = os.path.join(
-        htest_test_utils.GetTempDir(), GTEST_DEFAULT_OUTPUT_FILE
+        htest_test_utils.GetTempDir(), HTEST_DEFAULT_OUTPUT_FILE
     )
-    gtest_prog_path = htest_test_utils.GetTestExecutablePath(
+    htest_prog_path = htest_test_utils.GetTestExecutablePath(
         'ut_htest_no_test_unittest'
     )
     try:
@@ -361,7 +361,7 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
         raise
 
     p = htest_test_utils.Subprocess(
-        [gtest_prog_path, '%s=xml' % GTEST_OUTPUT_FLAG],
+        [htest_prog_path, '%s=xml' % HTEST_OUTPUT_FLAG],
         working_dir=htest_test_utils.GetTempDir(),
     )
     self.assertTrue(p.exited)
@@ -376,14 +376,14 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
     """
 
     xml_path = os.path.join(
-        htest_test_utils.GetTempDir(), GTEST_PROGRAM_NAME + 'out.xml'
+        htest_test_utils.GetTempDir(), HTEST_PROGRAM_NAME + 'out.xml'
     )
     if os.path.isfile(xml_path):
       os.remove(xml_path)
 
     command = [
-        GTEST_PROGRAM_PATH,
-        '%s=xml:%s' % (GTEST_OUTPUT_FLAG, xml_path),
+        HTEST_PROGRAM_PATH,
+        '%s=xml:%s' % (HTEST_OUTPUT_FLAG, xml_path),
         '--shut_down_xml',
     ]
     p = htest_test_utils.Subprocess(command)
@@ -391,7 +391,7 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
       # p.signal is available only if p.terminated_by_signal is True.
       self.assertFalse(
           p.terminated_by_signal,
-          '%s was killed by signal %d' % (GTEST_PROGRAM_NAME, p.signal),
+          '%s was killed by signal %d' % (HTEST_PROGRAM_NAME, p.signal),
       )
     else:
       self.assertTrue(p.exited)
@@ -412,10 +412,10 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
     """
 
     self._TestXmlOutput(
-        GTEST_PROGRAM_NAME,
+        HTEST_PROGRAM_NAME,
         EXPECTED_FILTERED_TEST_XML,
         0,
-        extra_args=['%s=SuccessfulTest.*' % GTEST_FILTER_FLAG],
+        extra_args=['%s=SuccessfulTest.*' % HTEST_FILTER_FLAG],
     )
 
   def testShardedTestXmlOutput(self):
@@ -426,33 +426,33 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
     """
 
     self._TestXmlOutput(
-        GTEST_PROGRAM_NAME,
+        HTEST_PROGRAM_NAME,
         EXPECTED_SHARDED_TEST_XML,
         0,
         extra_env={SHARD_INDEX_ENV_VAR: '0', TOTAL_SHARDS_ENV_VAR: '10'},
     )
 
   def _GetXmlOutput(
-      self, gtest_prog_name, extra_args, extra_env, expected_exit_code
+      self, htest_prog_name, extra_args, extra_env, expected_exit_code
   ):
-    """Returns the XML output generated by running the program gtest_prog_name.
+    """Returns the XML output generated by running the program htest_prog_name.
 
     Furthermore, the program's exit code must be expected_exit_code.
 
     Args:
-      gtest_prog_name: Program to run.
+      htest_prog_name: Program to run.
       extra_args: Optional arguments to pass to program.
       extra_env: Optional environment variables to set.
-      expected_exit_code: Expected exit code from running gtest_prog_name.
+      expected_exit_code: Expected exit code from running htest_prog_name.
     """
     xml_path = os.path.join(
-        htest_test_utils.GetTempDir(), gtest_prog_name + 'out.xml'
+        htest_test_utils.GetTempDir(), htest_prog_name + 'out.xml'
     )
-    gtest_prog_path = htest_test_utils.GetTestExecutablePath(gtest_prog_name)
+    htest_prog_path = htest_test_utils.GetTestExecutablePath(htest_prog_name)
 
     command = [
-        gtest_prog_path,
-        '%s=xml:%s' % (GTEST_OUTPUT_FLAG, xml_path),
+        htest_prog_path,
+        '%s=xml:%s' % (HTEST_OUTPUT_FLAG, xml_path),
     ] + extra_args
     environ_copy = os.environ.copy()
     if extra_env:
@@ -461,7 +461,7 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
 
     if p.terminated_by_signal:
       self.assertTrue(
-          False, '%s was killed by signal %d' % (gtest_prog_name, p.signal)
+          False, '%s was killed by signal %d' % (htest_prog_name, p.signal)
       )
     else:
       self.assertTrue(p.exited)
@@ -477,7 +477,7 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
 
   def _TestXmlOutput(
       self,
-      gtest_prog_name,
+      htest_prog_name,
       expected_xml,
       expected_exit_code,
       extra_args=None,
@@ -486,20 +486,20 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
     """Asserts that the XML document matches.
 
     Asserts that the XML document generated by running the program
-    gtest_prog_name matches expected_xml, a string containing another
+    htest_prog_name matches expected_xml, a string containing another
     XML document.  Furthermore, the program's exit code must be
     expected_exit_code.
 
     Args:
-      gtest_prog_name: Program to run.
+      htest_prog_name: Program to run.
       expected_xml: Path to XML document to match.
-      expected_exit_code: Expected exit code from running gtest_prog_name.
+      expected_exit_code: Expected exit code from running htest_prog_name.
       extra_args: Optional arguments to pass to program.
       extra_env: Optional environment variables to set.
     """
 
     actual = self._GetXmlOutput(
-        gtest_prog_name, extra_args or [], extra_env or {}, expected_exit_code
+        htest_prog_name, extra_args or [], extra_env or {}, expected_exit_code
     )
     expected = minidom.parseString(expected_xml)
     self.NormalizeXml(actual.documentElement)
@@ -509,5 +509,5 @@ class GTestXMLOutputUnitTest(htest_xml_test_utils.GTestXMLTestCase):
 
 
 if __name__ == '__main__':
-  os.environ['GTEST_STACK_TRACE_DEPTH'] = '1'
+  os.environ['HTEST_STACK_TRACE_DEPTH'] = '1'
   htest_test_utils.Main()

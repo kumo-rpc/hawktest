@@ -27,9 +27,9 @@
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-"""Tests Google Test's gtest skip in environment setup  behavior.
+"""Tests Google Test's htest skip in environment setup  behavior.
 
-This script invokes gtest_skip_in_environment_setup_test_ and verifies its
+This script invokes htest_skip_in_environment_setup_test_ and verifies its
 output.
 """
 
@@ -37,7 +37,7 @@ import re
 
 from tests.test import htest_test_utils
 
-# Path to the gtest_skip_in_environment_setup_test binary
+# Path to the htest_skip_in_environment_setup_test binary
 EXE_PATH = htest_test_utils.GetTestExecutablePath('ut_htest_skip_test')
 
 OUTPUT = htest_test_utils.Subprocess([EXE_PATH]).output

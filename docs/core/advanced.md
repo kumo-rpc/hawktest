@@ -275,24 +275,24 @@ partially-destructed state! You almost certainly want to `abort` or use
 ## Skipping test execution
 
 Related to the assertions `SUCCEED()` and `FAIL()`, you can prevent further test
-execution at runtime with the `GTEST_SKIP()` macro. This is useful when you need
+execution at runtime with the `HTEST_SKIP()` macro. This is useful when you need
 to check for preconditions of the system under test during runtime and skip
 tests in a meaningful way.
 
-`GTEST_SKIP()` can be used in individual test cases or in the `SetUp()` methods
+`HTEST_SKIP()` can be used in individual test cases or in the `SetUp()` methods
 of classes derived from either `::testing::Environment` or `::testing::Test`.
 For example:
 
 ```c++
 TEST(SkipTest, DoesSkip) {
-  GTEST_SKIP() << "Skipping single test";
+  HTEST_SKIP() << "Skipping single test";
   FAIL();  // Won't fail; it won't be executed
 }
 
 class SkipFixture : public ::testing::Test {
  protected:
   void SetUp() override {
-    GTEST_SKIP() << "Skipping all tests for this fixture";
+    HTEST_SKIP() << "Skipping all tests for this fixture";
   }
 };
 
@@ -302,7 +302,7 @@ TEST_F(SkipFixture, SkipsOneTest) {
 }
 ```
 
-As with assertion macros, you can stream a custom message into `GTEST_SKIP()`.
+As with assertion macros, you can stream a custom message into `HTEST_SKIP()`.
 
 ## Teaching GoogleTest How to Print Your Values
 
@@ -448,7 +448,7 @@ Expression | Meaning
 
 To help you determine which capability is available on your system, GoogleTest
 defines macros to govern which regular expression it is using. The macros are:
-`GTEST_USES_SIMPLE_RE=1` or `GTEST_USES_POSIX_RE=1`. If you want your death
+`HTEST_USES_SIMPLE_RE=1` or `HTEST_USES_POSIX_RE=1`. If you want your death
 tests to work in all cases, you can either `#if` on these macros or use the more
 limited syntax only.
 
@@ -593,7 +593,7 @@ The automated testing framework does not set the style flag. You can choose a
 particular style of death tests by setting the flag programmatically:
 
 ```c++
-GTEST_FLAG_SET(death_test_style, "threadsafe");
+HTEST_FLAG_SET(death_test_style, "threadsafe");
 ```
 
 You can do this in `main()` to set the style for all death tests in the binary,
@@ -603,12 +603,12 @@ restored afterwards, so you need not do that yourself. For example:
 ```c++
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
-  GTEST_FLAG_SET(death_test_style, "fast");
+  HTEST_FLAG_SET(death_test_style, "fast");
   return RUN_ALL_TESTS();
 }
 
 TEST(MyDeathTest, TestOne) {
-  GTEST_FLAG_SET(death_test_style, "threadsafe");
+  HTEST_FLAG_SET(death_test_style, "threadsafe");
   // This test is run in the "threadsafe" style:
   ASSERT_DEATH(ThisShouldDie(), "");
 }
@@ -1014,15 +1014,15 @@ Environment* AddGlobalTestEnvironment(Environment* env);
 
 Now, when `RUN_ALL_TESTS()` is invoked, it first calls the `SetUp()` method. The
 tests are then executed, provided that none of the environments have reported
-fatal failures and `GTEST_SKIP()` has not been invoked. Finally, `TearDown()` is
+fatal failures and `HTEST_SKIP()` has not been invoked. Finally, `TearDown()` is
 called.
 
 Note that `SetUp()` and `TearDown()` are only invoked if there is at least one
 test to be performed. Importantly, `TearDown()` is executed even if the test is
-not run due to a fatal failure or `GTEST_SKIP()`.
+not run due to a fatal failure or `HTEST_SKIP()`.
 
 Calling `SetUp()` and `TearDown()` for each iteration depends on the flag
-`gtest_recreate_environments_when_repeating`. `SetUp()` and `TearDown()` are
+`htest_recreate_environments_when_repeating`. `SetUp()` and `TearDown()` are
 called for each environment object when the object is recreated for each
 iteration. However, if test environments are not recreated for each iteration,
 `SetUp()` is called only on the first iteration, and `TearDown()` is called only
@@ -1036,7 +1036,7 @@ Note that GoogleTest takes ownership of the registered environment objects.
 Therefore **do not delete them** by yourself.
 
 You should call `AddGlobalTestEnvironment()` before `RUN_ALL_TESTS()` is called,
-probably in `main()`. If you use `gtest_main`, you need to call this before
+probably in `main()`. If you use `htest_main`, you need to call this before
 `main()` starts for it to take effect. One way to do this is to define a global
 variable like this:
 
@@ -1159,7 +1159,7 @@ instantiations. The tests from the instantiation above will have these names:
 *   `MeenyMinyMoe/FooTest.HasBlahBlah/1` for `"miny"`
 *   `MeenyMinyMoe/FooTest.HasBlahBlah/2` for `"moe"`
 
-You can use these names in [`--gtest_filter`](#running-a-subset-of-the-tests).
+You can use these names in [`--htest_filter`](#running-a-subset-of-the-tests).
 
 The following statement will instantiate all tests from `FooTest` again, each
 with parameter values `"cat"` and `"dog"` using the
@@ -1189,7 +1189,7 @@ where the list of test cases is dynamic and may be empty, then this check can be
 suppressed by tagging the test suite:
 
 ```c++
-GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(FooTest);
+HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(FooTest);
 ```
 
 You can see [sample7_unittest.cc] and [sample8_unittest.cc] for more examples.
@@ -1549,7 +1549,7 @@ In frameworks that report a failure by throwing an exception, you could catch
 the exception and assert on it. But GoogleTest doesn't use exceptions, so how do
 we test that a piece of code generates an expected failure?
 
-`"gtest/gtest-spi.h"` contains some constructs to do this.
+`"htest/htest-spi.h"` contains some constructs to do this.
 After #including this header, you can use
 
 ```c++
@@ -1832,7 +1832,7 @@ latter takes precedence.
 
 Sometimes it is necessary to list the available tests in a program before
 running them so that a filter may be applied if needed. Including the flag
-`--gtest_list_tests` overrides all other flags and lists tests in the following
+`--htest_list_tests` overrides all other flags and lists tests in the following
 format:
 
 ```none
@@ -1850,8 +1850,8 @@ corresponding environment variable for this flag.
 
 By default, a GoogleTest program runs all tests the user has defined. Sometimes,
 you want to run only a subset of the tests (e.g. for debugging or quickly
-verifying a change). If you set the `GTEST_FILTER` environment variable or the
-`--gtest_filter` flag to a filter string, GoogleTest will only run the tests
+verifying a change). If you set the `HTEST_FILTER` environment variable or the
+`--htest_filter` flag to a filter string, GoogleTest will only run the tests
 whose full names (in the form of `TestSuiteName.TestName`) match the filter.
 
 The format of a filter is a '`:`'-separated list of wildcard patterns (called
@@ -1867,16 +1867,16 @@ written as `'-NegativePatterns'`.
 For example:
 
 *   `./foo_test` Has no flag, and thus runs all its tests.
-*   `./foo_test --gtest_filter=*` Also runs everything, due to the single
+*   `./foo_test --htest_filter=*` Also runs everything, due to the single
     match-everything `*` value.
-*   `./foo_test --gtest_filter=FooTest.*` Runs everything in test suite
+*   `./foo_test --htest_filter=FooTest.*` Runs everything in test suite
     `FooTest` .
-*   `./foo_test --gtest_filter=*Null*:*Constructor*` Runs any test whose full
+*   `./foo_test --htest_filter=*Null*:*Constructor*` Runs any test whose full
     name contains either `"Null"` or `"Constructor"` .
-*   `./foo_test --gtest_filter=-*DeathTest.*` Runs all non-death tests.
-*   `./foo_test --gtest_filter=FooTest.*-FooTest.Bar` Runs everything in test
+*   `./foo_test --htest_filter=-*DeathTest.*` Runs all non-death tests.
+*   `./foo_test --htest_filter=FooTest.*-FooTest.Bar` Runs everything in test
     suite `FooTest` except `FooTest.Bar`.
-*   `./foo_test --gtest_filter=FooTest.*:BarTest.*-FooTest.Bar:BarTest.Foo` Runs
+*   `./foo_test --htest_filter=FooTest.*:BarTest.*-FooTest.Bar:BarTest.Foo` Runs
     everything in test suite `FooTest` except `FooTest.Bar` and everything in
     test suite `BarTest` except `BarTest.Foo`.
 
@@ -1885,7 +1885,7 @@ For example:
 By default, a GoogleTest program runs all tests the user has defined. In some
 cases (e.g. iterative test development & execution) it may be desirable stop
 test execution upon first failure (trading improved latency for completeness).
-If `GTEST_FAIL_FAST` environment variable or `--gtest_fail_fast` flag is set,
+If `HTEST_FAIL_FAST` environment variable or `--htest_fail_fast` flag is set,
 the test runner will stop execution as soon as the first test failure is found.
 
 #### Temporarily Disabling Tests
@@ -1925,9 +1925,9 @@ improving your test quality.
 #### Temporarily Enabling Disabled Tests
 
 To include disabled tests in test execution, just invoke the test program with
-the `--gtest_also_run_disabled_tests` flag or set the
-`GTEST_ALSO_RUN_DISABLED_TESTS` environment variable to a value other than `0`.
-You can combine this with the `--gtest_filter` flag to further select which
+the `--htest_also_run_disabled_tests` flag or set the
+`HTEST_ALSO_RUN_DISABLED_TESTS` environment variable to a value other than `0`.
+You can combine this with the `--htest_filter` flag to further select which
 disabled tests to run.
 
 ### Enforcing Having At Least One Test Case
@@ -1937,7 +1937,7 @@ case linked in. This can happen, for example, when you put test case definitions
 in a library and the library is not marked as "always link".
 
 To catch such mistakes, run the test program with the
-`--gtest_fail_if_no_test_linked` flag or set the `GTEST_FAIL_IF_NO_TEST_LINKED`
+`--htest_fail_if_no_test_linked` flag or set the `HTEST_FAIL_IF_NO_TEST_LINKED`
 environment variable to a value other than `0`. Now the program will fail if no
 test case is linked in.
 
@@ -1947,17 +1947,17 @@ this check. In particular, even a disabled test case suffices.
 ### Enforcing Running At Least One Test Case
 
 In addition to enforcing that tests are defined in the binary with
-`--gtest_fail_if_no_test_linked`, it is also possible to enforce that a test
+`--htest_fail_if_no_test_linked`, it is also possible to enforce that a test
 case was actually executed to ensure that resources are not consumed by tests
 that do nothing.
 
 To catch such optimization opportunities, run the test program with the
-`--gtest_fail_if_no_test_selected` flag or set the
-`GTEST_FAIL_IF_NO_TEST_SELECTED` environment variable to a value other than `0`.
+`--htest_fail_if_no_test_selected` flag or set the
+`HTEST_FAIL_IF_NO_TEST_SELECTED` environment variable to a value other than `0`.
 
 A test is considered selected if it begins to run, even if it is later skipped
-via `GTEST_SKIP`. Thus, `DISABLED` tests do not count as selected and neither do
-tests that are not matched by `--gtest_filter`.
+via `HTEST_SKIP`. Thus, `DISABLED` tests do not count as selected and neither do
+tests that are not matched by `--htest_filter`.
 
 ### Repeating the Tests
 
@@ -1965,24 +1965,24 @@ Once in a while you'll run into a test whose result is hit-or-miss. Perhaps it
 will fail only 1% of the time, making it rather hard to reproduce the bug under
 a debugger. This can be a major source of frustration.
 
-The `--gtest_repeat` flag allows you to repeat all (or selected) test methods in
+The `--htest_repeat` flag allows you to repeat all (or selected) test methods in
 a program many times. Hopefully, a flaky test will eventually fail and give you
 a chance to debug. Here's how to use it:
 
 ```none
-$ foo_test --gtest_repeat=1000
+$ foo_test --htest_repeat=1000
 Repeat foo_test 1000 times and don't stop at failures.
 
-$ foo_test --gtest_repeat=-1
+$ foo_test --htest_repeat=-1
 A negative count means repeating forever.
 
-$ foo_test --gtest_repeat=1000 --gtest_break_on_failure
+$ foo_test --htest_repeat=1000 --htest_break_on_failure
 Repeat foo_test 1000 times, stopping at the first failure.  This
 is especially useful when running under a debugger: when the test
 fails, it will drop into the debugger and you can then inspect
 variables and stacks.
 
-$ foo_test --gtest_repeat=1000 --gtest_filter=FooBar.*
+$ foo_test --htest_repeat=1000 --htest_filter=FooBar.*
 Repeat the tests whose name matches the filter 1000 times.
 ```
 
@@ -1990,27 +1990,27 @@ If your test program contains
 [global set-up/tear-down](#global-set-up-and-tear-down) code, it will be
 repeated in each iteration as well, as the flakiness may be in it. To avoid
 repeating global set-up/tear-down, specify
-`--gtest_recreate_environments_when_repeating=false`{.nowrap}.
+`--htest_recreate_environments_when_repeating=false`{.nowrap}.
 
-You can also specify the repeat count by setting the `GTEST_REPEAT` environment
+You can also specify the repeat count by setting the `HTEST_REPEAT` environment
 variable.
 
 ### Shuffling the Tests
 
-You can specify the `--gtest_shuffle` flag (or set the `GTEST_SHUFFLE`
+You can specify the `--htest_shuffle` flag (or set the `HTEST_SHUFFLE`
 environment variable to `1`) to run the tests in a program in a random order.
 This helps to reveal bad dependencies between tests.
 
 By default, GoogleTest uses a random seed calculated from the current time.
 Therefore you'll get a different order every time. The console output includes
 the random seed value, such that you can reproduce an order-related test failure
-later. To specify the random seed explicitly, use the `--gtest_random_seed=SEED`
-flag (or set the `GTEST_RANDOM_SEED` environment variable), where `SEED` is an
+later. To specify the random seed explicitly, use the `--htest_random_seed=SEED`
+flag (or set the `HTEST_RANDOM_SEED` environment variable), where `SEED` is an
 integer in the range [0, 99999]. The seed value 0 is special: it tells
 GoogleTest to do the default behavior of calculating the seed from the current
 time.
 
-If you combine this with `--gtest_repeat=N`, GoogleTest will pick a different
+If you combine this with `--htest_repeat=N`, GoogleTest will pick a different
 random seed and re-shuffle the tests in each iteration.
 
 ### Distributing Test Functions to Multiple Machines
@@ -2023,11 +2023,11 @@ GoogleTest is compatible with test sharding. To take advantage of this feature,
 your test runner (not part of GoogleTest) needs to do the following:
 
 1.  Allocate a number of machines (shards) to run the tests.
-1.  On each shard, set the `GTEST_TOTAL_SHARDS` environment variable to the total
+1.  On each shard, set the `HTEST_TOTAL_SHARDS` environment variable to the total
     number of shards. It must be the same for all shards.
-1.  On each shard, set the `GTEST_SHARD_INDEX` environment variable to the index
+1.  On each shard, set the `HTEST_SHARD_INDEX` environment variable to the index
     of the shard. Different shards must be assigned different indices, which
-    must be in the range `[0, GTEST_TOTAL_SHARDS - 1]`.
+    must be in the range `[0, HTEST_TOTAL_SHARDS - 1]`.
 1.  Run the same test program on all shards. When GoogleTest sees the above two
     environment variables, it will select a subset of the test functions to run.
     Across all shards, each test function in the program will be run exactly
@@ -2036,7 +2036,7 @@ your test runner (not part of GoogleTest) needs to do the following:
 
 Your project may have tests that were written without GoogleTest and thus don't
 understand this protocol. In order for your test runner to figure out which test
-supports sharding, it can set the environment variable `GTEST_SHARD_STATUS_FILE`
+supports sharding, it can set the environment variable `HTEST_SHARD_STATUS_FILE`
 to a non-existent file path. If a test program supports sharding, it will create
 this file to acknowledge that fact; otherwise it will not create it. The actual
 contents of the file are not important at this time, although we may put some
@@ -2054,8 +2054,8 @@ TEST(B, Z)
 ```
 
 Suppose you have 3 machines at your disposal. To run the test functions in
-parallel, you would set `GTEST_TOTAL_SHARDS` to 3 on all machines, and set
-`GTEST_SHARD_INDEX` to 0, 1, and 2 on the machines respectively. Then you would
+parallel, you would set `HTEST_TOTAL_SHARDS` to 3 on all machines, and set
+`HTEST_SHARD_INDEX` to 0, 1, and 2 on the machines respectively. Then you would
 run the same `foo_test` on each machine.
 
 GoogleTest reserves the right to change how the work is distributed across the
@@ -2092,7 +2092,7 @@ important information:
  2 FAILED TESTS
 </pre>
 
-You can set the `GTEST_COLOR` environment variable or the `--gtest_color`
+You can set the `HTEST_COLOR` environment variable or the `--htest_color`
 command line flag to `yes`, `no`, or `auto` (the default) to enable colors,
 disable colors, or let GoogleTest decide. When the value is `auto`, GoogleTest
 will use colors if and only if the output goes to a terminal and (on non-Windows
@@ -2102,13 +2102,13 @@ platforms) the `TERM` environment variable is set to `xterm` or `xterm-color`.
 
 By default, GoogleTest prints 1 line of output for each test, indicating if it
 passed or failed. To show only test failures, run the test program with
-`--gtest_brief=1`, or set the GTEST_BRIEF environment variable to `1`.
+`--htest_brief=1`, or set the HTEST_BRIEF environment variable to `1`.
 
 #### Suppressing the Elapsed Time
 
 By default, GoogleTest prints the time it takes to run each test. To disable
-that, run the test program with the `--gtest_print_time=0` command line flag, or
-set the GTEST_PRINT_TIME environment variable to `0`.
+that, run the test program with the `--htest_print_time=0` command line flag, or
+set the HTEST_PRINT_TIME environment variable to `0`.
 
 #### Suppressing UTF-8 Text Output
 
@@ -2116,7 +2116,7 @@ In case of assertion failures, GoogleTest prints expected and actual values of
 type `string` both as hex-encoded strings as well as in readable UTF-8 text if
 they contain valid non-ASCII UTF-8 characters. If you want to suppress the UTF-8
 text because, for example, you don't have an UTF-8 compatible output medium, run
-the test program with `--gtest_print_utf8=0` or set the `GTEST_PRINT_UTF8`
+the test program with `--htest_print_utf8=0` or set the `HTEST_PRINT_UTF8`
 environment variable to `0`.
 
 #### Generating an XML Report
@@ -2125,8 +2125,8 @@ GoogleTest can emit a detailed XML report to a file in addition to its normal
 textual output. The report contains the duration of each test, and thus can help
 you identify slow tests.
 
-To generate the XML report, set the `GTEST_OUTPUT` environment variable or the
-`--gtest_output` flag to the string `"xml:path_to_output_file"`, which will
+To generate the XML report, set the `HTEST_OUTPUT` environment variable or the
+`--htest_output` flag to the string `"xml:path_to_output_file"`, which will
 create the file at the given location. You can also just use the string `"xml"`,
 in which case the output can be found in the `test_detail.xml` file in the
 current directory.
@@ -2207,8 +2207,8 @@ Things to note:
 #### Generating a JSON Report
 
 GoogleTest can also emit a JSON report as an alternative format to XML. To
-generate the JSON report, set the `GTEST_OUTPUT` environment variable or the
-`--gtest_output` flag to the string `"json:path_to_output_file"`, which will
+generate the JSON report, set the `HTEST_OUTPUT` environment variable or the
+`--htest_output` flag to the string `"json:path_to_output_file"`, which will
 create the file at the given location. You can also just use the string
 `"json"`, in which case the output can be found in the `test_detail.json` file
 in the current directory.
@@ -2433,8 +2433,8 @@ When running test programs under a debugger, it's very convenient if the
 debugger can catch an assertion failure and automatically drop into interactive
 mode. GoogleTest's *break-on-failure* mode supports this behavior.
 
-To enable it, set the `GTEST_BREAK_ON_FAILURE` environment variable to a value
-other than `0`. Alternatively, you can use the `--gtest_break_on_failure`
+To enable it, set the `HTEST_BREAK_ON_FAILURE` environment variable to a value
+other than `0`. Alternatively, you can use the `--htest_break_on_failure`
 command line flag.
 
 #### Disabling Catching Test-Thrown Exceptions
@@ -2448,8 +2448,8 @@ you to run the tests automatically.
 
 When debugging the test failures, however, you may instead want the exceptions
 to be handled by the debugger, such that you can examine the call stack when an
-exception is thrown. To achieve that, set the `GTEST_CATCH_EXCEPTIONS`
-environment variable to `0`, or use the `--gtest_catch_exceptions=0` flag when
+exception is thrown. To achieve that, set the `HTEST_CATCH_EXCEPTIONS`
+environment variable to `0`, or use the `--htest_catch_exceptions=0` flag when
 running the tests.
 
 ### Sanitizer Integration

@@ -36,7 +36,7 @@
 
 class SetupEnvironment : public testing::Environment {
  public:
-  void SetUp() override { GTEST_SKIP() << "Skipping the entire environment"; }
+  void SetUp() override { HTEST_SKIP() << "Skipping the entire environment"; }
 };
 
 TEST(Test, AlwaysFails) { EXPECT_EQ(true, false); }

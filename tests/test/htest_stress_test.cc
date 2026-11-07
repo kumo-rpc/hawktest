@@ -38,7 +38,7 @@
 #include <hawktest/test/htest.h>
 #include <hawktest/common/internal-inl.h>
 
-#ifdef GTEST_IS_THREADSAFE
+#ifdef HTEST_IS_THREADSAFE
 
 namespace testing {
 namespace {
@@ -49,7 +49,7 @@ using internal::ThreadWithParam;
 
 // In order to run tests in this file, for platforms where Google Test is
 // thread safe, implement ThreadWithParam. See the description of its API
-// in gtest-port.h, where it is defined for already supported platforms.
+// in htest-port.h, where it is defined for already supported platforms.
 
 // How many threads to create?
 const int kThreadCount = 50;
@@ -79,7 +79,7 @@ void ExpectKeyAndValueWereRecordedForId(
 // Calls a large number of Google Test assertions, where exactly one of them
 // will fail.
 void ManyAsserts(int id) {
-  GTEST_LOG_(INFO) << "Thread #" << id << " running...";
+  HTEST_LOG_(INFO) << "Thread #" << id << " running...";
 
   SCOPED_TRACE(Message() << "Thread #" << id);
 
@@ -109,7 +109,7 @@ void ManyAsserts(int id) {
 void CheckTestFailureCount(int expected_failures) {
   const TestInfo* const info = UnitTest::GetInstance()->current_test_info();
   const TestResult* const result = info->result();
-  GTEST_CHECK_(expected_failures == result->total_part_count())
+  HTEST_CHECK_(expected_failures == result->total_part_count())
       << "Logged " << result->total_part_count() << " failures "
       << " vs. " << expected_failures << " expected";
 }
@@ -228,7 +228,7 @@ int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
 
   const int result = RUN_ALL_TESTS();  // Expected to fail.
-  GTEST_CHECK_(result == 1) << "RUN_ALL_TESTS() did not fail as expected";
+  HTEST_CHECK_(result == 1) << "RUN_ALL_TESTS() did not fail as expected";
 
   printf("\nPASS\n");
   return 0;
@@ -242,4 +242,4 @@ int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-#endif  // GTEST_IS_THREADSAFE
+#endif  // HTEST_IS_THREADSAFE

@@ -30,7 +30,7 @@
 // Unit test for Google Test XML output.
 //
 // A user can specify XML output in a Google Test program to run via
-// either the GTEST_OUTPUT environment variable or the --gtest_output
+// either the HTEST_OUTPUT environment variable or the --htest_output
 // flag.  This is used for testing such functionality.
 //
 // This program will be invoked from a Python unit test.  Don't run it
@@ -73,16 +73,16 @@ class SkippedTest : public Test {
 };
 
 TEST_F(SkippedTest, Skipped) {
-  GTEST_SKIP();
+  HTEST_SKIP();
 }
 
 TEST_F(SkippedTest, SkippedWithMessage) {
-  GTEST_SKIP() << "It is good practice to tell why you skip a test.";
+  HTEST_SKIP() << "It is good practice to tell why you skip a test.";
 }
 
 TEST_F(SkippedTest, SkippedAfterFailure) {
   EXPECT_EQ(1, 2);
-  GTEST_SKIP() << "It is good practice to tell why you skip a test.";
+  HTEST_SKIP() << "It is good practice to tell why you skip a test.";
 }
 
 TEST(MixedResultTest, Succeeds) {

@@ -91,7 +91,7 @@ docs/               # AI.md, this file, upgrade guides
 | **C++ compile options** (from options + deps → `KMCMAKE_CXX_OPTIONS`) | `cmake/*_cxx_config.cmake` | scattered `CXXOPTS` hard-codes, ad-hoc `add_definitions`, per-target flag lists in main sources |
 
 - Main product targets under `<project>/` only **consume** `KMCMAKE_DEPS_LINK` / `KMCMAKE_CXX_OPTIONS`; they do not introduce new packages or global flag policy
-- **Allowed exception:** `tests/CMakeLists.txt` and `benchmark/CMakeLists.txt` may `find_package` / link test-only or benchmark-only deps (e.g. gtest, benchmark) and set local `CXXOPTS` / `LINKS` for those targets
+- **Allowed exception:** `tests/CMakeLists.txt` and `benchmark/CMakeLists.txt` may `find_package` / link test-only or benchmark-only deps (e.g. htest, benchmark) and set local `CXXOPTS` / `LINKS` for those targets
 - `examples/` follows the same spirit as the main tree: prefer shared deps/flags from `cmake/`; do not grow a second dependency graph there
 
 ## CMake Targets
@@ -109,7 +109,7 @@ Three channels (user chooses explicitly; no auto-detection). **Wire them only in
 | Channel | How |
 |---------|-----|
 | System | `find_package` in `cmake/*_deps.cmake`; presets `default` / `test` / `test-bm` / `all` |
-| CPM | `--preset=cpm*` (`KMCMAKE_USE_CPM=ON` + `cmake/*_cpm.cmake`). Small projects, or test-only deps (`gtest` / `doctest`) that are not part of the deployed product. |
+| CPM | `--preset=cpm*` (`KMCMAKE_USE_CPM=ON` + `cmake/*_cpm.cmake`). Small projects, or test-only deps (`htest` / `doctest`) that are not part of the deployed product. |
 | vcpkg | `--preset=vcpkg*` (`VCPKG_ROOT` → `vcpkg.cmake`). Large-scale dependency management. |
 
 Unsuffixed names are Ninja (`build/`); `-make` is Unix Makefiles (`build-make/`). `default` / `default-make` set no cache variables. Unsuffixed `cpm` / `vcpkg` build libraries only.

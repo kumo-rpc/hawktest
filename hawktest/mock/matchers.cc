@@ -49,7 +49,7 @@ namespace internal {
 // 'negation' is false; otherwise returns the description of the
 // negation of the matcher.  'param_values' contains a list of strings
 // that are the print-out of the matcher's parameters.
-GTEST_API_ std::string FormatMatcherDescription(
+HTEST_API_ std::string FormatMatcherDescription(
     bool negation, const char* matcher_name,
     const std::vector<const char*>& param_names, const Strings& param_values) {
   std::string result = ConvertIdentifierNameToWords(matcher_name);
@@ -147,7 +147,7 @@ class MaxBipartiteMatchState {
     for (size_t ilhs = 0; ilhs < graph_->LhsSize(); ++ilhs) {
       // Reset the path-marking vector and try to find a path from
       // source to sink starting at the left_[ilhs] node.
-      GTEST_CHECK_(left_[ilhs] == kUnused)
+      HTEST_CHECK_(left_[ilhs] == kUnused)
           << "ilhs: " << ilhs << ", left_[ilhs]: " << left_[ilhs];
       // 'seen' initialized to 'graph_->RhsSize()' copies of 0.
       seen.assign(graph_->RhsSize(), 0);
@@ -225,7 +225,7 @@ class MaxBipartiteMatchState {
 
 const size_t MaxBipartiteMatchState::kUnused;
 
-GTEST_API_ ElementMatcherPairs FindMaxBipartiteMatching(const MatchMatrix& g) {
+HTEST_API_ ElementMatcherPairs FindMaxBipartiteMatching(const MatchMatrix& g) {
   return MaxBipartiteMatchState(g).Compute();
 }
 

@@ -32,9 +32,9 @@
 #include <hawktest/mock/hmock.h>
 #include <hawktest/test/htest.h>
 
-#if defined(GTEST_OS_ESP8266) || defined(GTEST_OS_ESP32) || \
-    (defined(GTEST_OS_NRF52) && defined(ARDUINO))
-#ifdef GTEST_OS_ESP8266
+#if defined(HTEST_OS_ESP8266) || defined(HTEST_OS_ESP32) || \
+    (defined(HTEST_OS_NRF52) && defined(ARDUINO))
+#ifdef HTEST_OS_ESP8266
 extern "C" {
 #endif
 void setup() {
@@ -44,7 +44,7 @@ void setup() {
   testing::InitGoogleMock();
 }
 void loop() { RUN_ALL_TESTS(); }
-#ifdef GTEST_OS_ESP8266
+#ifdef HTEST_OS_ESP8266
 }
 #endif
 
@@ -56,13 +56,13 @@ void loop() { RUN_ALL_TESTS(); }
 // Windows. See the following link to track the current status of this bug:
 // https://web.archive.org/web/20170912203238/connect.microsoft.com/VisualStudio/feedback/details/394464/wmain-link-error-in-the-static-library
 // // NOLINT
-#ifdef GTEST_OS_WINDOWS_MOBILE
+#ifdef HTEST_OS_WINDOWS_MOBILE
 #include <tchar.h>  // NOLINT
 
-GTEST_API_ int _tmain(int argc, TCHAR** argv) {
+HTEST_API_ int _tmain(int argc, TCHAR** argv) {
 #else
-GTEST_API_ int main(int argc, char** argv) {
-#endif  // GTEST_OS_WINDOWS_MOBILE
+HTEST_API_ int main(int argc, char** argv) {
+#endif  // HTEST_OS_WINDOWS_MOBILE
   std::cout << "Running main() from gmock_main.cc\n";
   // Since Google Mock depends on Google Test, InitGoogleMock() is
   // also responsible for initializing Google Test.  Therefore there's

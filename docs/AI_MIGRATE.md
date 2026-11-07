@@ -45,7 +45,7 @@ Do not add new `option()` in `<project>/CMakeLists.txt` or in `kmcmake/`.
 | FetchContent / CPM | `KMCMAKE_USE_CPM=ON` + `*_cpm.cmake` (small / test-only deps). Large graphs: vcpkg preset |
 | vcpkg toolchain | `--preset=vcpkg*` — not `find_package` auto-detect of `VCPKG_ROOT` |
 
-`*_deps.cmake` may `if (KMCMAKE_BUILD_TEST)` / `if (FOO_WITH_X)` before `find_package`. Do not `find_package` in `<project>/CMakeLists.txt`. Test-only gtest may stay in `tests/CMakeLists.txt`.
+`*_deps.cmake` may `if (KMCMAKE_BUILD_TEST)` / `if (FOO_WITH_X)` before `find_package`. Do not `find_package` in `<project>/CMakeLists.txt`. Test-only htest may stay in `tests/CMakeLists.txt`.
 
 ## Flags follow options + deps → `cmake/*_cxx_config.cmake`
 

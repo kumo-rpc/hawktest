@@ -27,8 +27,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// gtest_xml_outfile1_test_ writes some xml via TestProperty used by
-// gtest_xml_outfiles_test.py
+// htest_xml_outfile1_test_ writes some xml via TestProperty used by
+// htest_xml_outfiles_test.py
 
 #include <hawktest/test/htest.h>
 

@@ -50,7 +50,7 @@ from tests.mock import gmock_test_utils
 GENGOLDEN_FLAG = '--gengolden'
 
 PROGRAM_PATH = gmock_test_utils.GetTestExecutablePath('gmock_output_test_')
-COMMAND = [PROGRAM_PATH, '--gtest_stack_trace_depth=0', '--gtest_print_time=0']
+COMMAND = [PROGRAM_PATH, '--htest_stack_trace_depth=0', '--htest_print_time=0']
 GOLDEN_NAME = 'gmock_output_test_golden.txt'
 GOLDEN_PATH = os.path.join(gmock_test_utils.GetSourceDir(), GOLDEN_NAME)
 
@@ -64,7 +64,7 @@ def ToUnixLineEnding(s):
 def RemoveReportHeaderAndFooter(output):
   """Removes Google Test result report's header and footer from the output."""
 
-  output = re.sub(r'.*gtest_main.*\n', '', output)
+  output = re.sub(r'.*htest_main.*\n', '', output)
   output = re.sub(r'\[.*\d+ tests.*\n', '', output)
   output = re.sub(r'\[.* test environment .*\n', '', output)
   output = re.sub(r'\[=+\] \d+ tests .* ran.*', '', output)
@@ -148,7 +148,7 @@ def GetNormalizedCommandOutputAndLeakyTests(cmd):
   """
 
   # Disables exception pop-ups on Windows.
-  os.environ['GTEST_CATCH_EXCEPTIONS'] = '1'
+  os.environ['HTEST_CATCH_EXCEPTIONS'] = '1'
   return GetNormalizedOutputAndLeakyTests(GetShellCommandOutput(cmd))
 
 

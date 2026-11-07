@@ -27,16 +27,16 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Unit test utilities for gtest_xml_output"""
+"""Unit test utilities for htest_xml_output"""
 
 import re
 from xml.dom import minidom, Node
 from tests.test import htest_test_utils
 
-GTEST_DEFAULT_OUTPUT_FILE = 'test_detail.xml'
+HTEST_DEFAULT_OUTPUT_FILE = 'test_detail.xml'
 
 
-class GTestXMLTestCase(htest_test_utils.TestCase):
+class HTestXMLTestCase(htest_test_utils.TestCase):
   """Base class for tests of Google Test's XML output functionality."""
 
   def AssertEquivalentNodes(self, expected_node, actual_node):

@@ -36,9 +36,9 @@ from xml.dom import minidom, Node
 from tests.test import htest_test_utils
 from tests.test import htest_xml_test_utils
 
-GTEST_OUTPUT_SUBDIR = "xml_outfiles"
-GTEST_OUTPUT_1_TEST = "htest_xml_outfile1_test_"
-GTEST_OUTPUT_2_TEST = "htest_xml_outfile2_test_"
+HTEST_OUTPUT_SUBDIR = "xml_outfiles"
+HTEST_OUTPUT_1_TEST = "htest_xml_outfile1_test_"
+HTEST_OUTPUT_2_TEST = "htest_xml_outfile2_test_"
 
 EXPECTED_XML_1 = """<?xml version="1.0" encoding="UTF-8"?>
 <testsuites tests="1" failures="0" disabled="0" errors="0" time="*" timestamp="*" name="AllTests">
@@ -78,7 +78,7 @@ EXPECTED_XML_2 = """<?xml version="1.0" encoding="UTF-8"?>
 """
 
 
-class GTestXMLOutFilesTest(htest_xml_test_utils.GTestXMLTestCase):
+class HTestXMLOutFilesTest(htest_xml_test_utils.HTestXMLTestCase):
   """Unit test for Google Test's XML output functionality."""
 
   def setUp(self):
@@ -86,7 +86,7 @@ class GTestXMLOutFilesTest(htest_xml_test_utils.GTestXMLTestCase):
     # telling Google Test to create an output directory instead of a single file
     # for xml output.
     self.output_dir_ = os.path.join(
-        htest_test_utils.GetTempDir(), GTEST_OUTPUT_SUBDIR, ""
+        htest_test_utils.GetTempDir(), HTEST_OUTPUT_SUBDIR, ""
     )
     self.DeleteFilesAndDir()
 
@@ -95,11 +95,11 @@ class GTestXMLOutFilesTest(htest_xml_test_utils.GTestXMLTestCase):
 
   def DeleteFilesAndDir(self):
     try:
-      os.remove(os.path.join(self.output_dir_, GTEST_OUTPUT_1_TEST + ".xml"))
+      os.remove(os.path.join(self.output_dir_, HTEST_OUTPUT_1_TEST + ".xml"))
     except os.error:
       pass
     try:
-      os.remove(os.path.join(self.output_dir_, GTEST_OUTPUT_2_TEST + ".xml"))
+      os.remove(os.path.join(self.output_dir_, HTEST_OUTPUT_2_TEST + ".xml"))
     except os.error:
       pass
     try:
@@ -108,14 +108,14 @@ class GTestXMLOutFilesTest(htest_xml_test_utils.GTestXMLTestCase):
       pass
 
   def testOutfile1(self):
-    self._TestOutFile(GTEST_OUTPUT_1_TEST, EXPECTED_XML_1)
+    self._TestOutFile(HTEST_OUTPUT_1_TEST, EXPECTED_XML_1)
 
   def testOutfile2(self):
-    self._TestOutFile(GTEST_OUTPUT_2_TEST, EXPECTED_XML_2)
+    self._TestOutFile(HTEST_OUTPUT_2_TEST, EXPECTED_XML_2)
 
   def _TestOutFile(self, test_name, expected_xml):
-    gtest_prog_path = htest_test_utils.GetTestExecutablePath(test_name)
-    command = [gtest_prog_path, "--gtest_output=xml:%s" % self.output_dir_]
+    htest_prog_path = htest_test_utils.GetTestExecutablePath(test_name)
+    command = [htest_prog_path, "--htest_output=xml:%s" % self.output_dir_]
     p = htest_test_utils.Subprocess(
         command, working_dir=htest_test_utils.GetTempDir()
     )
@@ -143,5 +143,5 @@ class GTestXMLOutFilesTest(htest_xml_test_utils.GTestXMLTestCase):
 
 
 if __name__ == "__main__":
-  os.environ["GTEST_STACK_TRACE_DEPTH"] = "0"
+  os.environ["HTEST_STACK_TRACE_DEPTH"] = "0"
   htest_test_utils.Main()

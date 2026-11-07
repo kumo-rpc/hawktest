@@ -225,7 +225,7 @@ Here's an example:
 ```cpp
 #include "path/to/mock-turtle.h"
 #include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include <htest/htest.h>
 
 using ::testing::AtLeast;                         // #1
 
@@ -259,7 +259,7 @@ the line number to jump right to the failed expectation.
 **Tip 2:** If your mock objects are never deleted, the final verification won't
 happen. Therefore it's a good idea to turn on the heap checker in your tests
 when you allocate mocks on the heap. You get that automatically if you use the
-`gtest_main` library already.
+`htest_main` library already.
 
 ###### Expectation Ordering
 

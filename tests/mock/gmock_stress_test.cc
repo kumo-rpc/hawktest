@@ -38,7 +38,7 @@
 namespace testing {
 namespace {
 
-// From gtest-port.h.
+// From htest-port.h.
 using ::testing::internal::ThreadWithParam;
 
 // The maximum number of test threads (not including helper threads)
@@ -198,7 +198,7 @@ TEST(StressTest, CanUseGMockWithThreads) {
     // Creates a thread to run the test function.
     threads[i] = new ThreadWithParam<Dummy>(test_routines[i % kRoutines],
                                             Dummy(), nullptr);
-    GTEST_LOG_(INFO) << "Thread #" << i << " running . . .";
+    HTEST_LOG_(INFO) << "Thread #" << i << " running . . .";
   }
 
   // At this point, we have many threads running.
@@ -210,7 +210,7 @@ TEST(StressTest, CanUseGMockWithThreads) {
   const TestInfo* const info = UnitTest::GetInstance()->current_test_info();
   const TestResult& result = *info->result();
   const int kExpectedFailures = (3 * kRepeat + 1) * kCopiesOfEachRoutine;
-  GTEST_CHECK_(kExpectedFailures == result.total_part_count())
+  HTEST_CHECK_(kExpectedFailures == result.total_part_count())
       << "Expected " << kExpectedFailures << " failures, but got "
       << result.total_part_count();
 }
@@ -222,7 +222,7 @@ int main(int argc, char** argv) {
   testing::InitGoogleMock(&argc, argv);
 
   const int exit_code = RUN_ALL_TESTS();  // Expected to fail.
-  GTEST_CHECK_(exit_code != 0) << "RUN_ALL_TESTS() did not fail as expected";
+  HTEST_CHECK_(exit_code != 0) << "RUN_ALL_TESTS() did not fail as expected";
 
   printf("\nPASS\n");
   return 0;

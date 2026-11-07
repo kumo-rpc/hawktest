@@ -27,12 +27,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_TEST_PART_H_
-#define GOOGLETEST_INCLUDE_GTEST_GTEST_TEST_PART_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_HTEST_TEST_PART_H_
+#define GOOGLETEST_INCLUDE_HTEST_HTEST_TEST_PART_H_
 
 #include <iosfwd>
 #include <ostream>
@@ -43,7 +43,7 @@
 #include <hawktest/common/internal.h>
 #include <hawktest/common/string.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 /* class A needs to have dll-interface to be used by clients of class B */)
 
 namespace testing {
@@ -52,7 +52,7 @@ namespace testing {
 // assertion or an explicit FAIL(), ADD_FAILURE(), or SUCCESS()).
 //
 // Don't inherit from TestPartResult as its destructor is not virtual.
-class GTEST_API_ [[nodiscard]] TestPartResult {
+class HTEST_API_ [[nodiscard]] TestPartResult {
  public:
   // The possible outcomes of a test part (i.e. an assertion or an
   // explicit SUCCEED(), FAIL(), or ADD_FAILURE()).
@@ -132,7 +132,7 @@ std::ostream& operator<<(std::ostream& os, const TestPartResult& result);
 //
 // Don't inherit from TestPartResultArray as its destructor is not
 // virtual.
-class GTEST_API_ [[nodiscard]] TestPartResultArray {
+class HTEST_API_ [[nodiscard]] TestPartResultArray {
  public:
   TestPartResultArray() = default;
 
@@ -153,7 +153,7 @@ class GTEST_API_ [[nodiscard]] TestPartResultArray {
 };
 
 // This interface knows how to report a test part result.
-class GTEST_API_ [[nodiscard]] TestPartResultReporterInterface {
+class HTEST_API_ [[nodiscard]] TestPartResultReporterInterface {
  public:
   virtual ~TestPartResultReporterInterface() = default;
 
@@ -168,7 +168,7 @@ namespace internal {
 // reported, it only delegates the reporting to the former result reporter.
 // The original result reporter is restored in the destructor.
 // INTERNAL IMPLEMENTATION - DO NOT USE IN A USER PROGRAM.
-class GTEST_API_ [[nodiscard]] HasNewFatalFailureHelper
+class HTEST_API_ [[nodiscard]] HasNewFatalFailureHelper
     : public TestPartResultReporterInterface {
  public:
   HasNewFatalFailureHelper();
@@ -188,6 +188,6 @@ class GTEST_API_ [[nodiscard]] HasNewFatalFailureHelper
 
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
+HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_TEST_PART_H_
+#endif  // GOOGLETEST_INCLUDE_HTEST_HTEST_TEST_PART_H_

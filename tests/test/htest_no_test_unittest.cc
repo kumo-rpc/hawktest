@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
   //    program to fail.
   // 3. We had a bug where the XML output won't be generated if an
   //    assertion is executed before RUN_ALL_TESTS() is called, even
-  //    though --gtest_output=xml is specified.  This makes sure the
+  //    though --htest_output=xml is specified.  This makes sure the
   //    bug is fixed and doesn't regress.
   EXPECT_EQ(1, 2);
 

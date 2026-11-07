@@ -39,7 +39,7 @@ Overlay: `VCPKG_OVERLAY_PORTS` / `vcpkg-configuration.json` `overlay-ports`. Reg
 
 Tests / examples / benchmark stay **off** in the port (see OPTIONS). If you must, add a `features` block (`tests` → `KMCMAKE_BUILD_TEST`) — the hadar example does not, because a port should ship the library.
 
-Replace every dependency string with what `*_deps.cmake` actually finds. Do not list `gtest` unless a feature enables tests.
+Replace every dependency string with what `*_deps.cmake` actually finds. Do not list `htest` unless a feature enables tests.
 
 ### `portfile.cmake` (worked example)
 

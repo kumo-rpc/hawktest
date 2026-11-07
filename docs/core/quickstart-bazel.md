@@ -62,7 +62,7 @@ As an example, create a file named `hello_test.cc` in your `my_workspace`
 directory with the following contents:
 
 ```cpp
-#include <gtest/gtest.h>
+#include <htest/htest.h>
 
 // Demonstrate some basic assertions.
 TEST(HelloTest, BasicAssertions) {
@@ -86,15 +86,15 @@ cc_test(
     size = "small",
     srcs = ["hello_test.cc"],
     deps = [
-        "@googletest//:gtest",
-        "@googletest//:gtest_main",
+        "@googletest//:htest",
+        "@googletest//:htest_main",
     ],
 )
 ```
 
 This `cc_test` rule declares the C++ test binary you want to build, and links to
-the GoogleTest library (`@googletest//:gtest"`) and the GoogleTest `main()`
-function (`@googletest//:gtest_main`). For more information about Bazel `BUILD`
+the GoogleTest library (`@googletest//:htest"`) and the GoogleTest `main()`
+function (`@googletest//:htest_main`). For more information about Bazel `BUILD`
 files, see the
 [Bazel C++ Tutorial](https://docs.bazel.build/versions/main/tutorial/cpp.html).
 

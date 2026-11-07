@@ -1,7 +1,7 @@
 # Assertions Reference
 
 This page lists the assertion macros provided by GoogleTest for verifying code
-behavior. To use them, add `#include <gtest/gtest.h>`.
+behavior. To use them, add `#include <htest/htest.h>`.
 
 The majority of the macros listed below come as a pair with an `EXPECT_` variant
 and an `ASSERT_` variant. Upon failure, `EXPECT_` macros generate nonfatal
@@ -533,8 +533,8 @@ terminate. For context, see [Death Tests](../advanced.md#death-tests).
 
 These assertions spawn a new process and execute the code under test in that
 process. How that happens depends on the platform and the variable
-`::testing::GTEST_FLAG(death_test_style)`, which is initialized from the
-command-line flag `--gtest_death_test_style`.
+`::testing::HTEST_FLAG(death_test_style)`, which is initialized from the
+command-line flag `--htest_death_test_style`.
 
 *   On POSIX systems, `fork()` (or `clone()` on Linux) is used to spawn the
     child, after which:

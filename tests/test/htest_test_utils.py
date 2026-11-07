@@ -45,7 +45,7 @@ import tempfile
 import unittest as _test_module
 # pylint: enable=g-import-not-at-top
 
-GTEST_OUTPUT_VAR_NAME = 'GTEST_OUTPUT'
+HTEST_OUTPUT_VAR_NAME = 'HTEST_OUTPUT'
 
 # The environment variable for specifying the path to the premature-exit file.
 PREMATURE_EXIT_FILE_ENV_VAR = 'TEST_PREMATURE_EXIT_FILE'
@@ -67,22 +67,22 @@ def SetEnvVar(env_var, value):
 TestCase = _test_module.TestCase
 
 # Initially maps a flag to its default value. After
-# _ParseAndStripGTestFlags() is called, maps a flag to its actual value.
+# _ParseAndStripHTestFlags() is called, maps a flag to its actual value.
 _flag_map = {
     'source_dir': os.path.dirname(sys.argv[0]),
     'build_dir': os.path.dirname(sys.argv[0]),
 }
-_gtest_flags_are_parsed = False
+_htest_flags_are_parsed = False
 
 
-def _ParseAndStripGTestFlags(argv):
+def _ParseAndStripHTestFlags(argv):
   """Parses and strips Google Test flags from argv.  This is idempotent."""
 
-  global _gtest_flags_are_parsed
-  if _gtest_flags_are_parsed:
+  global _htest_flags_are_parsed
+  if _htest_flags_are_parsed:
     return
 
-  _gtest_flags_are_parsed = True
+  _htest_flags_are_parsed = True
   for flag in _flag_map:
     # The environment variable overrides the default value.
     if flag.upper() in os.environ:
@@ -97,7 +97,7 @@ def _ParseAndStripGTestFlags(argv):
         del argv[i]
         break
       else:
-        # We don't increment i in case we just found a --gtest_* flag
+        # We don't increment i in case we just found a --htest_* flag
         # and removed it from argv.
         i += 1
 
@@ -106,9 +106,9 @@ def GetFlag(flag):
   """Returns the value of the given flag."""
 
   # In case GetFlag() is called before Main(), we always call
-  # _ParseAndStripGTestFlags() here to make sure the --gtest_* flags
+  # _ParseAndStripHTestFlags() here to make sure the --htest_* flags
   # are parsed.
-  _ParseAndStripGTestFlags(sys.argv)
+  _ParseAndStripHTestFlags(sys.argv)
 
   return _flag_map[flag]
 
@@ -250,13 +250,13 @@ class Subprocess:
 def Main():
   """Runs the unit test."""
 
-  # We must call _ParseAndStripGTestFlags() before calling
+  # We must call _ParseAndStripHTestFlags() before calling
   # unittest.main().  Otherwise the latter will be confused by the
-  # --gtest_* flags.
-  _ParseAndStripGTestFlags(sys.argv)
+  # --htest_* flags.
+  _ParseAndStripHTestFlags(sys.argv)
   # The tested binaries should not be writing XML output files unless the
   # script explicitly instructs them to.
-  if GTEST_OUTPUT_VAR_NAME in os.environ:
-    del os.environ[GTEST_OUTPUT_VAR_NAME]
+  if HTEST_OUTPUT_VAR_NAME in os.environ:
+    del os.environ[HTEST_OUTPUT_VAR_NAME]
 
   _test_module.main()

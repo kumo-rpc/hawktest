@@ -41,12 +41,12 @@
 // to CHANGE WITHOUT NOTICE.  Therefore DO NOT DEPEND ON IT in a user
 // program!
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_MESSAGE_H_
-#define GOOGLETEST_INCLUDE_GTEST_GTEST_MESSAGE_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_HTEST_MESSAGE_H_
+#define GOOGLETEST_INCLUDE_HTEST_HTEST_MESSAGE_H_
 
 #include <limits>
 #include <memory>
@@ -56,7 +56,7 @@
 
 #include <hawktest/common/port.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 /* class A needs to have dll-interface to be used by clients of class B */)
 
 // Ensures that there is at least one operator<< in the global namespace.
@@ -91,7 +91,7 @@ namespace testing {
 // latter (it causes an access violation if you do).  The Message
 // class hides this difference by treating a NULL char pointer as
 // "(null)".
-class GTEST_API_ Message {
+class HTEST_API_ Message {
  private:
   // The type of basic IO manipulators (endl, ends, and flush) for
   // narrow streams.
@@ -176,11 +176,11 @@ class GTEST_API_ Message {
   Message& operator<<(const wchar_t* wide_c_str);
   Message& operator<<(wchar_t* wide_c_str);
 
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
   // Converts the given wide string to a narrow string using the UTF-8
   // encoding, and streams the result to this Message object.
   Message& operator<<(const ::std::wstring& wstr);
-#endif  // GTEST_HAS_STD_WSTRING
+#endif  // HTEST_HAS_STD_WSTRING
 
   // Gets the text streamed to this object so far as an std::string.
   // Each '\0' character in the buffer is replaced with "\\0".
@@ -216,6 +216,6 @@ std::string StreamableToString(const T& streamable) {
 }  // namespace internal
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
+HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_MESSAGE_H_
+#endif  // GOOGLETEST_INCLUDE_HTEST_HTEST_MESSAGE_H_

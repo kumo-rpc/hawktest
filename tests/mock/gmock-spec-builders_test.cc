@@ -56,7 +56,7 @@ using ::testing::internal::kInfoVerbosity;
 using ::testing::internal::kWarn;
 using ::testing::internal::kWarningVerbosity;
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if HTEST_HAS_STREAM_REDIRECTION
 using ::testing::internal::CaptureStdout;
 using ::testing::internal::GetCapturedStdout;
 #endif
@@ -515,7 +515,7 @@ TEST(ExpectCallSyntaxTest, DefaultCardinalityIsOnce) {
       "to be called once");
 }
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if HTEST_HAS_STREAM_REDIRECTION
 
 // Tests that Google Mock doesn't print a warning when the number of
 // WillOnce() is adequate.
@@ -676,7 +676,7 @@ TEST(ExpectCallSyntaxTest, WarningIsErrorWithFlag) {
   GMOCK_FLAG_SET(default_mock_behavior, original_behavior);
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif  // HTEST_HAS_STREAM_REDIRECTION
 
 // Tests the semantics of ON_CALL().
 
@@ -871,7 +871,7 @@ TEST(ExpectCallTest, TakesRepeatedActionWhenWillListIsExhausted) {
   EXPECT_EQ(2, b.DoB());
 }
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if HTEST_HAS_STREAM_REDIRECTION
 
 // Tests that the default action is taken when the WillOnce(...) list is
 // exhausted and there is no WillRepeatedly().
@@ -932,7 +932,7 @@ TEST(FunctionMockerMessageTest,
   EXPECT_PRED_FORMAT2(IsSubstring, on_call_location, GetCapturedStdout());
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif  // HTEST_HAS_STREAM_REDIRECTION
 
 // Tests that an uninteresting call performs the default action.
 TEST(UninterestingCallTest, DoesDefaultAction) {
@@ -1088,7 +1088,7 @@ TEST(UnexpectedCallTest, UnsatisfiedPrerequisites) {
 
   // Verifies that the failure message contains the two unsatisfied
   // pre-requisites but not the satisfied one.
-#ifdef GTEST_USES_POSIX_RE
+#ifdef HTEST_USES_POSIX_RE
   EXPECT_THAT(r.message(),
               ContainsRegex(
                   // POSIX RE doesn't understand the (?s) prefix, but has no
@@ -1103,7 +1103,7 @@ TEST(UnexpectedCallTest, UnsatisfiedPrerequisites) {
                   "the following immediate pre-requisites are not satisfied:"));
   EXPECT_THAT(r.message(), ContainsRegex(": pre-requisite #0"));
   EXPECT_THAT(r.message(), ContainsRegex(": pre-requisite #1"));
-#endif  // GTEST_USES_POSIX_RE
+#endif  // HTEST_USES_POSIX_RE
 
   b.DoB(1);
   b.DoB(3);
@@ -1116,7 +1116,7 @@ TEST(UndefinedReturnValueTest,
   // FIXME: We should really verify the output message,
   // but we cannot yet due to that EXPECT_DEATH only captures stderr
   // while Google Mock logs to stdout.
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
   EXPECT_ANY_THROW(a.ReturnNonDefaultConstructible());
 #else
   EXPECT_DEATH_IF_SUPPORTED(a.ReturnNonDefaultConstructible(), "");
@@ -1770,11 +1770,11 @@ TEST(DeletingMockEarlyTest, Success2) {
 
 // Suppresses warning on unreferenced formal parameter in MSVC with
 // -W4.
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
 
 ACTION_P(Delete, ptr) { delete ptr; }
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
 
 TEST(DeletingMockEarlyTest, CanDeleteSelfInActionReturningVoid) {
   MockA* const a = new MockA;
@@ -1909,7 +1909,7 @@ class VerboseFlagPreservingFixture : public testing::Test {
       delete;
 };
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if HTEST_HAS_STREAM_REDIRECTION
 
 // Tests that an uninteresting mock function call on a naggy mock
 // generates a warning without the stack trace when
@@ -2107,7 +2107,7 @@ TEST_F(GMockVerboseFlagTest, InvalidFlagIsTreatedAsWarning) {
   TestUninterestingCallOnNaggyMock(true);
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif  // HTEST_HAS_STREAM_REDIRECTION
 
 // A helper class that generates a failure when printed.  We use it to
 // ensure that Google Mock doesn't print a value (even to an internal

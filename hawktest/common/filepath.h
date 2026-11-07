@@ -32,15 +32,15 @@
 // This header file declares classes and functions used internally by
 // Google Test.  They are subject to change without notice.
 //
-// This file is #included in gtest/internal/gtest-internal.h.
+// This file is #included in htest/internal/htest-internal.h.
 // Do not include this header file separately!
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_FILEPATH_H_
-#define GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_FILEPATH_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_FILEPATH_H_
+#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_FILEPATH_H_
 
 #include <string>
 #include <utility>
@@ -48,9 +48,9 @@
 #include <hawktest/common/port.h>
 #include <hawktest/common/string.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
-#if GTEST_HAS_FILE_SYSTEM
+#if HTEST_HAS_FILE_SYSTEM
 
 namespace testing {
     namespace internal {
@@ -66,7 +66,7 @@ namespace testing {
         // Names are NOT checked for syntax correctness -- no checking for illegal
         // characters, malformed paths, etc.
 
-        class GTEST_API_ [[nodiscard]] FilePath {
+        class HTEST_API_ [[nodiscard]] FilePath {
         public:
             FilePath()
                 : pathname_("") { }
@@ -229,8 +229,8 @@ namespace testing {
     } // namespace internal
 } // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
+HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
 
-#endif // GTEST_HAS_FILE_SYSTEM
+#endif // HTEST_HAS_FILE_SYSTEM
 
-#endif // GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_FILEPATH_H_
+#endif // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_FILEPATH_H_

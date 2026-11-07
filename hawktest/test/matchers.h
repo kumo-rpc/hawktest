@@ -32,12 +32,12 @@
 // This file implements just enough of the matcher interface to allow
 // EXPECT_DEATH and friends to accept a matcher argument.
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
-#define GOOGLETEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_HTEST_MATCHERS_H_
+#define GOOGLETEST_INCLUDE_HTEST_HTEST_MATCHERS_H_
 
 #include <atomic>
 #include <cstddef>
@@ -54,13 +54,13 @@
 
 // MSVC warning C5046 is new as of VS2017 version 15.8.
 #if defined(_MSC_VER) && _MSC_VER >= 1915
-#define GTEST_MAYBE_5046_ 5046
+#define HTEST_MAYBE_5046_ 5046
 #else
-#define GTEST_MAYBE_5046_
+#define HTEST_MAYBE_5046_
 #endif
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(
-    4251 GTEST_MAYBE_5046_ /* class A needs to have dll-interface to be used by
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(
+    4251 HTEST_MAYBE_5046_ /* class A needs to have dll-interface to be used by
                               clients of class B */
     /* Symbol involving type with internal linkage not defined */)
 
@@ -68,7 +68,7 @@ namespace testing {
 
 // To implement a matcher Foo for type T, define:
 //   1. a class FooMatcherMatcher that implements the matcher interface:
-//     using is_gtest_matcher = void;
+//     using is_htest_matcher = void;
 //     bool MatchAndExplain(const T&, std::ostream*) const;
 //       (MatchResultListener* can also be used instead of std::ostream*)
 //     void DescribeTo(std::ostream*) const;
@@ -113,7 +113,7 @@ inline MatchResultListener::~MatchResultListener() = default;
 
 // An instance of a subclass of this knows how to describe itself as a
 // matcher.
-class GTEST_API_ [[nodiscard]] MatcherDescriberInterface {
+class HTEST_API_ [[nodiscard]] MatcherDescriberInterface {
  public:
   virtual ~MatcherDescriberInterface() = default;
 
@@ -232,7 +232,7 @@ class [[nodiscard]] MatcherBase : private MatcherDescriberInterface {
   // Returns true if and only if the matcher matches x; also explains the
   // match result to 'listener'.
   bool MatchAndExplain(const T& x, MatchResultListener* listener) const {
-    GTEST_CHECK_(vtable_ != nullptr);
+    HTEST_CHECK_(vtable_ != nullptr);
     return vtable_->match_and_explain(*this, x, listener);
   }
 
@@ -244,13 +244,13 @@ class [[nodiscard]] MatcherBase : private MatcherDescriberInterface {
 
   // Describes this matcher to an ostream.
   void DescribeTo(::std::ostream* os) const final {
-    GTEST_CHECK_(vtable_ != nullptr);
+    HTEST_CHECK_(vtable_ != nullptr);
     vtable_->describe(*this, os, false);
   }
 
   // Describes the negation of this matcher to an ostream.
   void DescribeNegationTo(::std::ostream* os) const final {
-    GTEST_CHECK_(vtable_ != nullptr);
+    HTEST_CHECK_(vtable_ != nullptr);
     vtable_->describe(*this, os, true);
   }
 
@@ -279,7 +279,7 @@ class [[nodiscard]] MatcherBase : private MatcherDescriberInterface {
   }
 
   template <typename M,
-            typename = typename std::remove_reference_t<M>::is_gtest_matcher>
+            typename = typename std::remove_reference_t<M>::is_htest_matcher>
   MatcherBase(M&& m) : vtable_(nullptr), buffer_() {  // NOLINT
     Init(std::forward<M>(m));
   }
@@ -478,7 +478,7 @@ class [[nodiscard]] Matcher : public internal::MatcherBase<T> {
       : internal::MatcherBase<T>(impl) {}
 
   template <typename M,
-            typename = typename std::remove_reference_t<M>::is_gtest_matcher>
+            typename = typename std::remove_reference_t<M>::is_htest_matcher>
   Matcher(M&& m) : internal::MatcherBase<T>(std::forward<M>(m)) {}  // NOLINT
 
   // Implicit constructor here allows people to write
@@ -499,7 +499,7 @@ class [[nodiscard]] Matcher : public internal::MatcherBase<T> {
 // instead of Eq(str) and "foo" instead of Eq("foo") when a std::string
 // matcher is expected.
 template <>
-class GTEST_API_ [[nodiscard]]
+class HTEST_API_ [[nodiscard]]
 Matcher<const std::string&> : public internal::MatcherBase<const std::string&> {
  public:
   Matcher() = default;
@@ -508,7 +508,7 @@ Matcher<const std::string&> : public internal::MatcherBase<const std::string&> {
       : internal::MatcherBase<const std::string&>(impl) {}
 
   template <typename M,
-            typename = typename std::remove_reference_t<M>::is_gtest_matcher>
+            typename = typename std::remove_reference_t<M>::is_htest_matcher>
   Matcher(M&& m)  // NOLINT
       : internal::MatcherBase<const std::string&>(std::forward<M>(m)) {}
 
@@ -521,7 +521,7 @@ Matcher<const std::string&> : public internal::MatcherBase<const std::string&> {
 };
 
 template <>
-class GTEST_API_ [[nodiscard]]
+class HTEST_API_ [[nodiscard]]
 Matcher<std::string> : public internal::MatcherBase<std::string> {
  public:
   Matcher() = default;
@@ -532,7 +532,7 @@ Matcher<std::string> : public internal::MatcherBase<std::string> {
       : internal::MatcherBase<std::string>(impl) {}
 
   template <typename M,
-            typename = typename std::remove_reference_t<M>::is_gtest_matcher>
+            typename = typename std::remove_reference_t<M>::is_htest_matcher>
   Matcher(M&& m)  // NOLINT
       : internal::MatcherBase<std::string>(std::forward<M>(m)) {}
 
@@ -548,7 +548,7 @@ Matcher<std::string> : public internal::MatcherBase<std::string> {
 // instead of Eq(str) and "foo" instead of Eq("foo") when a std::string_view
 // matcher is expected.
 template <>
-class GTEST_API_ [[nodiscard]] Matcher<const internal::StringView&>
+class HTEST_API_ [[nodiscard]] Matcher<const internal::StringView&>
     : public internal::MatcherBase<const internal::StringView&> {
  public:
   Matcher() = default;
@@ -557,7 +557,7 @@ class GTEST_API_ [[nodiscard]] Matcher<const internal::StringView&>
       : internal::MatcherBase<const internal::StringView&>(impl) {}
 
   template <typename M,
-            typename = typename std::remove_reference_t<M>::is_gtest_matcher>
+            typename = typename std::remove_reference_t<M>::is_htest_matcher>
   Matcher(M&& m)  // NOLINT
       : internal::MatcherBase<const internal::StringView&>(std::forward<M>(m)) {
   }
@@ -574,7 +574,7 @@ class GTEST_API_ [[nodiscard]] Matcher<const internal::StringView&>
 };
 
 template <>
-class GTEST_API_ [[nodiscard]] Matcher<internal::StringView>
+class HTEST_API_ [[nodiscard]] Matcher<internal::StringView>
     : public internal::MatcherBase<internal::StringView> {
  public:
   Matcher() = default;
@@ -585,7 +585,7 @@ class GTEST_API_ [[nodiscard]] Matcher<internal::StringView>
       : internal::MatcherBase<internal::StringView>(impl) {}
 
   template <typename M,
-            typename = typename std::remove_reference_t<M>::is_gtest_matcher>
+            typename = typename std::remove_reference_t<M>::is_htest_matcher>
   Matcher(M&& m)  // NOLINT
       : internal::MatcherBase<internal::StringView>(std::forward<M>(m)) {}
 
@@ -699,7 +699,7 @@ class [[nodiscard]] ComparisonBase {
  public:
   explicit ComparisonBase(const Rhs& rhs) : rhs_(rhs) {}
 
-  using is_gtest_matcher = void;
+  using is_htest_matcher = void;
 
   template <typename Lhs>
   bool MatchAndExplain(const Lhs& lhs, std::ostream*) const {
@@ -789,7 +789,7 @@ class [[nodiscard]] ImplicitCastEqMatcher {
  public:
   explicit ImplicitCastEqMatcher(const StoredRhs& rhs) : stored_rhs_(rhs) {}
 
-  using is_gtest_matcher = void;
+  using is_htest_matcher = void;
 
   template <typename Lhs>
   bool MatchAndExplain(const Lhs& lhs, std::ostream*) const {
@@ -818,7 +818,7 @@ template <class T>
 extern std::enable_if_t<std::is_constructible_v<std::string, T>, std::string>
 ResolveAsString(const void* /* preferred */);
 
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
 // Same as above, but for std::wstring. In cases where both conversions are
 // possible, this overload takes lower priority.
 template <class T>
@@ -981,6 +981,6 @@ inline internal::NeMatcher<Rhs> Ne(Rhs x) {
 }
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251 5046
+HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251 5046
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
+#endif  // GOOGLETEST_INCLUDE_HTEST_HTEST_MATCHERS_H_

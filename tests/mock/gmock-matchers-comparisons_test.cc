@@ -45,13 +45,13 @@
 
 // Silence warning C4244: 'initializing': conversion from 'int' to 'short',
 // possible loss of data and C4100, unreferenced local parameter
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
 
 namespace testing {
 namespace gmock_matchers_test {
 namespace {
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(MonotonicMatcherTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(MonotonicMatcherTest);
 
 TEST_P(MonotonicMatcherTestP, IsPrintable) {
   stringstream ss;
@@ -138,7 +138,7 @@ TEST(MatcherInterfaceTest, CanBeImplementedUsingNewAPI) {
   EXPECT_EQ("value % 2 == 1", Explain(m, 3));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(MatcherTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(MatcherTest);
 
 // Tests default-constructing a matcher.
 TEST(MatcherTest, CanBeDefaultConstructed) { Matcher<double> m; }
@@ -384,12 +384,12 @@ TEST(MakePolymorphicMatcherTest, ConstructsMatcherUsingNewAPI) {
   EXPECT_EQ("% 2 == 0", Explain(m2, '\x42'));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(MatcherCastTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(MatcherCastTest);
 
 // Tests that MatcherCast<T>(m) works when m is a polymorphic matcher.
 TEST_P(MatcherCastTestP, FromPolymorphicMatcher) {
   Matcher<int16_t> m;
-  if (use_gtest_matcher_) {
+  if (use_htest_matcher_) {
     m = MatcherCast<int16_t>(GtestGreaterThan(int64_t{5}));
   } else {
     m = MatcherCast<int16_t>(Gt(int64_t{5}));
@@ -677,12 +677,12 @@ class Derived : public Base {
 
 class OtherDerived : public Base {};
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(SafeMatcherCastTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(SafeMatcherCastTest);
 
 // Tests that SafeMatcherCast<T>(m) works when m is a polymorphic matcher.
 TEST_P(SafeMatcherCastTestP, FromPolymorphicMatcher) {
   Matcher<char> m2;
-  if (use_gtest_matcher_) {
+  if (use_htest_matcher_) {
     m2 = SafeMatcherCast<char>(GtestGreaterThan(32));
   } else {
     m2 = SafeMatcherCast<char>(Gt(32));
@@ -1094,7 +1094,7 @@ TEST(IsEmptyTest, MatchesCString) {
   EXPECT_FALSE(m.Matches(nullptr));
 }
 
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
 TEST(IsEmptyTest, MatchesCWideString) {
   const Matcher<const wchar_t*> m = IsEmpty();
   const wchar_t a[] = L"";
@@ -1103,7 +1103,7 @@ TEST(IsEmptyTest, MatchesCWideString) {
   EXPECT_FALSE(m.Matches(b));
   EXPECT_FALSE(m.Matches(nullptr));
 }
-#endif  // GTEST_HAS_STD_WSTRING
+#endif  // HTEST_HAS_STD_WSTRING
 
 // Tests that IsNull() matches any NULL pointer of any type.
 TEST(IsNullTest, MatchesNullPointer) {
@@ -1262,7 +1262,7 @@ TEST(StringType, TestConversions) {
   EXPECT_EQ("foo", ToString(std::string("foo")));
   EXPECT_EQ("foo", ToString(internal::StringView("foo")));
 
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
   EXPECT_EQ(L"foo", ToString(L"foo"));
   EXPECT_EQ(L"foo", ToString(std::wstring(L"foo")));
   EXPECT_EQ(L"foo", ToString(std::wstring_view(L"foo")));
@@ -1463,7 +1463,7 @@ TEST(HasSubstrTest, CanDescribeSelf) {
   EXPECT_EQ("has substring \"foo\\n\\\"\"", Describe(m));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(KeyTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(KeyTest);
 
 TEST(KeyTest, CanDescribeSelf) {
   Matcher<const pair<std::string, int>&> m = Key("foo");
@@ -1492,7 +1492,7 @@ TEST(KeyTest, WorksWithMoveOnly) {
   EXPECT_THAT(p, Key(Eq(nullptr)));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(PairTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(PairTest);
 
 template <size_t I>
 struct Tag {};
@@ -1670,7 +1670,7 @@ TEST(PairTest, InsideContainsUsingMap) {
   EXPECT_THAT(container, Not(Contains(Pair(3, _))));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(FieldsAreTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(FieldsAreTest);
 
 TEST(FieldsAreTest, MatchesCorrectly) {
   std::tuple<int, std::string, double> p(25, "foo", .5);
@@ -1998,7 +1998,7 @@ TEST(ContainsRegexTest, CanDescribeSelf) {
 }
 
 // Tests for wide strings.
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
 TEST(StdWideStrEqTest, MatchesEqual) {
   Matcher<const wchar_t*> m = StrEq(::std::wstring(L"Hello"));
   EXPECT_TRUE(m.Matches(L"Hello"));
@@ -2186,7 +2186,7 @@ TEST(StdWideEndsWithTest, CanDescribeSelf) {
   EXPECT_EQ("ends with L\"Hi\"", Describe(m));
 }
 
-#endif  // GTEST_HAS_STD_WSTRING
+#endif  // HTEST_HAS_STD_WSTRING
 
 TEST(ExplainMatchResultTest, WorksWithPolymorphicMatcher) {
   StringMatchResultListener listener1;
@@ -2265,7 +2265,7 @@ MATCHER_P(FieldIIs, inner_matcher, "") {
   return ExplainMatchResult(inner_matcher, arg.i, result_listener);
 }
 
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
 TEST(WhenDynamicCastToTest, SameType) {
   Derived derived;
   derived.i = 4;
@@ -2357,7 +2357,7 @@ TEST(WhenDynamicCastToTest, BadReference) {
   Base& as_base_ref = derived;
   EXPECT_THAT(as_base_ref, Not(WhenDynamicCastTo<const OtherDerived&>(_)));
 }
-#endif  // GTEST_HAS_RTTI
+#endif  // HTEST_HAS_RTTI
 
 class DivisibleByImpl {
  public:
@@ -2487,7 +2487,7 @@ TEST(OptionalTest, DoesNotFormatChildMatcherWhenNotInterested) {
   EXPECT_THAT(listener_interested, ElementsAre(false));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(ExplainmatcherResultTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(ExplainmatcherResultTest);
 
 TEST_P(ExplainmatcherResultTestP, MonomorphicMatcher) {
   const Matcher<int> m = GreaterThan(5);
@@ -2515,4 +2515,4 @@ TEST(PolymorphicMatcherTest, CanAccessImpl) {
 }  // namespace gmock_matchers_test
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100

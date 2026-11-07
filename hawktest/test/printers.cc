@@ -63,10 +63,10 @@ namespace {
 using ::std::ostream;
 
 // Prints a segment of bytes in the given object.
-GTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_
-GTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
-GTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
-GTEST_ATTRIBUTE_NO_SANITIZE_THREAD_
+HTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_
+HTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
+HTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
+HTEST_ATTRIBUTE_NO_SANITIZE_THREAD_
 void PrintByteSegmentInObjectTo(const unsigned char* obj_bytes, size_t start,
                                 size_t count, ostream* os) {
   char text[5] = "";
@@ -80,7 +80,7 @@ void PrintByteSegmentInObjectTo(const unsigned char* obj_bytes, size_t start,
       else
         *os << '-';
     }
-    GTEST_SNPRINTF_(text, sizeof(text), "%02X", obj_bytes[j]);
+    HTEST_SNPRINTF_(text, sizeof(text), "%02X", obj_bytes[j]);
     *os << text;
   }
 }
@@ -335,9 +335,9 @@ void PrintTo(__int128_t v, ::std::ostream* os) {
 // The array starts at begin (which may be nullptr) and contains len characters.
 // The array may include '\0' characters and may not be NUL-terminated.
 template <typename CharType>
-GTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_ GTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
-    GTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
-        GTEST_ATTRIBUTE_NO_SANITIZE_THREAD_ static CharFormat
+HTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_ HTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
+    HTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
+        HTEST_ATTRIBUTE_NO_SANITIZE_THREAD_ static CharFormat
         PrintCharsAsStringTo(const CharType* begin, size_t len, ostream* os) {
   const char* const quote_prefix = GetCharWidthPrefix(CharType());
   *os << quote_prefix << "\"";
@@ -364,9 +364,9 @@ GTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_ GTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
 // Prints a (const) char/wchar_t array of 'len' elements, starting at address
 // 'begin'.  CharType must be either char or wchar_t.
 template <typename CharType>
-GTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_ GTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
-    GTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
-        GTEST_ATTRIBUTE_NO_SANITIZE_THREAD_ static void
+HTEST_ATTRIBUTE_NO_SANITIZE_MEMORY_ HTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
+    HTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
+        HTEST_ATTRIBUTE_NO_SANITIZE_THREAD_ static void
         UniversalPrintCharArray(const CharType* begin, size_t len,
                                 ostream* os) {
   // The code
@@ -523,7 +523,7 @@ void ConditionalPrintAsText(const char* str, size_t length, ostream* os) {
 
 void PrintStringTo(std::string_view s, ostream* os) {
   if (PrintCharsAsStringTo(s.data(), s.size(), os) == kHexEscape) {
-    if (GTEST_FLAG_GET(print_utf8)) {
+    if (HTEST_FLAG_GET(print_utf8)) {
       ConditionalPrintAsText(s.data(), s.size(), os);
     }
   }
@@ -543,11 +543,11 @@ void PrintU32StringTo(::std::u32string_view s, ostream* os) {
   PrintCharsAsStringTo(s.data(), s.size(), os);
 }
 
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
 void PrintWideStringTo(::std::wstring_view s, ostream* os) {
   PrintCharsAsStringTo(s.data(), s.size(), os);
 }
-#endif  // GTEST_HAS_STD_WSTRING
+#endif  // HTEST_HAS_STD_WSTRING
 
 }  // namespace internal
 

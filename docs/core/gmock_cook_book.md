@@ -1323,7 +1323,7 @@ invariant.) Here's how we can write and use a matcher class to do so:
 ```cpp
 class BarPlusBazEqMatcher {
  public:
-  using is_gtest_matcher = void;
+  using is_htest_matcher = void;
 
   explicit BarPlusBazEqMatcher(int expected_sum)
       : expected_sum_(expected_sum) {}
@@ -3180,7 +3180,7 @@ so:
 
 If you find gMock printing too many stack frames with its informational or
 warning messages, remember that you can control their amount with the
-`--gtest_stack_trace_depth=max_depth` flag.
+`--htest_stack_trace_depth=max_depth` flag.
 
 Now, judiciously use the right flag to enable gMock serve you better!
 
@@ -3259,7 +3259,7 @@ you thought. From that it should be obvious that the third `EXPECT_CALL` is
 written wrong. Case solved.
 
 If you are interested in the mock call trace but not the stack traces, you can
-combine `--gmock_verbose=info` with `--gtest_stack_trace_depth=0` on the test
+combine `--gmock_verbose=info` with `--htest_stack_trace_depth=0` on the test
 command line.
 
 ### Running Tests in Emacs
@@ -3617,7 +3617,7 @@ only be used to match a value of type `T`, we call it "monomorphic."
 A matcher of `T` must declare a typedef like:
 
 ```cpp
-using is_gtest_matcher = void;
+using is_htest_matcher = void;
 ```
 
 and supports the following operations:
@@ -3650,7 +3650,7 @@ using ::testing::Matcher;
 
 class DivisibleBy7Matcher {
  public:
-  using is_gtest_matcher = void;
+  using is_htest_matcher = void;
 
   bool MatchAndExplain(int n, std::ostream*) const {
     return (n % 7) == 0;
@@ -3719,7 +3719,7 @@ adding templates in the right place.
 
 class NotNullMatcher {
  public:
-  using is_gtest_matcher = void;
+  using is_htest_matcher = void;
 
   // To implement a polymorphic matcher, we just need to make MatchAndExplain a
   // template on its first argument.

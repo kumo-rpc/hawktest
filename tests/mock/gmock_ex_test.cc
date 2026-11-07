@@ -34,7 +34,7 @@
 #include <hawktest/mock/hmock.h>
 #include <hawktest/test/htest.h>
 
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
 namespace {
 
 using testing::HasSubstr;

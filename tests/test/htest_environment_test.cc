@@ -162,7 +162,7 @@ void TestNoTestsRunSetUpFailure() {
 // tear-down when there is no test to run.
 void TestNoTestsSkipsSetUp() {
   MyEnvironment* const env = RegisterTestEnv();
-  GTEST_FLAG_SET(filter, "-*");
+  HTEST_FLAG_SET(filter, "-*");
   Check(RunAllTests(env, NO_FAILURE) == 0,
         "RUN_ALL_TESTS() should return zero, as there is no test to run.");
   Check(!set_up_was_run,

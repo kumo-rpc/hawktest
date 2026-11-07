@@ -20,12 +20,12 @@ Using `pkg-config` in CMake is fairly easy:
 
 ```cmake
 find_package(PkgConfig)
-pkg_search_module(GTEST REQUIRED gtest_main)
+pkg_search_module(HTEST REQUIRED htest_main)
 
 add_executable(testapp)
 target_sources(testapp PRIVATE samples/sample3_unittest.cc)
-target_link_libraries(testapp PRIVATE ${GTEST_LDFLAGS})
-target_compile_options(testapp PRIVATE ${GTEST_CFLAGS})
+target_link_libraries(testapp PRIVATE ${HTEST_LDFLAGS})
+target_compile_options(testapp PRIVATE ${HTEST_CFLAGS})
 
 enable_testing()
 add_test(first_and_only_test testapp)
@@ -48,9 +48,9 @@ tutorial and you try to run `cmake`. It is very possible that you get a failure
 along the lines of:
 
 ```
--- Checking for one of the modules 'gtest_main'
+-- Checking for one of the modules 'htest_main'
 CMake Error at /usr/share/cmake/Modules/FindPkgConfig.cmake:640 (message):
-  None of the required 'gtest_main' found
+  None of the required 'htest_main' found
 ```
 
 These failures are common if you installed GoogleTest yourself and have not
@@ -63,13 +63,13 @@ installed under `/usr/local/lib64/pkgconfig`. If you set
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 ```
 
-pkg-config will also try to look in `PKG_CONFIG_PATH` to find `gtest_main.pc`.
+pkg-config will also try to look in `PKG_CONFIG_PATH` to find `htest_main.pc`.
 
 ### Using pkg-config in a cross-compilation setting
 
 Pkg-config can be used in a cross-compilation setting too. To do this, let's
 assume the final prefix of the cross-compiled installation will be `/usr`, and
-your sysroot is `/home/MYUSER/sysroot`. Configure and install GTest using
+your sysroot is `/home/MYUSER/sysroot`. Configure and install HTest using
 
 ```
 mkdir build && cmake -DCMAKE_INSTALL_PREFIX=/usr ..
@@ -99,12 +99,12 @@ If you look at the generated pkg-config file, it will look something like
 libdir=/usr/lib64
 includedir=/usr/include
 
-Name: gtest
+Name: htest
 Description: GoogleTest (without main() function)
 Version: 1.11.0
 URL: https://github.com/google/googletest
-Libs: -L${libdir} -lgtest -lpthread
-Cflags: -I${includedir} -DGTEST_HAS_PTHREAD=1 -lpthread
+Libs: -L${libdir} -lhtest -lpthread
+Cflags: -I${includedir} -DHTEST_HAS_PTHREAD=1 -lpthread
 ```
 
 Notice that the sysroot is not included in `libdir` and `includedir`! If you try
@@ -113,10 +113,10 @@ to run `pkg-config` with the correct
 file, you will get
 
 ```
-$ pkg-config --cflags gtest
--DGTEST_HAS_PTHREAD=1 -lpthread -I/usr/include
-$ pkg-config --libs gtest
--L/usr/lib64 -lgtest -lpthread
+$ pkg-config --cflags htest
+-DHTEST_HAS_PTHREAD=1 -lpthread -I/usr/include
+$ pkg-config --libs htest
+-L/usr/lib64 -lhtest -lpthread
 ```
 
 which is obviously wrong and points to the `CBUILD` and not `CHOST` root. In
@@ -133,10 +133,10 @@ export PKG_CONFIG_LIBDIR=${PKG_CONFIG_SYSROOT_DIR}/usr/lib64/pkgconfig
 and running `pkg-config` again we get
 
 ```
-$ pkg-config --cflags gtest
--DGTEST_HAS_PTHREAD=1 -lpthread -I/home/MYUSER/sysroot/usr/include
-$ pkg-config --libs gtest
--L/home/MYUSER/sysroot/usr/lib64 -lgtest -lpthread
+$ pkg-config --cflags htest
+-DHTEST_HAS_PTHREAD=1 -lpthread -I/home/MYUSER/sysroot/usr/include
+$ pkg-config --libs htest
+-L/home/MYUSER/sysroot/usr/lib64 -lhtest -lpthread
 ```
 
 which contains the correct sysroot now. For a more comprehensive guide to also

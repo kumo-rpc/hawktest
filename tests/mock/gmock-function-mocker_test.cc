@@ -33,7 +33,7 @@
 #include <hawktest/mock/function-mocker.h>
 
 // Silence C4503 (decorated name length exceeded) for MSVC.
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4503)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4503)
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -42,12 +42,12 @@ GTEST_DISABLE_MSC_WARNINGS_PUSH_(4503)
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
 #endif
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 // MSDN says the header file to be included for STDMETHOD is BaseTyps.h but
 // we are getting compiler errors if we use basetyps.h, hence including
 // objbase.h for definition of STDMETHOD.
 #include <objbase.h>
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
 #include <functional>
 #include <map>
@@ -127,21 +127,21 @@ class FooInterface {
   virtual int RefQualifiedOverloaded() & = 0;
   virtual int RefQualifiedOverloaded() && = 0;
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
   STDMETHOD_(int, CTNullary)() = 0;
   STDMETHOD_(bool, CTUnary)(int x) = 0;
   STDMETHOD_(int, CTDecimal)
   (bool b, char c, short d, int e, long f,  // NOLINT
    float g, double h, unsigned i, char* j, const std::string& k) = 0;
   STDMETHOD_(char, CTConst)(int x) const = 0;
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 };
 
 // Const qualifiers on arguments were once (incorrectly) considered
 // significant in determining whether two virtual functions had the same
 // signature. This was fixed in Visual Studio 2008. However, the compiler
 // still emits a warning that alerts about this change in behavior.
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4373)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4373)
 class MockFoo : public FooInterface {
  public:
   MockFoo() = default;
@@ -185,7 +185,7 @@ class MockFoo : public FooInterface {
   MOCK_METHOD(int (*)(bool), ReturnsFunctionPointer1, (int), ());
   MOCK_METHOD(fn_ptr, ReturnsFunctionPointer2, (int), ());
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
   MOCK_METHOD(int, CTNullary, (), (Calltype(STDMETHODCALLTYPE)));
   MOCK_METHOD(bool, CTUnary, (int), (Calltype(STDMETHODCALLTYPE)));
   MOCK_METHOD(int, CTDecimal,
@@ -195,7 +195,7 @@ class MockFoo : public FooInterface {
   MOCK_METHOD(char, CTConst, (int), (const, Calltype(STDMETHODCALLTYPE)));
   MOCK_METHOD((std::map<int, std::string>), CTReturnTypeWithComma, (),
               (Calltype(STDMETHODCALLTYPE)));
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
   // Test reference qualified functions.
   MOCK_METHOD(int, RefQualifiedConstRef, (), (const, ref(&), override));
@@ -255,7 +255,7 @@ class LegacyMockFoo : public FooInterface {
   MOCK_METHOD1(ReturnsFunctionPointer1, int (*(int))(bool));
   MOCK_METHOD1(ReturnsFunctionPointer2, fn_ptr(int));
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
   MOCK_METHOD0_WITH_CALLTYPE(STDMETHODCALLTYPE, CTNullary, int());
   MOCK_METHOD1_WITH_CALLTYPE(STDMETHODCALLTYPE, CTUnary, bool(int));  // NOLINT
   MOCK_METHOD10_WITH_CALLTYPE(STDMETHODCALLTYPE, CTDecimal,
@@ -268,7 +268,7 @@ class LegacyMockFoo : public FooInterface {
   // Tests that the function return type can contain unprotected comma.
   MOCK_METHOD0_WITH_CALLTYPE(STDMETHODCALLTYPE, CTReturnTypeWithComma,
                              std::map<int, std::string>());
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
   // We can't mock these with the old macros, but we need to define them to make
   // it concrete.
@@ -286,7 +286,7 @@ class LegacyMockFoo : public FooInterface {
   LegacyMockFoo& operator=(const LegacyMockFoo&) = delete;
 };
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4373
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4373
 
 template <class T>
 class FunctionMockerTest : public testing::Test {
@@ -411,7 +411,7 @@ TYPED_TEST(FunctionMockerTest, MocksTypeWithTemplatedCopyCtor) {
   EXPECT_TRUE(this->foo_->TypeWithTemplatedCopyCtor(TemplatedCopyable<int>()));
 }
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 // Tests mocking a nullary function with calltype.
 TYPED_TEST(FunctionMockerTest, MocksNullaryFunctionWithCallType) {
   EXPECT_CALL(this->mock_foo_, CTNullary())
@@ -456,7 +456,7 @@ TYPED_TEST(FunctionMockerTest, MocksReturnTypeWithCommaAndCallType) {
   EXPECT_EQ(a_map, this->mock_foo_.CTReturnTypeWithComma());
 }
 
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
 // Compilability test, to ensure macros expand to all the arguments they're
 // supposed to.
@@ -708,7 +708,7 @@ TYPED_TEST(TemplateMockTest, MethodWithCommaInReturnTypeWorks) {
   EXPECT_EQ(a_map, mock.ReturnTypeWithComma(1));
 }
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 // Tests mocking template interfaces with calltype.
 
 template <typename T>
@@ -785,7 +785,7 @@ TYPED_TEST(TemplateMockTestWithCallType, Works) {
   mock.Pop();
   EXPECT_EQ(0, mock.GetSize());
 }
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
 #define MY_MOCK_METHODS1_                       \
   MOCK_METHOD(void, Overloaded, ());            \
@@ -1136,4 +1136,4 @@ TEST(MockMethodMockFunctionTest, NoexceptSpecifierPreserved) {
 }  // namespace gmock_function_mocker_test
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4503
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4503

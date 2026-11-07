@@ -49,15 +49,15 @@
 #include <hawktest/test/htest.h>
 
 // Indicates that this translation unit is part of Google Test's
-// implementation.  It must come before gtest-internal-inl.h is
+// implementation.  It must come before htest-internal-inl.h is
 // included, or there will be a compiler error.  This trick is to
-// prevent a user from accidentally including gtest-internal-inl.h in
+// prevent a user from accidentally including htest-internal-inl.h in
 // their code.
-#define GTEST_IMPLEMENTATION_ 1
+#define HTEST_IMPLEMENTATION_ 1
 #include <hawktest/common/internal-inl.h>
-#undef GTEST_IMPLEMENTATION_
+#undef HTEST_IMPLEMENTATION_
 
-#ifdef GTEST_OS_CYGWIN
+#ifdef HTEST_OS_CYGWIN
 #include <sys/types.h>  // For ssize_t. NOLINT
 #endif
 
@@ -168,7 +168,7 @@ TEST(KindOfTest, Integer) {
   EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned long long));  // NOLINT
   EXPECT_EQ(kInteger, GMOCK_KIND_OF_(wchar_t));             // NOLINT
   EXPECT_EQ(kInteger, GMOCK_KIND_OF_(size_t));              // NOLINT
-#if defined(GTEST_OS_LINUX) || defined(GTEST_OS_MAC) || defined(GTEST_OS_CYGWIN)
+#if defined(HTEST_OS_LINUX) || defined(HTEST_OS_MAC) || defined(HTEST_OS_CYGWIN)
   // ssize_t is not defined on Windows and possibly some other OSes.
   EXPECT_EQ(kInteger, GMOCK_KIND_OF_(ssize_t));  // NOLINT
 #endif
@@ -275,9 +275,9 @@ TEST(LosslessArithmeticConvertibleTest, FloatingPointToFloatingPoint) {
 
   // Larger size => smaller size is not fine.
   EXPECT_FALSE((LosslessArithmeticConvertible<double, float>::value));
-  GTEST_INTENTIONAL_CONST_COND_PUSH_()
+  HTEST_INTENTIONAL_CONST_COND_PUSH_()
   if (sizeof(double) == sizeof(long double)) {  // NOLINT
-    GTEST_INTENTIONAL_CONST_COND_POP_()
+    HTEST_INTENTIONAL_CONST_COND_POP_()
     // In some implementations (e.g. MSVC), double and long double
     // have the same size.
     EXPECT_TRUE((LosslessArithmeticConvertible<long double, double>::value));
@@ -392,7 +392,7 @@ TEST_F(LogIsVisibleTest, WorksWhenVerbosityIsWarning) {
   EXPECT_TRUE(LogIsVisible(kWarning));
 }
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if HTEST_HAS_STREAM_REDIRECTION
 
 // Tests the Log() function.
 
@@ -432,7 +432,7 @@ struct MockStackTraceGetter : testing::internal::OsStackTraceGetterInterface {
     return (testing::Message() << max_depth << "::" << skip_count << "\n")
         .GetString();
   }
-  void UponLeavingGTest() override {}
+  void UponLeavingHTest() override {}
 };
 
 // Tests that in opt mode, a positive stack_frames_to_skip argument is
@@ -446,7 +446,7 @@ TEST(LogTest, NoSkippingStackFrameInOptMode) {
   const std::string log = GetCapturedStdout();
 
   std::string expected_trace =
-      (testing::Message() << GTEST_FLAG_GET(stack_trace_depth) << "::")
+      (testing::Message() << HTEST_FLAG_GET(stack_trace_depth) << "::")
           .GetString();
   std::string expected_message =
       "\nGMOCK WARNING:\n"
@@ -577,7 +577,7 @@ TEST(OnCallTest, LogsAnythingArgument) {
               HasSubstr("ON_CALL(mock, TestMethodArg(_)"));
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif  // HTEST_HAS_STREAM_REDIRECTION
 
 // Tests StlContainerView.
 

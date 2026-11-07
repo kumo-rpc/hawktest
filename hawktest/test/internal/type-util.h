@@ -30,12 +30,12 @@
 // Type utilities needed for implementing typed and type-parameterized
 // tests.
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_TYPE_UTIL_H_
-#define GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_TYPE_UTIL_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_TYPE_UTIL_H_
+#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_TYPE_UTIL_H_
 
 #include <string>
 #include <type_traits>
@@ -45,11 +45,11 @@
 
 // #ifdef __GNUC__ is too general here.  It is possible to use gcc without using
 // libstdc++ (which is where cxxabi.h comes from).
-#if GTEST_HAS_CXXABI_H_
+#if HTEST_HAS_CXXABI_H_
 #include <cxxabi.h>
 #elif defined(__HP_aCC)
 #include <acxx_demangle.h>
-#endif  // GTEST_HASH_CXXABI_H_
+#endif  // HTEST_HASH_CXXABI_H_
 
 namespace testing {
 namespace internal {
@@ -86,17 +86,17 @@ inline std::string CanonicalizeForStdLibVersioning(std::string s) {
   return s;
 }
 
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
 // GetTypeName(const std::type_info&) returns a human-readable name of type T.
 inline std::string GetTypeName(const std::type_info& type) {
   const char* const name = type.name();
-#if GTEST_HAS_CXXABI_H_ || defined(__HP_aCC)
+#if HTEST_HAS_CXXABI_H_ || defined(__HP_aCC)
   int status = 0;
   // gcc's implementation of typeid(T).name() mangles the type name,
   // so we have to demangle it.
-#if GTEST_HAS_CXXABI_H_
+#if HTEST_HAS_CXXABI_H_
   using abi::__cxa_demangle;
-#endif  // GTEST_HAS_CXXABI_H_
+#endif  // HTEST_HAS_CXXABI_H_
   char* const readable_name = __cxa_demangle(name, nullptr, nullptr, &status);
   const std::string name_str(status == 0 ? readable_name : name);
   free(readable_name);
@@ -117,9 +117,9 @@ inline std::string GetTypeName(const std::type_info& type) {
   return s;
 #else
   return name;
-#endif  // GTEST_HAS_CXXABI_H_ || __HP_aCC
+#endif  // HTEST_HAS_CXXABI_H_ || __HP_aCC
 }
-#endif  // GTEST_HAS_RTTI
+#endif  // HTEST_HAS_RTTI
 
 // GetTypeName<T>() returns a human-readable name of type T if and only if
 // RTTI is enabled, otherwise it returns a dummy type name.
@@ -127,17 +127,17 @@ inline std::string GetTypeName(const std::type_info& type) {
 // the typed-test-only section below.
 template <typename T>
 std::string GetTypeName() {
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
   return GetTypeName(typeid(T));
 #else
   return "<type>";
-#endif  // GTEST_HAS_RTTI
+#endif  // HTEST_HAS_RTTI
 }
 
 // A unique type indicating an empty node
 struct None {};
 
-#define GTEST_TEMPLATE_ \
+#define HTEST_TEMPLATE_ \
   template <typename T> \
   class
 
@@ -149,7 +149,7 @@ struct None {};
 //
 // This trick is necessary for simulating typedef for class templates,
 // which C++ doesn't support directly.
-template <GTEST_TEMPLATE_ Tmpl>
+template <HTEST_TEMPLATE_ Tmpl>
 struct TemplateSel {
   template <typename T>
   struct Bind {
@@ -157,15 +157,15 @@ struct TemplateSel {
   };
 };
 
-#define GTEST_BIND_(TmplSel, T) TmplSel::template Bind<T>::type
+#define HTEST_BIND_(TmplSel, T) TmplSel::template Bind<T>::type
 
-template <GTEST_TEMPLATE_ Head_, GTEST_TEMPLATE_... Tail_>
+template <HTEST_TEMPLATE_ Head_, HTEST_TEMPLATE_... Tail_>
 struct Templates {
   using Head = TemplateSel<Head_>;
   using Tail = Templates<Tail_...>;
 };
 
-template <GTEST_TEMPLATE_ Head_>
+template <HTEST_TEMPLATE_ Head_>
 struct Templates<Head_> {
   using Head = TemplateSel<Head_>;
   using Tail = None;
@@ -217,4 +217,4 @@ using Types = internal::ProxyTypeList<Ts...>;
 
 }  // namespace testing
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_TYPE_UTIL_H_
+#endif  // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_TYPE_UTIL_H_

@@ -327,7 +327,7 @@ kmcmake_cc_test(
     NAME my_test
     MODULE module_name              # prefix for test binary + ctest name
     SOURCES my_test.cc
-    DEPS myproj::core gtest gtest_main
+    DEPS myproj::core htest htest_main
     CXXOPTS ${KMCMAKE_CXX_OPTIONS}
 )
 
@@ -404,7 +404,7 @@ Exports `${NAME}_HDRS` / `${NAME}_SRCS`. Aggregate API: `xxd_gen_files()` return
 Vendored official [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake) release lives at
 `kmcmake/tools/CPM.cmake` (unmodified). **Default off** — enable explicitly
 (`--preset=cpm*` or `-DKMCMAKE_USE_CPM=ON`). Use CPM for **small projects**, or
-when the only extra packages are **test-only** (`gtest` / `doctest`) and are
+when the only extra packages are **test-only** (`htest` / `doctest`) and are
 **not shipped**. Use **vcpkg** (`--preset=vcpkg*`) for large-scale dependency
 management.
 
@@ -460,7 +460,7 @@ kmcmake_cc_test(
     NAME unit_test
     MODULE module
     SOURCES unit_test.cc
-    DEPS ${PROJECT_NAME}::mysub gtest gtest_main
+    DEPS ${PROJECT_NAME}::mysub htest htest_main
     CXXOPTS ${KMCMAKE_CXX_OPTIONS}
 )
 ```

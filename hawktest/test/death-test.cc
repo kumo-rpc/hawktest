@@ -44,34 +44,34 @@
 #include <hawktest/test/internal/custom/htest.h>
 #include <hawktest/common/port.h>
 
-#ifdef GTEST_HAS_DEATH_TEST
+#ifdef HTEST_HAS_DEATH_TEST
 
-#ifdef GTEST_OS_MAC
+#ifdef HTEST_OS_MAC
 #include <crt_externs.h>
-#endif  // GTEST_OS_MAC
+#endif  // HTEST_OS_MAC
 
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
 
-#ifdef GTEST_OS_LINUX
+#ifdef HTEST_OS_LINUX
 #include <signal.h>
-#endif  // GTEST_OS_LINUX
+#endif  // HTEST_OS_LINUX
 
 #include <stdarg.h>
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 #include <windows.h>
 #else
 #include <sys/mman.h>
 #include <sys/wait.h>
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
-#ifdef GTEST_OS_QNX
+#ifdef HTEST_OS_QNX
 #include <spawn.h>
-#endif  // GTEST_OS_QNX
+#endif  // HTEST_OS_QNX
 
-#ifdef GTEST_OS_FUCHSIA
+#ifdef HTEST_OS_FUCHSIA
 #include <lib/fdio/fd.h>
 #include <lib/fdio/io.h>
 #include <lib/fdio/spawn.h>
@@ -83,9 +83,9 @@
 #include <zircon/syscalls.h>
 #include <zircon/syscalls/policy.h>
 #include <zircon/syscalls/port.h>
-#endif  // GTEST_OS_FUCHSIA
+#endif  // HTEST_OS_FUCHSIA
 
-#endif  // GTEST_HAS_DEATH_TEST
+#endif  // HTEST_HAS_DEATH_TEST
 
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/common/string.h>
@@ -97,16 +97,16 @@ namespace testing {
 
 // The default death test style.
 //
-// This is defined in internal/gtest-port.h as "fast", but can be overridden by
-// a definition in internal/custom/gtest-port.h. The recommended value, which is
+// This is defined in internal/htest-port.h as "fast", but can be overridden by
+// a definition in internal/custom/htest-port.h. The recommended value, which is
 // used internally at Google, is "threadsafe".
-static const char kDefaultDeathTestStyle[] = GTEST_DEFAULT_DEATH_TEST_STYLE;
+static const char kDefaultDeathTestStyle[] = HTEST_DEFAULT_DEATH_TEST_STYLE;
 
 }  // namespace testing
 
-GTEST_DEFINE_string_(
+HTEST_DEFINE_string_(
     death_test_style,
-    testing::internal::StringFromGTestEnv("death_test_style",
+    testing::internal::StringFromHTestEnv("death_test_style",
                                           testing::kDefaultDeathTestStyle),
     "Indicates how to run a death test in a forked child process: "
     "\"threadsafe\" (child process re-executes the test binary "
@@ -114,9 +114,9 @@ GTEST_DEFINE_string_(
     "\"fast\" (child process runs the death test immediately "
     "after forking).");
 
-GTEST_DEFINE_bool_(
+HTEST_DEFINE_bool_(
     death_test_use_fork,
-    testing::internal::BoolFromGTestEnv("death_test_use_fork", false),
+    testing::internal::BoolFromHTestEnv("death_test_use_fork", false),
     "Instructs to use fork()/_Exit() instead of clone() in death tests. "
     "Ignored and always uses fork() on POSIX systems where clone() is not "
     "implemented. Useful when running under valgrind or similar tools if "
@@ -126,7 +126,7 @@ GTEST_DEFINE_bool_(
     "work in 99% of the cases. Once valgrind is fixed, this flag will "
     "most likely be removed.");
 
-GTEST_DEFINE_string_(
+HTEST_DEFINE_string_(
     internal_run_death_test, "",
     "Indicates the file, line number, temporal index of "
     "the single death test to run, and a file descriptor to "
@@ -137,13 +137,13 @@ GTEST_DEFINE_string_(
 
 namespace testing {
 
-#ifdef GTEST_HAS_DEATH_TEST
+#ifdef HTEST_HAS_DEATH_TEST
 
 namespace internal {
 
 // Valid only for fast death tests. Indicates the code is running in the
 // child process of a fast style death test.
-#if !defined(GTEST_OS_WINDOWS) && !defined(GTEST_OS_FUCHSIA)
+#if !defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_FUCHSIA)
 static bool g_in_fast_death_test_child = false;
 #endif
 
@@ -153,16 +153,16 @@ static bool g_in_fast_death_test_child = false;
 // tests.  IMPORTANT: This is an internal utility.  Using it may break the
 // implementation of death tests.  User code MUST NOT use it.
 bool InDeathTestChild() {
-#if defined(GTEST_OS_WINDOWS) || defined(GTEST_OS_FUCHSIA)
+#if defined(HTEST_OS_WINDOWS) || defined(HTEST_OS_FUCHSIA)
 
   // On Windows and Fuchsia, death tests are thread-safe regardless of the value
   // of the death_test_style flag.
-  return !GTEST_FLAG_GET(internal_run_death_test).empty();
+  return !HTEST_FLAG_GET(internal_run_death_test).empty();
 
 #else
 
-  if (GTEST_FLAG_GET(death_test_style) == "threadsafe")
-    return !GTEST_FLAG_GET(internal_run_death_test).empty();
+  if (HTEST_FLAG_GET(death_test_style) == "threadsafe")
+    return !HTEST_FLAG_GET(internal_run_death_test).empty();
   else
     return g_in_fast_death_test_child;
 #endif
@@ -175,7 +175,7 @@ ExitedWithCode::ExitedWithCode(int exit_code) : exit_code_(exit_code) {}
 
 // ExitedWithCode function-call operator.
 bool ExitedWithCode::operator()(int exit_status) const {
-#if defined(GTEST_OS_WINDOWS) || defined(GTEST_OS_FUCHSIA)
+#if defined(HTEST_OS_WINDOWS) || defined(HTEST_OS_FUCHSIA)
 
   return exit_status == exit_code_;
 
@@ -183,26 +183,26 @@ bool ExitedWithCode::operator()(int exit_status) const {
 
   return WIFEXITED(exit_status) && WEXITSTATUS(exit_status) == exit_code_;
 
-#endif  // GTEST_OS_WINDOWS || GTEST_OS_FUCHSIA
+#endif  // HTEST_OS_WINDOWS || HTEST_OS_FUCHSIA
 }
 
-#if !defined(GTEST_OS_WINDOWS) && !defined(GTEST_OS_FUCHSIA)
+#if !defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_FUCHSIA)
 // KilledBySignal constructor.
 KilledBySignal::KilledBySignal(int signum) : signum_(signum) {}
 
 // KilledBySignal function-call operator.
 bool KilledBySignal::operator()(int exit_status) const {
-#if defined(GTEST_KILLED_BY_SIGNAL_OVERRIDE_)
+#if defined(HTEST_KILLED_BY_SIGNAL_OVERRIDE_)
   {
     bool result;
-    if (GTEST_KILLED_BY_SIGNAL_OVERRIDE_(signum_, exit_status, &result)) {
+    if (HTEST_KILLED_BY_SIGNAL_OVERRIDE_(signum_, exit_status, &result)) {
       return result;
     }
   }
-#endif  // defined(GTEST_KILLED_BY_SIGNAL_OVERRIDE_)
+#endif  // defined(HTEST_KILLED_BY_SIGNAL_OVERRIDE_)
   return WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == signum_;
 }
-#endif  // !GTEST_OS_WINDOWS && !GTEST_OS_FUCHSIA
+#endif  // !HTEST_OS_WINDOWS && !HTEST_OS_FUCHSIA
 
 namespace internal {
 
@@ -213,7 +213,7 @@ namespace internal {
 static std::string ExitSummary(int exit_code) {
   Message m;
 
-#if defined(GTEST_OS_WINDOWS) || defined(GTEST_OS_FUCHSIA)
+#if defined(HTEST_OS_WINDOWS) || defined(HTEST_OS_FUCHSIA)
 
   m << "Exited with exit status " << exit_code;
 
@@ -229,7 +229,7 @@ static std::string ExitSummary(int exit_code) {
     m << " (core dumped)";
   }
 #endif
-#endif  // GTEST_OS_WINDOWS || GTEST_OS_FUCHSIA
+#endif  // HTEST_OS_WINDOWS || HTEST_OS_FUCHSIA
 
   return m.GetString();
 }
@@ -240,7 +240,7 @@ bool ExitedUnsuccessfully(int exit_status) {
   return !ExitedWithCode(0)(exit_status);
 }
 
-#if !defined(GTEST_OS_WINDOWS) && !defined(GTEST_OS_FUCHSIA)
+#if !defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_FUCHSIA)
 // Generates a textual failure message when a death test finds more than
 // one thread running, or cannot determine the number of threads, prior
 // to executing the given statement.  It is the responsibility of the
@@ -248,7 +248,7 @@ bool ExitedUnsuccessfully(int exit_status) {
 static std::string DeathTestThreadWarning(size_t thread_count) {
   Message msg;
   msg << "Death tests use fork(), which is unsafe particularly"
-      << " in a threaded context. For this test, " << GTEST_NAME_ << " ";
+      << " in a threaded context. For this test, " << HTEST_NAME_ << " ";
   if (thread_count == 0) {
     msg << "couldn't detect the number of threads.";
   } else {
@@ -261,7 +261,7 @@ static std::string DeathTestThreadWarning(size_t thread_count) {
       << " this is the last message you see before your test times out.";
   return msg.GetString();
 }
-#endif  // !GTEST_OS_WINDOWS && !GTEST_OS_FUCHSIA
+#endif  // !HTEST_OS_WINDOWS && !HTEST_OS_FUCHSIA
 
 // Flag characters for reporting a death test that did not die.
 static const char kDeathTestLived = 'L';
@@ -269,7 +269,7 @@ static const char kDeathTestReturned = 'R';
 static const char kDeathTestThrew = 'T';
 static const char kDeathTestInternalError = 'I';
 
-#ifdef GTEST_OS_FUCHSIA
+#ifdef HTEST_OS_FUCHSIA
 
 // File descriptor used for the pipe in the child process.
 static const int kFuchsiaReadPipeFd = 3;
@@ -311,7 +311,7 @@ enum DeathTestOutcome { IN_PROGRESS, DIED, LIVED, RETURNED, THREW };
 
 // A replacement for CHECK that calls DeathTestAbort if the assertion
 // fails.
-#define GTEST_DEATH_TEST_CHECK_(expression)                              \
+#define HTEST_DEATH_TEST_CHECK_(expression)                              \
   do {                                                                   \
     if (!::testing::internal::IsTrue(expression)) {                      \
       DeathTestAbort(::std::string("CHECK failed: File ") + __FILE__ +   \
@@ -321,20 +321,20 @@ enum DeathTestOutcome { IN_PROGRESS, DIED, LIVED, RETURNED, THREW };
     }                                                                    \
   } while (::testing::internal::AlwaysFalse())
 
-// This macro is similar to GTEST_DEATH_TEST_CHECK_, but it is meant for
+// This macro is similar to HTEST_DEATH_TEST_CHECK_, but it is meant for
 // evaluating any system call that fulfills two conditions: it must return
 // -1 on failure, and set errno to EINTR when it is interrupted and
 // should be tried again.  The macro expands to a loop that repeatedly
 // evaluates the expression as long as it evaluates to -1 and sets
 // errno to EINTR.  If the expression evaluates to -1 but errno is
 // something other than EINTR, DeathTestAbort is called.
-#define GTEST_DEATH_TEST_CHECK_SYSCALL_(expression)                      \
+#define HTEST_DEATH_TEST_CHECK_SYSCALL_(expression)                      \
   do {                                                                   \
-    int gtest_retval;                                                    \
+    int htest_retval;                                                    \
     do {                                                                 \
-      gtest_retval = (expression);                                       \
-    } while (gtest_retval == -1 && errno == EINTR);                      \
-    if (gtest_retval == -1) {                                            \
+      htest_retval = (expression);                                       \
+    } while (htest_retval == -1 && errno == EINTR);                      \
+    if (htest_retval == -1) {                                            \
       DeathTestAbort(::std::string("CHECK failed: File ") + __FILE__ +   \
                      ", line " +                                         \
                      ::testing::internal::StreamableToString(__LINE__) + \
@@ -364,10 +364,10 @@ static void FailFromInternalError(int fd) {
   } while (num_read == -1 && errno == EINTR);
 
   if (num_read == 0) {
-    GTEST_LOG_(FATAL) << error.GetString();
+    HTEST_LOG_(FATAL) << error.GetString();
   } else {
     const int last_error = errno;
-    GTEST_LOG_(FATAL) << "Error while reading death test internal: "
+    HTEST_LOG_(FATAL) << "Error while reading death test internal: "
                       << GetLastErrnoDescription() << " [" << last_error << "]";
   }
 }
@@ -415,7 +415,7 @@ class DeathTestImpl : public DeathTest {
         write_fd_(-1) {}
 
   // read_fd_ is expected to be closed and cleared by a derived class.
-  ~DeathTestImpl() override { GTEST_DEATH_TEST_CHECK_(read_fd_ == -1); }
+  ~DeathTestImpl() override { HTEST_DEATH_TEST_CHECK_(read_fd_ == -1); }
 
   void Abort(AbortReason reason) override;
   bool Passed(bool status_ok) override;
@@ -496,15 +496,15 @@ void DeathTestImpl::ReadAndInterpretStatusByte() {
         FailFromInternalError(read_fd());  // Does not return.
         break;
       default:
-        GTEST_LOG_(FATAL) << "Death test child process reported "
+        HTEST_LOG_(FATAL) << "Death test child process reported "
                           << "unexpected status byte ("
                           << static_cast<unsigned int>(flag) << ")";
     }
   } else {
-    GTEST_LOG_(FATAL) << "Read from death test child process failed: "
+    HTEST_LOG_(FATAL) << "Read from death test child process failed: "
                       << GetLastErrnoDescription();
   }
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(posix::Close(read_fd()));
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(posix::Close(read_fd()));
   set_read_fd(-1);
 }
 
@@ -522,7 +522,7 @@ void DeathTestImpl::Abort(AbortReason reason) {
                          : reason == TEST_THREW_EXCEPTION ? kDeathTestThrew
                                                           : kDeathTestReturned;
 
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(posix::Write(write_fd(), &status_ch, 1));
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(posix::Write(write_fd(), &status_ch, 1));
   // We are leaking the descriptor here because on some platforms (i.e.,
   // when built as Windows DLL), destructors of global objects will still
   // run after calling _Exit(). On such systems, write_fd_ will be
@@ -619,7 +619,7 @@ bool DeathTestImpl::Passed(bool status_ok) {
       break;
     case IN_PROGRESS:
     default:
-      GTEST_LOG_(FATAL)
+      HTEST_LOG_(FATAL)
           << "DeathTest::Passed somehow called before conclusion of test";
   }
 
@@ -627,7 +627,7 @@ bool DeathTestImpl::Passed(bool status_ok) {
   return success;
 }
 
-#ifndef GTEST_OS_WINDOWS
+#ifndef HTEST_OS_WINDOWS
 // Note: The return value points into args, so the return value's lifetime is
 // bound to that of args.
 static std::vector<char*> CreateArgvFromArgs(std::vector<std::string>& args) {
@@ -641,12 +641,12 @@ static std::vector<char*> CreateArgvFromArgs(std::vector<std::string>& args) {
 }
 #endif
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 // WindowsDeathTest implements death tests on Windows. Due to the
 // specifics of starting new processes on Windows, death tests there are
 // always threadsafe, and Google Test considers the
-// --gtest_death_test_style=fast setting to be equivalent to
-// --gtest_death_test_style=threadsafe there.
+// --htest_death_test_style=fast setting to be equivalent to
+// --htest_death_test_style=threadsafe there.
 //
 // A few implementation notes:  Like the Linux version, the Windows
 // implementation uses pipes for child-to-parent communication. But due to
@@ -714,7 +714,7 @@ int WindowsDeathTest::Wait() {
     case WAIT_OBJECT_0 + 1:
       break;
     default:
-      GTEST_DEATH_TEST_CHECK_(false);  // Should not get here.
+      HTEST_DEATH_TEST_CHECK_(false);  // Should not get here.
   }
 
   // The child has acquired the write end of the pipe or exited.
@@ -728,10 +728,10 @@ int WindowsDeathTest::Wait() {
   // returns immediately if the child has already exited, regardless of
   // whether previous calls to WaitForMultipleObjects synchronized on this
   // handle or not.
-  GTEST_DEATH_TEST_CHECK_(WAIT_OBJECT_0 ==
+  HTEST_DEATH_TEST_CHECK_(WAIT_OBJECT_0 ==
                           ::WaitForSingleObject(child_handle_.Get(), INFINITE));
   DWORD status_code;
-  GTEST_DEATH_TEST_CHECK_(
+  HTEST_DEATH_TEST_CHECK_(
       ::GetExitCodeProcess(child_handle_.Get(), &status_code) != FALSE);
   child_handle_.Reset();
   set_status(static_cast<int>(status_code));
@@ -740,8 +740,8 @@ int WindowsDeathTest::Wait() {
 
 // The AssumeRole process for a Windows death test.  It creates a child
 // process with the same executable as the current process to run the
-// death test.  The child process is given the --gtest_filter and
-// --gtest_internal_run_death_test flags such that it knows to run the
+// death test.  The child process is given the --htest_filter and
+// --htest_internal_run_death_test flags such that it knows to run the
 // current death test only.
 DeathTest::TestRole WindowsDeathTest::AssumeRole() {
   const UnitTestImpl* const impl = GetUnitTestImpl();
@@ -762,7 +762,7 @@ DeathTest::TestRole WindowsDeathTest::AssumeRole() {
   SECURITY_ATTRIBUTES handles_are_inheritable = {sizeof(SECURITY_ATTRIBUTES),
                                                  nullptr, TRUE};
   HANDLE read_handle, write_handle;
-  GTEST_DEATH_TEST_CHECK_(::CreatePipe(&read_handle, &write_handle,
+  HTEST_DEATH_TEST_CHECK_(::CreatePipe(&read_handle, &write_handle,
                                        &handles_are_inheritable,
                                        0)  // Default buffer size.
                           != FALSE);
@@ -774,12 +774,12 @@ DeathTest::TestRole WindowsDeathTest::AssumeRole() {
       TRUE,       // The event will automatically reset to non-signaled state.
       FALSE,      // The initial state is non-signalled.
       nullptr));  // The even is unnamed.
-  GTEST_DEATH_TEST_CHECK_(event_handle_.Get() != nullptr);
-  const std::string filter_flag = std::string("--") + GTEST_FLAG_PREFIX_ +
+  HTEST_DEATH_TEST_CHECK_(event_handle_.Get() != nullptr);
+  const std::string filter_flag = std::string("--") + HTEST_FLAG_PREFIX_ +
                                   "filter=" + info->test_suite_name() + "." +
                                   info->name();
   const std::string internal_flag =
-      std::string("--") + GTEST_FLAG_PREFIX_ +
+      std::string("--") + HTEST_FLAG_PREFIX_ +
       "internal_run_death_test=" + file_ + "|" + StreamableToString(line_) +
       "|" + StreamableToString(death_test_index) + "|" +
       StreamableToString(static_cast<unsigned int>(::GetCurrentProcessId())) +
@@ -790,7 +790,7 @@ DeathTest::TestRole WindowsDeathTest::AssumeRole() {
       StreamableToString(reinterpret_cast<size_t>(event_handle_.Get()));
 
   char executable_path[_MAX_PATH + 1];  // NOLINT
-  GTEST_DEATH_TEST_CHECK_(_MAX_PATH + 1 != ::GetModuleFileNameA(nullptr,
+  HTEST_DEATH_TEST_CHECK_(_MAX_PATH + 1 != ::GetModuleFileNameA(nullptr,
                                                                 executable_path,
                                                                 _MAX_PATH));
 
@@ -812,7 +812,7 @@ DeathTest::TestRole WindowsDeathTest::AssumeRole() {
   startup_info.hStdError = ::GetStdHandle(STD_ERROR_HANDLE);
 
   PROCESS_INFORMATION process_info;
-  GTEST_DEATH_TEST_CHECK_(
+  HTEST_DEATH_TEST_CHECK_(
       ::CreateProcessA(
           executable_path, const_cast<char*>(command_line.c_str()),
           nullptr,  // Returned process handle is not inheritable.
@@ -828,7 +828,7 @@ DeathTest::TestRole WindowsDeathTest::AssumeRole() {
   return OVERSEE_TEST;
 }
 
-#elif defined(GTEST_OS_FUCHSIA)
+#elif defined(HTEST_OS_FUCHSIA)
 
 class FuchsiaDeathTest : public DeathTestImpl {
  public:
@@ -870,43 +870,43 @@ int FuchsiaDeathTest::Wait() {
   zx_status_t status_zx;
   zx::port port;
   status_zx = zx::port::create(0, &port);
-  GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
 
   // Register to wait for the child process to terminate.
   status_zx =
       child_process_.wait_async(port, kProcessKey, ZX_PROCESS_TERMINATED, 0);
-  GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
 
   // Register to wait for the socket to be readable or closed.
   status_zx = stderr_socket_.wait_async(
       port, kSocketKey, ZX_SOCKET_READABLE | ZX_SOCKET_PEER_CLOSED, 0);
-  GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
 
   // Register to wait for an exception.
   status_zx = exception_channel_.wait_async(port, kExceptionKey,
                                             ZX_CHANNEL_READABLE, 0);
-  GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
 
   bool process_terminated = false;
   bool socket_closed = false;
   do {
     zx_port_packet_t packet = {};
     status_zx = port.wait(zx::time::infinite(), &packet);
-    GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
+    HTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
 
     if (packet.key == kExceptionKey) {
       // Process encountered an exception. Kill it directly rather than
       // letting other handlers process the event. We will get a kProcessKey
       // event when the process actually terminates.
       status_zx = child_process_.kill();
-      GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
+      HTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
     } else if (packet.key == kProcessKey) {
       // Process terminated.
-      GTEST_DEATH_TEST_CHECK_(ZX_PKT_IS_SIGNAL_ONE(packet.type));
-      GTEST_DEATH_TEST_CHECK_(packet.signal.observed & ZX_PROCESS_TERMINATED);
+      HTEST_DEATH_TEST_CHECK_(ZX_PKT_IS_SIGNAL_ONE(packet.type));
+      HTEST_DEATH_TEST_CHECK_(packet.signal.observed & ZX_PROCESS_TERMINATED);
       process_terminated = true;
     } else if (packet.key == kSocketKey) {
-      GTEST_DEATH_TEST_CHECK_(ZX_PKT_IS_SIGNAL_ONE(packet.type));
+      HTEST_DEATH_TEST_CHECK_(ZX_PKT_IS_SIGNAL_ONE(packet.type));
       if (packet.signal.observed & ZX_SOCKET_READABLE) {
         // Read data from the socket.
         constexpr size_t kBufferSize = 1024;
@@ -922,13 +922,13 @@ int FuchsiaDeathTest::Wait() {
         if (status_zx == ZX_ERR_PEER_CLOSED) {
           socket_closed = true;
         } else {
-          GTEST_DEATH_TEST_CHECK_(status_zx == ZX_ERR_SHOULD_WAIT);
+          HTEST_DEATH_TEST_CHECK_(status_zx == ZX_ERR_SHOULD_WAIT);
           status_zx = stderr_socket_.wait_async(
               port, kSocketKey, ZX_SOCKET_READABLE | ZX_SOCKET_PEER_CLOSED, 0);
-          GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
+          HTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
         }
       } else {
-        GTEST_DEATH_TEST_CHECK_(packet.signal.observed & ZX_SOCKET_PEER_CLOSED);
+        HTEST_DEATH_TEST_CHECK_(packet.signal.observed & ZX_SOCKET_PEER_CLOSED);
         socket_closed = true;
       }
     }
@@ -939,17 +939,17 @@ int FuchsiaDeathTest::Wait() {
   zx_info_process_t buffer;
   status_zx = child_process_.get_info(ZX_INFO_PROCESS, &buffer, sizeof(buffer),
                                       nullptr, nullptr);
-  GTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status_zx == ZX_OK);
 
-  GTEST_DEATH_TEST_CHECK_(buffer.flags & ZX_INFO_PROCESS_FLAG_EXITED);
+  HTEST_DEATH_TEST_CHECK_(buffer.flags & ZX_INFO_PROCESS_FLAG_EXITED);
   set_status(static_cast<int>(buffer.return_code));
   return status();
 }
 
 // The AssumeRole process for a Fuchsia death test.  It creates a child
 // process with the same executable as the current process to run the
-// death test.  The child process is given the --gtest_filter and
-// --gtest_internal_run_death_test flags such that it knows to run the
+// death test.  The child process is given the --htest_filter and
+// --htest_internal_run_death_test flags such that it knows to run the
 // current death test only.
 DeathTest::TestRole FuchsiaDeathTest::AssumeRole() {
   const UnitTestImpl* const impl = GetUnitTestImpl();
@@ -969,10 +969,10 @@ DeathTest::TestRole FuchsiaDeathTest::AssumeRole() {
   FlushInfoLog();
 
   // Build the child process command line.
-  const std::string filter_flag = std::string("--") + GTEST_FLAG_PREFIX_ +
+  const std::string filter_flag = std::string("--") + HTEST_FLAG_PREFIX_ +
                                   "filter=" + info->test_suite_name() + "." +
                                   info->name();
-  const std::string internal_flag = std::string("--") + GTEST_FLAG_PREFIX_ +
+  const std::string internal_flag = std::string("--") + HTEST_FLAG_PREFIX_ +
                                     kInternalRunDeathTestFlag + "=" + file_ +
                                     "|" + StreamableToString(line_) + "|" +
                                     StreamableToString(death_test_index);
@@ -986,7 +986,7 @@ DeathTest::TestRole FuchsiaDeathTest::AssumeRole() {
   zx_handle_t child_pipe_handle;
   int child_pipe_fd;
   status = fdio_pipe_half(&child_pipe_fd, &child_pipe_handle);
-  GTEST_DEATH_TEST_CHECK_(status == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status == ZX_OK);
   set_read_fd(child_pipe_fd);
 
   // Set the pipe handle for the child.
@@ -999,14 +999,14 @@ DeathTest::TestRole FuchsiaDeathTest::AssumeRole() {
   // Create a socket pair will be used to receive the child process' stderr.
   zx::socket stderr_producer_socket;
   status = zx::socket::create(0, &stderr_producer_socket, &stderr_socket_);
-  GTEST_DEATH_TEST_CHECK_(status >= 0);
+  HTEST_DEATH_TEST_CHECK_(status >= 0);
   int stderr_producer_fd = -1;
   status =
       fdio_fd_create(stderr_producer_socket.release(), &stderr_producer_fd);
-  GTEST_DEATH_TEST_CHECK_(status >= 0);
+  HTEST_DEATH_TEST_CHECK_(status >= 0);
 
   // Make the stderr socket nonblocking.
-  GTEST_DEATH_TEST_CHECK_(fcntl(stderr_producer_fd, F_SETFL, 0) == 0);
+  HTEST_DEATH_TEST_CHECK_(fcntl(stderr_producer_fd, F_SETFL, 0) == 0);
 
   fdio_spawn_action_t* add_stderr_action = &spawn_actions[1];
   add_stderr_action->action = FDIO_SPAWN_ACTION_CLONE_FD;
@@ -1016,19 +1016,19 @@ DeathTest::TestRole FuchsiaDeathTest::AssumeRole() {
   // Create a child job.
   zx_handle_t child_job = ZX_HANDLE_INVALID;
   status = zx_job_create(zx_job_default(), 0, &child_job);
-  GTEST_DEATH_TEST_CHECK_(status == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status == ZX_OK);
   zx_policy_basic_t policy;
   policy.condition = ZX_POL_NEW_ANY;
   policy.policy = ZX_POL_ACTION_ALLOW;
   status = zx_job_set_policy(child_job, ZX_JOB_POL_RELATIVE, ZX_JOB_POL_BASIC,
                              &policy, 1);
-  GTEST_DEATH_TEST_CHECK_(status == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status == ZX_OK);
 
   // Create an exception channel attached to the |child_job|, to allow
   // us to suppress the system default exception handler from firing.
   status = zx_task_create_exception_channel(
       child_job, 0, exception_channel_.reset_and_get_address());
-  GTEST_DEATH_TEST_CHECK_(status == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status == ZX_OK);
 
   // Spawn the child process.
   // Note: The test component must have `fuchsia.process.Launcher` declared
@@ -1040,7 +1040,7 @@ DeathTest::TestRole FuchsiaDeathTest::AssumeRole() {
   status = fdio_spawn_etc(child_job, FDIO_SPAWN_CLONE_ALL, argv[0], argv.data(),
                           nullptr, 2, spawn_actions,
                           child_process_.reset_and_get_address(), nullptr);
-  GTEST_DEATH_TEST_CHECK_(status == ZX_OK);
+  HTEST_DEATH_TEST_CHECK_(status == ZX_OK);
 
   set_spawned(true);
   return OVERSEE_TEST;
@@ -1082,7 +1082,7 @@ int ForkingDeathTest::Wait() {
   ReadAndInterpretStatusByte();
 
   int status_value;
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(waitpid(child_pid_, &status_value, 0));
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(waitpid(child_pid_, &status_value, 0));
   set_status(status_value);
   return status_value;
 }
@@ -1101,11 +1101,11 @@ class NoExecDeathTest : public ForkingDeathTest {
 DeathTest::TestRole NoExecDeathTest::AssumeRole() {
   const size_t thread_count = GetThreadCount();
   if (thread_count != 1) {
-    GTEST_LOG_(WARNING) << DeathTestThreadWarning(thread_count);
+    HTEST_LOG_(WARNING) << DeathTestThreadWarning(thread_count);
   }
 
   int pipe_fd[2];
-  GTEST_DEATH_TEST_CHECK_(pipe(pipe_fd) != -1);
+  HTEST_DEATH_TEST_CHECK_(pipe(pipe_fd) != -1);
 
   DeathTest::set_last_death_test_message("");
   CaptureStderr();
@@ -1119,10 +1119,10 @@ DeathTest::TestRole NoExecDeathTest::AssumeRole() {
   FlushInfoLog();
 
   const pid_t child_pid = fork();
-  GTEST_DEATH_TEST_CHECK_(child_pid != -1);
+  HTEST_DEATH_TEST_CHECK_(child_pid != -1);
   set_child_pid(child_pid);
   if (child_pid == 0) {
-    GTEST_DEATH_TEST_CHECK_SYSCALL_(close(pipe_fd[0]));
+    HTEST_DEATH_TEST_CHECK_SYSCALL_(close(pipe_fd[0]));
     set_write_fd(pipe_fd[1]);
     // Redirects all logging to stderr in the child process to prevent
     // concurrent writes to the log files.  We capture stderr in the parent
@@ -1134,7 +1134,7 @@ DeathTest::TestRole NoExecDeathTest::AssumeRole() {
     g_in_fast_death_test_child = true;
     return EXECUTE_TEST;
   } else {
-    GTEST_DEATH_TEST_CHECK_SYSCALL_(close(pipe_fd[1]));
+    HTEST_DEATH_TEST_CHECK_SYSCALL_(close(pipe_fd[1]));
     set_read_fd(pipe_fd[0]);
     set_spawned(true);
     return OVERSEE_TEST;
@@ -1156,11 +1156,11 @@ class ExecDeathTest : public ForkingDeathTest {
  private:
   static ::std::vector<std::string> GetArgvsForDeathTestChildProcess() {
     ::std::vector<std::string> args = GetInjectableArgvs();
-#if defined(GTEST_EXTRA_DEATH_TEST_COMMAND_LINE_ARGS_)
+#if defined(HTEST_EXTRA_DEATH_TEST_COMMAND_LINE_ARGS_)
     ::std::vector<std::string> extra_args =
-        GTEST_EXTRA_DEATH_TEST_COMMAND_LINE_ARGS_();
+        HTEST_EXTRA_DEATH_TEST_COMMAND_LINE_ARGS_();
     args.insert(args.end(), extra_args.begin(), extra_args.end());
-#endif  // defined(GTEST_EXTRA_DEATH_TEST_COMMAND_LINE_ARGS_)
+#endif  // defined(HTEST_EXTRA_DEATH_TEST_COMMAND_LINE_ARGS_)
     return args;
   }
   // The name of the file in which the death test is located.
@@ -1176,15 +1176,15 @@ struct ExecDeathTestArgs {
   int close_fd;       // File descriptor to close; the read end of a pipe
 };
 
-#ifdef GTEST_OS_QNX
+#ifdef HTEST_OS_QNX
 extern "C" char** environ;
-#else   // GTEST_OS_QNX
+#else   // HTEST_OS_QNX
 // The main function for a threadsafe-style death test child process.
 // This function is called in a clone()-ed process and thus must avoid
 // any potentially unsafe operations like malloc or libc functions.
 static int ExecDeathTestChildMain(void* child_arg) {
   ExecDeathTestArgs* const args = static_cast<ExecDeathTestArgs*>(child_arg);
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(close(args->close_fd));
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(close(args->close_fd));
 
   // We need to execute the test program in the same environment where
   // it was originally invoked.  Therefore we change to the original
@@ -1208,43 +1208,43 @@ static int ExecDeathTestChildMain(void* child_arg) {
                  original_dir + " failed: " + GetLastErrnoDescription());
   return EXIT_FAILURE;
 }
-#endif  // GTEST_OS_QNX
+#endif  // HTEST_OS_QNX
 
-#if GTEST_HAS_CLONE
+#if HTEST_HAS_CLONE
 // Two utility routines that together determine the direction the stack
 // grows.
 // This could be accomplished more elegantly by a single recursive
 // function, but we want to guard against the unlikely possibility of
 // a smart compiler optimizing the recursion away.
 //
-// GTEST_NO_INLINE_ is required to prevent GCC 4.6 from inlining
+// HTEST_NO_INLINE_ is required to prevent GCC 4.6 from inlining
 // StackLowerThanAddress into StackGrowsDown, which then doesn't give
 // correct answer.
 static void StackLowerThanAddress(const void* ptr,
-                                  bool* result) GTEST_NO_INLINE_;
+                                  bool* result) HTEST_NO_INLINE_;
 // Make sure sanitizers do not tamper with the stack here.
 // Ideally, we want to use `__builtin_frame_address` instead of a local variable
 // address with sanitizer disabled, but it does not work when the
 // compiler optimizes the stack frame out, which happens on PowerPC targets.
 // HWAddressSanitizer add a random tag to the MSB of the local variable address,
 // making comparison result unpredictable.
-GTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
-GTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
+HTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
+HTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
 static void StackLowerThanAddress(const void* ptr, bool* result) {
   int dummy = 0;
   *result = std::less<const void*>()(&dummy, ptr);
 }
 
 // Make sure AddressSanitizer does not tamper with the stack here.
-GTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
-GTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
+HTEST_ATTRIBUTE_NO_SANITIZE_ADDRESS_
+HTEST_ATTRIBUTE_NO_SANITIZE_HWADDRESS_
 static bool StackGrowsDown() {
   int dummy = 0;
   bool result;
   StackLowerThanAddress(&dummy, &result);
   return result;
 }
-#endif  // GTEST_HAS_CLONE
+#endif  // HTEST_HAS_CLONE
 
 // Spawns a child process with the same executable as the current process in
 // a thread-safe manner and instructs it to run the death test.  The
@@ -1257,12 +1257,12 @@ static pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {
   ExecDeathTestArgs args = {argv, close_fd};
   pid_t child_pid = -1;
 
-#ifdef GTEST_OS_QNX
+#ifdef HTEST_OS_QNX
   // Obtains the current directory and sets it to be closed in the child
   // process.
   const int cwd_fd = open(".", O_RDONLY);
-  GTEST_DEATH_TEST_CHECK_(cwd_fd != -1);
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(fcntl(cwd_fd, F_SETFD, FD_CLOEXEC));
+  HTEST_DEATH_TEST_CHECK_(cwd_fd != -1);
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(fcntl(cwd_fd, F_SETFD, FD_CLOEXEC));
   // We need to execute the test program in the same environment where
   // it was originally invoked.  Therefore we change to the original
   // working directory first.
@@ -1277,18 +1277,18 @@ static pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {
 
   int fd_flags;
   // Set close_fd to be closed after spawn.
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(fd_flags = fcntl(close_fd, F_GETFD));
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(fd_flags = fcntl(close_fd, F_GETFD));
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(
       fcntl(close_fd, F_SETFD, fd_flags | FD_CLOEXEC));
   struct inheritance inherit = {0};
   // spawn is a system call.
   child_pid = spawn(args.argv[0], 0, nullptr, &inherit, args.argv, environ);
   // Restores the current working directory.
-  GTEST_DEATH_TEST_CHECK_(fchdir(cwd_fd) != -1);
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(close(cwd_fd));
+  HTEST_DEATH_TEST_CHECK_(fchdir(cwd_fd) != -1);
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(close(cwd_fd));
 
-#else  // GTEST_OS_QNX
-#ifdef GTEST_OS_LINUX
+#else  // HTEST_OS_QNX
+#ifdef HTEST_OS_LINUX
   // When a SIGPROF signal is received while fork() or clone() are executing,
   // the process may hang. To avoid this, we ignore SIGPROF here and re-enable
   // it after the call to fork()/clone() is complete.
@@ -1297,12 +1297,12 @@ static pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {
   memset(&ignore_sigprof_action, 0, sizeof(ignore_sigprof_action));
   sigemptyset(&ignore_sigprof_action.sa_mask);
   ignore_sigprof_action.sa_handler = SIG_IGN;
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(
       sigaction(SIGPROF, &ignore_sigprof_action, &saved_sigprof_action));
-#endif  // GTEST_OS_LINUX
+#endif  // HTEST_OS_LINUX
 
-#if GTEST_HAS_CLONE
-  const bool use_fork = GTEST_FLAG_GET(death_test_use_fork);
+#if HTEST_HAS_CLONE
+  const bool use_fork = HTEST_FLAG_GET(death_test_use_fork);
 
   if (!use_fork) {
     static const bool stack_grows_down = StackGrowsDown();
@@ -1310,7 +1310,7 @@ static pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {
     // MMAP_ANONYMOUS is not defined on Mac, so we use MAP_ANON instead.
     void* const stack = mmap(nullptr, stack_size, PROT_READ | PROT_WRITE,
                              MAP_ANON | MAP_PRIVATE, -1, 0);
-    GTEST_DEATH_TEST_CHECK_(stack != MAP_FAILED);
+    HTEST_DEATH_TEST_CHECK_(stack != MAP_FAILED);
 
     // Maximum stack alignment in bytes:  For a downward-growing stack, this
     // amount is subtracted from size of the stack space to get an address
@@ -1322,34 +1322,34 @@ static pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {
     void* const stack_top =
         static_cast<char*>(stack) +
         (stack_grows_down ? stack_size - kMaxStackAlignment : 0);
-    GTEST_DEATH_TEST_CHECK_(
+    HTEST_DEATH_TEST_CHECK_(
         static_cast<size_t>(stack_size) > kMaxStackAlignment &&
         reinterpret_cast<uintptr_t>(stack_top) % kMaxStackAlignment == 0);
 
     child_pid = clone(&ExecDeathTestChildMain, stack_top, SIGCHLD, &args);
 
-    GTEST_DEATH_TEST_CHECK_(munmap(stack, stack_size) != -1);
+    HTEST_DEATH_TEST_CHECK_(munmap(stack, stack_size) != -1);
   }
 #else
   const bool use_fork = true;
-#endif  // GTEST_HAS_CLONE
+#endif  // HTEST_HAS_CLONE
 
   if (use_fork && (child_pid = fork()) == 0) {
     _Exit(ExecDeathTestChildMain(&args));
   }
-#endif  // GTEST_OS_QNX
-#ifdef GTEST_OS_LINUX
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(
+#endif  // HTEST_OS_QNX
+#ifdef HTEST_OS_LINUX
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(
       sigaction(SIGPROF, &saved_sigprof_action, nullptr));
-#endif  // GTEST_OS_LINUX
+#endif  // HTEST_OS_LINUX
 
-  GTEST_DEATH_TEST_CHECK_(child_pid != -1);
+  HTEST_DEATH_TEST_CHECK_(child_pid != -1);
   return child_pid;
 }
 
 // The AssumeRole process for a fork-and-exec death test.  It re-executes the
-// main program from the beginning, setting the --gtest_filter
-// and --gtest_internal_run_death_test flags to cause only the current
+// main program from the beginning, setting the --htest_filter
+// and --htest_internal_run_death_test flags to cause only the current
 // death test to be re-run.
 DeathTest::TestRole ExecDeathTest::AssumeRole() {
   const UnitTestImpl* const impl = GetUnitTestImpl();
@@ -1364,15 +1364,15 @@ DeathTest::TestRole ExecDeathTest::AssumeRole() {
   }
 
   int pipe_fd[2];
-  GTEST_DEATH_TEST_CHECK_(pipe(pipe_fd) != -1);
+  HTEST_DEATH_TEST_CHECK_(pipe(pipe_fd) != -1);
   // Clear the close-on-exec flag on the write end of the pipe, lest
   // it be closed when the child process does an exec:
-  GTEST_DEATH_TEST_CHECK_(fcntl(pipe_fd[1], F_SETFD, 0) != -1);
+  HTEST_DEATH_TEST_CHECK_(fcntl(pipe_fd[1], F_SETFD, 0) != -1);
 
-  const std::string filter_flag = std::string("--") + GTEST_FLAG_PREFIX_ +
+  const std::string filter_flag = std::string("--") + HTEST_FLAG_PREFIX_ +
                                   "filter=" + info->test_suite_name() + "." +
                                   info->name();
-  const std::string internal_flag = std::string("--") + GTEST_FLAG_PREFIX_ +
+  const std::string internal_flag = std::string("--") + HTEST_FLAG_PREFIX_ +
                                     "internal_run_death_test=" + file_ + "|" +
                                     StreamableToString(line_) + "|" +
                                     StreamableToString(death_test_index) + "|" +
@@ -1390,17 +1390,17 @@ DeathTest::TestRole ExecDeathTest::AssumeRole() {
 
   std::vector<char*> argv = CreateArgvFromArgs(args);
   const pid_t child_pid = ExecDeathTestSpawnChild(argv.data(), pipe_fd[0]);
-  GTEST_DEATH_TEST_CHECK_SYSCALL_(close(pipe_fd[1]));
+  HTEST_DEATH_TEST_CHECK_SYSCALL_(close(pipe_fd[1]));
   set_child_pid(child_pid);
   set_read_fd(pipe_fd[0]);
   set_spawned(true);
   return OVERSEE_TEST;
 }
 
-#endif  // !GTEST_OS_WINDOWS
+#endif  // !HTEST_OS_WINDOWS
 
 // Creates a concrete DeathTest-derived class that depends on the
-// --gtest_death_test_style flag, and sets the pointer pointed to
+// --htest_death_test_style flag, and sets the pointer pointed to
 // by the "test" argument to its address.  If the test should be
 // skipped, sets that pointer to NULL.  Returns true, unless the
 // flag is set to an invalid value.
@@ -1430,33 +1430,33 @@ bool DefaultDeathTestFactory::Create(const char* statement,
     }
   }
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 
-  if (GTEST_FLAG_GET(death_test_style) == "threadsafe" ||
-      GTEST_FLAG_GET(death_test_style) == "fast") {
+  if (HTEST_FLAG_GET(death_test_style) == "threadsafe" ||
+      HTEST_FLAG_GET(death_test_style) == "fast") {
     *test = new WindowsDeathTest(statement, std::move(matcher), file, line);
   }
 
-#elif defined(GTEST_OS_FUCHSIA)
+#elif defined(HTEST_OS_FUCHSIA)
 
-  if (GTEST_FLAG_GET(death_test_style) == "threadsafe" ||
-      GTEST_FLAG_GET(death_test_style) == "fast") {
+  if (HTEST_FLAG_GET(death_test_style) == "threadsafe" ||
+      HTEST_FLAG_GET(death_test_style) == "fast") {
     *test = new FuchsiaDeathTest(statement, std::move(matcher), file, line);
   }
 
 #else
 
-  if (GTEST_FLAG_GET(death_test_style) == "threadsafe") {
+  if (HTEST_FLAG_GET(death_test_style) == "threadsafe") {
     *test = new ExecDeathTest(statement, std::move(matcher), file, line);
-  } else if (GTEST_FLAG_GET(death_test_style) == "fast") {
+  } else if (HTEST_FLAG_GET(death_test_style) == "fast") {
     *test = new NoExecDeathTest(statement, std::move(matcher));
   }
 
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
   else {  // NOLINT - this is more readable than unbalanced brackets inside #if.
     DeathTest::set_last_death_test_message("Unknown death test style \"" +
-                                           GTEST_FLAG_GET(death_test_style) +
+                                           HTEST_FLAG_GET(death_test_style) +
                                            "\" encountered");
     return false;
   }
@@ -1464,7 +1464,7 @@ bool DefaultDeathTestFactory::Create(const char* statement,
   return true;
 }
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 // Recreates the pipe and event handles from the provided parameters,
 // signals the event, and returns a file descriptor wrapped around the pipe
 // handle. This function is called in the child process only.
@@ -1479,7 +1479,7 @@ static int GetStatusFileDescriptor(unsigned int parent_process_id,
                    StreamableToString(parent_process_id));
   }
 
-  GTEST_CHECK_(sizeof(HANDLE) <= sizeof(size_t));
+  HTEST_CHECK_(sizeof(HANDLE) <= sizeof(size_t));
 
   const HANDLE write_handle = reinterpret_cast<HANDLE>(write_handle_as_size_t);
   HANDLE dup_write_handle;
@@ -1525,23 +1525,23 @@ static int GetStatusFileDescriptor(unsigned int parent_process_id,
 
   return write_fd;
 }
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
 // Returns a newly created InternalRunDeathTestFlag object with fields
-// initialized from the GTEST_FLAG(internal_run_death_test) flag if
+// initialized from the HTEST_FLAG(internal_run_death_test) flag if
 // the flag is specified; otherwise returns NULL.
 InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag() {
-  if (GTEST_FLAG_GET(internal_run_death_test).empty()) return nullptr;
+  if (HTEST_FLAG_GET(internal_run_death_test).empty()) return nullptr;
 
-  // GTEST_HAS_DEATH_TEST implies that we have ::std::string, so we
+  // HTEST_HAS_DEATH_TEST implies that we have ::std::string, so we
   // can use it here.
   int line = -1;
   int index = -1;
   ::std::vector< ::std::string> fields;
-  SplitString(GTEST_FLAG_GET(internal_run_death_test), '|', &fields);
+  SplitString(HTEST_FLAG_GET(internal_run_death_test), '|', &fields);
   int write_fd = -1;
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 
   unsigned int parent_process_id = 0;
   size_t write_handle_as_size_t = 0;
@@ -1552,18 +1552,18 @@ InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag() {
       !ParseNaturalNumber(fields[3], &parent_process_id) ||
       !ParseNaturalNumber(fields[4], &write_handle_as_size_t) ||
       !ParseNaturalNumber(fields[5], &event_handle_as_size_t)) {
-    DeathTestAbort("Bad --gtest_internal_run_death_test flag: " +
-                   GTEST_FLAG_GET(internal_run_death_test));
+    DeathTestAbort("Bad --htest_internal_run_death_test flag: " +
+                   HTEST_FLAG_GET(internal_run_death_test));
   }
   write_fd = GetStatusFileDescriptor(parent_process_id, write_handle_as_size_t,
                                      event_handle_as_size_t);
 
-#elif defined(GTEST_OS_FUCHSIA)
+#elif defined(HTEST_OS_FUCHSIA)
 
   if (fields.size() != 3 || !ParseNaturalNumber(fields[1], &line) ||
       !ParseNaturalNumber(fields[2], &index)) {
-    DeathTestAbort("Bad --gtest_internal_run_death_test flag: " +
-                   GTEST_FLAG_GET(internal_run_death_test));
+    DeathTestAbort("Bad --htest_internal_run_death_test flag: " +
+                   HTEST_FLAG_GET(internal_run_death_test));
   }
 
 #else
@@ -1571,17 +1571,17 @@ InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag() {
   if (fields.size() != 4 || !ParseNaturalNumber(fields[1], &line) ||
       !ParseNaturalNumber(fields[2], &index) ||
       !ParseNaturalNumber(fields[3], &write_fd)) {
-    DeathTestAbort("Bad --gtest_internal_run_death_test flag: " +
-                   GTEST_FLAG_GET(internal_run_death_test));
+    DeathTestAbort("Bad --htest_internal_run_death_test flag: " +
+                   HTEST_FLAG_GET(internal_run_death_test));
   }
 
-#endif  // GTEST_OS_WINDOWS
+#endif  // HTEST_OS_WINDOWS
 
   return new InternalRunDeathTestFlag(fields[0], line, index, write_fd);
 }
 
 }  // namespace internal
 
-#endif  // GTEST_HAS_DEATH_TEST
+#endif  // HTEST_HAS_DEATH_TEST
 
 }  // namespace testing

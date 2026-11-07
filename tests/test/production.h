@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //
-// This is part of the unit test for gtest_prod.h.
+// This is part of the unit test for htest_prod.h.
 
 #ifndef GOOGLETEST_TEST_PRODUCTION_H_
 #define GOOGLETEST_TEST_PRODUCTION_H_

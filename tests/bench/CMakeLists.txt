@@ -19,7 +19,7 @@
 # Entry patterns (port remaining entries from cmake_old.cmake):
 #   with main    -> LINKS hawktest::hbench_main_static ${KMCMAKE_DEPS_LINK}
 #   without main -> LINKS hawktest::hbench_static ${KMCMAKE_DEPS_LINK}
-#   gtest test   -> kmcmake_cc_test(MODULE bm) + hmock_main_static + hbench_static
+#   htest test   -> kmcmake_cc_test(MODULE bm) + hmock_main_static + hbench_static
 
 kmcmake_cc_test(
         NAME basic_test
@@ -529,106 +529,106 @@ add_hawk_filter_test(filter_regex_end ".*Ba$" 1)
 add_hawk_filter_test(filter_regex_end_negative "-.*Ba$" 4)
 
 # ---------------------------------------------------------------------------
-# GoogleTest unit tests (originally add_gtest under
-# BENCHMARK_ENABLE_GTEST_TESTS). gmock_main -> hawktest::hmock_main_static,
+# GoogleTest unit tests (originally add_htest under
+# BENCHMARK_ENABLE_HTEST_TESTS). gmock_main -> hawktest::hmock_main_static,
 # benchmark::benchmark -> hawktest::hbench_static.
 # ---------------------------------------------------------------------------
 
 kmcmake_cc_test(
-        NAME benchmark_gtest
+        NAME benchmark_htest
         MODULE bm
-        SOURCES benchmark_gtest.cc
+        SOURCES benchmark_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME benchmark_name_gtest
+        NAME benchmark_name_htest
         MODULE bm
-        SOURCES benchmark_name_gtest.cc
+        SOURCES benchmark_name_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME benchmark_random_interleaving_gtest
+        NAME benchmark_random_interleaving_htest
         MODULE bm
-        SOURCES benchmark_random_interleaving_gtest.cc
+        SOURCES benchmark_random_interleaving_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME commandlineflags_gtest
+        NAME commandlineflags_htest
         MODULE bm
-        SOURCES commandlineflags_gtest.cc
+        SOURCES commandlineflags_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME statistics_gtest
+        NAME statistics_htest
         MODULE bm
-        SOURCES statistics_gtest.cc
+        SOURCES statistics_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME string_util_gtest
+        NAME string_util_htest
         MODULE bm
-        SOURCES string_util_gtest.cc
+        SOURCES string_util_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME perf_counters_gtest
+        NAME perf_counters_htest
         MODULE bm
-        SOURCES perf_counters_gtest.cc
+        SOURCES perf_counters_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME reporter_list_gtest
+        NAME reporter_list_htest
         MODULE bm
-        SOURCES reporter_list_gtest.cc
+        SOURCES reporter_list_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME time_unit_gtest
+        NAME time_unit_htest
         MODULE bm
-        SOURCES time_unit_gtest.cc
+        SOURCES time_unit_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME min_time_parse_gtest
+        NAME min_time_parse_htest
         MODULE bm
-        SOURCES min_time_parse_gtest.cc
+        SOURCES min_time_parse_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME profiler_manager_gtest
+        NAME profiler_manager_htest
         MODULE bm
-        SOURCES profiler_manager_gtest.cc
+        SOURCES profiler_manager_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME benchmark_setup_teardown_cb_types_gtest
+        NAME benchmark_setup_teardown_cb_types_htest
         MODULE bm
-        SOURCES benchmark_setup_teardown_cb_types_gtest.cc
+        SOURCES benchmark_setup_teardown_cb_types_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME memory_results_gtest
+        NAME memory_results_htest
         MODULE bm
-        SOURCES memory_results_gtest.cc
+        SOURCES memory_results_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 
 kmcmake_cc_test(
-        NAME memory_manager_ordering_gtest
+        NAME memory_manager_ordering_htest
         MODULE bm
-        SOURCES memory_manager_ordering_gtest.cc
+        SOURCES memory_manager_ordering_htest.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS hawktest::hmock_main_static hawktest::hbench_static ${KMCMAKE_DEPS_LINK})
 

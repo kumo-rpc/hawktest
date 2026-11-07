@@ -3,7 +3,7 @@
 <!--* toc_depth: 3 *-->
 
 This page lists the facilities provided by GoogleTest for writing test programs.
-To use them, add `#include <gtest/gtest.h>`.
+To use them, add `#include <htest/htest.h>`.
 
 ## Macros
 
@@ -135,7 +135,7 @@ For more information, see
 [Value-Parameterized Tests](../advanced.md#value-parameterized-tests).
 
 See also
-[`GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST`](#GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST).
+[`HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST`](#HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST).
 
 ###### Using `ConvertGenerator`
 
@@ -466,9 +466,9 @@ For more information, see
 
 See also the [`ScopedTrace` class](#ScopedTrace).
 
-### GTEST_SKIP {#GTEST_SKIP}
+### HTEST_SKIP {#HTEST_SKIP}
 
-`GTEST_SKIP()`
+`HTEST_SKIP()`
 
 Prevents further test execution at runtime.
 
@@ -479,14 +479,14 @@ test environment `SetUp()` method, it skips all tests in the test program. If
 used in a test fixture `SetUp()` method, it skips all tests in the corresponding
 test suite.
 
-Similar to assertions, `GTEST_SKIP` allows streaming a custom message into it.
+Similar to assertions, `HTEST_SKIP` allows streaming a custom message into it.
 
 See [Skipping Test Execution](../advanced.md#skipping-test-execution) for more
 information.
 
-### GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST {#GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST}
+### HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST {#HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST}
 
-`GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(`*`TestSuiteName`*`)`
+`HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(`*`TestSuiteName`*`)`
 
 Allows the value-parameterized test suite *`TestSuiteName`* to be
 uninstantiated.
@@ -494,7 +494,7 @@ uninstantiated.
 By default, every [`TEST_P`](#TEST_P) call without a corresponding
 [`INSTANTIATE_TEST_SUITE_P`](#INSTANTIATE_TEST_SUITE_P) call causes a failing
 test in the test suite `GoogleTestVerification`.
-`GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST` suppresses this failure for the
+`HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST` suppresses this failure for the
 given test suite.
 
 ## Classes and types
@@ -1064,7 +1064,7 @@ Fired before any test activity starts.
 int iteration)`
 
 Fired before each iteration of tests starts. There may be more than one
-iteration if `GTEST_FLAG(repeat)` is set. `iteration` is the iteration index,
+iteration if `HTEST_FLAG(repeat)` is set. `iteration` is the iteration index,
 starting from 0.
 
 ##### OnEnvironmentsSetUpStart {#TestEventListener::OnEnvironmentsSetUpStart}
@@ -1180,7 +1180,7 @@ caller and makes this function return `NULL` the next time.
 `TestEventListener* TestEventListeners::default_xml_generator() const`
 
 Returns the standard listener responsible for the default XML output controlled
-by the `--gtest_output=xml` flag. Can be removed from the listeners list by
+by the `--htest_output=xml` flag. Can be removed from the listeners list by
 users who want to shut down the default XML output controlled by this flag and
 substitute it with custom one. Note that removing this object from the listener
 list with [`Release()`](#TestEventListeners::Release) transfers its ownership to

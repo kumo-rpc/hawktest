@@ -52,11 +52,11 @@
 
 // Silence C4100 (unreferenced formal parameter) and C4503 (decorated name
 // length exceeded) for MSVC.
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4100 4503)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100 4503)
 #if defined(_MSC_VER) && (_MSC_VER == 1900)
 // and silence C4800 (C4800: 'int *const ': forcing value
 // to bool 'true' or 'false') for MSVC 15
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4800)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4800)
 #endif
 
 namespace testing {
@@ -1013,7 +1013,7 @@ TEST(DoDefaultTest, ReturnsBuiltInDefaultValueByDefault) {
 TEST(DoDefaultDeathTest, DiesForUnknowType) {
   MockClass mock;
   EXPECT_CALL(mock, Foo()).WillRepeatedly(DoDefault());
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
   EXPECT_ANY_THROW(mock.Foo());
 #else
   EXPECT_DEATH_IF_SUPPORTED({ mock.Foo(); }, "");
@@ -1108,7 +1108,7 @@ TEST(SetArgPointeeTest, AcceptsWideStringLiteral) {
   a.Perform(std::make_tuple(&ptr));
   EXPECT_STREQ(L"world", ptr);
 
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
 
   typedef void MyStringFunction(std::wstring*);
   Action<MyStringFunction> a2 = SetArgPointee<0>(L"world");
@@ -1147,7 +1147,7 @@ TEST(SetArgPointeeTest, AcceptsWideCharPointer) {
   a.Perform(std::make_tuple(true, &ptr));
   EXPECT_EQ(hi, ptr);
 
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
 
   typedef void MyStringFunction(bool, std::wstring*);
   wchar_t world_array[] = L"world";
@@ -1222,7 +1222,7 @@ class Foo {
 
 // Tests InvokeWithoutArgs(function).
 TEST(InvokeWithoutArgsTest, Function) {
-  GTEST_DISABLE_DEPRECATED_PUSH_()
+  HTEST_DISABLE_DEPRECATED_PUSH_()
   // As an action that takes one argument.
   Action<int(int)> a = Nullary;  // NOLINT
   EXPECT_EQ(1, a.Perform(std::make_tuple(2)));
@@ -1236,12 +1236,12 @@ TEST(InvokeWithoutArgsTest, Function) {
   g_done = false;
   a3.Perform(std::make_tuple(1));
   EXPECT_TRUE(g_done);
-  GTEST_DISABLE_DEPRECATED_POP_()
+  HTEST_DISABLE_DEPRECATED_POP_()
 }
 
 // Tests InvokeWithoutArgs(functor).
 TEST(InvokeWithoutArgsTest, Functor) {
-  GTEST_DISABLE_DEPRECATED_PUSH_()
+  HTEST_DISABLE_DEPRECATED_PUSH_()
   // As an action that takes no argument.
   Action<int()> a = NullaryFunctor();  // NOLINT
   EXPECT_EQ(2, a.Perform(std::make_tuple()));
@@ -1256,7 +1256,7 @@ TEST(InvokeWithoutArgsTest, Functor) {
   g_done = false;
   a3.Perform(std::make_tuple());
   EXPECT_TRUE(g_done);
-  GTEST_DISABLE_DEPRECATED_POP_()
+  HTEST_DISABLE_DEPRECATED_POP_()
 }
 
 // Tests InvokeWithoutArgs(obj_ptr, method).
@@ -1654,7 +1654,7 @@ TEST(WithArgsTest, ProvideAsLvalueToWillOnce) {
   EXPECT_EQ(19, mock.AsStdFunction()(0, 17));
 }
 
-#ifndef GTEST_OS_WINDOWS_MOBILE
+#ifndef HTEST_OS_WINDOWS_MOBILE
 
 class SetErrnoAndReturnTest : public testing::Test {
  protected:
@@ -1681,7 +1681,7 @@ TEST_F(SetErrnoAndReturnTest, CompatibleTypes) {
   EXPECT_EQ(EINVAL, errno);
 }
 
-#endif  // !GTEST_OS_WINDOWS_MOBILE
+#endif  // !HTEST_OS_WINDOWS_MOBILE
 
 // Tests ByRef().
 
@@ -2220,6 +2220,6 @@ TEST(ActionMacro, LargeArity) {
 }  // namespace testing
 
 #if defined(_MSC_VER) && (_MSC_VER == 1900)
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4800
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4800
 #endif
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100 4503
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100 4503

@@ -38,7 +38,7 @@
 #include <hawktest/test/htest.h>
 
 // Silence C4100 (unreferenced formal parameter)
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
 
 using testing::_;
 using testing::AnyNumber;
@@ -283,4 +283,4 @@ int main(int argc, char** argv) {
   return RUN_ALL_TESTS();
 }
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100

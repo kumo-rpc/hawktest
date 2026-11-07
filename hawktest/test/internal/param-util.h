@@ -29,12 +29,12 @@
 
 // Type and function utilities for implementing parameterized tests.
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_PARAM_UTIL_H_
-#define GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_PARAM_UTIL_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PARAM_UTIL_H_
+#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PARAM_UTIL_H_
 
 #include <ctype.h>
 
@@ -86,7 +86,7 @@ namespace internal {
 // fixture class for the same test suite. This may happen when
 // TEST_P macro is used to define two tests with the same name
 // but in different namespaces.
-GTEST_API_ void ReportInvalidTestSuiteType(const char* test_suite_name,
+HTEST_API_ void ReportInvalidTestSuiteType(const char* test_suite_name,
                                            const CodeLocation& code_location);
 
 template <typename>
@@ -248,7 +248,7 @@ class [[nodiscard]] RangeGenerator : public ParamGeneratorInterface<T> {
     bool Equals(const ParamIteratorInterface<T>& other) const override {
       // Having the same base generator guarantees that the other
       // iterator is of the same type and we can downcast.
-      GTEST_CHECK_(BaseGenerator() == other.BaseGenerator())
+      HTEST_CHECK_(BaseGenerator() == other.BaseGenerator())
           << "The program attempted to compare iterators "
           << "from different generators." << std::endl;
       const int other_index =
@@ -345,7 +345,7 @@ class [[nodiscard]] ValuesInIteratorRangeGenerator
     bool Equals(const ParamIteratorInterface<T>& other) const override {
       // Having the same base generator guarantees that the other
       // iterator is of the same type and we can downcast.
-      GTEST_CHECK_(BaseGenerator() == other.BaseGenerator())
+      HTEST_CHECK_(BaseGenerator() == other.BaseGenerator())
           << "The program attempted to compare iterators "
           << "from different generators." << std::endl;
       return iterator_ ==
@@ -489,11 +489,11 @@ class [[nodiscard]] ParameterizedTestSuiteInfoBase {
 //
 // Report a the name of a test_suit as safe to ignore
 // as the side effect of construction of this type.
-struct GTEST_API_ MarkAsIgnored {
+struct HTEST_API_ MarkAsIgnored {
   explicit MarkAsIgnored(const char* test_suite);
 };
 
-GTEST_API_ void InsertSyntheticTestCase(const std::string& name,
+HTEST_API_ void InsertSyntheticTestCase(const std::string& name,
                                         CodeLocation location, bool has_test_p);
 
 // INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
@@ -582,13 +582,13 @@ class [[nodiscard]] ParameterizedTestSuiteInfo
           std::string param_name =
               name_func(TestParamInfo<ParamType>(param, i));
 
-          GTEST_CHECK_(IsValidParamName(param_name))
+          HTEST_CHECK_(IsValidParamName(param_name))
               << "Parameterized test name '" << param_name
               << "' is invalid (contains spaces, dashes, or any "
                  "non-alphanumeric characters other than underscores), in "
               << file << " line " << line << "" << std::endl;
 
-          GTEST_CHECK_(test_param_names.count(param_name) == 0)
+          HTEST_CHECK_(test_param_names.count(param_name) == 0)
               << "Duplicate parameterized test name '" << param_name << "', in "
               << file << " line " << line << std::endl;
 
@@ -679,10 +679,10 @@ class [[nodiscard]] ParameterizedTestSuiteInfo
 };  // class ParameterizedTestSuiteInfo
 
 //  Legacy API is deprecated but still available
-#ifndef GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 template <class TestCase>
 using ParameterizedTestCaseInfo = ParameterizedTestSuiteInfo<TestCase>;
-#endif  //  GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#endif  //  HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
 // INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
 //
@@ -739,7 +739,7 @@ class [[nodiscard]] ParameterizedTestSuiteRegistry {
     }
   }
 //  Legacy API is deprecated but still available
-#ifndef GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
   template <class TestCase>
   ParameterizedTestCaseInfo<TestCase>* GetTestCasePatternHolder(
       std::string test_case_name, CodeLocation code_location) {
@@ -747,7 +747,7 @@ class [[nodiscard]] ParameterizedTestSuiteRegistry {
                                                std::move(code_location));
   }
 
-#endif  //  GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#endif  //  HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
  private:
   using TestSuiteInfoContainer = ::std::vector<ParameterizedTestSuiteInfoBase*>;
@@ -792,7 +792,7 @@ class [[nodiscard]] TypeParameterizedTestSuiteRegistry {
 }  // namespace internal
 
 // Forward declarations of ValuesIn(), which is implemented in
-// include/gtest/gtest-param-test.h.
+// include/htest/htest-param-test.h.
 template <class Container>
 internal::ParamGenerator<typename Container::value_type> ValuesIn(
     const Container& container);
@@ -800,7 +800,7 @@ internal::ParamGenerator<typename Container::value_type> ValuesIn(
 namespace internal {
 // Used in the Values() function to provide polymorphic capabilities.
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
 
 template <typename... Ts>
 class [[nodiscard]] ValueArray {
@@ -821,7 +821,7 @@ class [[nodiscard]] ValueArray {
   FlatTuple<Ts...> v_;
 };
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
 
 template <typename... T>
 class [[nodiscard]] CartesianProductGenerator
@@ -880,7 +880,7 @@ class [[nodiscard]] CartesianProductGenerator
     bool Equals(const ParamIteratorInterface<ParamType>& other) const override {
       // Having the same base generator guarantees that the other
       // iterator is of the same type and we can downcast.
-      GTEST_CHECK_(BaseGenerator() == other.BaseGenerator())
+      HTEST_CHECK_(BaseGenerator() == other.BaseGenerator())
           << "The program attempted to compare iterators "
           << "from different generators." << std::endl;
       const IteratorImpl* typed_other =
@@ -1002,7 +1002,7 @@ class [[nodiscard]] ParamGeneratorConverter
     bool Equals(const ParamIteratorInterface<To>& other) const override {
       // Having the same base generator guarantees that the other
       // iterator is of the same type and we can downcast.
-      GTEST_CHECK_(BaseGenerator() == other.BaseGenerator())
+      HTEST_CHECK_(BaseGenerator() == other.BaseGenerator())
           << "The program attempted to compare iterators "
           << "from different generators." << std::endl;
       const ParamIterator<From> other_it =
@@ -1064,4 +1064,4 @@ struct IsSingleArgStdFunction<std::function<R(P)>> : public std::true_type {};
 }  // namespace internal
 }  // namespace testing
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_PARAM_UTIL_H_
+#endif  // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PARAM_UTIL_H_

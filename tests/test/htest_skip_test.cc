@@ -35,14 +35,14 @@
 using ::testing::Test;
 
 TEST(SkipTest, DoesSkip) {
-  GTEST_SKIP() << "skipping single test";
+  HTEST_SKIP() << "skipping single test";
   EXPECT_EQ(0, 1);
 }
 
 class Fixture : public Test {
  protected:
   void SetUp() override {
-    GTEST_SKIP() << "skipping all tests for this fixture";
+    HTEST_SKIP() << "skipping all tests for this fixture";
   }
 };
 

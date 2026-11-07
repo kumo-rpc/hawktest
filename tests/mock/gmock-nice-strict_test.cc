@@ -57,7 +57,7 @@ using testing::NaggyMock;
 using testing::NiceMock;
 using testing::StrictMock;
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if HTEST_HAS_STREAM_REDIRECTION
 using testing::internal::CaptureStdout;
 using testing::internal::GetCapturedStdout;
 #endif
@@ -139,7 +139,7 @@ class MockBaz {
   MockBaz(MoveOnly) {}
 };
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if HTEST_HAS_STREAM_REDIRECTION
 
 // Tests that a raw mock generates warnings for uninteresting calls.
 TEST(RawMockTest, WarningForUninterestingCall) {
@@ -235,7 +235,7 @@ TEST(NiceMockTest, InfoForUninterestingCall) {
   GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif  // HTEST_HAS_STREAM_REDIRECTION
 
 // Tests that a nice mock allows expected calls.
 TEST(NiceMockTest, AllowsExpectedCall) {
@@ -250,7 +250,7 @@ TEST(NiceMockTest, AllowsExpectedCall) {
 // the method's name.
 TEST(NiceMockTest, ThrowsExceptionForUnknownReturnTypes) {
   NiceMock<MockFoo> nice_foo;
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
   try {
     nice_foo.ReturnNonDefaultConstructible();
     FAIL();
@@ -324,7 +324,7 @@ TEST(NiceMockTest, IsNaggy_IsNice_IsStrict) {
   EXPECT_FALSE(Mock::IsStrict(&nice_foo));
 }
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if HTEST_HAS_STREAM_REDIRECTION
 
 // Tests that a naggy mock generates warnings for uninteresting calls.
 TEST(NaggyMockTest, WarningForUninterestingCall) {
@@ -361,7 +361,7 @@ TEST(NaggyMockTest, WarningForUninterestingCallAfterDeath) {
   GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif  // HTEST_HAS_STREAM_REDIRECTION
 
 // Tests that a naggy mock allows expected calls.
 TEST(NaggyMockTest, AllowsExpectedCall) {

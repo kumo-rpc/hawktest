@@ -147,7 +147,7 @@
 #include <hawktest/mock/internal/port.h>
 #include <hawktest/mock/internal/pp.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
 
 namespace testing {
 
@@ -1100,7 +1100,7 @@ class [[nodiscard]] ReturnAction<ByMoveWrapper<T>> final {
       : state_(new State(std::move(wrapper.payload))) {}
 
   T operator()() const {
-    GTEST_CHECK_(!state_->called)
+    HTEST_CHECK_(!state_->called)
         << "A ByMove() action must be performed at most once.";
 
     state_->called = true;
@@ -1231,7 +1231,7 @@ template <typename T>
 class [[nodiscard]] ReturnRoundRobinAction {
  public:
   explicit ReturnRoundRobinAction(std::vector<T> values) {
-    GTEST_CHECK_(!values.empty())
+    HTEST_CHECK_(!values.empty())
         << "ReturnRoundRobin requires at least one element.";
     state_->values = std::move(values);
   }
@@ -1283,7 +1283,7 @@ class [[nodiscard]] AssignAction {
   const T2 value_;
 };
 
-#ifndef GTEST_OS_WINDOWS_MOBILE
+#ifndef HTEST_OS_WINDOWS_MOBILE
 
 // Implements the SetErrnoAndReturn action to simulate return from
 // various system calls and libc functions.
@@ -1303,7 +1303,7 @@ class [[nodiscard]] SetErrnoAndReturnAction {
   const T result_;
 };
 
-#endif  // !GTEST_OS_WINDOWS_MOBILE
+#endif  // !HTEST_OS_WINDOWS_MOBILE
 
 // Implements the SetArgumentPointee<N>(x) action for any function
 // whose N-th argument (0-based) is a pointer to x's type.
@@ -1808,7 +1808,7 @@ struct ReturnPointeeAction {
   }
 };
 
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
 template <typename T>
 struct ThrowAction {
   T exception;
@@ -1826,7 +1826,7 @@ struct RethrowAction {
     return [ex = exception](Args...) -> R { std::rethrow_exception(ex); };
   }
 };
-#endif  // GTEST_HAS_EXCEPTIONS
+#endif  // HTEST_HAS_EXCEPTIONS
 
 }  // namespace internal
 
@@ -1864,7 +1864,7 @@ typedef internal::IgnoredValue Unused;
 
 // Deprecated single-argument DoAll.
 template <typename Action>
-GTEST_INTERNAL_DEPRECATE_AND_INLINE("Avoid using DoAll() for single actions")
+HTEST_INTERNAL_DEPRECATE_AND_INLINE("Avoid using DoAll() for single actions")
 typename std::decay<Action>::type DoAll(Action&& action) {
   return std::forward<Action>(action);
 }
@@ -2019,7 +2019,7 @@ PolymorphicAction<internal::AssignAction<T1, T2>> Assign(T1* ptr, T2 val) {
   return MakePolymorphicAction(internal::AssignAction<T1, T2>(ptr, val));
 }
 
-#ifndef GTEST_OS_WINDOWS_MOBILE
+#ifndef HTEST_OS_WINDOWS_MOBILE
 
 // Creates an action that sets errno and returns the appropriate error.
 template <typename T>
@@ -2029,14 +2029,14 @@ PolymorphicAction<internal::SetErrnoAndReturnAction<T>> SetErrnoAndReturn(
       internal::SetErrnoAndReturnAction<T>(errval, result));
 }
 
-#endif  // !GTEST_OS_WINDOWS_MOBILE
+#endif  // !HTEST_OS_WINDOWS_MOBILE
 
 // Various overloads for Invoke().
 
 // Legacy function.
 // This function exists for backwards compatibility.
 template <typename FunctionImpl>
-GTEST_INTERNAL_DEPRECATE_AND_INLINE(
+HTEST_INTERNAL_DEPRECATE_AND_INLINE(
     "Actions can now be implicitly constructed from callables. No need to "
     "create wrapper objects using Invoke().")
 typename std::decay<FunctionImpl>::type Invoke(FunctionImpl&& function_impl) {
@@ -2053,7 +2053,7 @@ internal::InvokeMethodAction<Class, MethodPtr> Invoke(Class* obj_ptr,
 
 // Creates an action that invokes 'function_impl' with no argument.
 template <typename FunctionImpl>
-GTEST_INTERNAL_DEPRECATE_AND_INLINE(
+HTEST_INTERNAL_DEPRECATE_AND_INLINE(
     "Actions can now be implicitly constructed from zero-argument callables. "
     "No need to create wrapper objects using InvokeWithoutArgs().")
 std::decay_t<FunctionImpl> InvokeWithoutArgs(FunctionImpl&& function_impl) {
@@ -2159,7 +2159,7 @@ internal::ReturnPointeeAction<Ptr> ReturnPointee(Ptr pointer) {
   return {pointer};
 }
 
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
 // Action Throw(exception) can be used in a mock function of any type
 // to throw the given exception.  Any copyable value can be thrown,
 // except for std::exception_ptr, which is likely a mistake if
@@ -2176,7 +2176,7 @@ Throw(T&& exception) {
 inline internal::RethrowAction Rethrow(std::exception_ptr exception) {
   return {std::move(exception)};
 }
-#endif  // GTEST_HAS_EXCEPTIONS
+#endif  // HTEST_HAS_EXCEPTIONS
 
 namespace internal {
 
@@ -2405,6 +2405,6 @@ template <typename F, typename Impl>
 
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
 
 #endif  // GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_ACTIONS_H_

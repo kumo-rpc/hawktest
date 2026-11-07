@@ -77,7 +77,7 @@
 //
 //   // Prints the fields of a tuple tersely to a string vector, one
 //   // element for each field. Tuple support must be enabled in
-//   // gtest-port.h.
+//   // htest-port.h.
 //   std::vector<string> UniversalTersePrintTupleFieldsToStrings(
 //       const Tuple& value);
 //
@@ -94,12 +94,12 @@
 // being defined as many user-defined container types don't have
 // value_type.
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_PRINTERS_H_
-#define GOOGLETEST_INCLUDE_GTEST_GTEST_PRINTERS_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_HTEST_PRINTERS_H_
+#define GOOGLETEST_INCLUDE_HTEST_HTEST_PRINTERS_H_
 
 #include <any>
 #include <functional>
@@ -119,13 +119,13 @@
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
 
-#if GTEST_INTERNAL_HAS_STD_SPAN
+#if HTEST_INTERNAL_HAS_STD_SPAN
 #include <span>  // NOLINT
-#endif           // GTEST_INTERNAL_HAS_STD_SPAN
+#endif           // HTEST_INTERNAL_HAS_STD_SPAN
 
-#if GTEST_INTERNAL_HAS_COMPARE_LIB
+#if HTEST_INTERNAL_HAS_COMPARE_LIB
 #include <compare>  // NOLINT
-#endif              // GTEST_INTERNAL_HAS_COMPARE_LIB
+#endif              // HTEST_INTERNAL_HAS_COMPARE_LIB
 
 namespace testing {
 
@@ -141,12 +141,12 @@ struct IsStdSpan {
   static constexpr bool value = false;
 };
 
-#if GTEST_INTERNAL_HAS_STD_SPAN
+#if HTEST_INTERNAL_HAS_STD_SPAN
 template <typename E>
 struct IsStdSpan<std::span<E>> {
   static constexpr bool value = true;
 };
-#endif  // GTEST_INTERNAL_HAS_STD_SPAN
+#endif  // HTEST_INTERNAL_HAS_STD_SPAN
 
 // Used to print an STL-style container when the user doesn't define
 // a PrintTo() for it.
@@ -292,7 +292,7 @@ struct ConvertibleToStringViewPrinter {
 
 // Prints the given number of bytes in the given object to the given
 // ostream.
-GTEST_API_ void PrintBytesInObjectTo(const unsigned char* obj_bytes,
+HTEST_API_ void PrintBytesInObjectTo(const unsigned char* obj_bytes,
                                      size_t count, ::std::ostream* os);
 struct RawBytesPrinter {
   // SFINAE on `sizeof` to make sure we have a complete type.
@@ -379,7 +379,7 @@ class [[nodiscard]] FormatForComparison<ToPrint[N], OtherOperand> {
 // By default, print C string as pointers to be safe, as we don't know
 // whether they actually point to a NUL-terminated string.
 
-#define GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(CharType)                \
+#define HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(CharType)                \
   template <typename OtherOperand>                                      \
   class FormatForComparison<CharType*, OtherOperand> {                  \
    public:                                                              \
@@ -388,25 +388,25 @@ class [[nodiscard]] FormatForComparison<ToPrint[N], OtherOperand> {
     }                                                                   \
   }
 
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(char);
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char);
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(wchar_t);
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const wchar_t);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(char);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(wchar_t);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const wchar_t);
 #ifdef __cpp_lib_char8_t
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(char8_t);
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char8_t);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(char8_t);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char8_t);
 #endif
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(char16_t);
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char16_t);
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(char32_t);
-GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char32_t);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(char16_t);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char16_t);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(char32_t);
+HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char32_t);
 
-#undef GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_
+#undef HTEST_IMPL_FORMAT_C_STRING_AS_POINTER_
 
 // If a C string is compared with an STL string object, we know it's meant
 // to point to a NUL-terminated string, and thus can print it as a string.
 
-#define GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(CharType, OtherStringType) \
+#define HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(CharType, OtherStringType) \
   template <>                                                            \
   class FormatForComparison<CharType*, OtherStringType> {                \
    public:                                                               \
@@ -415,23 +415,23 @@ GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_(const char32_t);
     }                                                                    \
   }
 
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char, ::std::string);
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char, ::std::string);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char, ::std::string);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char, ::std::string);
 #ifdef __cpp_lib_char8_t
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char8_t, ::std::u8string);
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char8_t, ::std::u8string);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char8_t, ::std::u8string);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char8_t, ::std::u8string);
 #endif
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char16_t, ::std::u16string);
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char16_t, ::std::u16string);
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char32_t, ::std::u32string);
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char32_t, ::std::u32string);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char16_t, ::std::u16string);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char16_t, ::std::u16string);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char32_t, ::std::u32string);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char32_t, ::std::u32string);
 
-#if GTEST_HAS_STD_WSTRING
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(wchar_t, ::std::wstring);
-GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const wchar_t, ::std::wstring);
+#if HTEST_HAS_STD_WSTRING
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(wchar_t, ::std::wstring);
+HTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const wchar_t, ::std::wstring);
 #endif
 
-#undef GTEST_IMPL_FORMAT_C_STRING_AS_STRING_
+#undef HTEST_IMPL_FORMAT_C_STRING_AS_STRING_
 
 // Formats a comparison assertion (e.g. ASSERT_EQ, EXPECT_LT, and etc)
 // operand to be used in a failure message.  The type (but not value)
@@ -478,8 +478,8 @@ void PrintTo(const T& value, ::std::ostream* os) {
 // types, strings, plain arrays, and pointers).
 
 // Overloads for various char types.
-GTEST_API_ void PrintTo(unsigned char c, ::std::ostream* os);
-GTEST_API_ void PrintTo(signed char c, ::std::ostream* os);
+HTEST_API_ void PrintTo(unsigned char c, ::std::ostream* os);
+HTEST_API_ void PrintTo(signed char c, ::std::ostream* os);
 inline void PrintTo(char c, ::std::ostream* os) {
   // When printing a plain char, we always treat it as unsigned.  This
   // way, the output won't be affected by whether the compiler thinks
@@ -499,9 +499,9 @@ inline void PrintTo(bool x, ::std::ostream* os) {
 // as signed integer when wchar_t is implemented by the compiler
 // as a signed type and is printed as an unsigned integer when wchar_t
 // is implemented as an unsigned type.
-GTEST_API_ void PrintTo(wchar_t wc, ::std::ostream* os);
+HTEST_API_ void PrintTo(wchar_t wc, ::std::ostream* os);
 
-GTEST_API_ void PrintTo(char32_t c, ::std::ostream* os);
+HTEST_API_ void PrintTo(char32_t c, ::std::ostream* os);
 inline void PrintTo(char16_t c, ::std::ostream* os) {
   // TODO(b/418738869): Incorrect for values not representing valid codepoints.
   // Also see https://github.com/google/googletest/issues/4762.
@@ -517,8 +517,8 @@ inline void PrintTo(char8_t c, ::std::ostream* os) {
 
 // gcc/clang __{u,}int128_t
 #if defined(__SIZEOF_INT128__)
-GTEST_API_ void PrintTo(__uint128_t v, ::std::ostream* os);
-GTEST_API_ void PrintTo(__int128_t v, ::std::ostream* os);
+HTEST_API_ void PrintTo(__uint128_t v, ::std::ostream* os);
+HTEST_API_ void PrintTo(__int128_t v, ::std::ostream* os);
 #endif  // __SIZEOF_INT128__
 
 // The default resolution used to print floating-point values uses only
@@ -617,7 +617,7 @@ inline void PrintTo(double d, ::std::ostream* os) {
 }
 
 // Overloads for C strings.
-GTEST_API_ void PrintTo(const char* s, ::std::ostream* os);
+HTEST_API_ void PrintTo(const char* s, ::std::ostream* os);
 inline void PrintTo(char* s, ::std::ostream* os) {
   PrintTo(ImplicitCast_<const char*>(s), os);
 }
@@ -638,18 +638,18 @@ inline void PrintTo(unsigned char* s, ::std::ostream* os) {
 }
 #ifdef __cpp_lib_char8_t
 // Overloads for u8 strings.
-GTEST_API_ void PrintTo(const char8_t* s, ::std::ostream* os);
+HTEST_API_ void PrintTo(const char8_t* s, ::std::ostream* os);
 inline void PrintTo(char8_t* s, ::std::ostream* os) {
   PrintTo(ImplicitCast_<const char8_t*>(s), os);
 }
 #endif
 // Overloads for u16 strings.
-GTEST_API_ void PrintTo(const char16_t* s, ::std::ostream* os);
+HTEST_API_ void PrintTo(const char16_t* s, ::std::ostream* os);
 inline void PrintTo(char16_t* s, ::std::ostream* os) {
   PrintTo(ImplicitCast_<const char16_t*>(s), os);
 }
 // Overloads for u32 strings.
-GTEST_API_ void PrintTo(const char32_t* s, ::std::ostream* os);
+HTEST_API_ void PrintTo(const char32_t* s, ::std::ostream* os);
 inline void PrintTo(char32_t* s, ::std::ostream* os) {
   PrintTo(ImplicitCast_<const char32_t*>(s), os);
 }
@@ -661,7 +661,7 @@ inline void PrintTo(char32_t* s, ::std::ostream* os) {
 // possibly causing invalid memory accesses.
 #if !defined(_MSC_VER) || defined(_NATIVE_WCHAR_T_DEFINED)
 // Overloads for wide C strings
-GTEST_API_ void PrintTo(const wchar_t* s, ::std::ostream* os);
+HTEST_API_ void PrintTo(const wchar_t* s, ::std::ostream* os);
 inline void PrintTo(wchar_t* s, ::std::ostream* os) {
   PrintTo(ImplicitCast_<const wchar_t*>(s), os);
 }
@@ -682,7 +682,7 @@ void PrintRawArrayTo(const T a[], size_t count, ::std::ostream* os) {
 }
 
 // Overloads for ::std::string and std::string_view
-GTEST_API_ void PrintStringTo(std::string_view s, ::std::ostream* os);
+HTEST_API_ void PrintStringTo(std::string_view s, ::std::ostream* os);
 inline void PrintTo(const ::std::string& s, ::std::ostream* os) {
   PrintStringTo(s, os);
 }
@@ -692,7 +692,7 @@ inline void PrintTo(std::string_view s, ::std::ostream* os) {
 
 // Overloads for ::std::u8string and ::std::u8string_view
 #ifdef __cpp_lib_char8_t
-GTEST_API_ void PrintU8StringTo(::std::u8string_view s, ::std::ostream* os);
+HTEST_API_ void PrintU8StringTo(::std::u8string_view s, ::std::ostream* os);
 inline void PrintTo(const ::std::u8string& s, ::std::ostream* os) {
   PrintU8StringTo(s, os);
 }
@@ -702,7 +702,7 @@ inline void PrintTo(::std::u8string_view s, ::std::ostream* os) {
 #endif
 
 // Overloads for ::std::u16string and ::std::u16string_view
-GTEST_API_ void PrintU16StringTo(::std::u16string_view s, ::std::ostream* os);
+HTEST_API_ void PrintU16StringTo(::std::u16string_view s, ::std::ostream* os);
 inline void PrintTo(const ::std::u16string& s, ::std::ostream* os) {
   PrintU16StringTo(s, os);
 }
@@ -711,7 +711,7 @@ inline void PrintTo(::std::u16string_view s, ::std::ostream* os) {
 }
 
 // Overloads for ::std::u32string and ::std::u32string_view
-GTEST_API_ void PrintU32StringTo(::std::u32string_view s, ::std::ostream* os);
+HTEST_API_ void PrintU32StringTo(::std::u32string_view s, ::std::ostream* os);
 inline void PrintTo(const ::std::u32string& s, ::std::ostream* os) {
   PrintU32StringTo(s, os);
 }
@@ -720,15 +720,15 @@ inline void PrintTo(::std::u32string_view s, ::std::ostream* os) {
 }
 
 // Overloads for ::std::wstring and ::std::wstring_view
-#if GTEST_HAS_STD_WSTRING
-GTEST_API_ void PrintWideStringTo(::std::wstring_view s, ::std::ostream* os);
+#if HTEST_HAS_STD_WSTRING
+HTEST_API_ void PrintWideStringTo(::std::wstring_view s, ::std::ostream* os);
 inline void PrintTo(const ::std::wstring& s, ::std::ostream* os) {
   PrintWideStringTo(s, os);
 }
 inline void PrintTo(::std::wstring_view s, ::std::ostream* os) {
   PrintWideStringTo(s, os);
 }
-#endif  // GTEST_HAS_STD_WSTRING
+#endif  // HTEST_HAS_STD_WSTRING
 
 // Overload for internal::StringView. Needed for build configurations where
 // internal::StringView is a distinct type from std::string_view.
@@ -740,11 +740,11 @@ inline void PrintTo(internal::StringView sp, ::std::ostream* os) {
 
 inline void PrintTo(std::nullptr_t, ::std::ostream* os) { *os << "(nullptr)"; }
 
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
 inline void PrintTo(const std::type_info& info, std::ostream* os) {
   *os << internal::GetTypeName(info);
 }
-#endif  // GTEST_HAS_RTTI
+#endif  // HTEST_HAS_RTTI
 
 template <typename T>
 void PrintTo(std::reference_wrapper<T> ref, ::std::ostream* os) {
@@ -788,7 +788,7 @@ void PrintTo(const std::shared_ptr<T>& ptr, std::ostream* os) {
   (PrintSmartPointer<T>)(ptr, os, 0);
 }
 
-#if GTEST_INTERNAL_HAS_COMPARE_LIB
+#if HTEST_INTERNAL_HAS_COMPARE_LIB
 template <typename T>
 void PrintOrderingHelper(T ordering, std::ostream* os) {
   if (ordering == T::less) {
@@ -833,9 +833,9 @@ template <typename T, size_t I>
 void PrintTupleTo(const T& t, std::integral_constant<size_t, I>,
                   ::std::ostream* os) {
   PrintTupleTo(t, std::integral_constant<size_t, I - 1>(), os);
-  GTEST_INTENTIONAL_CONST_COND_PUSH_()
+  HTEST_INTENTIONAL_CONST_COND_PUSH_()
   if (I > 1) {
-    GTEST_INTENTIONAL_CONST_COND_POP_()
+    HTEST_INTENTIONAL_CONST_COND_POP_()
     *os << ", ";
   }
   UniversalPrinter<std::tuple_element_t<I - 1, T>>::Print(std::get<I - 1>(t),
@@ -868,7 +868,7 @@ class [[nodiscard]] UniversalPrinter {
  public:
   // MSVC warns about adding const to a function type, so we want to
   // disable the warning.
-  GTEST_DISABLE_MSC_WARNINGS_PUSH_(4180)
+  HTEST_DISABLE_MSC_WARNINGS_PUSH_(4180)
 
   // Note: we deliberately don't call this PrintTo(), as that name
   // conflicts with ::testing::internal::PrintTo in the body of the
@@ -885,7 +885,7 @@ class [[nodiscard]] UniversalPrinter {
     PrintTo(value, os);
   }
 
-  GTEST_DISABLE_MSC_WARNINGS_POP_()
+  HTEST_DISABLE_MSC_WARNINGS_POP_()
 };
 
 // Remove any const-qualifiers before passing a type to UniversalPrinter.
@@ -906,12 +906,12 @@ class [[nodiscard]] UniversalPrinter<std::any> {
 
  private:
   static std::string GetTypeName(const std::any& value) {
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
     return internal::GetTypeName(value.type());
 #else
     static_cast<void>(value);  // possibly unused
     return "<unknown_type>";
-#endif  // GTEST_HAS_RTTI
+#endif  // HTEST_HAS_RTTI
   }
 };
 
@@ -994,25 +994,25 @@ void UniversalPrintArray(const T* begin, size_t len, ::std::ostream* os) {
   }
 }
 // This overload prints a (const) char array compactly.
-GTEST_API_ void UniversalPrintArray(const char* begin, size_t len,
+HTEST_API_ void UniversalPrintArray(const char* begin, size_t len,
                                     ::std::ostream* os);
 
 #ifdef __cpp_lib_char8_t
 // This overload prints a (const) char8_t array compactly.
-GTEST_API_ void UniversalPrintArray(const char8_t* begin, size_t len,
+HTEST_API_ void UniversalPrintArray(const char8_t* begin, size_t len,
                                     ::std::ostream* os);
 #endif
 
 // This overload prints a (const) char16_t array compactly.
-GTEST_API_ void UniversalPrintArray(const char16_t* begin, size_t len,
+HTEST_API_ void UniversalPrintArray(const char16_t* begin, size_t len,
                                     ::std::ostream* os);
 
 // This overload prints a (const) char32_t array compactly.
-GTEST_API_ void UniversalPrintArray(const char32_t* begin, size_t len,
+HTEST_API_ void UniversalPrintArray(const char32_t* begin, size_t len,
                                     ::std::ostream* os);
 
 // This overload prints a (const) wchar_t array compactly.
-GTEST_API_ void UniversalPrintArray(const wchar_t* begin, size_t len,
+HTEST_API_ void UniversalPrintArray(const wchar_t* begin, size_t len,
                                     ::std::ostream* os);
 
 // Implements printing an array type T[N].
@@ -1032,7 +1032,7 @@ class [[nodiscard]] UniversalPrinter<T&> {
  public:
   // MSVC warns about adding const to a function type, so we want to
   // disable the warning.
-  GTEST_DISABLE_MSC_WARNINGS_PUSH_(4180)
+  HTEST_DISABLE_MSC_WARNINGS_PUSH_(4180)
 
   static void Print(const T& value, ::std::ostream* os) {
     // Prints the address of the value.  We use reinterpret_cast here
@@ -1043,7 +1043,7 @@ class [[nodiscard]] UniversalPrinter<T&> {
     UniversalPrint(value, os);
   }
 
-  GTEST_DISABLE_MSC_WARNINGS_POP_()
+  HTEST_DISABLE_MSC_WARNINGS_POP_()
 };
 
 // Prints a value tersely: for a reference type, the referenced value
@@ -1140,7 +1140,7 @@ template <>
 class [[nodiscard]] UniversalTersePrinter<char32_t*>
     : public UniversalTersePrinter<const char32_t*> {};
 
-#if GTEST_HAS_STD_WSTRING
+#if HTEST_HAS_STD_WSTRING
 template <>
 class [[nodiscard]] UniversalTersePrinter<const wchar_t*> {
  public:
@@ -1225,4 +1225,4 @@ template <typename T>
 // declarations from this file.
 #include <hawktest/test/internal/custom/printers.h>
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_PRINTERS_H_
+#endif  // GOOGLETEST_INCLUDE_HTEST_HTEST_PRINTERS_H_

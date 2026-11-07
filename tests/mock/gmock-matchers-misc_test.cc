@@ -46,7 +46,7 @@
 
 // Silence warning C4244: 'initializing': conversion from 'int' to 'short',
 // possible loss of data and C4100, unreferenced local parameter
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
 
 namespace testing {
 namespace gmock_matchers_test {
@@ -209,7 +209,7 @@ TEST(IsTrueTest, IsTrueIsFalse) {
   EXPECT_THAT(nonnull_unique, Not(IsFalse()));
 }
 
-#ifdef GTEST_HAS_TYPED_TEST
+#ifdef HTEST_HAS_TYPED_TEST
 // Tests ContainerEq with different container types, and
 // different element types.
 
@@ -278,7 +278,7 @@ TYPED_TEST(ContainerEqTest, DuplicateDifference) {
   // But in any case there should be no explanation.
   EXPECT_EQ("", Explain(m, test_set));
 }
-#endif  // GTEST_HAS_TYPED_TEST
+#endif  // HTEST_HAS_TYPED_TEST
 
 // Tests that multiple missing values are reported.
 // Using just vector here, so order is predictable.
@@ -578,7 +578,7 @@ TEST_P(BipartiteRandomTest, LargerNets) {
   int iters = GetParam().second;
   MatchMatrix graph(static_cast<size_t>(nodes), static_cast<size_t>(nodes));
 
-  auto seed = static_cast<uint32_t>(GTEST_FLAG_GET(random_seed));
+  auto seed = static_cast<uint32_t>(HTEST_FLAG_GET(random_seed));
   if (seed == 0) {
     seed = static_cast<uint32_t>(time(nullptr));
   }
@@ -591,7 +591,7 @@ TEST_P(BipartiteRandomTest, LargerNets) {
         << " graph: " << graph.DebugString()
         << "\nTo reproduce the failure, rerun the test with the flag"
            " --"
-        << GTEST_FLAG_PREFIX_ << "random_seed=" << seed;
+        << HTEST_FLAG_PREFIX_ << "random_seed=" << seed;
   }
 }
 
@@ -644,7 +644,7 @@ TEST(FormatMatcherDescriptionTest, WorksForEmptyDescription) {
       FormatMatcherDescription(false, "IsInRange", {"a", "b"}, {"5", "8"}));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(MatcherTupleTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(MatcherTupleTest);
 
 TEST_P(MatcherTupleTestP, ExplainsMatchFailure) {
   stringstream ss1;
@@ -675,7 +675,7 @@ TEST_P(MatcherTupleTestP, ExplainsMatchFailure) {
                    // explanation.
 }
 
-#if GTEST_HAS_TYPED_TEST
+#if HTEST_HAS_TYPED_TEST
 
 // Sample optional type implementation with minimal requirements for use with
 // Optional matcher.
@@ -780,7 +780,7 @@ TYPED_TEST(MoveOnlyOptionalTest, WorksWithMoveOnly) {
   EXPECT_TRUE(m.Matches(TypeParam(nullptr)));
 }
 
-#endif  // GTEST_HAS_TYPED_TEST
+#endif  // HTEST_HAS_TYPED_TEST
 
 class SampleVariantIntString {
  public:
@@ -1445,7 +1445,7 @@ TEST(MatcherPnMacroTest, CanUseMatcherTypedParameterInValue) {
 
 // Tests Contains().Times().
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(ContainsTimes);
+INSTANTIATE_HTEST_MATCHER_TEST_P(ContainsTimes);
 
 TEST(ContainsTimes, ListMatchesWhenElementQuantityMatches) {
   list<int> some_list;
@@ -1571,7 +1571,7 @@ TEST(AllOfArrayTest, Matchers) {
   EXPECT_THAT(1, AllOfArray({Ge(0), Ge(1)}));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(AnyOfArrayTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(AnyOfArrayTest);
 
 TEST(AnyOfArrayTest, BasicForms) {
   // Iterator
@@ -1694,7 +1694,7 @@ TEST(MockMethodMockFunctionTest, EnsureNoUnusedButMarkedUnusedWarning) {
 #endif
 }
 
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
 
 // std::function<void()> is used below for compatibility with older copies of
 // GCC. Normally, a raw lambda is all that is needed.
@@ -1873,10 +1873,10 @@ TEST(ThrowsPredicateCompilesTest, MessageMatcherAcceptsNonMatcher) {
       []() { throw std::runtime_error("wrong error message"); }));
 }
 
-#endif  // GTEST_HAS_EXCEPTIONS
+#endif  // HTEST_HAS_EXCEPTIONS
 
 }  // namespace
 }  // namespace gmock_matchers_test
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100

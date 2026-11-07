@@ -47,7 +47,7 @@
 #include <hawktest/mock/internal/port.h>
 #include <hawktest/test/htest.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 /* class A needs to have dll-interface to be used by clients of class B */)
 
 namespace testing {
@@ -88,7 +88,7 @@ class [[nodiscard]] CardinalityInterface {
 // object that specifies how many times a mock function is expected to
 // be called.  The implementation of Cardinality is just a std::shared_ptr
 // to const CardinalityInterface. Don't inherit from Cardinality!
-class GTEST_API_ [[nodiscard]] Cardinality {
+class HTEST_API_ [[nodiscard]] Cardinality {
  public:
   // Constructs a null cardinality.  Needed for storing Cardinality
   // objects in STL containers.
@@ -133,19 +133,19 @@ class GTEST_API_ [[nodiscard]] Cardinality {
 };
 
 // Creates a cardinality that allows at least n calls.
-GTEST_API_ Cardinality AtLeast(int n);
+HTEST_API_ Cardinality AtLeast(int n);
 
 // Creates a cardinality that allows at most n calls.
-GTEST_API_ Cardinality AtMost(int n);
+HTEST_API_ Cardinality AtMost(int n);
 
 // Creates a cardinality that allows any number of calls.
-GTEST_API_ Cardinality AnyNumber();
+HTEST_API_ Cardinality AnyNumber();
 
 // Creates a cardinality that allows between min and max calls.
-GTEST_API_ Cardinality Between(int min, int max);
+HTEST_API_ Cardinality Between(int min, int max);
 
 // Creates a cardinality that allows exactly n calls.
-GTEST_API_ Cardinality Exactly(int n);
+HTEST_API_ Cardinality Exactly(int n);
 
 // Creates a cardinality from its implementation.
 inline Cardinality MakeCardinality(const CardinalityInterface* c) {
@@ -154,6 +154,6 @@ inline Cardinality MakeCardinality(const CardinalityInterface* c) {
 
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
+HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 
 #endif  // GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_CARDINALITIES_H_

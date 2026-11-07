@@ -31,8 +31,8 @@
 // This file contains purely Google Test's internal implementation.  Please
 // DO NOT #INCLUDE IT IN A USER PROGRAM.
 
-#ifndef GOOGLETEST_SRC_GTEST_INTERNAL_INL_H_
-#define GOOGLETEST_SRC_GTEST_INTERNAL_INL_H_
+#ifndef GOOGLETEST_SRC_HTEST_INTERNAL_INL_H_
+#define GOOGLETEST_SRC_HTEST_INTERNAL_INL_H_
 
 #ifndef _WIN32_WCE
 #include <errno.h>
@@ -51,66 +51,66 @@
 
 #include <hawktest/common/port.h>
 
-#if GTEST_CAN_STREAM_RESULTS_
+#if HTEST_CAN_STREAM_RESULTS_
 #include <arpa/inet.h>  // NOLINT
 #include <netdb.h>      // NOLINT
 #endif
 
-#ifdef GTEST_OS_WINDOWS
+#ifdef HTEST_OS_WINDOWS
 #include <windows.h>  // NOLINT
-#endif                // GTEST_OS_WINDOWS
+#endif                // HTEST_OS_WINDOWS
 
 #include <hawktest/test/htest.h>
 #include <hawktest/test/spi.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 /* class A needs to have dll-interface to be used by clients of class B */)
 
 // Declares the flags.
 //
 // We don't want the users to modify this flag in the code, but want
 // Google Test's own unit tests to be able to access it. Therefore we
-// declare it here as opposed to in gtest.h.
-GTEST_DECLARE_bool_(death_test_use_fork);
+// declare it here as opposed to in htest.h.
+HTEST_DECLARE_bool_(death_test_use_fork);
 
 namespace testing {
 namespace internal {
 
 // The value of GetTestTypeId() as seen from within the Google Test
 // library.  This is solely for testing GetTestTypeId().
-GTEST_API_ extern const TypeId kTestTypeIdInGoogleTest;
+HTEST_API_ extern const TypeId kTestTypeIdInGoogleTest;
 
 // A valid random seed must be in [1, kMaxRandomSeed].
 const int kMaxRandomSeed = 99999;
 
 // g_help_flag is true if and only if the --help flag or an equivalent form
 // is specified on the command line.
-GTEST_API_ extern bool g_help_flag;
+HTEST_API_ extern bool g_help_flag;
 
 // Returns the current time in milliseconds.
-GTEST_API_ TimeInMillis GetTimeInMillis();
+HTEST_API_ TimeInMillis GetTimeInMillis();
 
 // Returns true if and only if Google Test should use colors in the output.
-GTEST_API_ bool ShouldUseColor(bool stdout_is_tty);
+HTEST_API_ bool ShouldUseColor(bool stdout_is_tty);
 
 // Formats the given time in milliseconds as seconds. If the input is an exact N
 // seconds, the output has a trailing decimal point (e.g., "N." instead of "N").
-GTEST_API_ std::string FormatTimeInMillisAsSeconds(TimeInMillis ms);
+HTEST_API_ std::string FormatTimeInMillisAsSeconds(TimeInMillis ms);
 
 // Converts the given time in milliseconds to a date string in the ISO 8601
 // format, without the timezone information.  N.B.: due to the use the
 // non-reentrant localtime() function, this function is not thread safe.  Do
 // not use it in any code that can be called from multiple threads.
-GTEST_API_ std::string FormatEpochTimeInMillisAsIso8601(TimeInMillis ms);
+HTEST_API_ std::string FormatEpochTimeInMillisAsIso8601(TimeInMillis ms);
 
 // Parses a string for an Int32 flag, in the form of "--flag=value".
 //
 // On success, stores the value of the flag in *value, and returns
 // true.  On failure, returns false without changing *value.
-GTEST_API_ bool ParseFlag(const char* str, const char* flag, int32_t* value);
+HTEST_API_ bool ParseFlag(const char* str, const char* flag, int32_t* value);
 
 // Returns a random seed in range [1, kMaxRandomSeed] based on the
-// given --gtest_random_seed flag value.
+// given --htest_random_seed flag value.
 inline int GetRandomSeedFromFlag(int32_t random_seed_flag) {
   const unsigned int raw_seed =
       (random_seed_flag == 0) ? static_cast<unsigned int>(GetTimeInMillis())
@@ -129,7 +129,7 @@ inline int GetRandomSeedFromFlag(int32_t random_seed_flag) {
 // undefined if 'seed' is invalid.  The seed after kMaxRandomSeed is
 // considered to be 1.
 inline int GetNextRandomSeed(int seed) {
-  GTEST_CHECK_(1 <= seed && seed <= kMaxRandomSeed)
+  HTEST_CHECK_(1 <= seed && seed <= kMaxRandomSeed)
       << "Invalid random seed " << seed << " - must be in [1, "
       << kMaxRandomSeed << "].";
   const int next_seed = seed + 1;
@@ -138,58 +138,58 @@ inline int GetNextRandomSeed(int seed) {
 
 // This class saves the values of all Google Test flags in its c'tor, and
 // restores them in its d'tor.
-class GTestFlagSaver {
+class HTestFlagSaver {
  public:
   // The c'tor.
-  GTestFlagSaver() {
-    also_run_disabled_tests_ = GTEST_FLAG_GET(also_run_disabled_tests);
-    break_on_failure_ = GTEST_FLAG_GET(break_on_failure);
-    catch_exceptions_ = GTEST_FLAG_GET(catch_exceptions);
-    color_ = GTEST_FLAG_GET(color);
-    death_test_style_ = GTEST_FLAG_GET(death_test_style);
-    death_test_use_fork_ = GTEST_FLAG_GET(death_test_use_fork);
-    fail_fast_ = GTEST_FLAG_GET(fail_fast);
-    filter_ = GTEST_FLAG_GET(filter);
-    internal_run_death_test_ = GTEST_FLAG_GET(internal_run_death_test);
-    list_tests_ = GTEST_FLAG_GET(list_tests);
-    output_ = GTEST_FLAG_GET(output);
-    brief_ = GTEST_FLAG_GET(brief);
-    print_time_ = GTEST_FLAG_GET(print_time);
-    print_utf8_ = GTEST_FLAG_GET(print_utf8);
-    random_seed_ = GTEST_FLAG_GET(random_seed);
-    repeat_ = GTEST_FLAG_GET(repeat);
+  HTestFlagSaver() {
+    also_run_disabled_tests_ = HTEST_FLAG_GET(also_run_disabled_tests);
+    break_on_failure_ = HTEST_FLAG_GET(break_on_failure);
+    catch_exceptions_ = HTEST_FLAG_GET(catch_exceptions);
+    color_ = HTEST_FLAG_GET(color);
+    death_test_style_ = HTEST_FLAG_GET(death_test_style);
+    death_test_use_fork_ = HTEST_FLAG_GET(death_test_use_fork);
+    fail_fast_ = HTEST_FLAG_GET(fail_fast);
+    filter_ = HTEST_FLAG_GET(filter);
+    internal_run_death_test_ = HTEST_FLAG_GET(internal_run_death_test);
+    list_tests_ = HTEST_FLAG_GET(list_tests);
+    output_ = HTEST_FLAG_GET(output);
+    brief_ = HTEST_FLAG_GET(brief);
+    print_time_ = HTEST_FLAG_GET(print_time);
+    print_utf8_ = HTEST_FLAG_GET(print_utf8);
+    random_seed_ = HTEST_FLAG_GET(random_seed);
+    repeat_ = HTEST_FLAG_GET(repeat);
     recreate_environments_when_repeating_ =
-        GTEST_FLAG_GET(recreate_environments_when_repeating);
-    shuffle_ = GTEST_FLAG_GET(shuffle);
-    stack_trace_depth_ = GTEST_FLAG_GET(stack_trace_depth);
-    stream_result_to_ = GTEST_FLAG_GET(stream_result_to);
-    throw_on_failure_ = GTEST_FLAG_GET(throw_on_failure);
+        HTEST_FLAG_GET(recreate_environments_when_repeating);
+    shuffle_ = HTEST_FLAG_GET(shuffle);
+    stack_trace_depth_ = HTEST_FLAG_GET(stack_trace_depth);
+    stream_result_to_ = HTEST_FLAG_GET(stream_result_to);
+    throw_on_failure_ = HTEST_FLAG_GET(throw_on_failure);
   }
 
   // The d'tor is not virtual.  DO NOT INHERIT FROM THIS CLASS.
-  ~GTestFlagSaver() {
-    GTEST_FLAG_SET(also_run_disabled_tests, also_run_disabled_tests_);
-    GTEST_FLAG_SET(break_on_failure, break_on_failure_);
-    GTEST_FLAG_SET(catch_exceptions, catch_exceptions_);
-    GTEST_FLAG_SET(color, color_);
-    GTEST_FLAG_SET(death_test_style, death_test_style_);
-    GTEST_FLAG_SET(death_test_use_fork, death_test_use_fork_);
-    GTEST_FLAG_SET(filter, filter_);
-    GTEST_FLAG_SET(fail_fast, fail_fast_);
-    GTEST_FLAG_SET(internal_run_death_test, internal_run_death_test_);
-    GTEST_FLAG_SET(list_tests, list_tests_);
-    GTEST_FLAG_SET(output, output_);
-    GTEST_FLAG_SET(brief, brief_);
-    GTEST_FLAG_SET(print_time, print_time_);
-    GTEST_FLAG_SET(print_utf8, print_utf8_);
-    GTEST_FLAG_SET(random_seed, random_seed_);
-    GTEST_FLAG_SET(repeat, repeat_);
-    GTEST_FLAG_SET(recreate_environments_when_repeating,
+  ~HTestFlagSaver() {
+    HTEST_FLAG_SET(also_run_disabled_tests, also_run_disabled_tests_);
+    HTEST_FLAG_SET(break_on_failure, break_on_failure_);
+    HTEST_FLAG_SET(catch_exceptions, catch_exceptions_);
+    HTEST_FLAG_SET(color, color_);
+    HTEST_FLAG_SET(death_test_style, death_test_style_);
+    HTEST_FLAG_SET(death_test_use_fork, death_test_use_fork_);
+    HTEST_FLAG_SET(filter, filter_);
+    HTEST_FLAG_SET(fail_fast, fail_fast_);
+    HTEST_FLAG_SET(internal_run_death_test, internal_run_death_test_);
+    HTEST_FLAG_SET(list_tests, list_tests_);
+    HTEST_FLAG_SET(output, output_);
+    HTEST_FLAG_SET(brief, brief_);
+    HTEST_FLAG_SET(print_time, print_time_);
+    HTEST_FLAG_SET(print_utf8, print_utf8_);
+    HTEST_FLAG_SET(random_seed, random_seed_);
+    HTEST_FLAG_SET(repeat, repeat_);
+    HTEST_FLAG_SET(recreate_environments_when_repeating,
                    recreate_environments_when_repeating_);
-    GTEST_FLAG_SET(shuffle, shuffle_);
-    GTEST_FLAG_SET(stack_trace_depth, stack_trace_depth_);
-    GTEST_FLAG_SET(stream_result_to, stream_result_to_);
-    GTEST_FLAG_SET(throw_on_failure, throw_on_failure_);
+    HTEST_FLAG_SET(shuffle, shuffle_);
+    HTEST_FLAG_SET(stack_trace_depth, stack_trace_depth_);
+    HTEST_FLAG_SET(stream_result_to, stream_result_to_);
+    HTEST_FLAG_SET(throw_on_failure, throw_on_failure_);
   }
 
  private:
@@ -223,7 +223,7 @@ class GTestFlagSaver {
 // If the code_point is not a valid Unicode code point
 // (i.e. outside of Unicode range U+0 to U+10FFFF) it will be converted
 // to "(Invalid Unicode 0xXXXXXXXX)".
-GTEST_API_ std::string CodePointToUtf8(uint32_t code_point);
+HTEST_API_ std::string CodePointToUtf8(uint32_t code_point);
 
 // Converts a wide string to a narrow string in UTF-8 encoding.
 // The wide string is assumed to have the following encoding:
@@ -238,9 +238,9 @@ GTEST_API_ std::string CodePointToUtf8(uint32_t code_point);
 // as '(Invalid Unicode 0xXXXXXXXX)'. If the string is in UTF16 encoding
 // and contains invalid UTF-16 surrogate pairs, values in those pairs
 // will be encoded as individual Unicode characters from Basic Normal Plane.
-GTEST_API_ std::string WideStringToUtf8(const wchar_t* str, int num_chars);
+HTEST_API_ std::string WideStringToUtf8(const wchar_t* str, int num_chars);
 
-// Reads the GTEST_SHARD_STATUS_FILE environment variable, and creates the file
+// Reads the HTEST_SHARD_STATUS_FILE environment variable, and creates the file
 // if the variable is present. If a file already exists at this location, this
 // function will write over it. If the variable is present, but the file cannot
 // be created, prints an error and exits.
@@ -251,18 +251,18 @@ void WriteToShardStatusFileIfNeeded();
 // prints an error and exits. If in_subprocess_for_death_test, sharding is
 // disabled because it must only be applied to the original test
 // process. Otherwise, we could filter out death tests we intended to execute.
-GTEST_API_ bool ShouldShard(bool in_subprocess_for_death_test);
+HTEST_API_ bool ShouldShard(bool in_subprocess_for_death_test);
 
 // Parses the environment variable var as a 32-bit integer. If it is unset,
 // returns default_val. If it is not a 32-bit integer, prints an error and
 // and aborts.
-GTEST_API_ int32_t Int32FromEnvOrDie(const char* env_var, int32_t default_val);
+HTEST_API_ int32_t Int32FromEnvOrDie(const char* env_var, int32_t default_val);
 
 // Given the total number of shards, the shard index, and the test id,
 // returns true if and only if the test should be run on this shard. The test id
 // is some arbitrary but unique non-negative integer assigned to each test
 // method. Assumes that 0 <= shard_index < total_shards.
-GTEST_API_ bool ShouldRunTestOnShard(int total_shards, int shard_index,
+HTEST_API_ bool ShouldRunTestOnShard(int total_shards, int shard_index,
                                      int test_id);
 
 // STL container utilities.
@@ -302,10 +302,10 @@ template <typename E>
 void ShuffleRange(internal::Random* random, int begin, int end,
                   std::vector<E>* v) {
   const int size = static_cast<int>(v->size());
-  GTEST_CHECK_(0 <= begin && begin <= size)
+  HTEST_CHECK_(0 <= begin && begin <= size)
       << "Invalid shuffle range start " << begin << ": must be in range [0, "
       << size << "].";
-  GTEST_CHECK_(begin <= end && end <= size)
+  HTEST_CHECK_(begin <= end && end <= size)
       << "Invalid shuffle range finish " << end << ": must be in range ["
       << begin << ", " << size << "].";
 
@@ -360,12 +360,12 @@ class TestPropertyKeyIs {
 //
 // In most cases, the user can specify an option using either an
 // environment variable or a command line flag.  E.g. you can set the
-// test filter using either GTEST_FILTER or --gtest_filter.  If both
+// test filter using either HTEST_FILTER or --htest_filter.  If both
 // the variable and the flag are present, the latter overrides the
 // former.
-class GTEST_API_ UnitTestOptions {
+class HTEST_API_ UnitTestOptions {
  public:
-  // Functions for processing the gtest_output flag.
+  // Functions for processing the htest_output flag.
 
   // Returns the output format, or "" for normal printed output.
   static std::string GetOutputFormat();
@@ -375,32 +375,32 @@ class GTEST_API_ UnitTestOptions {
   // none was explicitly specified.
   static std::string GetAbsolutePathToOutputFile();
 
-  // Functions for processing the gtest_filter flag.
+  // Functions for processing the htest_filter flag.
 
   // Returns true if and only if the user-specified filter matches the test
   // suite name and the test name.
   static bool FilterMatchesTest(const std::string& test_suite_name,
                                 const std::string& test_name);
 
-#ifdef GTEST_OS_WINDOWS
-  // Function for supporting the gtest_catch_exception flag.
+#ifdef HTEST_OS_WINDOWS
+  // Function for supporting the htest_catch_exception flag.
 
   // Returns EXCEPTION_EXECUTE_HANDLER if given SEH exception was handled, or
   // EXCEPTION_CONTINUE_SEARCH otherwise.
   // This function is useful as an __except condition.
-  static int GTestProcessSEH(DWORD seh_code, const char* location);
-#endif  // GTEST_OS_WINDOWS
+  static int HTestProcessSEH(DWORD seh_code, const char* location);
+#endif  // HTEST_OS_WINDOWS
 
   // Returns true if "name" matches the ':' separated list of glob-style
   // filters in "filter".
   static bool MatchesFilter(const std::string& name, const char* filter);
 };
 
-#if GTEST_HAS_FILE_SYSTEM
+#if HTEST_HAS_FILE_SYSTEM
 // Returns the current application's name, removing directory path if that
 // is present.  Used by UnitTestOptions::GetOutputFile.
-GTEST_API_ FilePath GetCurrentExecutableName();
-#endif  // GTEST_HAS_FILE_SYSTEM
+HTEST_API_ FilePath GetCurrentExecutableName();
+#endif  // HTEST_HAS_FILE_SYSTEM
 
 // The role interface for getting the OS stack trace as a string.
 class OsStackTraceGetterInterface {
@@ -416,10 +416,10 @@ class OsStackTraceGetterInterface {
   //                against max_depth.
   virtual std::string CurrentStackTrace(int max_depth, int skip_count) = 0;
 
-  // UponLeavingGTest() should be called immediately before Google Test calls
+  // UponLeavingHTest() should be called immediately before Google Test calls
   // user code. It saves some information about the current stack that
   // CurrentStackTrace() will use to find and hide Google Test stack frames.
-  virtual void UponLeavingGTest() = 0;
+  virtual void UponLeavingHTest() = 0;
 
   // This string is inserted in place of stack frames that are part of
   // Google Test's implementation.
@@ -437,7 +437,7 @@ class OsStackTraceGetter : public OsStackTraceGetterInterface {
   OsStackTraceGetter() = default;
 
   std::string CurrentStackTrace(int max_depth, int skip_count) override;
-  void UponLeavingGTest() override;
+  void UponLeavingHTest() override;
 
  private:
 
@@ -494,7 +494,7 @@ class DefaultPerThreadTestPartResultReporter
 // the methods under a mutex, as this class is not accessible by a
 // user and the UnitTest class that delegates work to this class does
 // proper locking.
-class GTEST_API_ UnitTestImpl {
+class HTEST_API_ UnitTestImpl {
  public:
   explicit UnitTestImpl(UnitTest* parent);
   virtual ~UnitTestImpl();
@@ -582,9 +582,9 @@ class GTEST_API_ UnitTestImpl {
   }
 
   //  Legacy API is deprecated but still available
-#ifndef GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
   const TestCase* GetTestCase(int i) const { return GetTestSuite(i); }
-#endif  //  GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#endif  //  HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
   // Gets the i-th test suite among all the test suites. i can range from 0 to
   // total_test_suite_count() - 1. If i is not in that range, returns NULL.
@@ -618,7 +618,7 @@ class GTEST_API_ UnitTestImpl {
   // Returns the current OS stack trace as an std::string.
   //
   // The maximum number of stack frames to be included is specified by
-  // the gtest_stack_trace_depth flag.  The skip_count parameter
+  // the htest_stack_trace_depth flag.  The skip_count parameter
   // specifies the number of top frames to be skipped, which doesn't
   // count against the number of frames to be included.
   //
@@ -626,7 +626,7 @@ class GTEST_API_ UnitTestImpl {
   // CurrentOsStackTraceExceptTop(1), Foo() will be included in the
   // trace but Bar() and CurrentOsStackTraceExceptTop() won't.
   std::string CurrentOsStackTraceExceptTop(int skip_count)
-      GTEST_NO_INLINE_ GTEST_NO_TAIL_CALL_;
+      HTEST_NO_INLINE_ HTEST_NO_TAIL_CALL_;
 
   // Finds and returns a TestSuite with the given name.  If one doesn't
   // exist, creates one and returns it.
@@ -644,14 +644,14 @@ class GTEST_API_ UnitTestImpl {
                           internal::TearDownTestSuiteFunc tear_down_tc);
 
 //  Legacy API is deprecated but still available
-#ifndef GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
   TestCase* GetTestCase(const std::string& test_case_name,
                         const char* type_param,
                         internal::SetUpTestSuiteFunc set_up_tc,
                         internal::TearDownTestSuiteFunc tear_down_tc) {
     return GetTestSuite(test_case_name, type_param, set_up_tc, tear_down_tc);
   }
-#endif  //  GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#endif  //  HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
   // Adds a TestInfo to the unit test.
   //
@@ -663,7 +663,7 @@ class GTEST_API_ UnitTestImpl {
   void AddTestInfo(internal::SetUpTestSuiteFunc set_up_tc,
                    internal::TearDownTestSuiteFunc tear_down_tc,
                    TestInfo* test_info) {
-#if GTEST_HAS_FILE_SYSTEM
+#if HTEST_HAS_FILE_SYSTEM
     // In order to support thread-safe death tests, we need to
     // remember the original working directory when the test program
     // was first invoked.  We cannot do this in RUN_ALL_TESTS(), as
@@ -673,10 +673,10 @@ class GTEST_API_ UnitTestImpl {
     // before main() is reached.
     if (original_working_dir_.IsEmpty()) {
       original_working_dir_ = FilePath::GetCurrentDir();
-      GTEST_CHECK_(!original_working_dir_.IsEmpty())
+      HTEST_CHECK_(!original_working_dir_.IsEmpty())
           << "Failed to get the current working directory.";
     }
-#endif  // GTEST_HAS_FILE_SYSTEM
+#endif  // HTEST_HAS_FILE_SYSTEM
 
     GetTestSuite(test_info->test_suite_name_, test_info->type_param(),
                  set_up_tc, tear_down_tc)
@@ -750,18 +750,18 @@ class GTEST_API_ UnitTestImpl {
   std::vector<Environment*>& environments() { return environments_; }
 
   // Getters for the per-thread Google Test trace stack.
-  std::vector<TraceInfo>& gtest_trace_stack() {
-    return *(gtest_trace_stack_.pointer());
+  std::vector<TraceInfo>& htest_trace_stack() {
+    return *(htest_trace_stack_.pointer());
   }
-  const std::vector<TraceInfo>& gtest_trace_stack() const {
-    return gtest_trace_stack_.get();
+  const std::vector<TraceInfo>& htest_trace_stack() const {
+    return htest_trace_stack_.get();
   }
 
-#ifdef GTEST_HAS_DEATH_TEST
+#ifdef HTEST_HAS_DEATH_TEST
   void InitDeathTestSubprocessControlInfo() {
     internal_run_death_test_flag_.reset(ParseInternalRunDeathTestFlag());
   }
-  // Returns a pointer to the parsed --gtest_internal_run_death_test
+  // Returns a pointer to the parsed --htest_internal_run_death_test
   // flag, or NULL if that flag was not specified.
   // This information is useful only in a death test child process.
   // Must not be called before a call to InitGoogleTest.
@@ -777,13 +777,13 @@ class GTEST_API_ UnitTestImpl {
   void SuppressTestEventsIfInSubprocess();
 
   friend class ReplaceDeathTestFactory;
-#endif  // GTEST_HAS_DEATH_TEST
+#endif  // HTEST_HAS_DEATH_TEST
 
   // Initializes the event listener performing XML output as specified by
   // UnitTestOptions. Must not be called before InitGoogleTest.
   void ConfigureXmlOutput();
 
-#if GTEST_CAN_STREAM_RESULTS_
+#if HTEST_CAN_STREAM_RESULTS_
   // Initializes the event listener for streaming test results to a socket.
   // Must not be called before InitGoogleTest.
   void ConfigureStreamingOutput();
@@ -809,7 +809,7 @@ class GTEST_API_ UnitTestImpl {
   // Restores the test suites and tests to their order before the first shuffle.
   void UnshuffleTests();
 
-  // Returns the value of GTEST_FLAG(catch_exceptions) at the moment
+  // Returns the value of HTEST_FLAG(catch_exceptions) at the moment
   // UnitTest::Run() starts.
   bool catch_exceptions() const { return catch_exceptions_; }
 
@@ -827,7 +827,7 @@ class GTEST_API_ UnitTestImpl {
   friend class ::testing::UnitTest;
 
   // Used by UnitTest::Run() to capture the state of
-  // GTEST_FLAG(catch_exceptions) at the moment it starts.
+  // HTEST_FLAG(catch_exceptions) at the moment it starts.
   void set_catch_exceptions(bool value) { catch_exceptions_ = value; }
 
   // Sets the TestSuite object for the test that's currently running.
@@ -845,11 +845,11 @@ class GTEST_API_ UnitTestImpl {
   // The UnitTest object that owns this implementation object.
   UnitTest* const parent_;
 
-#if GTEST_HAS_FILE_SYSTEM
+#if HTEST_HAS_FILE_SYSTEM
   // The working directory when the first TEST() or TEST_F() was
   // executed.
   internal::FilePath original_working_dir_;
-#endif  // GTEST_HAS_FILE_SYSTEM
+#endif  // HTEST_HAS_FILE_SYSTEM
 
   // The default test part result reporters.
   DefaultGlobalTestPartResultReporter default_global_test_part_result_reporter_;
@@ -947,17 +947,17 @@ class GTEST_API_ UnitTestImpl {
   // How long the test took to run, in milliseconds.
   TimeInMillis elapsed_time_;
 
-#ifdef GTEST_HAS_DEATH_TEST
-  // The decomposed components of the gtest_internal_run_death_test flag,
+#ifdef HTEST_HAS_DEATH_TEST
+  // The decomposed components of the htest_internal_run_death_test flag,
   // parsed when RUN_ALL_TESTS is called.
   std::unique_ptr<InternalRunDeathTestFlag> internal_run_death_test_flag_;
   std::unique_ptr<internal::DeathTestFactory> death_test_factory_;
-#endif  // GTEST_HAS_DEATH_TEST
+#endif  // HTEST_HAS_DEATH_TEST
 
   // A per-thread stack of traces created by the SCOPED_TRACE() macro.
-  internal::ThreadLocal<std::vector<TraceInfo> > gtest_trace_stack_;
+  internal::ThreadLocal<std::vector<TraceInfo> > htest_trace_stack_;
 
-  // The value of GTEST_FLAG(catch_exceptions) at the moment RunAllTests()
+  // The value of HTEST_FLAG(catch_exceptions) at the moment RunAllTests()
   // starts.
   bool catch_exceptions_;
 
@@ -971,41 +971,41 @@ inline UnitTestImpl* GetUnitTestImpl() {
   return UnitTest::GetInstance()->impl();
 }
 
-#ifdef GTEST_USES_SIMPLE_RE
+#ifdef HTEST_USES_SIMPLE_RE
 
 // Internal helper functions for implementing the simple regular
 // expression matcher.
-GTEST_API_ bool IsInSet(char ch, const char* str);
-GTEST_API_ bool IsAsciiDigit(char ch);
-GTEST_API_ bool IsAsciiPunct(char ch);
-GTEST_API_ bool IsRepeat(char ch);
-GTEST_API_ bool IsAsciiWhiteSpace(char ch);
-GTEST_API_ bool IsAsciiWordChar(char ch);
-GTEST_API_ bool IsValidEscape(char ch);
-GTEST_API_ bool AtomMatchesChar(bool escaped, char pattern, char ch);
-GTEST_API_ bool ValidateRegex(const char* regex);
-GTEST_API_ bool MatchRegexAtHead(const char* regex, const char* str);
-GTEST_API_ bool MatchRepetitionAndRegexAtHead(bool escaped, char ch,
+HTEST_API_ bool IsInSet(char ch, const char* str);
+HTEST_API_ bool IsAsciiDigit(char ch);
+HTEST_API_ bool IsAsciiPunct(char ch);
+HTEST_API_ bool IsRepeat(char ch);
+HTEST_API_ bool IsAsciiWhiteSpace(char ch);
+HTEST_API_ bool IsAsciiWordChar(char ch);
+HTEST_API_ bool IsValidEscape(char ch);
+HTEST_API_ bool AtomMatchesChar(bool escaped, char pattern, char ch);
+HTEST_API_ bool ValidateRegex(const char* regex);
+HTEST_API_ bool MatchRegexAtHead(const char* regex, const char* str);
+HTEST_API_ bool MatchRepetitionAndRegexAtHead(bool escaped, char ch,
                                               char repeat, const char* regex,
                                               const char* str);
-GTEST_API_ bool MatchRegexAnywhere(const char* regex, const char* str);
+HTEST_API_ bool MatchRegexAnywhere(const char* regex, const char* str);
 
-#endif  // GTEST_USES_SIMPLE_RE
+#endif  // HTEST_USES_SIMPLE_RE
 
 // Parses the command line for Google Test flags, without initializing
 // other parts of Google Test.
-GTEST_API_ void ParseGoogleTestFlagsOnly(int* argc, char** argv);
-GTEST_API_ void ParseGoogleTestFlagsOnly(int* argc, wchar_t** argv);
+HTEST_API_ void ParseGoogleTestFlagsOnly(int* argc, char** argv);
+HTEST_API_ void ParseGoogleTestFlagsOnly(int* argc, wchar_t** argv);
 
-#ifdef GTEST_HAS_DEATH_TEST
+#ifdef HTEST_HAS_DEATH_TEST
 
 // Returns the message describing the last system error, regardless of the
 // platform.
-GTEST_API_ std::string GetLastErrnoDescription();
+HTEST_API_ std::string GetLastErrnoDescription();
 
 // Attempts to parse a string into a positive integer pointed to by the
 // number parameter.  Returns true if that is possible.
-// GTEST_HAS_DEATH_TEST implies that we have ::std::string, so we can use
+// HTEST_HAS_DEATH_TEST implies that we have ::std::string, so we can use
 // it here.
 template <typename Integer>
 bool ParseNaturalNumber(const ::std::string& str, Integer* number) {
@@ -1025,7 +1025,7 @@ bool ParseNaturalNumber(const ::std::string& str, Integer* number) {
   const BiggestConvertible parsed = strtoull(str.c_str(), &end, 10);  // NOLINT
   const bool parse_success = *end == '\0' && errno == 0;
 
-  GTEST_CHECK_(sizeof(Integer) <= sizeof(parsed));
+  HTEST_CHECK_(sizeof(Integer) <= sizeof(parsed));
 
   const Integer result = static_cast<Integer>(parsed);
   if (parse_success && static_cast<BiggestConvertible>(result) == parsed) {
@@ -1034,7 +1034,7 @@ bool ParseNaturalNumber(const ::std::string& str, Integer* number) {
   }
   return false;
 }
-#endif  // GTEST_HAS_DEATH_TEST
+#endif  // HTEST_HAS_DEATH_TEST
 
 // TestResult contains some private methods that should be hidden from
 // Google Test user but are required for testing. This class allow our tests
@@ -1060,7 +1060,7 @@ class TestResultAccessor {
   }
 };
 
-#if GTEST_CAN_STREAM_RESULTS_
+#if HTEST_CAN_STREAM_RESULTS_
 
 // Streams test results to the given port on the given host machine.
 class StreamingListener : public EmptyTestEventListener {
@@ -1094,12 +1094,12 @@ class StreamingListener : public EmptyTestEventListener {
 
     // Sends a string to the socket.
     void Send(const std::string& message) override {
-      GTEST_CHECK_(sockfd_ != -1)
+      HTEST_CHECK_(sockfd_ != -1)
           << "Send() can be called only when there is a connection.";
 
       const size_t len = message.length();
       if (write(sockfd_, message.c_str(), len) != static_cast<ssize_t>(len)) {
-        GTEST_LOG_(WARNING) << "stream_result_to: failed to stream to "
+        HTEST_LOG_(WARNING) << "stream_result_to: failed to stream to "
                             << host_name_ << ":" << port_num_;
       }
     }
@@ -1110,7 +1110,7 @@ class StreamingListener : public EmptyTestEventListener {
 
     // Closes the socket.
     void CloseConnection() override {
-      GTEST_CHECK_(sockfd_ != -1)
+      HTEST_CHECK_(sockfd_ != -1)
           << "CloseConnection() can be called only when there is a connection.";
 
       close(sockfd_);
@@ -1202,7 +1202,7 @@ class StreamingListener : public EmptyTestEventListener {
 
   // Called at the start of streaming to notify the receiver what
   // protocol we are using.
-  void Start() { SendLn("gtest_streaming_protocol_version=1.0"); }
+  void Start() { SendLn("htest_streaming_protocol_version=1.0"); }
 
   std::string FormatBool(bool value) { return value ? "1" : "0"; }
 
@@ -1212,11 +1212,11 @@ class StreamingListener : public EmptyTestEventListener {
   StreamingListener& operator=(const StreamingListener&) = delete;
 };  // class StreamingListener
 
-#endif  // GTEST_CAN_STREAM_RESULTS_
+#endif  // HTEST_CAN_STREAM_RESULTS_
 
 }  // namespace internal
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
+HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 
-#endif  // GOOGLETEST_SRC_GTEST_INTERNAL_INL_H_
+#endif  // GOOGLETEST_SRC_HTEST_INTERNAL_INL_H_

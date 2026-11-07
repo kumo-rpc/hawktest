@@ -98,13 +98,13 @@ constexpr bool HasStrictnessModifier() {
 // deregistration. This guarantees that MockClass's constructor and destructor
 // run with the same level of strictness as its instance methods.
 
-#if defined(GTEST_OS_WINDOWS) && !defined(GTEST_OS_WINDOWS_MINGW) && \
+#if defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_WINDOWS_MINGW) && \
     (defined(_MSC_VER) || defined(__clang__))
 // We need to mark these classes with this declspec to ensure that
 // the empty base class optimization is performed.
-#define GTEST_INTERNAL_EMPTY_BASE_CLASS __declspec(empty_bases)
+#define HTEST_INTERNAL_EMPTY_BASE_CLASS __declspec(empty_bases)
 #else
-#define GTEST_INTERNAL_EMPTY_BASE_CLASS
+#define HTEST_INTERNAL_EMPTY_BASE_CLASS
 #endif
 
 template <typename Base>
@@ -146,7 +146,7 @@ class [[nodiscard]] StrictMockImpl {
 }  // namespace internal
 
 template <class MockClass>
-class [[nodiscard]] GTEST_INTERNAL_EMPTY_BASE_CLASS NiceMock
+class [[nodiscard]] HTEST_INTERNAL_EMPTY_BASE_CLASS NiceMock
     : private internal::NiceMockImpl<MockClass>,
       public MockClass {
  public:
@@ -187,7 +187,7 @@ class [[nodiscard]] GTEST_INTERNAL_EMPTY_BASE_CLASS NiceMock
 };
 
 template <class MockClass>
-class [[nodiscard]] GTEST_INTERNAL_EMPTY_BASE_CLASS NaggyMock
+class [[nodiscard]] HTEST_INTERNAL_EMPTY_BASE_CLASS NaggyMock
     : private internal::NaggyMockImpl<MockClass>,
       public MockClass {
   static_assert(!internal::HasStrictnessModifier<MockClass>(),
@@ -229,7 +229,7 @@ class [[nodiscard]] GTEST_INTERNAL_EMPTY_BASE_CLASS NaggyMock
 };
 
 template <class MockClass>
-class [[nodiscard]] GTEST_INTERNAL_EMPTY_BASE_CLASS StrictMock
+class [[nodiscard]] HTEST_INTERNAL_EMPTY_BASE_CLASS StrictMock
     : private internal::StrictMockImpl<MockClass>,
       public MockClass {
  public:
@@ -270,7 +270,7 @@ class [[nodiscard]] GTEST_INTERNAL_EMPTY_BASE_CLASS StrictMock
   StrictMock& operator=(const StrictMock&) = delete;
 };
 
-#undef GTEST_INTERNAL_EMPTY_BASE_CLASS
+#undef HTEST_INTERNAL_EMPTY_BASE_CLASS
 
 }  // namespace testing
 

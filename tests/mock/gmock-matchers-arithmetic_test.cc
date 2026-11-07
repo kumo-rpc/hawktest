@@ -43,7 +43,7 @@
 
 // Silence warning C4244: 'initializing': conversion from 'int' to 'short',
 // possible loss of data and C4100, unreferenced local parameter
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
 
 namespace testing {
 namespace gmock_matchers_test {
@@ -614,7 +614,7 @@ void AllOfMatches(int num, const Matcher<int>& m) {
   EXPECT_TRUE(m.Matches(num + 1));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(AllOfTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(AllOfTest);
 
 // Tests that AllOf(m1, ..., mn) matches any value that matches all of
 // the given matchers.
@@ -803,7 +803,7 @@ static void AnyOfStringMatches(int num, const Matcher<std::string>& m) {
   EXPECT_FALSE(m.Matches(std::to_string(num + 1)));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(AnyOfTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(AnyOfTest);
 
 // Tests that AnyOf(m1, ..., mn) matches any value that matches at
 // least one of the given matchers.
@@ -1695,4 +1695,4 @@ TEST(AnyOfTest, WorksOnMoveOnlyType) {
 }  // namespace gmock_matchers_test
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100

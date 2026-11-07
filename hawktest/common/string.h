@@ -33,15 +33,15 @@
 // Google Test.  They are subject to change without notice. They should not used
 // by code external to Google Test.
 //
-// This header file is #included by gtest-internal.h.
+// This header file is #included by htest-internal.h.
 // It should not be #included by other files.
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_STRING_H_
-#define GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_STRING_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_STRING_H_
+#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_STRING_H_
 
 #ifdef __BORLANDC__
 // string.h is not guaranteed to provide strcpy on C++ Builder.
@@ -60,7 +60,7 @@ namespace testing {
     namespace internal {
 
         // String - an abstract class holding static string utilities.
-        class GTEST_API_ [[nodiscard]] String {
+        class HTEST_API_ [[nodiscard]] String {
         public:
             // Static utility methods
 
@@ -73,7 +73,7 @@ namespace testing {
             // memory using malloc().
             static const char* CloneCString(const char* c_str);
 
-#ifdef GTEST_OS_WINDOWS_MOBILE
+#ifdef HTEST_OS_WINDOWS_MOBILE
             // Windows CE does not have the 'ANSI' versions of Win32 APIs. To be
             // able to pass strings to Win32 APIs on CE we need to convert them
             // to 'Unicode', UTF-16.
@@ -170,9 +170,9 @@ namespace testing {
 
         // Gets the content of the stringstream's buffer as an std::string.  Each '\0'
         // character in the buffer is replaced with "\\0".
-        GTEST_API_ std::string StringStreamToString(::std::stringstream* stream);
+        HTEST_API_ std::string StringStreamToString(::std::stringstream* stream);
 
     } // namespace internal
 } // namespace testing
 
-#endif // GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_STRING_H_
+#endif // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_STRING_H_

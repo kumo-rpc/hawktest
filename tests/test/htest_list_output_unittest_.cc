@@ -29,7 +29,7 @@
 //
 // Author: david.schuldenfrei@gmail.com (David Schuldenfrei)
 
-// Unit test for Google Test's --gtest_list_tests and --gtest_output flag.
+// Unit test for Google Test's --htest_list_tests and --htest_output flag.
 //
 // A user can ask Google Test to list all tests that will run,
 // and have the output saved in a Json/Xml file.

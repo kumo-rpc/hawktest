@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This program is meant to be run by gtest_test_filter_test.py.  Do not run
+// This program is meant to be run by htest_test_filter_test.py.  Do not run
 // it directly.
 
 #include <hawktest/test/htest.h>

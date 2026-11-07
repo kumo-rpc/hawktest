@@ -62,7 +62,7 @@ FetchContent_Declare(
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(htest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 ```
 
@@ -83,7 +83,7 @@ As an example, create a file named `hello_test.cc` in your `my_project`
 directory with the following contents:
 
 ```cpp
-#include <gtest/gtest.h>
+#include <htest/htest.h>
 
 // Demonstrate some basic assertions.
 TEST(HelloTest, BasicAssertions) {
@@ -109,15 +109,15 @@ add_executable(
 )
 target_link_libraries(
   hello_test
-  GTest::gtest_main
+  HTest::htest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+htest_discover_tests(hello_test)
 ```
 
 The above configuration enables testing in CMake, declares the C++ test binary
-you want to build (`hello_test`), and links it to GoogleTest (`gtest_main`). The
+you want to build (`hello_test`), and links it to GoogleTest (`htest_main`). The
 last two lines enable CMake's test runner to discover the tests included in the
 binary, using the
 [`GoogleTest` CMake module](https://cmake.org/cmake/help/git-stage/module/GoogleTest.html).
@@ -132,7 +132,7 @@ Now you can build and run your test:
 -- Build files have been written to: .../my_project/build
 
 <strong>my_project$ cmake --build build</strong>
-Scanning dependencies of target gtest
+Scanning dependencies of target htest
 ...
 [100%] Built target gmock_main
 

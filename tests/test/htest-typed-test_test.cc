@@ -36,7 +36,7 @@
 
 #include <hawktest/test/htest.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4127 /* conditional expression is constant */)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4127 /* conditional expression is constant */)
 
 using testing::Test;
 
@@ -374,7 +374,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(Double, TypedTestP2, Types<double>);
 
 // Tests that the same type-parameterized test case can be
 // instantiated in different translation units linked together.
-// (ContainerTest is also instantiated in gtest-typed-test_test.cc.)
+// (ContainerTest is also instantiated in htest-typed-test_test.cc.)
 typedef Types<std::vector<double>, std::set<char> > MyContainers;
 INSTANTIATE_TYPED_TEST_SUITE_P(My, ContainerTest, MyContainers);
 
@@ -420,4 +420,4 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, TrimmedTest, TrimTypes);
 
 }  // namespace library2
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4127
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4127

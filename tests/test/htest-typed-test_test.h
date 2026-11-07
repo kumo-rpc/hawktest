@@ -27,8 +27,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef GOOGLETEST_TEST_GTEST_TYPED_TEST_TEST_H_
-#define GOOGLETEST_TEST_GTEST_TYPED_TEST_TEST_H_
+#ifndef GOOGLETEST_TEST_HTEST_TYPED_TEST_TEST_H_
+#define GOOGLETEST_TEST_HTEST_TYPED_TEST_TEST_H_
 
 #include <hawktest/test/htest.h>
 
@@ -36,8 +36,8 @@ using testing::Test;
 
 // For testing that the same type-parameterized test case can be
 // instantiated in different translation units linked together.
-// ContainerTest will be instantiated in both gtest-typed-test_test.cc
-// and gtest-typed-test2_test.cc.
+// ContainerTest will be instantiated in both htest-typed-test_test.cc
+// and htest-typed-test2_test.cc.
 
 template <typename T>
 class ContainerTest : public Test {};
@@ -54,4 +54,4 @@ TYPED_TEST_P(ContainerTest, InitialSizeIsZero) {
 REGISTER_TYPED_TEST_SUITE_P(ContainerTest, CanBeDefaultConstructed,
                             InitialSizeIsZero);
 
-#endif  // GOOGLETEST_TEST_GTEST_TYPED_TEST_TEST_H_
+#endif  // GOOGLETEST_TEST_HTEST_TYPED_TEST_TEST_H_

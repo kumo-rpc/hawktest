@@ -102,7 +102,7 @@ struct ContainerHelper {
 // For testing ExplainMatchResultTo().
 template <typename T>
 struct GtestGreaterThanMatcher {
-  using is_gtest_matcher = void;
+  using is_htest_matcher = void;
 
   void DescribeTo(ostream* os) const { *os << "is > " << rhs; }
   void DescribeNegationTo(ostream* os) const { *os << "is <= " << rhs; }
@@ -146,23 +146,23 @@ class GreaterThanMatcher : public MatcherInterface<T> {
   const GtestGreaterThanMatcher<T> impl_;
 };
 
-// Names and instantiates a new instance of GTestMatcherTestP.
-#define INSTANTIATE_GTEST_MATCHER_TEST_P(TestSuite)                        \
-  using TestSuite##P = GTestMatcherTestP;                                  \
+// Names and instantiates a new instance of HTestMatcherTestP.
+#define INSTANTIATE_HTEST_MATCHER_TEST_P(TestSuite)                        \
+  using TestSuite##P = HTestMatcherTestP;                                  \
   INSTANTIATE_TEST_SUITE_P(MatcherInterface, TestSuite##P, Values(false)); \
   INSTANTIATE_TEST_SUITE_P(GtestMatcher, TestSuite##P, Values(true))
 
-class GTestMatcherTestP : public testing::TestWithParam<bool> {
+class HTestMatcherTestP : public testing::TestWithParam<bool> {
  public:
   template <typename T>
   Matcher<T> GreaterThan(T n) {
-    if (use_gtest_matcher_) {
+    if (use_htest_matcher_) {
       return GtestGreaterThan(n);
     } else {
       return MakeMatcher(new GreaterThanMatcher<T>(n));
     }
   }
-  const bool use_gtest_matcher_ = GetParam();
+  const bool use_htest_matcher_ = GetParam();
 };
 
 // Returns the description of the given matcher.

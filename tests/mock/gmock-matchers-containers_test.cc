@@ -50,7 +50,7 @@
 
 // Silence warning C4244: 'initializing': conversion from 'int' to 'short',
 // possible loss of data and C4100, unreferenced local parameter
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
 
 namespace testing {
 namespace gmock_matchers_test {
@@ -63,7 +63,7 @@ std::vector<std::unique_ptr<int>> MakeUniquePtrs(const std::vector<int>& ints) {
 }
 
 std::string OfType(const std::string& type_name) {
-#if GTEST_HAS_RTTI
+#if HTEST_HAS_RTTI
   return IsReadableTypeName(type_name) ? " (of type " + type_name + ")" : "";
 #else
   return "";
@@ -76,7 +76,7 @@ TEST(ContainsTest, WorksWithMoveOnly) {
   helper.Call(MakeUniquePtrs({1, 2}));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(ElementsAreTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(ElementsAreTest);
 
 // Tests the variadic version of the ElementsAreMatcher
 TEST(ElementsAreTest, HugeMatcher) {
@@ -293,7 +293,7 @@ class ConstPropagatingPtr {
   T* val_;
 };
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(PointeeTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(PointeeTest);
 
 TEST(PointeeTest, WorksWithConstPropagatingPointers) {
   const Matcher<ConstPropagatingPtr<int>> m = Pointee(Lt(5));
@@ -385,7 +385,7 @@ struct DerivedStruct : public AStruct {
   char ch;
 };
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(FieldTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(FieldTest);
 
 // Tests that Field(&Foo::field, ...) works when field is non-const.
 TEST(FieldTest, WorksForNonConstField) {
@@ -519,7 +519,7 @@ TEST_P(FieldTestP, CanExplainMatchResultWithFieldName) {
             Explain(m, a));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(FieldForPointerTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(FieldForPointerTest);
 
 // Tests that Field() works when the argument is a pointer to const.
 TEST(FieldForPointerTest, WorksForPointerToConst) {
@@ -656,7 +656,7 @@ class DerivedClass : public AClass {
   int k_;
 };
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(PropertyTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(PropertyTest);
 
 // Tests that Property(&Foo::property, ...) works when property()
 // returns a non-reference.
@@ -810,7 +810,7 @@ TEST_P(PropertyTestP, CanExplainMatchResultWithPropertyName) {
             Explain(m, a));
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(PropertyForPointerTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(PropertyForPointerTest);
 
 // Tests that Property() works when the argument is a pointer to const.
 TEST(PropertyForPointerTest, WorksForPointerToConst) {
@@ -928,7 +928,7 @@ std::string IntToStringFunction(int input) {
   return input == 1 ? "foo" : "bar";
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(ResultOfTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(ResultOfTest);
 
 TEST(ResultOfTest, WorksForFunctionPointers) {
   Matcher<int> matcher = ResultOf(&IntToStringFunction, Eq(std::string("foo")));
@@ -1437,7 +1437,7 @@ TEST(StreamlikeTest, Iteration) {
   }
 }
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(BeginEndDistanceIsTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(BeginEndDistanceIsTest);
 
 TEST(BeginEndDistanceIsTest, WorksWithForwardList) {
   std::forward_list<int> container;
@@ -2436,7 +2436,7 @@ TEST_F(UnorderedElementsAreTest, DescribeNegation) {
 
 // Tests Each().
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(EachTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(EachTest);
 
 TEST_P(EachTestP, ExplainsMatchResultCorrectly) {
   set<int> a;  // empty
@@ -2829,7 +2829,7 @@ class PredicateFormatterFromMatcherTest : public ::testing::Test {
           return listener->IsInterested();
       }
 
-      GTEST_LOG_(FATAL) << "This should never be reached";
+      HTEST_LOG_(FATAL) << "This should never be reached";
       return false;
     }
 
@@ -3305,7 +3305,7 @@ TEST(ElementsAreArrayTest, SourceLifeSpan) {
 
 // Tests Contains().
 
-INSTANTIATE_GTEST_MATCHER_TEST_P(ContainsTest);
+INSTANTIATE_HTEST_MATCHER_TEST_P(ContainsTest);
 
 TEST(ContainsTest, ListMatchesWhenElementIsInContainer) {
   list<int> some_list;
@@ -3513,4 +3513,4 @@ TEST(ContainsSubsequenceTest, ExplainsMismatchCorrectlyForMultipleMatchers) {
 }  // namespace gmock_matchers_test
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100

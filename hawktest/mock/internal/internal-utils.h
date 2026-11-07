@@ -60,18 +60,18 @@ namespace internal {
 
 // Silence MSVC C4100 (unreferenced formal parameter) and
 // C4805('==': unsafe mix of type 'const int' and type 'const bool')
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4100 4805)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100 4805)
 
 // Joins a vector of strings as if they are fields of a tuple; returns
 // the joined string.
-GTEST_API_ std::string JoinAsKeyValueTuple(
+HTEST_API_ std::string JoinAsKeyValueTuple(
     const std::vector<const char*>& names, const Strings& values);
 
 // Converts an identifier name to a space-separated list of lower-case
 // words.  Each maximum substring of the form [A-Za-z][a-z]*|\d+ is
 // treated as one word.  For example, both "FooBar123" and
 // "foo_bar_123" are converted to "foo bar 123".
-GTEST_API_ std::string ConvertIdentifierNameToWords(const char* id_name);
+HTEST_API_ std::string ConvertIdentifierNameToWords(const char* id_name);
 
 // GetRawPointer(p) returns the raw pointer underlying p when p is a
 // smart pointer, or returns p itself when p is already a raw pointer.
@@ -234,7 +234,7 @@ class [[nodiscard]] FailureReporterInterface {
 };
 
 // Returns the failure reporter used by Google Mock.
-GTEST_API_ FailureReporterInterface* GetFailureReporter();
+HTEST_API_ FailureReporterInterface* GetFailureReporter();
 
 // Asserts that condition is true; aborts the process with the given
 // message if condition is false.  We cannot use LOG(FATAL) or CHECK()
@@ -279,7 +279,7 @@ const char kErrorVerbosity[] = "error";
 
 // Returns true if and only if a log with the given severity is visible
 // according to the --gmock_verbose flag.
-GTEST_API_ bool LogIsVisible(LogSeverity severity);
+HTEST_API_ bool LogIsVisible(LogSeverity severity);
 
 // Prints the given message to stdout if and only if 'severity' >= the level
 // specified by the --gmock_verbose flag.  If stack_frames_to_skip >=
@@ -288,7 +288,7 @@ GTEST_API_ bool LogIsVisible(LogSeverity severity);
 // stack_frames_to_skip is treated as 0, since we don't know which
 // function calls will be inlined by the compiler and need to be
 // conservative.
-GTEST_API_ void Log(LogSeverity severity, const std::string& message,
+HTEST_API_ void Log(LogSeverity severity, const std::string& message,
                     int stack_frames_to_skip);
 
 // A marker class that is used to resolve parameterless expectations to the
@@ -302,7 +302,7 @@ class [[nodiscard]] WithoutMatchers {
   WithoutMatchers() = default;
 
  public:
-  GTEST_API_ static WithoutMatchers Get();
+  HTEST_API_ static WithoutMatchers Get();
 };
 
 // Invalid<T>() is usable as an expression of type T, but will terminate
@@ -436,7 +436,7 @@ struct RemoveConstFromKey<std::pair<const K, V> > {
 
 // Emit an assertion failure due to incorrect DoDefault() usage. Out-of-lined to
 // reduce code size.
-GTEST_API_ void IllegalDoDefault(const char* file, int line);
+HTEST_API_ void IllegalDoDefault(const char* file, int line);
 
 template <typename F, typename Tuple, size_t... Idx>
 auto ApplyImpl(F&& f, Tuple&& args, std::index_sequence<Idx...>)
@@ -493,7 +493,7 @@ using TupleElement = std::tuple_element_t<I, T>;
 
 bool Base64Unescape(const std::string& encoded, std::string* decoded);
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100 4805
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100 4805
 
 }  // namespace internal
 }  // namespace testing

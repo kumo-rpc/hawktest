@@ -33,7 +33,7 @@ import os
 
 from tests.test import htest_test_utils
 
-binary_name = 'gtest_testbridge_test_'
+binary_name = 'htest_testbridge_test_'
 COMMAND = htest_test_utils.GetTestExecutablePath(binary_name)
 TESTBRIDGE_NAME = 'TESTBRIDGE_TEST_ONLY'
 
@@ -43,7 +43,7 @@ def Assert(condition):
     raise AssertionError
 
 
-class GTestTestFilterTest(htest_test_utils.TestCase):
+class HTestTestFilterTest(htest_test_utils.TestCase):
 
   def testTestExecutionIsFiltered(self):
     """Tests that the test filter is picked up from the testbridge env var."""

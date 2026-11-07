@@ -38,7 +38,7 @@
 #include <hawktest/test/htest.h>
 #include <hawktest/test/internal/custom/htest.h>
 
-#if !defined(GTEST_CUSTOM_INIT_GOOGLE_TEST_FUNCTION_)
+#if !defined(HTEST_CUSTOM_INIT_GOOGLE_TEST_FUNCTION_)
 
 using testing::InitGoogleMock;
 
@@ -169,7 +169,7 @@ TEST(WideInitGoogleMockTest, ParsesGoogleMockFlagAndUnrecognizedFlag) {
   TestInitGoogleMock(argv, new_argv, "error");
 }
 
-#endif  // !defined(GTEST_CUSTOM_INIT_GOOGLE_TEST_FUNCTION_)
+#endif  // !defined(HTEST_CUSTOM_INIT_GOOGLE_TEST_FUNCTION_)
 
 // Makes sure Google Mock flags can be accessed in code.
 TEST(FlagTest, IsAccessibleInCode) {

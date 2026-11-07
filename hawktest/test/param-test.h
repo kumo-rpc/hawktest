@@ -30,12 +30,12 @@
 // Macros and functions for implementing parameterized tests
 // in Google C++ Testing and Mocking Framework (Google Test)
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_PARAM_TEST_H_
-#define GOOGLETEST_INCLUDE_GTEST_GTEST_PARAM_TEST_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_HTEST_PARAM_TEST_H_
+#define GOOGLETEST_INCLUDE_HTEST_HTEST_PARAM_TEST_H_
 
 // Value-parameterized tests allow you to test your code with different
 // parameters without writing multiple copies of the same test.
@@ -113,7 +113,7 @@ INSTANTIATE_TEST_SUITE_P(InstantiationName,
 //    * InstantiationName/FooTest.HasBlahBlah/1 for "miny"
 //    * InstantiationName/FooTest.HasBlahBlah/2 for "moe"
 //
-// You can use these names in --gtest_filter.
+// You can use these names in --htest_filter.
 //
 // This statement will instantiate all tests from FooTest again, each
 // with parameter values "cat" and "dog":
@@ -505,11 +505,11 @@ auto ConvertGenerator(Gen&& gen, Func&& f) {
 }
 
 #define TEST_P(test_suite_name, test_name)                                     \
-  class GTEST_TEST_CLASS_NAME_(test_suite_name, test_name)                     \
+  class HTEST_TEST_CLASS_NAME_(test_suite_name, test_name)                     \
       : public test_suite_name,                                                \
-        private ::testing::internal::GTestNonCopyable {                        \
+        private ::testing::internal::HTestNonCopyable {                        \
    public:                                                                     \
-    GTEST_TEST_CLASS_NAME_(test_suite_name, test_name)() {}                    \
+    HTEST_TEST_CLASS_NAME_(test_suite_name, test_name)() {}                    \
     void TestBody() override;                                                  \
                                                                                \
    private:                                                                    \
@@ -517,21 +517,21 @@ auto ConvertGenerator(Gen&& gen, Func&& f) {
       ::testing::UnitTest::GetInstance()                                       \
           ->parameterized_test_registry()                                      \
           .GetTestSuitePatternHolder<test_suite_name>(                         \
-              GTEST_STRINGIFY_(test_suite_name),                               \
+              HTEST_STRINGIFY_(test_suite_name),                               \
               ::testing::internal::CodeLocation(__FILE__, __LINE__))           \
           ->AddTestPattern(                                                    \
-              GTEST_STRINGIFY_(test_suite_name), GTEST_STRINGIFY_(test_name),  \
-              new ::testing::internal::TestMetaFactory<GTEST_TEST_CLASS_NAME_( \
+              HTEST_STRINGIFY_(test_suite_name), HTEST_STRINGIFY_(test_name),  \
+              new ::testing::internal::TestMetaFactory<HTEST_TEST_CLASS_NAME_( \
                   test_suite_name, test_name)>(),                              \
               ::testing::internal::CodeLocation(__FILE__, __LINE__));          \
       return 0;                                                                \
     }                                                                          \
-    [[maybe_unused]] static int gtest_registering_dummy_;                      \
+    [[maybe_unused]] static int htest_registering_dummy_;                      \
   };                                                                           \
-  int GTEST_TEST_CLASS_NAME_(test_suite_name,                                  \
-                             test_name)::gtest_registering_dummy_ =            \
-      GTEST_TEST_CLASS_NAME_(test_suite_name, test_name)::AddToRegistry();     \
-  void GTEST_TEST_CLASS_NAME_(test_suite_name, test_name)::TestBody()
+  int HTEST_TEST_CLASS_NAME_(test_suite_name,                                  \
+                             test_name)::htest_registering_dummy_ =            \
+      HTEST_TEST_CLASS_NAME_(test_suite_name, test_name)::AddToRegistry();     \
+  void HTEST_TEST_CLASS_NAME_(test_suite_name, test_name)::TestBody()
 
 // The last argument to INSTANTIATE_TEST_SUITE_P allows the user to specify
 // generator and an optional function or functor that generates custom test name
@@ -546,19 +546,19 @@ auto ConvertGenerator(Gen&& gen, Func&& f) {
 // alphanumeric characters or underscore. Because PrintToString adds quotes
 // to std::string and C strings, it won't work for these types.
 
-#define GTEST_EXPAND_(arg) arg
-#define GTEST_GET_FIRST_(first, ...) first
-#define GTEST_GET_SECOND_(first, second, ...) second
+#define HTEST_EXPAND_(arg) arg
+#define HTEST_GET_FIRST_(first, ...) first
+#define HTEST_GET_SECOND_(first, second, ...) second
 
 #define INSTANTIATE_TEST_SUITE_P(prefix, test_suite_name, ...)                \
   static ::testing::internal::ParamGenerator<test_suite_name::ParamType>      \
-      gtest_##prefix##test_suite_name##_EvalGenerator_() {                    \
-    return GTEST_EXPAND_(GTEST_GET_FIRST_(__VA_ARGS__, DUMMY_PARAM_));        \
+      htest_##prefix##test_suite_name##_EvalGenerator_() {                    \
+    return HTEST_EXPAND_(HTEST_GET_FIRST_(__VA_ARGS__, DUMMY_PARAM_));        \
   }                                                                           \
-  static ::std::string gtest_##prefix##test_suite_name##_EvalGenerateName_(   \
+  static ::std::string htest_##prefix##test_suite_name##_EvalGenerateName_(   \
       const ::testing::TestParamInfo<test_suite_name::ParamType>& info) {     \
     if (::testing::internal::AlwaysFalse()) {                                 \
-      ::testing::internal::TestNotEmpty(GTEST_EXPAND_(GTEST_GET_SECOND_(      \
+      ::testing::internal::TestNotEmpty(HTEST_EXPAND_(HTEST_GET_SECOND_(      \
           __VA_ARGS__,                                                        \
           ::testing::internal::DefaultParamName<test_suite_name::ParamType>,  \
           DUMMY_PARAM_)));                                                    \
@@ -566,37 +566,37 @@ auto ConvertGenerator(Gen&& gen, Func&& f) {
       static_assert(std::tuple_size<decltype(t)>::value <= 2,                 \
                     "Too Many Args!");                                        \
     }                                                                         \
-    return ((GTEST_EXPAND_(GTEST_GET_SECOND_(                                 \
+    return ((HTEST_EXPAND_(HTEST_GET_SECOND_(                                 \
         __VA_ARGS__,                                                          \
         ::testing::internal::DefaultParamName<test_suite_name::ParamType>,    \
         DUMMY_PARAM_))))(info);                                               \
   }                                                                           \
-  [[maybe_unused]] static int gtest_##prefix##test_suite_name##_dummy_ =      \
+  [[maybe_unused]] static int htest_##prefix##test_suite_name##_dummy_ =      \
       ::testing::UnitTest::GetInstance()                                      \
           ->parameterized_test_registry()                                     \
           .GetTestSuitePatternHolder<test_suite_name>(                        \
-              GTEST_STRINGIFY_(test_suite_name),                              \
+              HTEST_STRINGIFY_(test_suite_name),                              \
               ::testing::internal::CodeLocation(__FILE__, __LINE__))          \
           ->AddTestSuiteInstantiation(                                        \
-              GTEST_STRINGIFY_(prefix),                                       \
-              &gtest_##prefix##test_suite_name##_EvalGenerator_,              \
-              &gtest_##prefix##test_suite_name##_EvalGenerateName_, __FILE__, \
+              HTEST_STRINGIFY_(prefix),                                       \
+              &htest_##prefix##test_suite_name##_EvalGenerator_,              \
+              &htest_##prefix##test_suite_name##_EvalGenerateName_, __FILE__, \
               __LINE__)
 
 // Allow Marking a Parameterized test class as not needing to be instantiated.
-#define GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(T)                  \
-  namespace gtest_do_not_use_outside_namespace_scope {}                   \
-  static const ::testing::internal::MarkAsIgnored gtest_allow_ignore_##T( \
-      GTEST_STRINGIFY_(T))
+#define HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(T)                  \
+  namespace htest_do_not_use_outside_namespace_scope {}                   \
+  static const ::testing::internal::MarkAsIgnored htest_allow_ignore_##T( \
+      HTEST_STRINGIFY_(T))
 
 // Legacy API is deprecated but still available
-#ifndef GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 #define INSTANTIATE_TEST_CASE_P                                            \
   static_assert(::testing::internal::InstantiateTestCase_P_IsDeprecated(), \
                 "");                                                       \
   INSTANTIATE_TEST_SUITE_P
-#endif  // GTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#endif  // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
 }  // namespace testing
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_PARAM_TEST_H_
+#endif  // GOOGLETEST_INCLUDE_HTEST_HTEST_PARAM_TEST_H_

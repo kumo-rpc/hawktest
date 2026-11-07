@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //
-// Unit test for gtest_prod.h.
+// Unit test for htest_prod.h.
 
 #include "production.h"
 #include <hawktest/test/htest.h>

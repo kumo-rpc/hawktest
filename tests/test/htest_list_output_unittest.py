@@ -28,11 +28,11 @@
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-"""Unit test for Google Test's --gtest_list_tests flag.
+"""Unit test for Google Test's --htest_list_tests flag.
 
 A user can ask Google Test to list all tests by specifying the
---gtest_list_tests flag. If output is requested, via --gtest_output=xml
-or --gtest_output=json, the tests are listed, with extra information in the
+--htest_list_tests flag. If output is requested, via --htest_output=xml
+or --htest_output=json, the tests are listed, with extra information in the
 output file.
 This script tests such functionality by invoking htest_list_output_unittest_
  (a program written with Google Test) the command line flags.
@@ -42,8 +42,8 @@ import os
 import re
 from tests.test import htest_test_utils
 
-GTEST_LIST_TESTS_FLAG = '--gtest_list_tests'
-GTEST_OUTPUT_FLAG = '--gtest_output'
+HTEST_LIST_TESTS_FLAG = '--htest_list_tests'
+HTEST_OUTPUT_FLAG = '--htest_output'
 
 EXPECTED_XML = """<\?xml version="1.0" encoding="UTF-8"\?>
 <testsuites tests="16" name="AllTests">
@@ -223,7 +223,7 @@ EXPECTED_JSON = """{
 """
 
 
-class GTestListTestsOutputUnitTest(htest_test_utils.TestCase):
+class HTestListTestsOutputUnitTest(htest_test_utils.TestCase):
   """Unit test for Google Test's list tests with output to file functionality."""
 
   def testXml(self):
@@ -246,14 +246,14 @@ class GTestListTestsOutputUnitTest(htest_test_utils.TestCase):
     file_path = os.path.join(
         htest_test_utils.GetTempDir(), 'test_out.' + out_format
     )
-    gtest_prog_path = htest_test_utils.GetTestExecutablePath(
+    htest_prog_path = htest_test_utils.GetTestExecutablePath(
         'htest_list_output_unittest_'
     )
 
     command = [
-        gtest_prog_path,
-        '%s=%s:%s' % (GTEST_OUTPUT_FLAG, out_format, file_path),
-        '--gtest_list_tests',
+        htest_prog_path,
+        '%s=%s:%s' % (HTEST_OUTPUT_FLAG, out_format, file_path),
+        '--htest_list_tests',
     ]
     environ_copy = os.environ.copy()
     p = htest_test_utils.Subprocess(
@@ -285,5 +285,5 @@ class GTestListTestsOutputUnitTest(htest_test_utils.TestCase):
 
 
 if __name__ == '__main__':
-  os.environ['GTEST_STACK_TRACE_DEPTH'] = '1'
+  os.environ['HTEST_STACK_TRACE_DEPTH'] = '1'
   htest_test_utils.Main()

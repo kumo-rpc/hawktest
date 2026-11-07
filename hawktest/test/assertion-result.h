@@ -31,12 +31,12 @@
 //
 // This file implements the AssertionResult type.
 
-// IWYU pragma: private, include "gtest/gtest.h"
-// IWYU pragma: friend gtest/.*
+// IWYU pragma: private, include "htest/htest.h"
+// IWYU pragma: friend htest/.*
 // IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_ASSERTION_RESULT_H_
-#define GOOGLETEST_INCLUDE_GTEST_GTEST_ASSERTION_RESULT_H_
+#ifndef GOOGLETEST_INCLUDE_HTEST_HTEST_ASSERTION_RESULT_H_
+#define GOOGLETEST_INCLUDE_HTEST_HTEST_ASSERTION_RESULT_H_
 
 #include <memory>
 #include <ostream>
@@ -46,7 +46,7 @@
 #include <hawktest/common/port.h>
 #include <hawktest/test/message.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251                                   \
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251                                   \
 /* class A needs to have dll-interface to be used by clients of class B */)
 
 namespace testing {
@@ -137,7 +137,7 @@ namespace testing {
 class [[nodiscard]] AssertionResult;
 #endif  // !SWIG
 
-class GTEST_API_ [[nodiscard]] AssertionResult {
+class HTEST_API_ [[nodiscard]] AssertionResult {
  public:
   // Copy constructor.
   // Used in EXPECT_TRUE/FALSE(assertion_result).
@@ -148,7 +148,7 @@ class GTEST_API_ [[nodiscard]] AssertionResult {
 // This warning is off by default starting in Visual Studio 2019 but can be
 // enabled with command-line options.
 #if defined(_MSC_VER) && (_MSC_VER < 1910 || _MSC_VER >= 1920)
-  GTEST_DISABLE_MSC_WARNINGS_PUSH_(4800 /* forcing value to bool */)
+  HTEST_DISABLE_MSC_WARNINGS_PUSH_(4800 /* forcing value to bool */)
 #endif
 
   // Used in the EXPECT_TRUE/FALSE(bool_expression).
@@ -172,7 +172,7 @@ class GTEST_API_ [[nodiscard]] AssertionResult {
   explicit AssertionResult(const T& success) : success_(success) {}
 
 #if defined(_MSC_VER) && (_MSC_VER < 1910 || _MSC_VER >= 1920)
-  GTEST_DISABLE_MSC_WARNINGS_POP_()
+  HTEST_DISABLE_MSC_WARNINGS_POP_()
 #endif
 
   // Assignment operator.
@@ -250,17 +250,17 @@ struct AssertionResultExpectation {
 }  // namespace internal
 
 // Makes a successful assertion result.
-GTEST_API_ AssertionResult AssertionSuccess();
+HTEST_API_ AssertionResult AssertionSuccess();
 
 // Makes a failed assertion result.
-GTEST_API_ AssertionResult AssertionFailure();
+HTEST_API_ AssertionResult AssertionFailure();
 
 // Makes a failed assertion result with the given failure message.
 // Deprecated; use AssertionFailure() << msg.
-GTEST_API_ AssertionResult AssertionFailure(const Message& msg);
+HTEST_API_ AssertionResult AssertionFailure(const Message& msg);
 
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4251
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4251
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_ASSERTION_RESULT_H_
+#endif  // GOOGLETEST_INCLUDE_HTEST_HTEST_ASSERTION_RESULT_H_

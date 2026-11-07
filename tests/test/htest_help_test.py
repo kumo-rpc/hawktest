@@ -32,9 +32,9 @@
 """Tests the --help flag of Google C++ Testing and Mocking Framework.
 
 SYNOPSIS
-       gtest_help_test.py --build_dir=BUILD/DIR
+       htest_help_test.py --build_dir=BUILD/DIR
          # where BUILD/DIR contains the built htest_help_test_ file.
-       gtest_help_test.py
+       htest_help_test.py
 """
 
 import os
@@ -62,7 +62,7 @@ IS_GNUHURD = os.name == 'posix' and os.uname()[0] == 'GNU'
 IS_WINDOWS = os.name == 'nt'
 
 PROGRAM_PATH = htest_test_utils.GetTestExecutablePath('htest_help_test_')
-FLAG_PREFIX = '--gtest_'
+FLAG_PREFIX = '--htest_'
 DEATH_TEST_STYLE_FLAG = FLAG_PREFIX + 'death_test_style'
 DEATH_TEST_USE_FORK_FLAG = FLAG_PREFIX + 'death_test_use_fork'
 STREAM_RESULT_TO_FLAG = FLAG_PREFIX + 'stream_result_to'
@@ -132,7 +132,7 @@ def run_with_flag(flag):
   return child.exit_code, child.output
 
 
-class GTestHelpTest(htest_test_utils.TestCase):
+class HTestHelpTest(htest_test_utils.TestCase):
   """Tests the --help flag and its equivalent forms."""
 
   def test_prints_help_with_full_flag(self):
@@ -171,7 +171,7 @@ class GTestHelpTest(htest_test_utils.TestCase):
     self.assertNotEqual(exit_code, 0)
     self.assertFalse(HELP_REGEX.search(output), output)
 
-  def test_runs_tests_with_gtest_internal_flag(self):
+  def test_runs_tests_with_htest_internal_flag(self):
     """Verifies correct behavior when internal testing flag is specified.
 
     Verifies that the tests are run and no help message is printed when

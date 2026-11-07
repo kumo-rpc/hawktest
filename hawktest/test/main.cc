@@ -31,11 +31,11 @@
 
 #include <hawktest/test/htest.h>
 
-#if defined(GTEST_OS_ESP8266) || defined(GTEST_OS_ESP32) || \
-    (defined(GTEST_OS_NRF52) && defined(ARDUINO))
+#if defined(HTEST_OS_ESP8266) || defined(HTEST_OS_ESP32) || \
+    (defined(HTEST_OS_NRF52) && defined(ARDUINO))
 // Arduino-like platforms: program entry points are setup/loop instead of main.
 
-#ifdef GTEST_OS_ESP8266
+#ifdef HTEST_OS_ESP8266
 extern "C" {
 #endif
 
@@ -43,14 +43,14 @@ void setup() { testing::InitGoogleTest(); }
 
 void loop() { RUN_ALL_TESTS(); }
 
-#ifdef GTEST_OS_ESP8266
+#ifdef HTEST_OS_ESP8266
 }
 #endif
 
-#elif defined(GTEST_OS_QURT)
+#elif defined(HTEST_OS_QURT)
 // QuRT: program entry point is main, but argc/argv are unusable.
 
-GTEST_API_ int main() {
+HTEST_API_ int main() {
   printf("Running main() from %s\n", __FILE__);
   testing::InitGoogleTest();
   return RUN_ALL_TESTS();
@@ -58,7 +58,7 @@ GTEST_API_ int main() {
 #else
 // Normal platforms: program entry point is main, argc/argv are initialized.
 
-GTEST_API_ int main(int argc, char **argv) {
+HTEST_API_ int main(int argc, char **argv) {
   printf("Running main() from %s\n", __FILE__);
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

@@ -46,7 +46,7 @@
 #include <hawktest/test/spi.h>
 #include <hawktest/test/htest.h>
 
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4577)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4577)
 
 namespace testing {
 namespace gmock_more_actions_test {
@@ -593,7 +593,7 @@ TEST(DeleteArgActionTest, TenArgs) {
   EXPECT_TRUE(is_deleted);
 }
 
-#if GTEST_HAS_EXCEPTIONS
+#if HTEST_HAS_EXCEPTIONS
 
 TEST(ThrowActionTest, ThrowsGivenExceptionInVoidFunction) {
   const Action<void(int n)> a = Throw('a');
@@ -639,7 +639,7 @@ TEST(ThrowActionTest, Times0) {
       "");
 }
 
-#endif  // GTEST_HAS_EXCEPTIONS
+#endif  // HTEST_HAS_EXCEPTIONS
 
 // Tests that SetArrayArgument<N>(first, last) sets the elements of the array
 // pointed to by the N-th (0-based) argument to values in range [first, last).
@@ -1049,7 +1049,7 @@ TEST(DoAllTest, ImplicitlyConvertsActionArguments) {
 // is expanded and macro expansion cannot contain #pragma.  Therefore
 // we suppress them here.
 // Also suppress C4503 decorated name length exceeded, name was truncated
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4100 4503)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100 4503)
 // Tests the ACTION*() macro family.
 
 // Tests that ACTION() can define an action that doesn't reference the
@@ -1361,9 +1361,9 @@ template <typename T1, typename T2>
 // pattern requires the user to use it directly.
 ConcatImplActionP3<std::string, T1, T2> Concat(const std::string& a, T1 b,
                                                T2 c) {
-  GTEST_INTENTIONAL_CONST_COND_PUSH_()
+  HTEST_INTENTIONAL_CONST_COND_PUSH_()
   if (true) {
-    GTEST_INTENTIONAL_CONST_COND_POP_()
+    HTEST_INTENTIONAL_CONST_COND_POP_()
     // This branch verifies that ConcatImpl() can be invoked without
     // explicit template arguments.
     return ConcatImpl(a, b, c);
@@ -1612,5 +1612,5 @@ TEST(ActionTemplateTest, CanBeOverloadedOnNumberOfValueParameters) {
 }  // namespace gmock_more_actions_test
 }  // namespace testing
 
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100 4503
-GTEST_DISABLE_MSC_WARNINGS_POP_()  // 4577
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100 4503
+HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4577
