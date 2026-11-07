@@ -11,7 +11,7 @@
 #include <hawktest/bench/benchmark_api.h>
 #include <hawktest/bench/reporter.h>
 #include <hawktest/bench/sysinfo.h>
-#include "commandlineflags.h"
+#include <hawktest/bench/commandlineflags.h>
 
 namespace benchmark {
 namespace internal {
