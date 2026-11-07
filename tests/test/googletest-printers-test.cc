@@ -59,11 +59,8 @@
 
 #include <hawktest/test/printers.h>
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
-#ifdef GTEST_HAS_ABSL
-#include "absl/strings/str_format.h"
-#endif
 
 #if GTEST_INTERNAL_HAS_STD_SPAN
 #include <span>  // NOLINT
@@ -139,19 +136,6 @@ inline void operator<<(::std::ostream& os, const StreamableInGlobal& /* x */) {
 void operator<<(::std::ostream& os, const StreamableInGlobal* /* x */) {
   os << "StreamableInGlobal*";
 }
-
-#ifdef GTEST_HAS_ABSL
-// A user-defined type with AbslStringify
-struct Point {
-  template <typename Sink>
-  friend void AbslStringify(Sink& sink, const Point& p) {
-    absl::Format(&sink, "(%d, %d)", p.x, p.y);
-  }
-
-  int x = 10;
-  int y = 20;
-};
-#endif
 
 namespace foo {
 
@@ -350,11 +334,6 @@ TEST(PrintEnumTest, EnumWithPrintTo) {
   EXPECT_EQ("kEWPT1", Print(kEWPT1));
   EXPECT_EQ("invalid", Print(static_cast<EnumWithPrintTo>(0)));
 }
-
-#ifdef GTEST_HAS_ABSL
-// Tests printing a class that defines AbslStringify
-TEST(PrintClassTest, AbslStringify) { EXPECT_EQ("(10, 20)", Print(Point())); }
-#endif
 
 // Tests printing a class implicitly convertible to BiggestInt.
 
@@ -1719,11 +1698,6 @@ TEST(PrintToStringTest, PrintReferenceToStreamableInGlobal) {
   EXPECT_STREQ("StreamableInGlobal", PrintToString(r).c_str());
 }
 
-#ifdef GTEST_HAS_ABSL
-TEST(PrintToStringTest, AbslStringify) {
-  EXPECT_PRINT_TO_STRING_(Point(), "(10, 20)");
-}
-#endif
 
 TEST(IsValidUTF8Test, IllFormedUTF8) {
   // The following test strings are ill-formed UTF-8 and are printed

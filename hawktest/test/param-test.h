@@ -178,9 +178,9 @@ TEST_P(DerivedTest, DoesBlah) {
 #include <iterator>
 #include <utility>
 
-#include <hawktest/test/internal/internal.h>
+#include <hawktest/common/internal.h>
 #include <hawktest/test/internal/param-util.h> // IWYU pragma: export
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 namespace testing {
 

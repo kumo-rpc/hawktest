@@ -70,6 +70,7 @@ function(test_executable name libs)
     )
 endfunction()
 
+add_subdirectory(common)
 add_subdirectory(test)
 add_subdirectory(mock)
 add_subdirectory(bench)

@@ -34,7 +34,7 @@ kmcmake_cc_library(
         SOURCES
         test/assertion-result.cc
         test/death-test.cc
-        test/filepath.cc
+        common/filepath.cc
         test/matchers.cc
         test/port.cc
         test/printers.cc
@@ -131,4 +131,34 @@ kmcmake_cc_library(
         PUBLIC
         LINKS
         hawktest::hbench_static
+)
+
+
+kmcmake_cc_library(
+        NAMESPACE ${PROJECT_NAME}
+        NAME hcmark
+        SOURCES
+        markdown/blocks.cc
+        markdown/buffer.cc
+        markdown/cmark.cc
+        markdown/cmark_ctype.cc
+        markdown/commonmark.cc
+        markdown/houdini_href_e.cc
+        markdown/houdini_html_e.cc
+        markdown/houdini_html_u.cc
+        markdown/html.cc
+        markdown/inlines.cc
+        markdown/iterator.cc
+        markdown/latex.cc
+        markdown/man.cc
+        markdown/node.cc
+        markdown/references.cc
+        markdown/render.cc
+        markdown/scanners.cc
+        markdown/utf8.cc
+        markdown/xml.cc
+        CXXOPTS
+        ${KMCMAKE_CXX_OPTIONS}
+        PUBLIC
+        UNITY
 )

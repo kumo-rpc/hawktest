@@ -37,8 +37,8 @@
 #define GOOGLETEST_INCLUDE_GTEST_GTEST_PRED_IMPL_H_
 
 #include <hawktest/test/assertion-result.h>
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/port.h>
 
 namespace testing {
 

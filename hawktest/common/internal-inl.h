@@ -49,7 +49,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 #if GTEST_CAN_STREAM_RESULTS_
 #include <arpa/inet.h>  // NOLINT
@@ -440,15 +440,6 @@ class OsStackTraceGetter : public OsStackTraceGetterInterface {
   void UponLeavingGTest() override;
 
  private:
-#ifdef GTEST_HAS_ABSL
-  Mutex mutex_;  // Protects all internal state.
-
-  // We save the stack frame below the frame that calls user code.
-  // We do this because the address of the frame immediately below
-  // the user code changes between the call to UponLeavingGTest()
-  // and any calls to the stack trace code from within the user code.
-  void* caller_frame_ = nullptr;
-#endif  // GTEST_HAS_ABSL
 
   OsStackTraceGetter(const OsStackTraceGetter&) = delete;
   OsStackTraceGetter& operator=(const OsStackTraceGetter&) = delete;

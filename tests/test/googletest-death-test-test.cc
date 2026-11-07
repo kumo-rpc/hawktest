@@ -34,7 +34,7 @@
 
 #include <hawktest/test/death-test.h>
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal/filepath.h>
+#include <hawktest/common/filepath.h>
 
 using testing::internal::AlwaysFalse;
 using testing::internal::AlwaysTrue;
@@ -62,7 +62,7 @@ using testing::internal::AlwaysTrue;
 #endif  // GTEST_OS_LINUX
 
 #include <hawktest/test/spi.h>
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 
 namespace posix = ::testing::internal::posix;
 

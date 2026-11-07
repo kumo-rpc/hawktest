@@ -65,7 +65,7 @@
 
 #include <hawktest/test/assertion-result.h>
 #include <hawktest/test/internal/custom/htest.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 #include <hawktest/test/spi.h>
 
 #ifdef GTEST_OS_LINUX
@@ -130,7 +130,7 @@
 #include <sys/types.h>   // NOLINT
 #endif
 
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 
 #ifdef GTEST_OS_WINDOWS
 #define vsnprintf _vsnprintf
@@ -142,18 +142,6 @@
 #endif
 #endif
 
-#ifdef GTEST_HAS_ABSL
-#include "absl/container/flat_hash_set.h"
-#include "absl/debugging/failure_signal_handler.h"
-#include "absl/debugging/stacktrace.h"
-#include "absl/debugging/symbolize.h"
-#include "absl/flags/parse.h"
-#include "absl/flags/usage.h"
-#include "absl/strings/str_cat.h"
-#include "absl/strings/str_replace.h"
-#include "absl/strings/string_view.h"
-#include "absl/strings/strip.h"
-#endif  // GTEST_HAS_ABSL
 
 // Checks builtin compiler feature |x| while avoiding an extra layer of #ifdefs
 // at the callsite.
@@ -162,10 +150,6 @@
 #else
 #define GTEST_HAS_BUILTIN(x) 0
 #endif  // defined(__has_builtin)
-
-#if defined(GTEST_HAS_ABSL) && !defined(GTEST_NO_ABSL_FLAGS)
-#define GTEST_HAS_ABSL_FLAGS
-#endif
 
 namespace testing {
 
@@ -897,11 +881,8 @@ class PositiveAndNegativeUnitTestFilter {
   // and does not match the negative filter.
   bool MatchesTest(const std::string& test_suite_name,
                    const std::string& test_name) const {
-#ifdef GTEST_HAS_ABSL
-    return MatchesName(absl::StrCat(test_suite_name, ".", test_name));
-#else
+
     return MatchesName(test_suite_name + "." + test_name);
-#endif
   }
 
   // Returns true if and only if name matches the positive filter and does not
@@ -5098,64 +5079,14 @@ const char* const OsStackTraceGetterInterface::kElidedFramesMarker =
 
 std::string OsStackTraceGetter::CurrentStackTrace(int max_depth, int skip_count)
     GTEST_LOCK_EXCLUDED_(mutex_) {
-#ifdef GTEST_HAS_ABSL
-  std::string result;
 
-  if (max_depth <= 0) {
-    return result;
-  }
-
-  max_depth = std::min(max_depth, kMaxStackTraceDepth);
-
-  std::vector<void*> raw_stack(max_depth);
-  // Skips the frames requested by the caller, plus this function.
-  const int raw_stack_size =
-      absl::GetStackTrace(&raw_stack[0], max_depth, skip_count + 1);
-
-  void* caller_frame = nullptr;
-  {
-    MutexLock lock(mutex_);
-    caller_frame = caller_frame_;
-  }
-
-  for (int i = 0; i < raw_stack_size; ++i) {
-    if (raw_stack[i] == caller_frame &&
-        !GTEST_FLAG_GET(show_internal_stack_frames)) {
-      // Add a marker to the trace and stop adding frames.
-      absl::StrAppend(&result, kElidedFramesMarker, "\n");
-      break;
-    }
-
-    char tmp[1024];
-    const char* symbol = "(unknown)";
-    if (absl::Symbolize(raw_stack[i], tmp, sizeof(tmp))) {
-      symbol = tmp;
-    }
-
-    char line[1024];
-    snprintf(line, sizeof(line), "  %p: %s\n", raw_stack[i], symbol);
-    result += line;
-  }
-
-  return result;
-
-#else   // !GTEST_HAS_ABSL
   static_cast<void>(max_depth);
   static_cast<void>(skip_count);
   return "";
-#endif  // GTEST_HAS_ABSL
 }
 
 void OsStackTraceGetter::UponLeavingGTest() GTEST_LOCK_EXCLUDED_(mutex_) {
-#ifdef GTEST_HAS_ABSL
-  void* caller_frame = nullptr;
-  if (absl::GetStackTrace(&caller_frame, 1, 3) <= 0) {
-    caller_frame = nullptr;
-  }
 
-  MutexLock lock(mutex_);
-  caller_frame_ = caller_frame;
-#endif  // GTEST_HAS_ABSL
 }
 
 #ifdef GTEST_INTERNAL_HAS_PREMATURE_EXIT_FILE
@@ -5849,12 +5780,6 @@ void UnitTestImpl::PostFlagParsingInit() {
     ConfigureStreamingOutput();
 #endif  // GTEST_CAN_STREAM_RESULTS_
 
-#ifdef GTEST_HAS_ABSL
-    if (GTEST_FLAG_GET(install_failure_signal_handler)) {
-      absl::FailureSignalHandlerOptions options;
-      absl::InstallFailureSignalHandler(options);
-    }
-#endif  // GTEST_HAS_ABSL
   }
 }
 
@@ -6919,62 +6844,11 @@ void ParseGoogleTestFlagsOnlyImpl(int* argc, CharType** argv) {
 
 // Parses the command line for Google Test flags, without initializing
 // other parts of Google Test. This function updates argc and argv by removing
-// flags that are known to GoogleTest (including other user flags defined using
-// ABSL_FLAG if GoogleTest is built with GTEST_USE_ABSL). Other arguments
+// flags that are known to GoogleTest. Other arguments
 // remain in place. Unrecognized flags are not reported and do not cause the
 // program to exit.
 void ParseGoogleTestFlagsOnly(int* argc, char** argv) {
-#ifdef GTEST_HAS_ABSL_FLAGS
-  if (*argc <= 0) return;
-
-  std::vector<char*> positional_args;
-  std::vector<absl::UnrecognizedFlag> unrecognized_flags;
-  absl::ParseAbseilFlagsOnly(*argc, argv, positional_args, unrecognized_flags);
-  absl::flat_hash_set<std::string_view> unrecognized;
-  for (const auto& flag : unrecognized_flags) {
-    unrecognized.insert(flag.flag_name);
-  }
-  absl::flat_hash_set<char*> positional;
-  for (const auto& arg : positional_args) {
-    positional.insert(arg);
-  }
-
-  int out_pos = 1;
-  int in_pos = 1;
-  for (; in_pos < *argc; ++in_pos) {
-    char* arg = argv[in_pos];
-    absl::string_view arg_str(arg);
-    if (absl::ConsumePrefix(&arg_str, "--")) {
-      // Flag-like argument. If the flag was unrecognized, keep it.
-      // If it was a GoogleTest flag, remove it.
-      if (unrecognized.contains(arg_str)) {
-        argv[out_pos++] = argv[in_pos];
-        continue;
-      }
-    }
-
-    if (arg_str.empty()) {
-      ++in_pos;
-      break;  // '--' indicates that the rest of the arguments are positional
-    }
-
-    // Probably a positional argument. If it is in fact positional, keep it.
-    // If it was a value for the flag argument, remove it.
-    if (positional.contains(arg)) {
-      argv[out_pos++] = arg;
-    }
-  }
-
-  // The rest are positional args for sure.
-  while (in_pos < *argc) {
-    argv[out_pos++] = argv[in_pos++];
-  }
-
-  *argc = out_pos;
-  argv[out_pos] = nullptr;
-#else
   ParseGoogleTestFlagsOnlyImpl(argc, argv);
-#endif
 
   // Fix the value of *_NSGetArgc() on macOS, but if and only if
   // *_NSGetArgv() == argv
@@ -7007,17 +6881,6 @@ void InitGoogleTestImpl(int* argc, CharType** argv) {
     g_argvs.push_back(StreamableToString(argv[i]));
   }
 
-#ifdef GTEST_HAS_ABSL
-  absl::InitializeSymbolizer(g_argvs[0].c_str());
-
-#ifdef GTEST_HAS_ABSL_FLAGS
-  // When using the Abseil Flags library, set the program usage message to the
-  // help message, but remove the color-encoding from the message first.
-  absl::SetProgramUsageMessage(absl::StrReplaceAll(
-      kColorEncodedHelpMessage,
-      {{"@D", ""}, {"@R", ""}, {"@G", ""}, {"@Y", ""}, {"@@", "@"}}));
-#endif  // GTEST_HAS_ABSL_FLAGS
-#endif  // GTEST_HAS_ABSL
 
   ParseGoogleTestFlagsOnly(argc, argv);
   GetUnitTestImpl()->PostFlagParsingInit();

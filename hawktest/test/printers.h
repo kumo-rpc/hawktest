@@ -43,9 +43,6 @@
 //   1. foo::PrintTo(const T&, ostream*)
 //   2. operator<<(ostream&, const T&) defined in either foo or the
 //      global namespace.
-// * Prefer AbslStringify(..) to operator<<(..), per https://abseil.io/tips/215.
-// * Define foo::PrintTo(..) if the type already has AbslStringify(..), but an
-//   alternative presentation in test results is of interest.
 //
 // However if T is an STL-style container then it is printed element-wise
 // unless foo::PrintTo(const T&, ostream*) is defined. Note that
@@ -119,12 +116,8 @@
 #include <variant>
 #include <vector>
 
-#ifdef GTEST_HAS_ABSL
-#include "absl/strings/has_absl_stringify.h"
-#include "absl/strings/str_cat.h"
-#endif  // GTEST_HAS_ABSL
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/port.h>
 
 #if GTEST_INTERNAL_HAS_STD_SPAN
 #include <span>  // NOLINT
@@ -296,16 +289,6 @@ struct ConvertibleToStringViewPrinter {
   }
 };
 
-#ifdef GTEST_HAS_ABSL
-struct ConvertibleToAbslStringifyPrinter {
-  template <typename T,
-            typename = typename std::enable_if<
-                absl::HasAbslStringify<T>::value>::type>  // NOLINT
-  static void PrintValue(const T& value, ::std::ostream* os) {
-    *os << absl::StrCat(value);
-  }
-};
-#endif  // GTEST_HAS_ABSL
 
 // Prints the given number of bytes in the given object to the given
 // ostream.
@@ -355,9 +338,6 @@ void PrintWithFallback(const T& value, ::std::ostream* os) {
   using Printer = typename FindFirstPrinter<
       T, void, ContainerPrinter, FunctionPointerPrinter, PointerPrinter,
       ProtobufPrinter,
-#ifdef GTEST_HAS_ABSL
-      ConvertibleToAbslStringifyPrinter,
-#endif  // GTEST_HAS_ABSL
       internal_stream_operator_without_lexical_name_lookup::StreamPrinter,
       ConvertibleToIntegerPrinter, ConvertibleToStringViewPrinter,
       RawBytesPrinter, FallbackPrinter>::type;
@@ -751,8 +731,7 @@ inline void PrintTo(::std::wstring_view s, ::std::ostream* os) {
 #endif  // GTEST_HAS_STD_WSTRING
 
 // Overload for internal::StringView. Needed for build configurations where
-// internal::StringView is an alias for absl::string_view, but absl::string_view
-// is a distinct type from std::string_view.
+// internal::StringView is a distinct type from std::string_view.
 template <int&... ExplicitArgumentBarrier, typename T = internal::StringView,
           std::enable_if_t<!std::is_same_v<T, std::string_view>, int> = 0>
 inline void PrintTo(internal::StringView sp, ::std::ostream* os) {

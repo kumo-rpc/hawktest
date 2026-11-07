@@ -54,7 +54,7 @@
 // prevent a user from accidentally including gtest-internal-inl.h in
 // their code.
 #define GTEST_IMPLEMENTATION_ 1
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 #undef GTEST_IMPLEMENTATION_
 
 #ifdef GTEST_OS_CYGWIN

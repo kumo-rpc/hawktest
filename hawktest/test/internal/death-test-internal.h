@@ -45,8 +45,8 @@
 #include <string>
 #include <string_view>
 
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/port.h>
 #include <hawktest/test/matchers.h>
 
 GTEST_DECLARE_string_(internal_run_death_test);

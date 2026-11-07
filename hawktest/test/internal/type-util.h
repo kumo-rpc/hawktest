@@ -41,7 +41,7 @@
 #include <type_traits>
 #include <typeinfo>
 
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 // #ifdef __GNUC__ is too general here.  It is possible to use gcc without using
 // libstdc++ (which is where cxxabi.h comes from).

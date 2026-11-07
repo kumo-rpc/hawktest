@@ -34,7 +34,7 @@
 #include <stdio.h>
 
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 
 using testing::internal::ShouldUseColor;
 

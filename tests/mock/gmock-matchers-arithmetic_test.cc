@@ -505,8 +505,7 @@ class Double {
   Double(const Double& other) = default;
   double value() const { return value_; }
 
-  // Defines how to print a Double value. We don't use the AbslStringify API
-  // because googletest doesn't require absl yet.
+  // Defines how to print a Double value.
   friend void PrintTo(const Double& value, std::ostream* os) {
     *os << "Double(" << value.value() << ")";
   }

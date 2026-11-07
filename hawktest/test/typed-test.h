@@ -171,8 +171,8 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 
 #endif  // 0
 
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/port.h>
 #include <hawktest/test/internal/type-util.h>
 
 // Implements typed tests.

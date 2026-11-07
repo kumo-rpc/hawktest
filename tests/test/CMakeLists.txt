@@ -20,7 +20,6 @@
 
 hawk_test(googletest-death-test-test htest_main_static)
 hawk_test(htest_environment_test htest_static)
-hawk_test(googletest-filepath-test htest_main_static)
 hawk_test(googletest-listener-test htest_main_static)
 hawk_test(htest_main_unittest htest_main_static)
 hawk_test(googletest-message-test htest_main_static)

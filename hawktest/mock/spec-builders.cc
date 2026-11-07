@@ -47,7 +47,7 @@
 
 #include <hawktest/mock/hmock.h>
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 #if defined(GTEST_OS_CYGWIN) || defined(GTEST_OS_LINUX) || defined(GTEST_OS_MAC)
 #include <unistd.h>  // NOLINT

@@ -52,8 +52,8 @@
 #include <utility>
 #include <vector>
 
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/port.h>
 #include <hawktest/test/printers.h>
 #include <hawktest/test/test-part.h>
 

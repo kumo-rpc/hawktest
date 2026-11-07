@@ -53,8 +53,8 @@
 #include <string_view>
 #include <type_traits>
 
-#include <hawktest/test/internal-inl.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/internal-inl.h>
+#include <hawktest/common/port.h>
 
 namespace testing {
 

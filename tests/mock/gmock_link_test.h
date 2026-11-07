@@ -124,7 +124,7 @@
 #include <vector>
 
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 using testing::_;
 using testing::A;

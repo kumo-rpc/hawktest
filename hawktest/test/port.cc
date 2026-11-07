@@ -27,7 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 #include <limits.h>
 #include <stdio.h>
@@ -88,9 +88,9 @@
 #endif  // GTEST_OS_FUCHSIA
 
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal-inl.h>
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/string.h>
+#include <hawktest/common/internal-inl.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/string.h>
 #include <hawktest/test/message.h>
 #include <hawktest/test/spi.h>
 

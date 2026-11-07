@@ -36,25 +36,11 @@
 #include <hawktest/test/message.h>
 #include <hawktest/test/htest.h>
 
-#ifdef GTEST_HAS_ABSL
-#include "absl/strings/str_format.h"
-#endif  // GTEST_HAS_ABSL
 
 namespace {
 
 using ::testing::Message;
 
-#ifdef GTEST_HAS_ABSL
-struct AbslStringifiablePoint {
-  template <typename Sink>
-  friend void AbslStringify(Sink& sink, const AbslStringifiablePoint& p) {
-    absl::Format(&sink, "(%d, %d)", p.x, p.y);
-  }
-
-  int x;
-  int y;
-};
-#endif  // GTEST_HAS_ABSL
 
 // Tests the testing::Message class
 
@@ -144,12 +130,6 @@ TEST(MessageTest, StreamsInt) {
   EXPECT_EQ("123", (Message() << 123).GetString());
 }
 
-#ifdef GTEST_HAS_ABSL
-// Tests streaming a type with an AbslStringify definition.
-TEST(MessageTest, StreamsAbslStringify) {
-  EXPECT_EQ("(1, 2)", (Message() << AbslStringifiablePoint{1, 2}).GetString());
-}
-#endif  // GTEST_HAS_ABSL
 
 // Tests that basic IO manipulators (endl, ends, and flush) can be
 // streamed to Message.

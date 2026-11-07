@@ -41,7 +41,7 @@
 
 #include <hawktest/test/spi.h>
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 
 GTEST_DISABLE_MSC_WARNINGS_PUSH_(4127 /* conditional expression is constant */)
 

@@ -48,8 +48,8 @@
 #include <string_view>
 #include <type_traits>
 
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/port.h>
 #include <hawktest/test/printers.h>
 
 // MSVC warning C5046 is new as of VS2017 version 15.8.

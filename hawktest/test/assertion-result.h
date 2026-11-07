@@ -43,7 +43,7 @@
 #include <string>
 #include <type_traits>
 
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 #include <hawktest/test/message.h>
 
 GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251                                   \

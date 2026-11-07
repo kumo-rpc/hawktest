@@ -275,7 +275,7 @@
 #include <hawktest/mock/internal/internal-utils.h>
 #include <hawktest/mock/internal/pp.h>
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal/internal.h>
+#include <hawktest/common/internal.h>
 
 // MSVC warning C5046 is new as of VS2017 version 15.8.
 #if defined(_MSC_VER) && _MSC_VER >= 1915
@@ -5713,7 +5713,7 @@ inline internal::OptionalMatcher<ValueMatcher> Optional(
   return internal::OptionalMatcher<ValueMatcher>(value_matcher);
 }
 
-// Returns a matcher that matches the value of a absl::any type variable.
+// Returns a matcher that matches the value of a std::any type variable.
 template <typename T>
 PolymorphicMatcher<internal::any_cast_matcher::AnyCastMatcher<T>> AnyWith(
     const Matcher<const T&>& matcher) {

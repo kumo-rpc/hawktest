@@ -30,7 +30,7 @@
 // This file tests the internal cross-platform support utilities.
 #include <stdio.h>
 
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 #ifdef GTEST_OS_MAC
 #include <time.h>
@@ -46,7 +46,7 @@
 
 #include <hawktest/test/spi.h>
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 
 using std::make_pair;
 using std::pair;
@@ -390,9 +390,8 @@ TEST(GtestCheckDeathTest, LivesSilentlyOnSuccess) {
 // the platform. The test will produce compiler errors in case of failure.
 // For simplicity, we only cover the most important platforms here.
 TEST(RegexEngineSelectionTest, SelectsCorrectRegexEngine) {
-#ifdef GTEST_HAS_ABSL
-  EXPECT_TRUE(GTEST_USES_RE2);
-#elif GTEST_HAS_POSIX_RE
+
+#if GTEST_HAS_POSIX_RE
   EXPECT_TRUE(GTEST_USES_POSIX_RE);
 #else
   EXPECT_TRUE(GTEST_USES_SIMPLE_RE);

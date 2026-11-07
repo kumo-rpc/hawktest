@@ -49,7 +49,7 @@
 #include <strings.h>
 #endif  // GTEST_OS_WINDOWS_MOBILE
 
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 
 namespace testing {
 namespace internal {

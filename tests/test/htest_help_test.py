@@ -74,7 +74,6 @@ SUPPORTS_DEATH_TESTS = (
     in htest_test_utils.Subprocess([PROGRAM_PATH, LIST_TESTS_FLAG]).output
 )
 
-HAS_ABSL_FLAGS = '--has_absl_flags' in sys.argv
 
 # The help message must match this regex.
 HELP_REGEX = re.compile(
@@ -144,12 +143,8 @@ class GTestHelpTest(htest_test_utils.TestCase):
     """
 
     exit_code, output = run_with_flag('--help')
-    if HAS_ABSL_FLAGS:
-      # The Abseil flags library prints the ProgramUsageMessage() with
-      # --help and returns 1.
-      self.assertEqual(1, exit_code)
-    else:
-      self.assertEqual(0, exit_code)
+
+    self.assertEqual(0, exit_code)
 
     self.assertTrue(HELP_REGEX.search(output), output)
 
@@ -189,6 +184,4 @@ class GTestHelpTest(htest_test_utils.TestCase):
 
 
 if __name__ == '__main__':
-  if '--has_absl_flags' in sys.argv:
-    sys.argv.remove('--has_absl_flags')
   htest_test_utils.Main()

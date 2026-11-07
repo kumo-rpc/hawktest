@@ -40,8 +40,8 @@
 #include <string_view>
 #include <vector>
 
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/string.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/string.h>
 
 GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 /* class A needs to have dll-interface to be used by clients of class B */)

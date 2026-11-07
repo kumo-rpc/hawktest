@@ -39,7 +39,7 @@
 #ifndef GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_INTERNAL_H_
 #define GOOGLETEST_INCLUDE_GTEST_INTERNAL_GTEST_INTERNAL_H_
 
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 #ifdef GTEST_OS_LINUX
 #include <stdlib.h>
@@ -66,8 +66,8 @@
 #include <utility>
 #include <vector>
 
-#include <hawktest/test/internal/filepath.h>
-#include <hawktest/test/internal/string.h>
+#include <hawktest/common/filepath.h>
+#include <hawktest/common/string.h>
 #include <hawktest/test/internal/type-util.h>
 #include <hawktest/test/message.h>
 

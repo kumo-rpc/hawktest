@@ -42,7 +42,7 @@
 #include <vector>
 
 #include <hawktest/test/internal/custom/htest.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 #ifdef GTEST_HAS_DEATH_TEST
 
@@ -87,8 +87,8 @@
 
 #endif  // GTEST_HAS_DEATH_TEST
 
-#include <hawktest/test/internal-inl.h>
-#include <hawktest/test/internal/string.h>
+#include <hawktest/common/internal-inl.h>
+#include <hawktest/common/string.h>
 #include <hawktest/test/message.h>
 
 namespace testing {

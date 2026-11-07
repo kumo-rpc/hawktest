@@ -36,9 +36,9 @@
 #include <string>
 #include <string_view>
 
-#include <hawktest/test/internal-inl.h>
-#include <hawktest/test/internal/internal.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/internal-inl.h>
+#include <hawktest/common/internal.h>
+#include <hawktest/common/port.h>
 
 namespace testing {
 

@@ -36,7 +36,7 @@
 #include <vector>
 
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 
 #ifdef GTEST_IS_THREADSAFE
 

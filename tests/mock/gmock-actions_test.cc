@@ -48,7 +48,7 @@
 #include <hawktest/mock/internal/port.h>
 #include <hawktest/test/spi.h>
 #include <hawktest/test/htest.h>
-#include <hawktest/test/internal/port.h>
+#include <hawktest/common/port.h>
 
 // Silence C4100 (unreferenced formal parameter) and C4503 (decorated name
 // length exceeded) for MSVC.

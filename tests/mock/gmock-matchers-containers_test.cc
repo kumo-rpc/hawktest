@@ -1847,7 +1847,6 @@ TEST(ElementsAreArrayTest, WorksWithContainerThatReturnsTempInIterator) {
 }
 
 // A container whose iterator returns a temporary and is not copy-assignable.
-// This simulates the behavior of the proxy object returned by absl::StrSplit().
 class CharString2 {
  public:
   using value_type = char;
@@ -1860,8 +1859,7 @@ class CharString2 {
     using pointer = const char*;
     using reference = const char&;
 
-    // Make const_iterator copy-constructible but not copy-assignable,
-    // simulating the behavior of the proxy object returned by absl::StrSplit().
+    // Make const_iterator copy-constructible but not copy-assignable.
     const_iterator(const const_iterator&) = default;
     const_iterator& operator=(const const_iterator&) = delete;
 

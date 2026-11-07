@@ -73,7 +73,7 @@ TEST(CommandLineFlagsTest, CanBeAccessedInCodeOnceGTestHIsIncluded) {
 #include <vector>
 
 #include <hawktest/test/spi.h>
-#include <hawktest/test/internal-inl.h>
+#include <hawktest/common/internal-inl.h>
 
 struct ConvertibleGlobalType {
   // The inner enable_if is to ensure invoking is_constructible doesn't fail.
@@ -391,7 +391,7 @@ TEST(CanonicalizeForStdLibVersioning, LeavesUnversionedNamesUnchanged) {
   EXPECT_EQ("std::bind", CanonicalizeForStdLibVersioning("std::bind"));
   EXPECT_EQ("std::_", CanonicalizeForStdLibVersioning("std::_"));
   EXPECT_EQ("std::__foo", CanonicalizeForStdLibVersioning("std::__foo"));
-  EXPECT_EQ("absl::__1::x", CanonicalizeForStdLibVersioning("absl::__1::x"));
+  EXPECT_EQ("turbo::__1::x", CanonicalizeForStdLibVersioning("turbo::__1::x"));
   EXPECT_EQ("__1::x", CanonicalizeForStdLibVersioning("__1::x"));
   EXPECT_EQ("::__1::x", CanonicalizeForStdLibVersioning("::__1::x"));
 }
@@ -6283,17 +6283,7 @@ TEST_F(ParseFlagsTest, FilterBad) {
 
   const char* argv2[] = {"foo.exe", "--gtest_filter", nullptr};
 
-#if defined(GTEST_HAS_ABSL) && defined(GTEST_HAS_DEATH_TEST)
-  // Invalid flag arguments are a fatal error when using the Abseil Flags.
-  EXPECT_EXIT(GTEST_TEST_PARSING_FLAGS_(argv, argv2, Flags::Filter(""), true),
-              testing::ExitedWithCode(1),
-              "ERROR: Missing the value for the flag 'gtest_filter'");
-#elif !defined(GTEST_HAS_ABSL)
   GTEST_TEST_PARSING_FLAGS_(argv, argv2, Flags::Filter(""), true);
-#else
-  static_cast<void>(argv);
-  static_cast<void>(argv2);
-#endif
 }
 
 // Tests parsing --gtest_output (invalid).
@@ -6302,32 +6292,9 @@ TEST_F(ParseFlagsTest, OutputEmpty) {
 
   const char* argv2[] = {"foo.exe", "--gtest_output", nullptr};
 
-#if defined(GTEST_HAS_ABSL) && defined(GTEST_HAS_DEATH_TEST)
-  // Invalid flag arguments are a fatal error when using the Abseil Flags.
-  EXPECT_EXIT(GTEST_TEST_PARSING_FLAGS_(argv, argv2, Flags(), true),
-              testing::ExitedWithCode(1),
-              "ERROR: Missing the value for the flag 'gtest_output'");
-#elif !defined(GTEST_HAS_ABSL)
   GTEST_TEST_PARSING_FLAGS_(argv, argv2, Flags(), true);
-#else
-  static_cast<void>(argv);
-  static_cast<void>(argv2);
-#endif
 }
 
-#ifdef GTEST_HAS_ABSL
-TEST_F(ParseFlagsTest, AbseilPositionalFlags) {
-  const char* argv[] = {"foo.exe", "--gtest_throw_on_failure=1", "--",
-                        "--other_flag", nullptr};
-
-  // When using Abseil flags, it should be possible to pass flags not recognized
-  // using "--" to delimit positional arguments. These flags should be returned
-  // though argv.
-  const char* argv2[] = {"foo.exe", "--other_flag", nullptr};
-
-  GTEST_TEST_PARSING_FLAGS_(argv, argv2, Flags::ThrowOnFailure(true), false);
-}
-#endif
 
 TEST_F(ParseFlagsTest, UnrecognizedFlags) {
   const char* argv[] = {"foo.exe", "--gtest_filter=abcd", "--other_flag",
