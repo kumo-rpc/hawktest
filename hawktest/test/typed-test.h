@@ -27,12 +27,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// IWYU pragma: private, include "htest/htest.h"
-// IWYU pragma: friend htest/.*
-// IWYU pragma: friend gmock/.*
+#pragma once
 
-#ifndef GOOGLETEST_INCLUDE_HTEST_HTEST_TYPED_TEST_H_
-#define GOOGLETEST_INCLUDE_HTEST_HTEST_TYPED_TEST_H_
 
 // This header implements typed tests and type-parameterized tests.
 
@@ -102,7 +98,7 @@ TYPED_TEST(FooTest, HasPropertyA) { ... }
 //   };
 //   TYPED_TEST_SUITE(FooTest, MyTypes, MyTypeNames);
 
-#endif  // 0
+#endif // 0
 
 // Type-parameterized tests are abstract test patterns parameterized
 // by a type.  Compared with typed tests, type-parameterized tests
@@ -169,7 +165,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 // generate custom names.
 //   INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes, MyTypeNames);
 
-#endif  // 0
+#endif // 0
 
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
@@ -186,49 +182,48 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 // Expands to the name of the typedef for the NameGenerator, responsible for
 // creating the suffixes of the name.
 #define HTEST_NAME_GENERATOR_(TestSuiteName) \
-  htest_type_params_##TestSuiteName##_NameGenerator
+    htest_type_params_##TestSuiteName##_NameGenerator
 
-#define TYPED_TEST_SUITE(CaseName, Types, ...)                          \
-  typedef ::testing::internal::GenerateTypeList<Types>::type            \
-      HTEST_TYPE_PARAMS_(CaseName);                                     \
-  typedef ::testing::internal::NameGeneratorSelector<__VA_ARGS__>::type \
-  HTEST_NAME_GENERATOR_(CaseName)
+#define TYPED_TEST_SUITE(CaseName, Types, ...)                            \
+    typedef ::testing::internal::GenerateTypeList<Types>::type            \
+        HTEST_TYPE_PARAMS_(CaseName);                                     \
+    typedef ::testing::internal::NameGeneratorSelector<__VA_ARGS__>::type \
+    HTEST_NAME_GENERATOR_(CaseName)
 
-#define TYPED_TEST(CaseName, TestName)                                        \
-  static_assert(sizeof(HTEST_STRINGIFY_(TestName)) > 1,                       \
-                "test-name must not be empty");                               \
-  template <typename htest_TypeParam_>                                        \
-  class HTEST_TEST_CLASS_NAME_(CaseName, TestName)                            \
-      : public CaseName<htest_TypeParam_> {                                   \
-   private:                                                                   \
-    typedef CaseName<htest_TypeParam_> TestFixture;                           \
-    typedef htest_TypeParam_ TypeParam;                                       \
-    void TestBody() override;                                                 \
-  };                                                                          \
-  [[maybe_unused]] static bool htest_##CaseName##_##TestName##_registered_ =  \
-      ::testing::internal::TypeParameterizedTest<                             \
-          CaseName,                                                           \
-          ::testing::internal::TemplateSel<HTEST_TEST_CLASS_NAME_(CaseName,   \
-                                                                  TestName)>, \
-          HTEST_TYPE_PARAMS_(                                                 \
-              CaseName)>::Register("",                                        \
-                                   ::testing::internal::CodeLocation(         \
-                                       __FILE__, __LINE__),                   \
-                                   HTEST_STRINGIFY_(CaseName),                \
-                                   HTEST_STRINGIFY_(TestName), 0,             \
-                                   ::testing::internal::GenerateNames<        \
-                                       HTEST_NAME_GENERATOR_(CaseName),       \
-                                       HTEST_TYPE_PARAMS_(CaseName)>());      \
-  template <typename htest_TypeParam_>                                        \
-  void HTEST_TEST_CLASS_NAME_(CaseName,                                       \
-                              TestName)<htest_TypeParam_>::TestBody()
+#define TYPED_TEST(CaseName, TestName)                                                                                     \
+    static_assert(sizeof(HTEST_STRINGIFY_(TestName)) > 1,                                                                  \
+        "test-name must not be empty");                                                                                    \
+    template <typename htest_TypeParam_>                                                                                   \
+    class HTEST_TEST_CLASS_NAME_(CaseName, TestName)                                                                       \
+        : public CaseName<htest_TypeParam_> {                                                                              \
+    private:                                                                                                               \
+        typedef CaseName<htest_TypeParam_> TestFixture;                                                                    \
+        typedef htest_TypeParam_ TypeParam;                                                                                \
+        void TestBody() override;                                                                                          \
+    };                                                                                                                     \
+    [[maybe_unused]] static bool htest_##CaseName##_##TestName##_registered_ = ::testing::internal::TypeParameterizedTest< \
+        CaseName,                                                                                                          \
+        ::testing::internal::TemplateSel<HTEST_TEST_CLASS_NAME_(CaseName,                                                  \
+            TestName)>,                                                                                                    \
+        HTEST_TYPE_PARAMS_(                                                                                                \
+            CaseName)>::Register("",                                                                                       \
+        ::testing::internal::CodeLocation(                                                                                 \
+            __FILE__, __LINE__),                                                                                           \
+        HTEST_STRINGIFY_(CaseName),                                                                                        \
+        HTEST_STRINGIFY_(TestName), 0,                                                                                     \
+        ::testing::internal::GenerateNames<                                                                                \
+            HTEST_NAME_GENERATOR_(CaseName),                                                                               \
+            HTEST_TYPE_PARAMS_(CaseName)>());                                                                              \
+    template <typename htest_TypeParam_>                                                                                   \
+    void HTEST_TEST_CLASS_NAME_(CaseName,                                                                                  \
+        TestName)<htest_TypeParam_>::TestBody()
 
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
-#define TYPED_TEST_CASE                                                \
-  static_assert(::testing::internal::TypedTestCaseIsDeprecated(), ""); \
-  TYPED_TEST_SUITE
-#endif  // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#define TYPED_TEST_CASE                                                  \
+    static_assert(::testing::internal::TypedTestCaseIsDeprecated(), ""); \
+    TYPED_TEST_SUITE
+#endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
 // Implements type-parameterized tests.
 
@@ -244,88 +239,82 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 // Expands to the name of the variable used to remember the names of
 // the defined tests in the given test suite.
 #define HTEST_TYPED_TEST_SUITE_P_STATE_(TestSuiteName) \
-  htest_typed_test_suite_p_state_##TestSuiteName##_
+    htest_typed_test_suite_p_state_##TestSuiteName##_
 
 // INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE DIRECTLY.
 //
 // Expands to the name of the variable used to remember the names of
 // the registered tests in the given test suite.
 #define HTEST_REGISTERED_TEST_NAMES_(TestSuiteName) \
-  htest_registered_test_names_##TestSuiteName##_
+    htest_registered_test_names_##TestSuiteName##_
 
 // The variables defined in the type-parameterized test macros are
 // static as typically these macros are used in a .h file that can be
 // #included in multiple translation units linked together.
-#define TYPED_TEST_SUITE_P(SuiteName)              \
-  static ::testing::internal::TypedTestSuitePState \
-  HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName)
+#define TYPED_TEST_SUITE_P(SuiteName)                \
+    static ::testing::internal::TypedTestSuitePState \
+    HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName)
 
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
-#define TYPED_TEST_CASE_P                                                 \
-  static_assert(::testing::internal::TypedTestCase_P_IsDeprecated(), ""); \
-  TYPED_TEST_SUITE_P
-#endif  // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#define TYPED_TEST_CASE_P                                                   \
+    static_assert(::testing::internal::TypedTestCase_P_IsDeprecated(), ""); \
+    TYPED_TEST_SUITE_P
+#endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
-#define TYPED_TEST_P(SuiteName, TestName)                     \
-  namespace HTEST_SUITE_NAMESPACE_(SuiteName) {               \
-  template <typename htest_TypeParam_>                        \
-  class TestName : public SuiteName<htest_TypeParam_> {       \
-   private:                                                   \
-    typedef SuiteName<htest_TypeParam_> TestFixture;          \
-    typedef htest_TypeParam_ TypeParam;                       \
-    void TestBody() override;                                 \
-  };                                                          \
-  [[maybe_unused]] static bool htest_##TestName##_defined_ =  \
-      HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName).AddTestName( \
-          __FILE__, __LINE__, HTEST_STRINGIFY_(SuiteName),    \
-          HTEST_STRINGIFY_(TestName));                        \
-  }                                                           \
-  template <typename htest_TypeParam_>                        \
-  void HTEST_SUITE_NAMESPACE_(                                \
-      SuiteName)::TestName<htest_TypeParam_>::TestBody()
+#define TYPED_TEST_P(SuiteName, TestName)                                                                                  \
+    namespace HTEST_SUITE_NAMESPACE_(SuiteName) {                                                                          \
+        template <typename htest_TypeParam_>                                                                               \
+        class TestName : public SuiteName<htest_TypeParam_> {                                                              \
+        private:                                                                                                           \
+            typedef SuiteName<htest_TypeParam_> TestFixture;                                                               \
+            typedef htest_TypeParam_ TypeParam;                                                                            \
+            void TestBody() override;                                                                                      \
+        };                                                                                                                 \
+        [[maybe_unused]] static bool htest_##TestName##_defined_ = HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName).AddTestName( \
+            __FILE__, __LINE__, HTEST_STRINGIFY_(SuiteName),                                                               \
+            HTEST_STRINGIFY_(TestName));                                                                                   \
+    }                                                                                                                      \
+    template <typename htest_TypeParam_>                                                                                   \
+    void HTEST_SUITE_NAMESPACE_(                                                                                           \
+        SuiteName)::TestName<htest_TypeParam_>::TestBody()
 
 // Note: this won't work correctly if the trailing arguments are macros.
-#define REGISTER_TYPED_TEST_SUITE_P(SuiteName, ...)                         \
-  namespace HTEST_SUITE_NAMESPACE_(SuiteName) {                             \
-  typedef ::testing::internal::Templates<__VA_ARGS__> htest_AllTests_;      \
-  }                                                                         \
-  [[maybe_unused]] static const char* const HTEST_REGISTERED_TEST_NAMES_(   \
-      SuiteName) =                                                          \
-      HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName).VerifyRegisteredTestNames( \
-          HTEST_STRINGIFY_(SuiteName), __FILE__, __LINE__, #__VA_ARGS__)
+#define REGISTER_TYPED_TEST_SUITE_P(SuiteName, ...)                          \
+    namespace HTEST_SUITE_NAMESPACE_(SuiteName) {                            \
+        typedef ::testing::internal::Templates<__VA_ARGS__> htest_AllTests_; \
+    }                                                                        \
+    [[maybe_unused]] static const char* const HTEST_REGISTERED_TEST_NAMES_(  \
+        SuiteName) = HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName).VerifyRegisteredTestNames(HTEST_STRINGIFY_(SuiteName), __FILE__, __LINE__, #__VA_ARGS__)
 
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
-#define REGISTER_TYPED_TEST_CASE_P                                           \
-  static_assert(::testing::internal::RegisterTypedTestCase_P_IsDeprecated(), \
-                "");                                                         \
-  REGISTER_TYPED_TEST_SUITE_P
-#endif  // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
+#define REGISTER_TYPED_TEST_CASE_P                                             \
+    static_assert(::testing::internal::RegisterTypedTestCase_P_IsDeprecated(), \
+        "");                                                                   \
+    REGISTER_TYPED_TEST_SUITE_P
+#endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
-#define INSTANTIATE_TYPED_TEST_SUITE_P(Prefix, SuiteName, Types, ...)     \
-  static_assert(sizeof(HTEST_STRINGIFY_(Prefix)) > 1,                     \
-                "test-suit-prefix must not be empty");                    \
-  [[maybe_unused]] static bool htest_##Prefix##_##SuiteName =             \
-      ::testing::internal::TypeParameterizedTestSuite<                    \
-          SuiteName, HTEST_SUITE_NAMESPACE_(SuiteName)::htest_AllTests_,  \
-          ::testing::internal::GenerateTypeList<Types>::type>::           \
-          Register(HTEST_STRINGIFY_(Prefix),                              \
-                   ::testing::internal::CodeLocation(__FILE__, __LINE__), \
-                   &HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName),           \
-                   HTEST_STRINGIFY_(SuiteName),                           \
-                   HTEST_REGISTERED_TEST_NAMES_(SuiteName),               \
-                   ::testing::internal::GenerateNames<                    \
-                       ::testing::internal::NameGeneratorSelector<        \
-                           __VA_ARGS__>::type,                            \
-                       ::testing::internal::GenerateTypeList<Types>::type>())
+#define INSTANTIATE_TYPED_TEST_SUITE_P(Prefix, SuiteName, Types, ...)                                            \
+    static_assert(sizeof(HTEST_STRINGIFY_(Prefix)) > 1,                                                          \
+        "test-suit-prefix must not be empty");                                                                   \
+    [[maybe_unused]] static bool htest_##Prefix##_##SuiteName = ::testing::internal::TypeParameterizedTestSuite< \
+        SuiteName, HTEST_SUITE_NAMESPACE_(SuiteName)::htest_AllTests_,                                           \
+        ::testing::internal::GenerateTypeList<Types>::type>::                                                    \
+        Register(HTEST_STRINGIFY_(Prefix),                                                                       \
+            ::testing::internal::CodeLocation(__FILE__, __LINE__),                                               \
+            &HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName),                                                         \
+            HTEST_STRINGIFY_(SuiteName),                                                                         \
+            HTEST_REGISTERED_TEST_NAMES_(SuiteName),                                                             \
+            ::testing::internal::GenerateNames<                                                                  \
+                ::testing::internal::NameGeneratorSelector<                                                      \
+                    __VA_ARGS__>::type,                                                                          \
+                ::testing::internal::GenerateTypeList<Types>::type>())
 
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
-#define INSTANTIATE_TYPED_TEST_CASE_P                                      \
-  static_assert(                                                           \
-      ::testing::internal::InstantiateTypedTestCase_P_IsDeprecated(), ""); \
-  INSTANTIATE_TYPED_TEST_SUITE_P
-#endif  // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
-
-#endif  // GOOGLETEST_INCLUDE_HTEST_HTEST_TYPED_TEST_H_
+#define INSTANTIATE_TYPED_TEST_CASE_P                                        \
+    static_assert(                                                           \
+        ::testing::internal::InstantiateTypedTestCase_P_IsDeprecated(), ""); \
+    INSTANTIATE_TYPED_TEST_SUITE_P
+#endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_

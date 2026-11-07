@@ -30,12 +30,8 @@
 // Type utilities needed for implementing typed and type-parameterized
 // tests.
 
-// IWYU pragma: private, include "htest/htest.h"
-// IWYU pragma: friend htest/.*
-// IWYU pragma: friend gmock/.*
+#pragma once
 
-#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_TYPE_UTIL_H_
-#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_TYPE_UTIL_H_
 
 #include <string>
 #include <type_traits>
@@ -216,5 +212,3 @@ template <typename... Ts>
 using Types = internal::ProxyTypeList<Ts...>;
 
 }  // namespace testing
-
-#endif  // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_TYPE_UTIL_H_

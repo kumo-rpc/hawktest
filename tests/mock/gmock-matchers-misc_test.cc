@@ -1687,7 +1687,7 @@ TEST(MockMethodMockFunctionTest, EnsureNoUnusedButMarkedUnusedWarning) {
 #pragma clang diagnostic push
 #pragma clang diagnostic error "-Wused-but-marked-unused"
 #endif
-  // https://github.com/google/googletest/issues/4055
+
   EXPECT_THAT(0, EnsureNoUnusedButMarkedUnusedWarning());
 #ifdef __clang__
 #pragma clang diagnostic pop

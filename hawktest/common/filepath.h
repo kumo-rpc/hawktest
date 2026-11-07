@@ -35,12 +35,8 @@
 // This file is #included in htest/internal/htest-internal.h.
 // Do not include this header file separately!
 
-// IWYU pragma: private, include "htest/htest.h"
-// IWYU pragma: friend htest/.*
-// IWYU pragma: friend gmock/.*
+#pragma once
 
-#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_FILEPATH_H_
-#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_FILEPATH_H_
 
 #include <string>
 #include <utility>
@@ -232,5 +228,3 @@ namespace testing {
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
 
 #endif // HTEST_HAS_FILE_SYSTEM
-
-#endif // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_FILEPATH_H_

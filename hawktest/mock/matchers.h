@@ -238,16 +238,10 @@
 // More Information
 // ================
 //
-// To learn more about using these macros, please search for 'MATCHER'
-// on
-// https://github.com/google/googletest/blob/main/docs/gmock_cook_book.md
-//
 // This file also implements some commonly used argument matchers.  More
 // matchers can be defined by the user implementing the
 // MatcherInterface<T> interface if necessary.
 //
-// See googletest/include/htest/htest-matchers.h for the definition of class
-// Matcher, class MatcherInterface, and others.
 
 // IWYU pragma: private, include "gmock/gmock.h"
 // IWYU pragma: friend gmock/.*

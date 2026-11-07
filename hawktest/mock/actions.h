@@ -119,16 +119,10 @@
 // Users can, however, define any local functors (e.g. a lambda) that
 // can be used as actions.
 //
-// MORE INFORMATION:
-//
-// To learn more about using these macros, please search for 'ACTION' on
-// https://github.com/google/googletest/blob/main/docs/gmock_cook_book.md
 
-// IWYU pragma: private, include "gmock/gmock.h"
-// IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_ACTIONS_H_
-#define GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_ACTIONS_H_
+#pragma once
+
 
 #ifndef _WIN32_WCE
 #include <errno.h>
@@ -2406,5 +2400,3 @@ template <typename F, typename Impl>
 }  // namespace testing
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
-
-#endif  // GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_ACTIONS_H_

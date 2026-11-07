@@ -27,17 +27,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// The Google C++ Testing and Mocking Framework (Google Test)
-//
-// This header file declares functions and macros used internally by
-// Google Test.  They are subject to change without notice.
+#pragma once
 
-// IWYU pragma: private, include "htest/htest.h"
-// IWYU pragma: friend htest/.*
-// IWYU pragma: friend gmock/.*
-
-#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_INTERNAL_H_
-#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_INTERNAL_H_
 
 #include <hawktest/common/port.h>
 
@@ -161,10 +152,10 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(
 // errors presumably detectable only at run time.  Since
 // std::runtime_error inherits from std::exception, many testing
 // frameworks know how to extract and print the message inside it.
-class HTEST_API_ [[nodiscard]] GoogleTestFailureException
+class HTEST_API_ [[nodiscard]] HawkTestFailureException
     : public ::std::runtime_error {
  public:
-  explicit GoogleTestFailureException(const TestPartResult& failure);
+  explicit HawkTestFailureException(const TestPartResult& failure);
 };
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4275
@@ -1519,5 +1510,3 @@ class [[nodiscard]] NeverThrown {
           new ::testing::internal::TestFactoryImpl<HTEST_TEST_CLASS_NAME_(     \
               test_suite_name, test_name)>);                                   \
   void HTEST_TEST_CLASS_NAME_(test_suite_name, test_name)::TestBody()
-
-#endif  // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_INTERNAL_H_

@@ -1096,7 +1096,6 @@ TEST(MockMethodMockFunctionTest, EnsureNoUnusedMemberFunction) {
 #pragma clang diagnostic push
 #pragma clang diagnostic error "-Wunused-member-function"
 #endif
-  // https://github.com/google/googletest/issues/4052
   struct Foo {
     MOCK_METHOD(void, foo, ());
   };

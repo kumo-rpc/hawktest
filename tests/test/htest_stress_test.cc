@@ -225,7 +225,7 @@ TEST(NonFatalFailureOnAllThreadsTest, ExpectNonFatalFailureOnAllThreads) {
 }  // namespace testing
 
 int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
 
   const int result = RUN_ALL_TESTS();  // Expected to fail.
   HTEST_CHECK_(result == 1) << "RUN_ALL_TESTS() did not fail as expected";
@@ -236,10 +236,10 @@ int main(int argc, char** argv) {
 
 #else
 TEST(StressTest,
-     DISABLED_ThreadSafetyTestsAreSkippedWhenGoogleTestIsNotThreadSafe) {}
+     DISABLED_ThreadSafetyTestsAreSkippedWhenHawkTestIsNotThreadSafe) {}
 
 int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
   return RUN_ALL_TESTS();
 }
 #endif  // HTEST_IS_THREADSAFE

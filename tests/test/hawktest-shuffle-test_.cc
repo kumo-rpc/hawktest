@@ -34,7 +34,7 @@
 namespace {
 
 using ::testing::EmptyTestEventListener;
-using ::testing::InitGoogleTest;
+using ::testing::init_hawk_test;
 using ::testing::Test;
 using ::testing::TestEventListeners;
 using ::testing::TestInfo;
@@ -87,7 +87,7 @@ class TestNamePrinter : public EmptyTestEventListener {
 }  // namespace
 
 int main(int argc, char** argv) {
-  InitGoogleTest(&argc, argv);
+  init_hawk_test(&argc, argv);
 
   // Replaces the default printer with TestNamePrinter, which prints
   // the test name only.

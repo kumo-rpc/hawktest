@@ -137,7 +137,7 @@ REGISTER_TYPED_TEST_SUITE_P(TypeParamTest, TestA, TestB);
 INSTANTIATE_TYPED_TEST_SUITE_P(My, TypeParamTest, MyTypes);
 
 int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
+  ::testing::init_hawk_test(&argc, argv);
 
   return RUN_ALL_TESTS();
 }

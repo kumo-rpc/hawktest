@@ -529,7 +529,7 @@ add_hawk_filter_test(filter_regex_end ".*Ba$" 1)
 add_hawk_filter_test(filter_regex_end_negative "-.*Ba$" 4)
 
 # ---------------------------------------------------------------------------
-# GoogleTest unit tests (originally add_htest under
+# HawkTest unit tests (originally add_htest under
 # BENCHMARK_ENABLE_HTEST_TESTS). gmock_main -> hawktest::hmock_main_static,
 # benchmark::benchmark -> hawktest::hbench_static.
 # ---------------------------------------------------------------------------

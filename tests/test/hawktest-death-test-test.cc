@@ -1360,7 +1360,7 @@ void DieWithMessage(const char* message) {
 }
 
 TEST(MatcherDeathTest, DoesNotBreakBareRegexMatching) {
-  // googletest tests this, of course; here we ensure that including googlemock
+  // hawktest tests this, of course; here we ensure that including googlemock
   // has not broken it.
 #ifdef HTEST_USES_POSIX_RE
   EXPECT_DEATH(DieWithMessage("O, I die, Horatio."), "I d[aeiou]e");

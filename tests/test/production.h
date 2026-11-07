@@ -30,8 +30,8 @@
 //
 // This is part of the unit test for htest_prod.h.
 
-#ifndef GOOGLETEST_TEST_PRODUCTION_H_
-#define GOOGLETEST_TEST_PRODUCTION_H_
+#pragma once
+
 
 #include <hawktest/test/prod.h>
 
@@ -51,5 +51,3 @@ class PrivateCode {
   void set_x(int an_x) { x_ = an_x; }
   int x_;
 };
-
-#endif  // GOOGLETEST_TEST_PRODUCTION_H_

@@ -39,19 +39,19 @@ using ::testing::internal::ParamGenerator;
 
 // Tests that generators defined in a different translation unit
 // are functional. The test using extern_gen is defined
-// in googletest-param-test-test.cc.
+// in hawktest-param-test-test.cc.
 ParamGenerator<int> extern_gen = Values(33);
 
 // Tests that a parameterized test case can be defined in one translation unit
 // and instantiated in another. The test is defined in
-// googletest-param-test-test.cc and ExternalInstantiationTest fixture class is
+// hawktest-param-test-test.cc and ExternalInstantiationTest fixture class is
 // defined in htest-param-test_test.h.
 INSTANTIATE_TEST_SUITE_P(MultiplesOf33, ExternalInstantiationTest,
                          Values(33, 66));
 
 // Tests that a parameterized test case can be instantiated
 // in multiple translation units. Another instantiation is defined
-// in googletest-param-test-test.cc and
+// in hawktest-param-test-test.cc and
 // InstantiationInMultipleTranslationUnitsTest fixture is defined in
 // htest-param-test_test.h
 INSTANTIATE_TEST_SUITE_P(Sequence2, InstantiationInMultipleTranslationUnitsTest,

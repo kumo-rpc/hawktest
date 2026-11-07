@@ -45,7 +45,7 @@ using testing::internal::ShouldUseColor;
 TEST(HTestColorTest, Dummy) {}
 
 int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
 
   if (ShouldUseColor(true)) {
     // Google Test decides to use colors in the output (assuming it

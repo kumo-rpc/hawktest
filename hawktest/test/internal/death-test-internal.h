@@ -32,12 +32,9 @@
 // This header file defines internal utilities needed for implementing
 // death tests.  They are subject to change without notice.
 
-// IWYU pragma: private, include "htest/htest.h"
-// IWYU pragma: friend htest/.*
-// IWYU pragma: friend gmock/.*
 
-#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_DEATH_TEST_INTERNAL_H_
-#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_DEATH_TEST_INTERNAL_H_
+#pragma once
+
 
 #include <stdio.h>
 
@@ -308,5 +305,3 @@ InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag();
 
 }  // namespace internal
 }  // namespace testing
-
-#endif  // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_DEATH_TEST_INTERNAL_H_

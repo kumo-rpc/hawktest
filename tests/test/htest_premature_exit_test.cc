@@ -35,7 +35,7 @@
 
 #include <hawktest/test/htest.h>
 
-using ::testing::InitGoogleTest;
+using ::testing::init_hawk_test;
 using ::testing::Test;
 using ::testing::internal::posix::GetEnv;
 using ::testing::internal::posix::Stat;
@@ -109,7 +109,7 @@ TEST_F(PrematureExitTest, PrematureExitFileExistsDuringTestExecution) {
 }  // namespace
 
 int main(int argc, char** argv) {
-  InitGoogleTest(&argc, argv);
+  init_hawk_test(&argc, argv);
   const int exit_code = RUN_ALL_TESTS();
 
   // Test that the premature-exit file is deleted upon return from

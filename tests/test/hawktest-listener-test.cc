@@ -40,7 +40,7 @@
 #include <hawktest/test/internal/custom/htest.h>
 
 using ::testing::AddGlobalTestEnvironment;
-using ::testing::InitGoogleTest;
+using ::testing::init_hawk_test;
 using ::testing::UnitTest;
 
 // Used by tests to register their events.
@@ -263,7 +263,7 @@ void VerifyResults(const std::vector<std::string>& data,
 int main(int argc, char** argv) {
   std::vector<std::string> events;
   g_events = &events;
-  InitGoogleTest(&argc, argv);
+  init_hawk_test(&argc, argv);
 
   UnitTest::GetInstance()->listeners().Append(
       new EventRecordingListener("1st"));

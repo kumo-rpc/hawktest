@@ -175,7 +175,7 @@ void TestNoTestsSkipsSetUp() {
 }  // namespace
 
 int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
 
   TestGlobalSetUp();
   TestTestsRun();

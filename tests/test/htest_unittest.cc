@@ -273,7 +273,7 @@ using testing::internal::IsContainer;
 using testing::internal::IsContainerTest;
 using testing::internal::IsNotContainer;
 using testing::internal::kMaxRandomSeed;
-using testing::internal::kTestTypeIdInGoogleTest;
+using testing::internal::kTestTypeIdInHawkTest;
 using testing::internal::NativeArray;
 using testing::internal::ParseFlag;
 using testing::internal::RelationToSourceCopy;
@@ -378,9 +378,9 @@ TEST(GetTypeIdTest, ReturnsDifferentValuesForDifferentTypes) {
 }
 
 // Verifies that GetTestTypeId() returns the same value, no matter it
-// is called from inside Google Test or outside of it.
-TEST(GetTestTypeIdTest, ReturnsTheSameValueInsideOrOutsideOfGoogleTest) {
-  EXPECT_EQ(kTestTypeIdInGoogleTest, GetTestTypeId());
+// is called from inside Hawk Test or outside of it.
+TEST(GetTestTypeIdTest, ReturnsTheSameValueInsideOrOutsideOfHawkTest) {
+  EXPECT_EQ(kTestTypeIdInHawkTest, GetTestTypeId());
 }
 
 // Tests CanonicalizeForStdLibVersioning.
@@ -4793,7 +4793,7 @@ TEST(MacroTest, ADD_FAILURE_AT) {
   // Unfortunately, we cannot verify that the failure message contains
   // the right file path and line number the same way, as
   // EXPECT_NONFATAL_FAILURE() doesn't get to see the file path and
-  // line number.  Instead, we do that in googletest-output-test_.cc.
+  // line number.  Instead, we do that in hawktest-output-test_.cc.
 }
 
 // Tests FAIL.
@@ -5561,7 +5561,7 @@ TEST_F(SetUpTestSuiteTest, TestSetupTestSuite2) {
   EXPECT_STREQ("123", shared_resource_);
 }
 
-// The ParseFlagsTest test case tests ParseGoogleTestFlagsOnly.
+// The ParseFlagsTest test case tests parse_hawk_test_flags_only.
 
 // The Flags struct stores a copy of all Google Test flags.
 struct Flags {
@@ -5745,7 +5745,7 @@ struct Flags {
   bool throw_on_failure;
 };
 
-// Fixture for testing ParseGoogleTestFlagsOnly().
+// Fixture for testing parse_hawk_test_flags_only().
 class ParseFlagsTest : public Test {
  protected:
   // Clears the flags before each test.
@@ -5820,7 +5820,7 @@ class ParseFlagsTest : public Test {
 #endif
 
     // Parses the command line.
-    internal::ParseGoogleTestFlagsOnly(&argc1, const_cast<CharType**>(argv1));
+    internal::parse_hawk_test_flags_only(&argc1, const_cast<CharType**>(argv1));
 
 #if HTEST_HAS_STREAM_REDIRECTION
     const std::string captured_stdout = GetCapturedStdout();
@@ -5833,7 +5833,7 @@ class ParseFlagsTest : public Test {
     // line.
     AssertStringArrayEq(argc1 + 1, argv1, argc2 + 1, argv2);
 
-    // ParseGoogleTestFlagsOnly should neither set g_help_flag nor print the
+    // parse_hawk_test_flags_only should neither set g_help_flag nor print the
     // help message for the flags it recognizes.
     EXPECT_EQ(should_print_help, ::testing::internal::g_help_flag);
 

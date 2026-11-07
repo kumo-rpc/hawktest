@@ -27,8 +27,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef GOOGLETEST_TEST_HTEST_TYPED_TEST_TEST_H_
-#define GOOGLETEST_TEST_HTEST_TYPED_TEST_TEST_H_
+#pragma once
+
 
 #include <hawktest/test/htest.h>
 
@@ -54,4 +54,3 @@ TYPED_TEST_P(ContainerTest, InitialSizeIsZero) {
 REGISTER_TYPED_TEST_SUITE_P(ContainerTest, CanBeDefaultConstructed,
                             InitialSizeIsZero);
 
-#endif  // GOOGLETEST_TEST_HTEST_TYPED_TEST_TEST_H_

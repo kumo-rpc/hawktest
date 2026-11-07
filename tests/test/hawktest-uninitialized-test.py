@@ -57,7 +57,7 @@ def TestExitCodeAndOutput(command):
   p = htest_test_utils.Subprocess(command)
   if p.exited and p.exit_code == 0:
     Assert('IMPORTANT NOTICE' in p.output)
-  Assert('InitGoogleTest' in p.output)
+  Assert('init_hawk_test' in p.output)
 
 
 class HTestUninitializedTest(htest_test_utils.TestCase):

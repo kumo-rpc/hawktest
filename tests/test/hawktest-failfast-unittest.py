@@ -123,7 +123,7 @@ class HTestFailFastUnitTest(htest_test_utils.TestCase):
     txt, _ = RunAndReturnOutput()
     self.assertIn('22 FAILED TEST', txt)
 
-  def testGoogletestFlag(self):
+  def testHawktestFlag(self):
     txt, _ = RunAndReturnOutput(test_suite='HasSimpleTest', fail_fast=True)
     self.assertIn('1 FAILED TEST', txt)
     self.assertIn('[  SKIPPED ] 3 tests', txt)
@@ -132,8 +132,8 @@ class HTestFailFastUnitTest(htest_test_utils.TestCase):
     self.assertIn('4 FAILED TEST', txt)
     self.assertNotIn('[  SKIPPED ]', txt)
 
-  def testGoogletestEnvVar(self):
-    """Tests the behavior of specifying fail_fast via Googletest env var."""
+  def testHawktestEnvVar(self):
+    """Tests the behavior of specifying fail_fast via Hawktest env var."""
 
     try:
       SetEnvVar(FAIL_FAST_ENV_VAR, '1')
@@ -175,8 +175,8 @@ class HTestFailFastUnitTest(htest_test_utils.TestCase):
     finally:
       SetEnvVar(FAIL_FAST_ENV_VAR, None)
 
-  def testGoogletestEnvVarOverridesBazelEnvVar(self):
-    """Tests that the Googletest native env var over Bazel testbridge."""
+  def testHawktestEnvVarOverridesBazelEnvVar(self):
+    """Tests that the Hawktest native env var over Bazel testbridge."""
 
     try:
       SetEnvVar(BAZEL_FAIL_FAST_ENV_VAR, '0')

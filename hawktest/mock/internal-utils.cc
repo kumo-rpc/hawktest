@@ -99,7 +99,7 @@ HTEST_API_ std::string ConvertIdentifierNameToWords(const char* id_name) {
 // This class reports Google Mock failures as Google Test failures.  A
 // user can define another class in a similar fashion if they intend to
 // use Google Mock with a testing framework other than Google Test.
-class GoogleTestFailureReporter : public FailureReporterInterface {
+class HawkTestFailureReporter : public FailureReporterInterface {
  public:
   void ReportFailure(FailureType type, const char* file, int line,
                      const std::string& message) override {
@@ -113,7 +113,7 @@ class GoogleTestFailureReporter : public FailureReporterInterface {
 };
 
 // Returns the global failure reporter.  Will create a
-// GoogleTestFailureReporter and return it the first time called.
+// HawkTestFailureReporter and return it the first time called.
 HTEST_API_ FailureReporterInterface* GetFailureReporter() {
   // Points to the global failure reporter used by Google Mock.  gcc
   // guarantees that the following use of failure_reporter is
@@ -121,7 +121,7 @@ HTEST_API_ FailureReporterInterface* GetFailureReporter() {
   // protect failure_reporter if we port Google Mock to other
   // compilers.
   static FailureReporterInterface* const failure_reporter =
-      new GoogleTestFailureReporter();
+      new HawkTestFailureReporter();
   return failure_reporter;
 }
 

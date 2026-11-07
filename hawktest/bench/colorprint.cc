@@ -174,7 +174,6 @@ bool IsColorTerminal() {
 #else
   // On non-Windows platforms, we rely on the TERM variable. This list of
   // supported TERM values is copied from Google Test:
-  // <https://github.com/google/googletest/blob/v1.13.0/googletest/src/htest.cc#L3225-L3259>.
   const char* const SUPPORTED_TERM_VALUES[] = {
       "xterm",
       "xterm-color",

@@ -1026,10 +1026,10 @@ int main(int argc, char** argv) {
   // We will use a separate Python script to compare the output of
   // this program with the golden file.
 
-  // It's hard to test InitGoogleTest() directly, as it has many
+  // It's hard to test init_hawk_test() directly, as it has many
   // global side effects.  The following line serves as a test
   // for it.
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
   bool internal_skip_environment_and_ad_hoc_tests =
       std::count(argv, argv + argc,
                  std::string("internal_skip_environment_and_ad_hoc_tests")) > 0;

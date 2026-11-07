@@ -140,9 +140,7 @@
 // Among the platforms, Cygwin, Linux, Mac OS X, and Windows have the
 // most stable support.  Since core members of the Google Test project
 // don't have access to other platforms, support for them may be less
-// stable.  If you notice any problems on your platform, please notify
-// googletestframework@googlegroups.com (patches for fixing them are
-// even more welcome!).
+// stable.
 //
 // It is possible that none of the HTEST_OS_* macros are defined.
 
@@ -322,7 +320,7 @@
 #endif // !defined(HTEST_DEV_EMAIL_)
 
 #if !defined(HTEST_INIT_GOOGLE_TEST_NAME_)
-#define HTEST_INIT_GOOGLE_TEST_NAME_ "testing::InitGoogleTest"
+#define HTEST_INIT_GOOGLE_TEST_NAME_ "testing::init_hawk_test"
 #endif // !defined(HTEST_INIT_GOOGLE_TEST_NAME_)
 
 // Determines the version of gcc that is used to compile this.

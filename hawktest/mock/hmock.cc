@@ -143,9 +143,9 @@ static bool ParseGoogleMockFlag(const char* str, const char* flag_name,
 // wchar_t.
 template <typename CharType>
 void InitGoogleMockImpl(int* argc, CharType** argv) {
-  // Makes sure Google Test is initialized.  InitGoogleTest() is
+  // Makes sure Google Test is initialized.  init_hawk_test() is
   // idempotent, so it's fine if the user has already called it.
-  InitGoogleTest(argc, argv);
+  init_hawk_test(argc, argv);
   if (*argc <= 0) return;
 
   for (int i = 1; i != *argc; i++) {

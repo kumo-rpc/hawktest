@@ -33,7 +33,7 @@
 #include <hawktest/test/htest.h>
 
 int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
 
   // An ad-hoc assertion outside of all tests.
   //

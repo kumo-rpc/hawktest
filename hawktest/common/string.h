@@ -36,12 +36,8 @@
 // This header file is #included by htest-internal.h.
 // It should not be #included by other files.
 
-// IWYU pragma: private, include "htest/htest.h"
-// IWYU pragma: friend htest/.*
-// IWYU pragma: friend gmock/.*
+#pragma once
 
-#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_STRING_H_
-#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_STRING_H_
 
 #ifdef __BORLANDC__
 // string.h is not guaranteed to provide strcpy on C++ Builder.
@@ -175,4 +171,3 @@ namespace testing {
     } // namespace internal
 } // namespace testing
 
-#endif // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_STRING_H_

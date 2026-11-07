@@ -32,8 +32,7 @@
 // This header file defines the HTEST_OS_* macro.
 // It is separate from htest-port.h so that custom/htest-port.h can include it.
 
-#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PORT_ARCH_H_
-#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PORT_ARCH_H_
+#pragma once
 
 // Determines the platform on which Google Test is compiled.
 #ifdef __CYGWIN__
@@ -123,4 +122,3 @@
 #define HTEST_OS_EMSCRIPTEN 1
 #endif // __CYGWIN__
 
-#endif // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PORT_ARCH_H_

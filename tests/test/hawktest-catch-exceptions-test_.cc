@@ -30,7 +30,7 @@
 //
 // Tests for Google Test itself. Tests in this file throw C++ or SEH
 // exceptions, and the output is verified by
-// googletest-catch-exceptions-test.py.
+// hawktest-catch-exceptions-test.py.
 
 #include <stdio.h>   // NOLINT
 #include <stdlib.h>  // For exit().
@@ -284,6 +284,6 @@ int main(int argc, char** argv) {
 #if HTEST_HAS_EXCEPTIONS
   std::set_terminate(&TerminateHandler);
 #endif
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
   return RUN_ALL_TESTS();
 }

@@ -52,7 +52,7 @@ TEST(SomeTest, DoesFoo) { FAIL() << "Unexpected call"; }
 }  // namespace
 
 int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
+  ::testing::init_hawk_test(&argc, argv);
 
   return RUN_ALL_TESTS();
 }

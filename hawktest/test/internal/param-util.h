@@ -29,12 +29,8 @@
 
 // Type and function utilities for implementing parameterized tests.
 
-// IWYU pragma: private, include "htest/htest.h"
-// IWYU pragma: friend htest/.*
-// IWYU pragma: friend gmock/.*
+#pragma once
 
-#ifndef GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PARAM_UTIL_H_
-#define GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PARAM_UTIL_H_
 
 #include <ctype.h>
 
@@ -1063,5 +1059,3 @@ struct IsSingleArgStdFunction<std::function<R(P)>> : public std::true_type {};
 
 }  // namespace internal
 }  // namespace testing
-
-#endif  // GOOGLETEST_INCLUDE_HTEST_INTERNAL_HTEST_PARAM_UTIL_H_

@@ -32,11 +32,11 @@
 //
 // Sometimes it's desirable to build most of Google Test's own tests
 // by compiling a single file.  This file serves this purpose.
-#include <tests/test/googletest-filepath-test.cc>
-#include <tests/test/googletest-message-test.cc>
-#include <tests/test/googletest-options-test.cc>
-#include <tests/test/googletest-port-test.cc>
-#include <tests/test/googletest-test-part-test.cc>
+#include <tests/test/hawktest-filepath-test.cc>
+#include <tests/test/hawktest-message-test.cc>
+#include <tests/test/hawktest-options-test.cc>
+#include <tests/test/hawktest-port-test.cc>
+#include <tests/test/hawktest-test-part-test.cc>
 #include <tests/test/htest-typed-test2_test.cc>
 #include <tests/test/htest-typed-test_test.cc>
 #include <tests/test/htest_pred_impl_unittest.cc>

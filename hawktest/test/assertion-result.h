@@ -31,12 +31,8 @@
 //
 // This file implements the AssertionResult type.
 
-// IWYU pragma: private, include "htest/htest.h"
-// IWYU pragma: friend htest/.*
-// IWYU pragma: friend gmock/.*
+#pragma once
 
-#ifndef GOOGLETEST_INCLUDE_HTEST_HTEST_ASSERTION_RESULT_H_
-#define GOOGLETEST_INCLUDE_HTEST_HTEST_ASSERTION_RESULT_H_
 
 #include <memory>
 #include <ostream>
@@ -46,8 +42,7 @@
 #include <hawktest/common/port.h>
 #include <hawktest/test/message.h>
 
-HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251                                   \
-/* class A needs to have dll-interface to be used by clients of class B */)
+HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
 namespace testing {
 
@@ -134,133 +129,134 @@ namespace testing {
 // Returned AssertionResult objects may not be ignored.
 // Note: Disabled for SWIG as it doesn't parse attributes correctly.
 #if !defined(SWIG)
-class [[nodiscard]] AssertionResult;
-#endif  // !SWIG
+    class [[nodiscard]] AssertionResult;
+#endif // !SWIG
 
-class HTEST_API_ [[nodiscard]] AssertionResult {
- public:
-  // Copy constructor.
-  // Used in EXPECT_TRUE/FALSE(assertion_result).
-  AssertionResult(const AssertionResult& other);
+    class HTEST_API_ [[nodiscard]] AssertionResult {
+    public:
+        // Copy constructor.
+        // Used in EXPECT_TRUE/FALSE(assertion_result).
+        AssertionResult(const AssertionResult& other);
 
 // C4800 is a level 3 warning in Visual Studio 2015 and earlier.
 // This warning is not emitted in Visual Studio 2017.
 // This warning is off by default starting in Visual Studio 2019 but can be
 // enabled with command-line options.
 #if defined(_MSC_VER) && (_MSC_VER < 1910 || _MSC_VER >= 1920)
-  HTEST_DISABLE_MSC_WARNINGS_PUSH_(4800 /* forcing value to bool */)
+        HTEST_DISABLE_MSC_WARNINGS_PUSH_(4800 /* forcing value to bool */)
 #endif
 
-  // Used in the EXPECT_TRUE/FALSE(bool_expression).
-  //
-  // T must be contextually convertible to bool.
-  //
-  // The second parameter prevents this overload from being considered if
-  // the argument is implicitly convertible to AssertionResult. In that case
-  // we want AssertionResult's copy constructor to be used.
-  template <typename T,
-            std::enable_if_t<!std::is_convertible_v<T, AssertionResult> &&
-                                 !std::is_trivially_constructible_v<bool, T>,
-                             int> = 0>
-  explicit AssertionResult(T&& success) : success_(std::forward<T>(success)) {}
+        // Used in the EXPECT_TRUE/FALSE(bool_expression).
+        //
+        // T must be contextually convertible to bool.
+        //
+        // The second parameter prevents this overload from being considered if
+        // the argument is implicitly convertible to AssertionResult. In that case
+        // we want AssertionResult's copy constructor to be used.
+        template <typename T,
+            std::enable_if_t<!std::is_convertible_v<T, AssertionResult> && !std::is_trivially_constructible_v<bool, T>,
+                int> = 0>
+        explicit AssertionResult(T&& success)
+            : success_(std::forward<T>(success)) { }
 
-  // Similar to the mutable overload, but for cases where mutability is
-  // unnecessary or problematic (e.g., bitfields).
-  template <typename T,
+        // Similar to the mutable overload, but for cases where mutability is
+        // unnecessary or problematic (e.g., bitfields).
+        template <typename T,
             std::enable_if_t<!std::is_convertible_v<const T&, AssertionResult>,
-                             int> = 0>
-  explicit AssertionResult(const T& success) : success_(success) {}
+                int> = 0>
+        explicit AssertionResult(const T& success)
+            : success_(success) { }
 
 #if defined(_MSC_VER) && (_MSC_VER < 1910 || _MSC_VER >= 1920)
-  HTEST_DISABLE_MSC_WARNINGS_POP_()
+        HTEST_DISABLE_MSC_WARNINGS_POP_()
 #endif
 
-  // Assignment operator.
-  AssertionResult& operator=(AssertionResult other) {
-    swap(other);
-    return *this;
-  }
+        // Assignment operator.
+        AssertionResult& operator=(AssertionResult other) {
+            swap(other);
+            return *this;
+        }
 
-  // Returns true if and only if the assertion succeeded.
-  operator bool() const { return success_; }  // NOLINT
+        // Returns true if and only if the assertion succeeded.
+        operator bool() const { return success_; } // NOLINT
 
-  // Returns the assertion's negation. Used with EXPECT/ASSERT_FALSE.
-  AssertionResult operator!() const;
+        // Returns the assertion's negation. Used with EXPECT/ASSERT_FALSE.
+        AssertionResult operator!() const;
 
-  // Returns the text streamed into this AssertionResult. Test assertions
-  // use it when they fail (i.e., the predicate's outcome doesn't match the
-  // assertion's expectation). When nothing has been streamed into the
-  // object, returns an empty string.
-  const char* message() const {
-    return message_ != nullptr ? message_->c_str() : "";
-  }
-  // Deprecated; please use message() instead.
-  const char* failure_message() const { return message(); }
+        // Returns the text streamed into this AssertionResult. Test assertions
+        // use it when they fail (i.e., the predicate's outcome doesn't match the
+        // assertion's expectation). When nothing has been streamed into the
+        // object, returns an empty string.
+        const char* message() const {
+            return message_ != nullptr ? message_->c_str() : "";
+        }
+        // Deprecated; please use message() instead.
+        const char* failure_message() const { return message(); }
 
-  // Streams a custom failure message into this object.
-  template <typename T>
-  AssertionResult& operator<<(const T& value) {
-    AppendMessage(Message() << value);
-    return *this;
-  }
+        // Streams a custom failure message into this object.
+        template <typename T>
+        AssertionResult& operator<<(const T& value) {
+            AppendMessage(Message() << value);
+            return *this;
+        }
 
-  // Allows streaming basic output manipulators such as endl or flush into
-  // this object.
-  AssertionResult& operator<<(
-      ::std::ostream& (*basic_manipulator)(::std::ostream& stream)) {
-    AppendMessage(Message() << basic_manipulator);
-    return *this;
-  }
+        // Allows streaming basic output manipulators such as endl or flush into
+        // this object.
+        AssertionResult& operator<<(
+            ::std::ostream& (*basic_manipulator)(::std::ostream& stream)) {
+            AppendMessage(Message() << basic_manipulator);
+            return *this;
+        }
 
- private:
-  // Appends the contents of message to message_.
-  void AppendMessage(const Message& a_message) {
-    if (message_ == nullptr) message_ = ::std::make_unique<::std::string>();
-    message_->append(a_message.GetString().c_str());
-  }
+    private:
+        // Appends the contents of message to message_.
+        void AppendMessage(const Message& a_message) {
+            if (message_ == nullptr)
+                message_ = ::std::make_unique<::std::string>();
+            message_->append(a_message.GetString().c_str());
+        }
 
-  // Swap the contents of this AssertionResult with other.
-  void swap(AssertionResult& other);
+        // Swap the contents of this AssertionResult with other.
+        void swap(AssertionResult& other);
 
-  // Stores result of the assertion predicate.
-  bool success_;
-  // Stores the message describing the condition in case the expectation
-  // construct is not satisfied with the predicate's outcome.
-  // Referenced via a pointer to avoid taking too much stack frame space
-  // with test assertions.
-  std::unique_ptr< ::std::string> message_;
-};
+        // Stores result of the assertion predicate.
+        bool success_;
+        // Stores the message describing the condition in case the expectation
+        // construct is not satisfied with the predicate's outcome.
+        // Referenced via a pointer to avoid taking too much stack frame space
+        // with test assertions.
+        std::unique_ptr<::std::string> message_;
+    };
 
-namespace internal {
+    namespace internal {
 
-// A pair containing the result that an assertion is evaluating, and the
-// expected result (true, false).
-//
-// Contains a conversion operator that indicates whether the two match.
-struct AssertionResultExpectation {
-  testing::AssertionResult assertion_result;
-  bool expected_result;
+        // A pair containing the result that an assertion is evaluating, and the
+        // expected result (true, false).
+        //
+        // Contains a conversion operator that indicates whether the two match.
+        struct AssertionResultExpectation {
+            testing::AssertionResult assertion_result;
+            bool expected_result;
 
-  explicit operator bool() const {
-    bool converted(assertion_result);
-    return converted == expected_result;
-  }
-};
+            explicit operator bool() const {
+                bool converted(assertion_result);
+                return converted == expected_result;
+            }
+        };
 
-}  // namespace internal
+    } // namespace internal
 
-// Makes a successful assertion result.
-HTEST_API_ AssertionResult AssertionSuccess();
+    // Makes a successful assertion result.
+    HTEST_API_ AssertionResult AssertionSuccess();
 
-// Makes a failed assertion result.
-HTEST_API_ AssertionResult AssertionFailure();
+    // Makes a failed assertion result.
+    HTEST_API_ AssertionResult AssertionFailure();
 
-// Makes a failed assertion result with the given failure message.
-// Deprecated; use AssertionFailure() << msg.
-HTEST_API_ AssertionResult AssertionFailure(const Message& msg);
+    // Makes a failed assertion result with the given failure message.
+    // Deprecated; use AssertionFailure() << msg.
+    HTEST_API_ AssertionResult AssertionFailure(const Message& msg);
 
-}  // namespace testing
+} // namespace testing
 
-HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4251
+HTEST_DISABLE_MSC_WARNINGS_POP_() // 4251
 
-#endif  // GOOGLETEST_INCLUDE_HTEST_HTEST_ASSERTION_RESULT_H_

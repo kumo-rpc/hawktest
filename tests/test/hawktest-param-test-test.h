@@ -32,8 +32,8 @@
 // This header file provides classes and functions used internally
 // for testing Google Test itself.
 
-#ifndef GOOGLETEST_TEST_GOOGLETEST_PARAM_TEST_TEST_H_
-#define GOOGLETEST_TEST_GOOGLETEST_PARAM_TEST_TEST_H_
+#pragma once
+
 
 #include <hawktest/test/htest.h>
 
@@ -46,4 +46,3 @@ class ExternalInstantiationTest : public ::testing::TestWithParam<int> {};
 class InstantiationInMultipleTranslationUnitsTest
     : public ::testing::TestWithParam<int> {};
 
-#endif  // GOOGLETEST_TEST_GOOGLETEST_PARAM_TEST_TEST_H_

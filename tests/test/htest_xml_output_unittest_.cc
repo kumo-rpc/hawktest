@@ -41,7 +41,7 @@
 
 #include <hawktest/test/htest.h>
 
-using ::testing::InitGoogleTest;
+using ::testing::init_hawk_test;
 using ::testing::Test;
 using ::testing::TestEventListeners;
 using ::testing::TestWithParam;
@@ -204,7 +204,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(Single, TypeParameterizedTestSuite,
                                TypeParameterizedTestSuiteTypes);
 
 int main(int argc, char** argv) {
-  InitGoogleTest(&argc, argv);
+  init_hawk_test(&argc, argv);
 
   if (argc > 1 && strcmp(argv[1], "--shut_down_xml") == 0) {
     TestEventListeners& listeners = UnitTest::GetInstance()->listeners();

@@ -30,7 +30,7 @@
 // Tests Google Test's throw-on-failure mode with exceptions disabled.
 //
 // This program must be compiled with exceptions disabled.  It will be
-// invoked by googletest-throw-on-failure-test.py, and is expected to exit
+// invoked by hawktest-throw-on-failure-test.py, and is expected to exit
 // with non-zero in the throw-on-failure mode or 0 otherwise.
 
 #include <stdio.h>   // for fflush, fprintf, NULL, etc.
@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
 #if HTEST_HAS_EXCEPTIONS
   std::set_terminate(&TerminateHandler);
 #endif
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
 
   // We want to ensure that people can use Google Test assertions in
   // other testing frameworks, as long as they initialize Google Test

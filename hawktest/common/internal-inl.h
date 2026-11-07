@@ -27,12 +27,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Utility functions and classes used by the Google C++ testing framework.//
-// This file contains purely Google Test's internal implementation.  Please
-// DO NOT #INCLUDE IT IN A USER PROGRAM.
+#pragma once
 
-#ifndef GOOGLETEST_SRC_HTEST_INTERNAL_INL_H_
-#define GOOGLETEST_SRC_HTEST_INTERNAL_INL_H_
 
 #ifndef _WIN32_WCE
 #include <errno.h>
@@ -78,7 +74,7 @@ namespace internal {
 
 // The value of GetTestTypeId() as seen from within the Google Test
 // library.  This is solely for testing GetTestTypeId().
-HTEST_API_ extern const TypeId kTestTypeIdInGoogleTest;
+HTEST_API_ extern const TypeId kTestTypeIdInHawkTest;
 
 // A valid random seed must be in [1, kMaxRandomSeed].
 const int kMaxRandomSeed = 99999;
@@ -764,7 +760,7 @@ class HTEST_API_ UnitTestImpl {
   // Returns a pointer to the parsed --htest_internal_run_death_test
   // flag, or NULL if that flag was not specified.
   // This information is useful only in a death test child process.
-  // Must not be called before a call to InitGoogleTest.
+  // Must not be called before a call to init_hawk_test.
   const InternalRunDeathTestFlag* internal_run_death_test_flag() const {
     return internal_run_death_test_flag_.get();
   }
@@ -780,18 +776,18 @@ class HTEST_API_ UnitTestImpl {
 #endif  // HTEST_HAS_DEATH_TEST
 
   // Initializes the event listener performing XML output as specified by
-  // UnitTestOptions. Must not be called before InitGoogleTest.
+  // UnitTestOptions. Must not be called before init_hawk_test.
   void ConfigureXmlOutput();
 
 #if HTEST_CAN_STREAM_RESULTS_
   // Initializes the event listener for streaming test results to a socket.
-  // Must not be called before InitGoogleTest.
+  // Must not be called before init_hawk_test.
   void ConfigureStreamingOutput();
 #endif
 
   // Performs initialization dependent upon flag values obtained in
-  // ParseGoogleTestFlagsOnly.  Is called from InitGoogleTest after the call to
-  // ParseGoogleTestFlagsOnly.  In case a user neglects to call InitGoogleTest
+  // parse_hawk_test_flags_only.  Is called from init_hawk_test after the call to
+  // parse_hawk_test_flags_only.  In case a user neglects to call init_hawk_test
   // this function is also called from RunAllTests.  Since this function can be
   // called more than once, it has to be idempotent.
   void PostFlagParsingInit();
@@ -994,8 +990,8 @@ HTEST_API_ bool MatchRegexAnywhere(const char* regex, const char* str);
 
 // Parses the command line for Google Test flags, without initializing
 // other parts of Google Test.
-HTEST_API_ void ParseGoogleTestFlagsOnly(int* argc, char** argv);
-HTEST_API_ void ParseGoogleTestFlagsOnly(int* argc, wchar_t** argv);
+HTEST_API_ void parse_hawk_test_flags_only(int* argc, char** argv);
+HTEST_API_ void parse_hawk_test_flags_only(int* argc, wchar_t** argv);
 
 #ifdef HTEST_HAS_DEATH_TEST
 
@@ -1218,5 +1214,3 @@ class StreamingListener : public EmptyTestEventListener {
 }  // namespace testing
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
-
-#endif  // GOOGLETEST_SRC_HTEST_INTERNAL_INL_H_

@@ -96,7 +96,7 @@ int kTestForContinuingTest = 0;
 TEST(Test, Test2) { kTestForContinuingTest = 1; }
 
 int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
   testing::UnitTest::GetInstance()->listeners().Append(new ThrowListener);
 
   int result = RUN_ALL_TESTS();

@@ -118,10 +118,10 @@ void PrintFlag(const char* flag) {
 }  // namespace testing
 
 int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
+  testing::init_hawk_test(&argc, argv);
 
   if (argc != 2) {
-    cout << "Usage: googletest-env-var-test_ NAME_OF_FLAG\n";
+    cout << "Usage: hawktest-env-var-test_ NAME_OF_FLAG\n";
     return 1;
   }
 

@@ -38,7 +38,7 @@
 
 #include <hawktest/test/htest.h>
 
-using ::testing::InitGoogleTest;
+using ::testing::init_hawk_test;
 
 namespace testing {
 namespace internal {
@@ -320,7 +320,7 @@ class FinalSuccessChecker : public Environment {
 }  // namespace testing
 
 int main(int argc, char** argv) {
-  InitGoogleTest(&argc, argv);
+  init_hawk_test(&argc, argv);
 
   AddGlobalTestEnvironment(new testing::internal::FinalSuccessChecker());
 
