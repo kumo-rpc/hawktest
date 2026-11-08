@@ -1,5 +1,4 @@
 // Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
-// Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
 //
 // Portions of this software are derived from GoogleTest and Google Mock,
 // originally distributed under the BSD 3-Clause License.

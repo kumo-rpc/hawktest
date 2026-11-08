@@ -19,7 +19,7 @@
 
 cmake_minimum_required(VERSION 3.31)
 
-project(hawktest CXX)
+project(hawktest CXX C)
 
 option(${PROJECT_NAME}_IS_TOP_PROJECT "hawktest project is the top level project or not" ON)
 

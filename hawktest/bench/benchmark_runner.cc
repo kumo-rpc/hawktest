@@ -27,6 +27,7 @@
 #include <hawktest/bench/managers.h>
 #include <hawktest/bench/reporter.h>
 #include <hawktest/bench/state.h>
+#include <hawktest/bench/internal/statistics.h>
 #include <hawktest/bench/types.h>
 #include "benchmark_api_internal.h"
 #include "internal_macros.h"

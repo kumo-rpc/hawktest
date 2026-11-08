@@ -32,7 +32,7 @@ hawk_test(gmock_link_test hawktest::hmock_main_static gmock_link2_test.cc)
 hawk_test(gmock_test hawktest::hmock_main_static)
 
 if (NOT WIN32)
-    hawk_test(gmock_stress_test hawktest::hmock_static)
+    hawk_test(gmock_stress_test hawktest::hawktest_static)
 endif()
 
 test_executable(gmock_leak_test_ hawktest::hmock_main_static)

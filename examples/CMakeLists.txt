@@ -15,3 +15,5 @@
 
 # Stub. Teaching binaries are in CMakeLists.examples.txt
 # (installed when generating with -DKMCMAKE_GEN_EXAMPLES=ON).
+
+add_subdirectory(mark)

@@ -28,73 +28,50 @@ kmcmake_cc_interface(
         PUBLIC
 )
 
+
+##################################################
+# cmark headers
+
+enable_language(C)
+
+set(_cmark_ver_major "${PROJECT_VERSION_MAJOR}")
+set(_cmark_ver_minor "${PROJECT_VERSION_MINOR}")
+set(_cmark_ver_patch "${PROJECT_VERSION_PATCH}")
+set(PROJECT_VERSION_MAJOR 0)
+set(PROJECT_VERSION_MINOR 31)
+set(PROJECT_VERSION_PATCH 2)
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmark/cmark_version.h.in
+        ${CMAKE_BINARY_DIR}/hawktest/cmark/cmark_version.h
+        @ONLY)
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmark/cmark_export.h.in
+        ${CMAKE_BINARY_DIR}/hawktest/cmark/cmark_export.h
+        @ONLY)
+set(PROJECT_VERSION_MAJOR "${_cmark_ver_major}")
+set(PROJECT_VERSION_MINOR "${_cmark_ver_minor}")
+set(PROJECT_VERSION_PATCH "${_cmark_ver_patch}")
+
 kmcmake_cc_library(
         NAMESPACE ${PROJECT_NAME}
-        NAME htest
+        NAME hawktest
         SOURCES
+        common/ascii.cc
+        common/utf8.cc
+        common/filepath.cc
         test/assertion-result.cc
         test/death-test.cc
-        common/filepath.cc
         test/matchers.cc
         test/port.cc
         test/printers.cc
         test/test-part.cc
         test/typed-test.cc
         test/htest.cc
-        CXXOPTS
-        ${KMCMAKE_CXX_OPTIONS}
-        PUBLIC
-        UNITY
-)
-
-kmcmake_cc_library(
-        NAMESPACE ${PROJECT_NAME}
-        NAME htest_main
-        SOURCES
-        test/main.cc
-        CXXOPTS
-        ${KMCMAKE_CXX_OPTIONS}
-        PUBLIC
-        LINKS
-        hawktest::htest_static
-)
-
-
-kmcmake_cc_library(
-        NAMESPACE ${PROJECT_NAME}
-        NAME hmock
-        SOURCES
         mock/cardinalities.cc
         mock/internal-utils.cc
         mock/matchers.cc
         mock/spec-builders.cc
         mock/hmock.cc
-        CXXOPTS
-        ${KMCMAKE_CXX_OPTIONS}
-        PUBLIC
-        UNITY
-        LINKS
-        hawktest::htest_static
-)
-
-
-kmcmake_cc_library(
-        NAMESPACE ${PROJECT_NAME}
-        NAME hmock_main
-        SOURCES
-        mock/main.cc
-        CXXOPTS
-        ${KMCMAKE_CXX_OPTIONS}
-        PUBLIC
-        LINKS
-        hawktest::hmock_static
-)
-
-
-kmcmake_cc_library(
-        NAMESPACE ${PROJECT_NAME}
-        NAME hbench
-        SOURCES
         bench/benchmark.cc
         bench/benchmark_api_internal.cc
         bench/benchmark_name.cc
@@ -114,12 +91,62 @@ kmcmake_cc_library(
         bench/string_util.cc
         bench/sysinfo.cc
         bench/timers.cc
+        cmark/blocks.c
+        cmark/buffer.c
+        cmark/cmark.c
+        cmark/cmark_ctype.c
+        cmark/commonmark.c
+        cmark/houdini_href_e.c
+        cmark/houdini_html_e.c
+        cmark/houdini_html_u.c
+        cmark/html.c
+        cmark/inlines.c
+        cmark/iterator.c
+        cmark/latex.c
+        cmark/man.c
+        cmark/node.c
+        cmark/references.c
+        cmark/render.c
+        cmark/scanners.c
+        cmark/utf8.c
+        cmark/xml.c
+        mark/md_types.cc
+        mark/md_compare.cc
+        mark/suite.cc
+        mark/cmd.cc
+        mark/loader.cc
+        mark/matcher.cc
+        mark/runner.cc
         CXXOPTS
         ${KMCMAKE_CXX_OPTIONS}
         PUBLIC
-        UNITY
+        LINKS
+        ${KMCMAKE_SYSTEM_DYLINK}
 )
 
+kmcmake_cc_library(
+        NAMESPACE ${PROJECT_NAME}
+        NAME htest_main
+        SOURCES
+        test/main.cc
+        CXXOPTS
+        ${KMCMAKE_CXX_OPTIONS}
+        PUBLIC
+        LINKS
+        ${PROJECT_NAME}::hawktest_static
+)
+
+kmcmake_cc_library(
+        NAMESPACE ${PROJECT_NAME}
+        NAME hmock_main
+        SOURCES
+        mock/main.cc
+        CXXOPTS
+        ${KMCMAKE_CXX_OPTIONS}
+        PUBLIC
+        LINKS
+        ${PROJECT_NAME}::hawktest_static
+)
 
 kmcmake_cc_library(
         NAMESPACE ${PROJECT_NAME}
@@ -130,35 +157,7 @@ kmcmake_cc_library(
         ${KMCMAKE_CXX_OPTIONS}
         PUBLIC
         LINKS
-        hawktest::hbench_static
+        ${PROJECT_NAME}::hawktest_static
 )
 
-
-kmcmake_cc_library(
-        NAMESPACE ${PROJECT_NAME}
-        NAME hcmark
-        SOURCES
-        markdown/blocks.cc
-        markdown/buffer.cc
-        markdown/cmark.cc
-        markdown/cmark_ctype.cc
-        markdown/commonmark.cc
-        markdown/houdini_href_e.cc
-        markdown/houdini_html_e.cc
-        markdown/houdini_html_u.cc
-        markdown/html.cc
-        markdown/inlines.cc
-        markdown/iterator.cc
-        markdown/latex.cc
-        markdown/man.cc
-        markdown/node.cc
-        markdown/references.cc
-        markdown/render.cc
-        markdown/scanners.cc
-        markdown/utf8.cc
-        markdown/xml.cc
-        CXXOPTS
-        ${KMCMAKE_CXX_OPTIONS}
-        PUBLIC
-        UNITY
-)
+################################################

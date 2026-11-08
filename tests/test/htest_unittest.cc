@@ -386,29 +386,29 @@ TEST(GetTestTypeIdTest, ReturnsTheSameValueInsideOrOutsideOfHawkTest) {
   EXPECT_EQ(kTestTypeIdInHawkTest, GetTestTypeId());
 }
 
-// Tests CanonicalizeForStdLibVersioning.
+// Tests canonicalize_for_std_lib_versioning.
 
-using ::testing::internal::CanonicalizeForStdLibVersioning;
+using ::testing::internal::canonicalize_for_std_lib_versioning;
 
-TEST(CanonicalizeForStdLibVersioning, LeavesUnversionedNamesUnchanged) {
-  EXPECT_EQ("std::bind", CanonicalizeForStdLibVersioning("std::bind"));
-  EXPECT_EQ("std::_", CanonicalizeForStdLibVersioning("std::_"));
-  EXPECT_EQ("std::__foo", CanonicalizeForStdLibVersioning("std::__foo"));
-  EXPECT_EQ("turbo::__1::x", CanonicalizeForStdLibVersioning("turbo::__1::x"));
-  EXPECT_EQ("__1::x", CanonicalizeForStdLibVersioning("__1::x"));
-  EXPECT_EQ("::__1::x", CanonicalizeForStdLibVersioning("::__1::x"));
+TEST(canonicalize_for_std_lib_versioning, LeavesUnversionedNamesUnchanged) {
+  EXPECT_EQ("std::bind", canonicalize_for_std_lib_versioning("std::bind"));
+  EXPECT_EQ("std::_", canonicalize_for_std_lib_versioning("std::_"));
+  EXPECT_EQ("std::__foo", canonicalize_for_std_lib_versioning("std::__foo"));
+  EXPECT_EQ("turbo::__1::x", canonicalize_for_std_lib_versioning("turbo::__1::x"));
+  EXPECT_EQ("__1::x", canonicalize_for_std_lib_versioning("__1::x"));
+  EXPECT_EQ("::__1::x", canonicalize_for_std_lib_versioning("::__1::x"));
 }
 
-TEST(CanonicalizeForStdLibVersioning, ElidesDoubleUnderNames) {
-  EXPECT_EQ("std::bind", CanonicalizeForStdLibVersioning("std::__1::bind"));
-  EXPECT_EQ("std::_", CanonicalizeForStdLibVersioning("std::__1::_"));
+TEST(canonicalize_for_std_lib_versioning, ElidesDoubleUnderNames) {
+  EXPECT_EQ("std::bind", canonicalize_for_std_lib_versioning("std::__1::bind"));
+  EXPECT_EQ("std::_", canonicalize_for_std_lib_versioning("std::__1::_"));
 
-  EXPECT_EQ("std::bind", CanonicalizeForStdLibVersioning("std::__g::bind"));
-  EXPECT_EQ("std::_", CanonicalizeForStdLibVersioning("std::__g::_"));
+  EXPECT_EQ("std::bind", canonicalize_for_std_lib_versioning("std::__g::bind"));
+  EXPECT_EQ("std::_", canonicalize_for_std_lib_versioning("std::__g::_"));
 
   EXPECT_EQ("std::bind",
-            CanonicalizeForStdLibVersioning("std::__google::bind"));
-  EXPECT_EQ("std::_", CanonicalizeForStdLibVersioning("std::__google::_"));
+            canonicalize_for_std_lib_versioning("std::__google::bind"));
+  EXPECT_EQ("std::_", canonicalize_for_std_lib_versioning("std::__google::_"));
 }
 
 // Tests FormatTimeInMillisAsSeconds().
