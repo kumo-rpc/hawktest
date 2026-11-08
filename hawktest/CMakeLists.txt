@@ -52,6 +52,127 @@ set(PROJECT_VERSION_MAJOR "${_cmark_ver_major}")
 set(PROJECT_VERSION_MINOR "${_cmark_ver_minor}")
 set(PROJECT_VERSION_PATCH "${_cmark_ver_patch}")
 
+########################################################
+# flags
+
+include(CheckIncludeFileCXX)
+include(CheckCXXSymbolExists)
+include(CheckTypeSize)
+
+if (WIN32 AND NOT CYGWIN)
+    set(OS_WINDOWS 1)
+else ()
+    set(OS_WINDOWS 0)
+endif ()
+
+if (MSVC)
+    set(HAVE_SYS_TYPES_H 1)
+    set(HAVE_STDDEF_H 1)
+    set(HAVE_UNISTD_H 0)
+    set(HAVE_SYS_STAT_H 1)
+    set(HAVE_SHLWAPI_H 1)
+    set(HAVE_STDINT_H 1)
+    set(HAVE_INTTYPES_H 1)
+    set(HAVE_FNMATCH_H 0)
+    set(HAVE_STRTOLL 0)
+    set(HAVE_STRTOQ 0)
+else ()
+    foreach (fname IN ITEMS unistd stdint inttypes sys/types sys/stat fnmatch)
+        string(TOUPPER "${fname}" FNAME)
+        string(REPLACE "/" "_" FNAME "${FNAME}")
+        if (NOT HAVE_${FNAME}_H)
+            check_include_file_cxx("${fname}.h" HAVE_${FNAME}_H)
+        endif ()
+    endforeach ()
+    if (NOT HAVE_FNMATCH_H AND OS_WINDOWS)
+        check_include_file_cxx("shlwapi.h" HAVE_SHLWAPI_H)
+    endif ()
+    if (NOT HAVE_SHLWAPI_H)
+        set(HAVE_SHLWAPI_H 0)
+    endif ()
+    check_cxx_symbol_exists(strtoll stdlib.h HAVE_STRTOLL)
+    if (NOT HAVE_STRTOLL)
+        check_cxx_symbol_exists(strtoq stdlib.h HAVE_STRTOQ)
+    endif ()
+    if (NOT HAVE_STRTOLL)
+        set(HAVE_STRTOLL 0)
+    endif ()
+    if (NOT HAVE_STRTOQ)
+        set(HAVE_STRTOQ 0)
+    endif ()
+endif ()
+
+foreach (v IN ITEMS
+        HAVE_STDINT_H HAVE_SYS_TYPES_H HAVE_INTTYPES_H HAVE_SYS_STAT_H
+        HAVE_UNISTD_H HAVE_FNMATCH_H HAVE_SHLWAPI_H HAVE_STRTOLL HAVE_STRTOQ)
+    if (${v})
+        set(${v} 1)
+    else ()
+        set(${v} 0)
+    endif ()
+endforeach ()
+
+set(GFLAGS_INTTYPES_FORMAT_C99 0)
+set(GFLAGS_INTTYPES_FORMAT_BSD 0)
+set(GFLAGS_INTTYPES_FORMAT_VC7 0)
+set(_flags_int_types uint32_t u_int32_t)
+if (MSVC)
+    list(INSERT _flags_int_types 0 __int32)
+endif ()
+foreach (type IN LISTS _flags_int_types)
+    check_type_size(${type} ${type} LANGUAGE CXX)
+    if (HAVE_${type})
+        break()
+    endif ()
+endforeach ()
+if (HAVE_uint32_t)
+    set(GFLAGS_INTTYPES_FORMAT_C99 1)
+elseif (HAVE_u_int32_t)
+    set(GFLAGS_INTTYPES_FORMAT_BSD 1)
+elseif (HAVE___int32)
+    set(GFLAGS_INTTYPES_FORMAT_VC7 1)
+else ()
+    message(FATAL_ERROR "flags: no 32-bit integer type (uint32_t, u_int32_t, __int32)")
+endif ()
+
+if (Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
+    set(HAVE_PTHREAD 1)
+    check_type_size(pthread_rwlock_t RWLOCK LANGUAGE CXX)
+    if (HAVE_RWLOCK)
+        set(HAVE_RWLOCK 1)
+    else ()
+        set(HAVE_RWLOCK 0)
+    endif ()
+else ()
+    set(HAVE_PTHREAD 0)
+    set(HAVE_RWLOCK 0)
+endif ()
+
+set(GFLAGS_NAMESPACE gflags)
+set(INCLUDE_GFLAGS_NS_H "")
+set(GFLAGS_IS_A_DLL 0)
+if (CMAKE_COMPILER_IS_GNUCXX)
+    set(GFLAGS_ATTRIBUTE_UNUSED "__attribute((unused))")
+else ()
+    set(GFLAGS_ATTRIBUTE_UNUSED "")
+endif ()
+
+set(_flags_gen_dir "${CMAKE_CURRENT_SOURCE_DIR}/flags")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/flags/defines.h.in ${_flags_gen_dir}/defines.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/flags/gflags.h.in ${_flags_gen_dir}/gflags.h @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/flags/gflags_declare.h.in ${_flags_gen_dir}/gflags_declare.h @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/flags/gflags_completions.h.in ${_flags_gen_dir}/gflags_completions.h @ONLY)
+
+set(_hawktest_flags_sources
+        flags/gflags.cc
+        flags/gflags_reporting.cc
+        flags/gflags_completions.cc
+)
+if (OS_WINDOWS)
+    list(APPEND _hawktest_flags_sources flags/windows_port.cc)
+endif ()
+
+########################################################
 kmcmake_cc_library(
         NAMESPACE ${PROJECT_NAME}
         NAME hawktest
@@ -117,6 +238,7 @@ kmcmake_cc_library(
         mark/loader.cc
         mark/matcher.cc
         mark/runner.cc
+        ${_hawktest_flags_sources}
         CXXOPTS
         ${KMCMAKE_CXX_OPTIONS}
         PUBLIC
