@@ -49,67 +49,67 @@ TEST(HTestEnvVarTest, Dummy) {}
 
 void PrintFlag(const char* flag) {
   if (strcmp(flag, "break_on_failure") == 0) {
-    cout << HTEST_FLAG_GET(break_on_failure);
+    cout << FLAGS_htest_break_on_failure;
     return;
   }
 
   if (strcmp(flag, "catch_exceptions") == 0) {
-    cout << HTEST_FLAG_GET(catch_exceptions);
+    cout << FLAGS_htest_catch_exceptions;
     return;
   }
 
   if (strcmp(flag, "color") == 0) {
-    cout << HTEST_FLAG_GET(color);
+    cout << FLAGS_htest_color;
     return;
   }
 
   if (strcmp(flag, "death_test_style") == 0) {
-    cout << HTEST_FLAG_GET(death_test_style);
+    cout << FLAGS_htest_death_test_style;
     return;
   }
 
   if (strcmp(flag, "death_test_use_fork") == 0) {
-    cout << HTEST_FLAG_GET(death_test_use_fork);
+    cout << FLAGS_htest_death_test_use_fork;
     return;
   }
 
   if (strcmp(flag, "fail_fast") == 0) {
-    cout << HTEST_FLAG_GET(fail_fast);
+    cout << FLAGS_htest_fail_fast;
     return;
   }
 
   if (strcmp(flag, "filter") == 0) {
-    cout << HTEST_FLAG_GET(filter);
+    cout << FLAGS_htest_filter;
     return;
   }
 
   if (strcmp(flag, "output") == 0) {
-    cout << HTEST_FLAG_GET(output);
+    cout << FLAGS_htest_output;
     return;
   }
 
   if (strcmp(flag, "brief") == 0) {
-    cout << HTEST_FLAG_GET(brief);
+    cout << FLAGS_htest_brief;
     return;
   }
 
   if (strcmp(flag, "print_time") == 0) {
-    cout << HTEST_FLAG_GET(print_time);
+    cout << FLAGS_htest_print_time;
     return;
   }
 
   if (strcmp(flag, "repeat") == 0) {
-    cout << HTEST_FLAG_GET(repeat);
+    cout << FLAGS_htest_repeat;
     return;
   }
 
   if (strcmp(flag, "stack_trace_depth") == 0) {
-    cout << HTEST_FLAG_GET(stack_trace_depth);
+    cout << FLAGS_htest_stack_trace_depth;
     return;
   }
 
   if (strcmp(flag, "throw_on_failure") == 0) {
-    cout << HTEST_FLAG_GET(throw_on_failure);
+    cout << FLAGS_htest_throw_on_failure;
     return;
   }
 

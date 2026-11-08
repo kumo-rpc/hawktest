@@ -66,29 +66,29 @@ FilePath GetAbsolutePathOf(const FilePath& relative_path) {
 // Testing UnitTestOptions::GetOutputFormat/GetOutputFile.
 
 TEST(XmlOutputTest, GetOutputFormatDefault) {
-  HTEST_FLAG_SET(output, "");
+  (void)(FLAGS_htest_output = (""));
   EXPECT_STREQ("", UnitTestOptions::GetOutputFormat().c_str());
 }
 
 TEST(XmlOutputTest, GetOutputFormat) {
-  HTEST_FLAG_SET(output, "xml:filename");
+  (void)(FLAGS_htest_output = ("xml:filename"));
   EXPECT_STREQ("xml", UnitTestOptions::GetOutputFormat().c_str());
 }
 
 TEST(XmlOutputTest, GetOutputFileDefault) {
-  HTEST_FLAG_SET(output, "");
+  (void)(FLAGS_htest_output = (""));
   EXPECT_EQ(GetAbsolutePathOf(FilePath("test_detail.xml")).string(),
             UnitTestOptions::GetAbsolutePathToOutputFile());
 }
 
 TEST(XmlOutputTest, GetOutputFileSingleFile) {
-  HTEST_FLAG_SET(output, "xml:filename.abc");
+  (void)(FLAGS_htest_output = ("xml:filename.abc"));
   EXPECT_EQ(GetAbsolutePathOf(FilePath("filename.abc")).string(),
             UnitTestOptions::GetAbsolutePathToOutputFile());
 }
 
 TEST(XmlOutputTest, GetOutputFileFromDirectoryPath) {
-  HTEST_FLAG_SET(output, "xml:path" HTEST_PATH_SEP_);
+  (void)(FLAGS_htest_output = ("xml:path" HTEST_PATH_SEP_));
   const std::string expected_output_file =
       GetAbsolutePathOf(FilePath(std::string("path") + HTEST_PATH_SEP_ +
                                  GetCurrentExecutableName().string() + ".xml"))
@@ -149,7 +149,7 @@ class XmlOutputChangeDirTest : public Test {
 };
 
 TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithDefault) {
-  HTEST_FLAG_SET(output, "");
+  (void)(FLAGS_htest_output = (""));
   EXPECT_EQ(
       FilePath::ConcatPaths(original_working_dir_, FilePath("test_detail.xml"))
           .string(),
@@ -157,7 +157,7 @@ TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithDefault) {
 }
 
 TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithDefaultXML) {
-  HTEST_FLAG_SET(output, "xml");
+  (void)(FLAGS_htest_output = ("xml"));
   EXPECT_EQ(
       FilePath::ConcatPaths(original_working_dir_, FilePath("test_detail.xml"))
           .string(),
@@ -165,7 +165,7 @@ TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithDefaultXML) {
 }
 
 TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithRelativeFile) {
-  HTEST_FLAG_SET(output, "xml:filename.abc");
+  (void)(FLAGS_htest_output = ("xml:filename.abc"));
   EXPECT_EQ(
       FilePath::ConcatPaths(original_working_dir_, FilePath("filename.abc"))
           .string(),
@@ -173,7 +173,7 @@ TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithRelativeFile) {
 }
 
 TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithRelativePath) {
-  HTEST_FLAG_SET(output, "xml:path" HTEST_PATH_SEP_);
+  (void)(FLAGS_htest_output = ("xml:path" HTEST_PATH_SEP_));
   const std::string expected_output_file =
       FilePath::ConcatPaths(
           original_working_dir_,
@@ -191,11 +191,11 @@ TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithRelativePath) {
 
 TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithAbsoluteFile) {
 #ifdef HTEST_OS_WINDOWS
-  HTEST_FLAG_SET(output, "xml:c:\\tmp\\filename.abc");
+  (void)(FLAGS_htest_output = ("xml:c:\\tmp\\filename.abc"));
   EXPECT_EQ(FilePath("c:\\tmp\\filename.abc").string(),
             UnitTestOptions::GetAbsolutePathToOutputFile());
 #else
-  HTEST_FLAG_SET(output, "xml:/tmp/filename.abc");
+  (void)(FLAGS_htest_output = ("xml:/tmp/filename.abc"));
   EXPECT_EQ(FilePath("/tmp/filename.abc").string(),
             UnitTestOptions::GetAbsolutePathToOutputFile());
 #endif
@@ -208,7 +208,7 @@ TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithAbsolutePath) {
   const std::string path = "/tmp/";
 #endif
 
-  HTEST_FLAG_SET(output, "xml:" + path);
+  (void)(FLAGS_htest_output = ("xml:" + path));
   const std::string expected_output_file =
       path + GetCurrentExecutableName().string() + ".xml";
   const std::string& output_file =

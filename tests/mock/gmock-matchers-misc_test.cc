@@ -581,7 +581,7 @@ TEST_P(BipartiteRandomTest, LargerNets) {
   int iters = GetParam().second;
   MatchMatrix graph(static_cast<size_t>(nodes), static_cast<size_t>(nodes));
 
-  auto seed = static_cast<uint32_t>(HTEST_FLAG_GET(random_seed));
+  auto seed = static_cast<uint32_t>(FLAGS_htest_random_seed);
   if (seed == 0) {
     seed = static_cast<uint32_t>(time(nullptr));
   }

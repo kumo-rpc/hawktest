@@ -1,0 +1,29 @@
+// Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+#pragma once
+
+#include <hawktest/common/internal-inl.h>
+
+namespace testing {
+namespace internal {
+
+enum class HTestColor { kDefault,
+    kRed,
+    kGreen,
+    kYellow };
+
+HTEST_ATTRIBUTE_PRINTF_(2, 3)
+void ColoredPrintf(HTestColor color, const char* fmt, ...);
+
+HTEST_API_ bool ParseFlag(const char* str, const char* flag, int32_t* value);
+HTEST_API_ void parse_hawk_test_flags_only(int* argc, char** argv);
+HTEST_API_ void parse_hawk_test_flags_only(int* argc, wchar_t** argv);
+
+} // namespace internal
+} // namespace testing

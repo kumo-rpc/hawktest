@@ -43,18 +43,18 @@
 // Do not move it after other htest #includes.
 TEST(CommandLineFlagsTest, CanBeAccessedInCodeOnceHTestHIsIncluded) {
   bool dummy =
-      HTEST_FLAG_GET(also_run_disabled_tests) ||
-      HTEST_FLAG_GET(break_on_failure) || HTEST_FLAG_GET(catch_exceptions) ||
-      HTEST_FLAG_GET(color) != "unknown" || HTEST_FLAG_GET(fail_fast) ||
-      HTEST_FLAG_GET(filter) != "unknown" || HTEST_FLAG_GET(list_tests) ||
-      HTEST_FLAG_GET(output) != "unknown" || HTEST_FLAG_GET(brief) ||
-      HTEST_FLAG_GET(print_time) || HTEST_FLAG_GET(random_seed) ||
-      HTEST_FLAG_GET(repeat) > 0 ||
-      HTEST_FLAG_GET(recreate_environments_when_repeating) ||
-      HTEST_FLAG_GET(show_internal_stack_frames) || HTEST_FLAG_GET(shuffle) ||
-      HTEST_FLAG_GET(stack_trace_depth) > 0 ||
-      HTEST_FLAG_GET(stream_result_to) != "unknown" ||
-      HTEST_FLAG_GET(throw_on_failure);
+      FLAGS_htest_also_run_disabled_tests ||
+      FLAGS_htest_break_on_failure || FLAGS_htest_catch_exceptions ||
+      FLAGS_htest_color != "unknown" || FLAGS_htest_fail_fast ||
+      FLAGS_htest_filter != "unknown" || FLAGS_htest_list_tests ||
+      FLAGS_htest_output != "unknown" || FLAGS_htest_brief ||
+      FLAGS_htest_print_time || FLAGS_htest_random_seed ||
+      FLAGS_htest_repeat > 0 ||
+      FLAGS_htest_recreate_environments_when_repeating ||
+      FLAGS_htest_show_internal_stack_frames || FLAGS_htest_shuffle ||
+      FLAGS_htest_stack_trace_depth > 0 ||
+      FLAGS_htest_stream_result_to != "unknown" ||
+      FLAGS_htest_throw_on_failure;
   EXPECT_TRUE(dummy || !dummy);  // Suppresses warning that dummy is unused.
 }
 
@@ -1621,24 +1621,24 @@ class HTestFlagSaverTest : public Test {
   static void SetUpTestSuite() {
     saver_ = new HTestFlagSaver;
 
-    HTEST_FLAG_SET(also_run_disabled_tests, false);
-    HTEST_FLAG_SET(break_on_failure, false);
-    HTEST_FLAG_SET(catch_exceptions, false);
-    HTEST_FLAG_SET(death_test_use_fork, false);
-    HTEST_FLAG_SET(color, "auto");
-    HTEST_FLAG_SET(fail_fast, false);
-    HTEST_FLAG_SET(filter, "");
-    HTEST_FLAG_SET(list_tests, false);
-    HTEST_FLAG_SET(output, "");
-    HTEST_FLAG_SET(brief, false);
-    HTEST_FLAG_SET(print_time, true);
-    HTEST_FLAG_SET(random_seed, 0);
-    HTEST_FLAG_SET(repeat, 1);
-    HTEST_FLAG_SET(recreate_environments_when_repeating, true);
-    HTEST_FLAG_SET(shuffle, false);
-    HTEST_FLAG_SET(stack_trace_depth, kMaxStackTraceDepth);
-    HTEST_FLAG_SET(stream_result_to, "");
-    HTEST_FLAG_SET(throw_on_failure, false);
+    (void)(FLAGS_htest_also_run_disabled_tests = (false));
+    (void)(FLAGS_htest_break_on_failure = (false));
+    (void)(FLAGS_htest_catch_exceptions = (false));
+    (void)(FLAGS_htest_death_test_use_fork = (false));
+    (void)(FLAGS_htest_color = ("auto"));
+    (void)(FLAGS_htest_fail_fast = (false));
+    (void)(FLAGS_htest_filter = (""));
+    (void)(FLAGS_htest_list_tests = (false));
+    (void)(FLAGS_htest_output = (""));
+    (void)(FLAGS_htest_brief = (false));
+    (void)(FLAGS_htest_print_time = (true));
+    (void)(FLAGS_htest_random_seed = (0));
+    (void)(FLAGS_htest_repeat = (1));
+    (void)(FLAGS_htest_recreate_environments_when_repeating = (true));
+    (void)(FLAGS_htest_shuffle = (false));
+    (void)(FLAGS_htest_stack_trace_depth = (kMaxStackTraceDepth));
+    (void)(FLAGS_htest_stream_result_to = (""));
+    (void)(FLAGS_htest_throw_on_failure = (false));
   }
 
   // Restores the Hawk Test flags that the tests have modified.  This will
@@ -1651,43 +1651,43 @@ class HTestFlagSaverTest : public Test {
   // Verifies that the Hawk Test flags have their default values, and then
   // modifies each of them.
   void VerifyAndModifyFlags() {
-    EXPECT_FALSE(HTEST_FLAG_GET(also_run_disabled_tests));
-    EXPECT_FALSE(HTEST_FLAG_GET(break_on_failure));
-    EXPECT_FALSE(HTEST_FLAG_GET(catch_exceptions));
-    EXPECT_STREQ("auto", HTEST_FLAG_GET(color).c_str());
-    EXPECT_FALSE(HTEST_FLAG_GET(death_test_use_fork));
-    EXPECT_FALSE(HTEST_FLAG_GET(fail_fast));
-    EXPECT_STREQ("", HTEST_FLAG_GET(filter).c_str());
-    EXPECT_FALSE(HTEST_FLAG_GET(list_tests));
-    EXPECT_STREQ("", HTEST_FLAG_GET(output).c_str());
-    EXPECT_FALSE(HTEST_FLAG_GET(brief));
-    EXPECT_TRUE(HTEST_FLAG_GET(print_time));
-    EXPECT_EQ(0, HTEST_FLAG_GET(random_seed));
-    EXPECT_EQ(1, HTEST_FLAG_GET(repeat));
-    EXPECT_TRUE(HTEST_FLAG_GET(recreate_environments_when_repeating));
-    EXPECT_FALSE(HTEST_FLAG_GET(shuffle));
-    EXPECT_EQ(kMaxStackTraceDepth, HTEST_FLAG_GET(stack_trace_depth));
-    EXPECT_STREQ("", HTEST_FLAG_GET(stream_result_to).c_str());
-    EXPECT_FALSE(HTEST_FLAG_GET(throw_on_failure));
+    EXPECT_FALSE(FLAGS_htest_also_run_disabled_tests);
+    EXPECT_FALSE(FLAGS_htest_break_on_failure);
+    EXPECT_FALSE(FLAGS_htest_catch_exceptions);
+    EXPECT_STREQ("auto", FLAGS_htest_color.c_str());
+    EXPECT_FALSE(FLAGS_htest_death_test_use_fork);
+    EXPECT_FALSE(FLAGS_htest_fail_fast);
+    EXPECT_STREQ("", FLAGS_htest_filter.c_str());
+    EXPECT_FALSE(FLAGS_htest_list_tests);
+    EXPECT_STREQ("", FLAGS_htest_output.c_str());
+    EXPECT_FALSE(FLAGS_htest_brief);
+    EXPECT_TRUE(FLAGS_htest_print_time);
+    EXPECT_EQ(0, FLAGS_htest_random_seed);
+    EXPECT_EQ(1, FLAGS_htest_repeat);
+    EXPECT_TRUE(FLAGS_htest_recreate_environments_when_repeating);
+    EXPECT_FALSE(FLAGS_htest_shuffle);
+    EXPECT_EQ(kMaxStackTraceDepth, FLAGS_htest_stack_trace_depth);
+    EXPECT_STREQ("", FLAGS_htest_stream_result_to.c_str());
+    EXPECT_FALSE(FLAGS_htest_throw_on_failure);
 
-    HTEST_FLAG_SET(also_run_disabled_tests, true);
-    HTEST_FLAG_SET(break_on_failure, true);
-    HTEST_FLAG_SET(catch_exceptions, true);
-    HTEST_FLAG_SET(color, "no");
-    HTEST_FLAG_SET(death_test_use_fork, true);
-    HTEST_FLAG_SET(fail_fast, true);
-    HTEST_FLAG_SET(filter, "abc");
-    HTEST_FLAG_SET(list_tests, true);
-    HTEST_FLAG_SET(output, "xml:foo.xml");
-    HTEST_FLAG_SET(brief, true);
-    HTEST_FLAG_SET(print_time, false);
-    HTEST_FLAG_SET(random_seed, 1);
-    HTEST_FLAG_SET(repeat, 100);
-    HTEST_FLAG_SET(recreate_environments_when_repeating, false);
-    HTEST_FLAG_SET(shuffle, true);
-    HTEST_FLAG_SET(stack_trace_depth, 1);
-    HTEST_FLAG_SET(stream_result_to, "localhost:1234");
-    HTEST_FLAG_SET(throw_on_failure, true);
+    (void)(FLAGS_htest_also_run_disabled_tests = (true));
+    (void)(FLAGS_htest_break_on_failure = (true));
+    (void)(FLAGS_htest_catch_exceptions = (true));
+    (void)(FLAGS_htest_color = ("no"));
+    (void)(FLAGS_htest_death_test_use_fork = (true));
+    (void)(FLAGS_htest_fail_fast = (true));
+    (void)(FLAGS_htest_filter = ("abc"));
+    (void)(FLAGS_htest_list_tests = (true));
+    (void)(FLAGS_htest_output = ("xml:foo.xml"));
+    (void)(FLAGS_htest_brief = (true));
+    (void)(FLAGS_htest_print_time = (false));
+    (void)(FLAGS_htest_random_seed = (1));
+    (void)(FLAGS_htest_repeat = (100));
+    (void)(FLAGS_htest_recreate_environments_when_repeating = (false));
+    (void)(FLAGS_htest_shuffle = (true));
+    (void)(FLAGS_htest_stack_trace_depth = (1));
+    (void)(FLAGS_htest_stream_result_to = ("localhost:1234"));
+    (void)(FLAGS_htest_throw_on_failure = (true));
   }
 
  private:
@@ -1744,60 +1744,6 @@ static void SetEnv(const char* name, const char* value) {
   }
 #endif  // HTEST_OS_WINDOWS_MOBILE
 }
-
-#ifndef HTEST_OS_WINDOWS_MOBILE
-// Environment variables are not supported on Windows CE.
-
-using testing::internal::Int32FromHTestEnv;
-
-// Tests Int32FromHTestEnv().
-
-// Tests that Int32FromHTestEnv() returns the default value when the
-// environment variable is not set.
-TEST(Int32FromHTestEnvTest, ReturnsDefaultWhenVariableIsNotSet) {
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "TEMP", "");
-  EXPECT_EQ(10, Int32FromHTestEnv("temp", 10));
-}
-
-#if !defined(HTEST_GET_INT32_FROM_ENV_)
-
-// Tests that Int32FromHTestEnv() returns the default value when the
-// environment variable overflows as an Int32.
-TEST(Int32FromHTestEnvTest, ReturnsDefaultWhenValueOverflows) {
-  printf("(expecting 2 warnings)\n");
-
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "TEMP", "12345678987654321");
-  EXPECT_EQ(20, Int32FromHTestEnv("temp", 20));
-
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "TEMP", "-12345678987654321");
-  EXPECT_EQ(30, Int32FromHTestEnv("temp", 30));
-}
-
-// Tests that Int32FromHTestEnv() returns the default value when the
-// environment variable does not represent a valid decimal integer.
-TEST(Int32FromHTestEnvTest, ReturnsDefaultWhenValueIsInvalid) {
-  printf("(expecting 2 warnings)\n");
-
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "TEMP", "A1");
-  EXPECT_EQ(40, Int32FromHTestEnv("temp", 40));
-
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "TEMP", "12X");
-  EXPECT_EQ(50, Int32FromHTestEnv("temp", 50));
-}
-
-#endif  // !defined(HTEST_GET_INT32_FROM_ENV_)
-
-// Tests that Int32FromHTestEnv() parses and returns the value of the
-// environment variable when it represents a valid decimal integer in
-// the range of an Int32.
-TEST(Int32FromHTestEnvTest, ParsesAndReturnsValidValue) {
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "TEMP", "123");
-  EXPECT_EQ(123, Int32FromHTestEnv("temp", 0));
-
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "TEMP", "-321");
-  EXPECT_EQ(-321, Int32FromHTestEnv("temp", 0));
-}
-#endif  // !HTEST_OS_WINDOWS_MOBILE
 
 // Tests ParseFlag().
 
@@ -1895,16 +1841,16 @@ class ShouldShardTest : public testing::Test {
   void SetUp() override {}
 
   void TearDown() override {
-    HTEST_FLAG_SET(shard_index, -1);
-    HTEST_FLAG_SET(total_shards, -1);
+    (void)(FLAGS_htest_shard_index = (-1));
+    (void)(FLAGS_htest_total_shards = (-1));
   }
 };
 
 // Tests that sharding is disabled if neither of the environment variables
 // are set.
 TEST_F(ShouldShardTest, ReturnsFalseWhenNeitherEnvVarIsSet) {
-  HTEST_FLAG_SET(shard_index, -1);
-  HTEST_FLAG_SET(total_shards, -1);
+  (void)(FLAGS_htest_shard_index = (-1));
+  (void)(FLAGS_htest_total_shards = (-1));
 
   EXPECT_FALSE(ShouldShard(false));
   EXPECT_FALSE(ShouldShard(true));
@@ -1912,8 +1858,8 @@ TEST_F(ShouldShardTest, ReturnsFalseWhenNeitherEnvVarIsSet) {
 
 // Tests that sharding is not enabled if total_shards  == 1.
 TEST_F(ShouldShardTest, ReturnsFalseWhenTotalShardIsOne) {
-  HTEST_FLAG_SET(shard_index, 0);
-  HTEST_FLAG_SET(total_shards, 1);
+  (void)(FLAGS_htest_shard_index = (0));
+  (void)(FLAGS_htest_total_shards = (1));
 
   EXPECT_FALSE(ShouldShard(false));
   EXPECT_FALSE(ShouldShard(true));
@@ -1924,18 +1870,18 @@ TEST_F(ShouldShardTest, ReturnsFalseWhenTotalShardIsOne) {
 // Environment variables are not supported on Windows CE.
 #ifndef HTEST_OS_WINDOWS_MOBILE
 TEST_F(ShouldShardTest, WorksWhenShardEnvVarsAreValid) {
-  HTEST_FLAG_SET(shard_index, 4);
-  HTEST_FLAG_SET(total_shards, 22);
+  (void)(FLAGS_htest_shard_index = (4));
+  (void)(FLAGS_htest_total_shards = (22));
   EXPECT_TRUE(ShouldShard(false));
   EXPECT_FALSE(ShouldShard(true));
 
-  HTEST_FLAG_SET(shard_index, 8);
-  HTEST_FLAG_SET(total_shards, 9);
+  (void)(FLAGS_htest_shard_index = (8));
+  (void)(FLAGS_htest_total_shards = (9));
   EXPECT_TRUE(ShouldShard(false));
   EXPECT_FALSE(ShouldShard(true));
 
-  HTEST_FLAG_SET(shard_index, 0);
-  HTEST_FLAG_SET(total_shards, 9);
+  (void)(FLAGS_htest_shard_index = (0));
+  (void)(FLAGS_htest_total_shards = (9));
   EXPECT_TRUE(ShouldShard(false));
   EXPECT_FALSE(ShouldShard(true));
 }
@@ -1946,20 +1892,20 @@ TEST_F(ShouldShardTest, WorksWhenShardEnvVarsAreValid) {
 typedef ShouldShardTest ShouldShardDeathTest;
 
 TEST_F(ShouldShardDeathTest, AbortsWhenShardingEnvVarsAreInvalid) {
-  HTEST_FLAG_SET(shard_index, 4);
-  HTEST_FLAG_SET(total_shards, 4);
+  (void)(FLAGS_htest_shard_index = (4));
+  (void)(FLAGS_htest_total_shards = (4));
   EXPECT_DEATH_IF_SUPPORTED(ShouldShard(false), ".*");
 
-  HTEST_FLAG_SET(shard_index, 4);
-  HTEST_FLAG_SET(total_shards, -2);
+  (void)(FLAGS_htest_shard_index = (4));
+  (void)(FLAGS_htest_total_shards = (-2));
   EXPECT_DEATH_IF_SUPPORTED(ShouldShard(false), ".*");
 
-  HTEST_FLAG_SET(shard_index, 5);
-  HTEST_FLAG_SET(total_shards, 5);
+  (void)(FLAGS_htest_shard_index = (5));
+  (void)(FLAGS_htest_total_shards = (5));
   EXPECT_DEATH_IF_SUPPORTED(ShouldShard(false), ".*");
 
-  HTEST_FLAG_SET(shard_index, -1);
-  HTEST_FLAG_SET(total_shards, 5);
+  (void)(FLAGS_htest_shard_index = (-1));
+  (void)(FLAGS_htest_total_shards = (5));
   EXPECT_DEATH_IF_SUPPORTED(ShouldShard(false), ".*");
 }
 
@@ -5704,7 +5650,7 @@ struct Flags {
     return flags;
   }
 
-  // Creates a Flags struct where the HTEST_FLAG(stack_trace_depth) flag has
+  // Creates a Flags struct where the FLAGS_htest_stack_trace_depth flag has
   // the given value.
   static Flags StackTraceDepth(int32_t stack_trace_depth) {
     Flags flags;
@@ -5712,7 +5658,7 @@ struct Flags {
     return flags;
   }
 
-  // Creates a Flags struct where the HTEST_FLAG(stream_result_to) flag has
+  // Creates a Flags struct where the FLAGS_htest_stream_result_to flag has
   // the given value.
   static Flags StreamResultTo(const char* stream_result_to) {
     Flags flags;
@@ -5753,23 +5699,23 @@ class ParseFlagsTest : public Test {
  protected:
   // Clears the flags before each test.
   void SetUp() override {
-    HTEST_FLAG_SET(also_run_disabled_tests, false);
-    HTEST_FLAG_SET(break_on_failure, false);
-    HTEST_FLAG_SET(catch_exceptions, false);
-    HTEST_FLAG_SET(death_test_use_fork, false);
-    HTEST_FLAG_SET(fail_fast, false);
-    HTEST_FLAG_SET(filter, "");
-    HTEST_FLAG_SET(list_tests, false);
-    HTEST_FLAG_SET(output, "");
-    HTEST_FLAG_SET(brief, false);
-    HTEST_FLAG_SET(print_time, true);
-    HTEST_FLAG_SET(random_seed, 0);
-    HTEST_FLAG_SET(repeat, 1);
-    HTEST_FLAG_SET(recreate_environments_when_repeating, true);
-    HTEST_FLAG_SET(shuffle, false);
-    HTEST_FLAG_SET(stack_trace_depth, kMaxStackTraceDepth);
-    HTEST_FLAG_SET(stream_result_to, "");
-    HTEST_FLAG_SET(throw_on_failure, false);
+    (void)(FLAGS_htest_also_run_disabled_tests = (false));
+    (void)(FLAGS_htest_break_on_failure = (false));
+    (void)(FLAGS_htest_catch_exceptions = (false));
+    (void)(FLAGS_htest_death_test_use_fork = (false));
+    (void)(FLAGS_htest_fail_fast = (false));
+    (void)(FLAGS_htest_filter = (""));
+    (void)(FLAGS_htest_list_tests = (false));
+    (void)(FLAGS_htest_output = (""));
+    (void)(FLAGS_htest_brief = (false));
+    (void)(FLAGS_htest_print_time = (true));
+    (void)(FLAGS_htest_random_seed = (0));
+    (void)(FLAGS_htest_repeat = (1));
+    (void)(FLAGS_htest_recreate_environments_when_repeating = (true));
+    (void)(FLAGS_htest_shuffle = (false));
+    (void)(FLAGS_htest_stack_trace_depth = (kMaxStackTraceDepth));
+    (void)(FLAGS_htest_stream_result_to = (""));
+    (void)(FLAGS_htest_throw_on_failure = (false));
   }
 
   // Asserts that two narrow or wide string arrays are equal.
@@ -5786,26 +5732,26 @@ class ParseFlagsTest : public Test {
   // Verifies that the flag values match the expected values.
   static void CheckFlags(const Flags& expected) {
     EXPECT_EQ(expected.also_run_disabled_tests,
-              HTEST_FLAG_GET(also_run_disabled_tests));
-    EXPECT_EQ(expected.break_on_failure, HTEST_FLAG_GET(break_on_failure));
-    EXPECT_EQ(expected.catch_exceptions, HTEST_FLAG_GET(catch_exceptions));
+              FLAGS_htest_also_run_disabled_tests);
+    EXPECT_EQ(expected.break_on_failure, FLAGS_htest_break_on_failure);
+    EXPECT_EQ(expected.catch_exceptions, FLAGS_htest_catch_exceptions);
     EXPECT_EQ(expected.death_test_use_fork,
-              HTEST_FLAG_GET(death_test_use_fork));
-    EXPECT_EQ(expected.fail_fast, HTEST_FLAG_GET(fail_fast));
-    EXPECT_STREQ(expected.filter, HTEST_FLAG_GET(filter).c_str());
-    EXPECT_EQ(expected.list_tests, HTEST_FLAG_GET(list_tests));
-    EXPECT_STREQ(expected.output, HTEST_FLAG_GET(output).c_str());
-    EXPECT_EQ(expected.brief, HTEST_FLAG_GET(brief));
-    EXPECT_EQ(expected.print_time, HTEST_FLAG_GET(print_time));
-    EXPECT_EQ(expected.random_seed, HTEST_FLAG_GET(random_seed));
-    EXPECT_EQ(expected.repeat, HTEST_FLAG_GET(repeat));
+              FLAGS_htest_death_test_use_fork);
+    EXPECT_EQ(expected.fail_fast, FLAGS_htest_fail_fast);
+    EXPECT_STREQ(expected.filter, FLAGS_htest_filter.c_str());
+    EXPECT_EQ(expected.list_tests, FLAGS_htest_list_tests);
+    EXPECT_STREQ(expected.output, FLAGS_htest_output.c_str());
+    EXPECT_EQ(expected.brief, FLAGS_htest_brief);
+    EXPECT_EQ(expected.print_time, FLAGS_htest_print_time);
+    EXPECT_EQ(expected.random_seed, FLAGS_htest_random_seed);
+    EXPECT_EQ(expected.repeat, FLAGS_htest_repeat);
     EXPECT_EQ(expected.recreate_environments_when_repeating,
-              HTEST_FLAG_GET(recreate_environments_when_repeating));
-    EXPECT_EQ(expected.shuffle, HTEST_FLAG_GET(shuffle));
-    EXPECT_EQ(expected.stack_trace_depth, HTEST_FLAG_GET(stack_trace_depth));
+              FLAGS_htest_recreate_environments_when_repeating);
+    EXPECT_EQ(expected.shuffle, FLAGS_htest_shuffle);
+    EXPECT_EQ(expected.stack_trace_depth, FLAGS_htest_stack_trace_depth);
     EXPECT_STREQ(expected.stream_result_to,
-                 HTEST_FLAG_GET(stream_result_to).c_str());
-    EXPECT_EQ(expected.throw_on_failure, HTEST_FLAG_GET(throw_on_failure));
+                 FLAGS_htest_stream_result_to.c_str());
+    EXPECT_EQ(expected.throw_on_failure, FLAGS_htest_throw_on_failure);
   }
 
   // Parses a command line (specified by argc1 and argv1), then
@@ -6329,7 +6275,6 @@ TEST_F(ParseFlagsTest, WideStrings) {
 }
 #endif  // HTEST_OS_WINDOWS
 
-#if HTEST_USE_OWN_FLAGFILE_FLAG_
 class FlagfileTest : public ParseFlagsTest {
  public:
   void SetUp() override {
@@ -6407,7 +6352,6 @@ TEST_F(FlagfileTest, SeveralFlags) {
 
   HTEST_TEST_PARSING_FLAGS_(argv, argv2, expected_flags, false);
 }
-#endif  // HTEST_USE_OWN_FLAGFILE_FLAG_
 
 // Tests current_test_info() in UnitTest.
 class CurrentTestInfoTest : public Test {
@@ -6638,7 +6582,7 @@ TEST(StreamingAssertionsTest, AnyThrow) {
 // Tests that Hawk Test correctly decides whether to use colors in the output.
 
 TEST(ColoredOutputTest, UsesColorsWhenHTestColorFlagIsYes) {
-  HTEST_FLAG_SET(color, "yes");
+  (void)(FLAGS_htest_color = ("yes"));
 
   SetEnv("TERM", "xterm");             // TERM supports colors.
   EXPECT_TRUE(ShouldUseColor(true));   // Stdout is a TTY.
@@ -6652,18 +6596,18 @@ TEST(ColoredOutputTest, UsesColorsWhenHTestColorFlagIsYes) {
 TEST(ColoredOutputTest, UsesColorsWhenHTestColorFlagIsAliasOfYes) {
   SetEnv("TERM", "dumb");  // TERM doesn't support colors.
 
-  HTEST_FLAG_SET(color, "True");
+  (void)(FLAGS_htest_color = ("True"));
   EXPECT_TRUE(ShouldUseColor(false));  // Stdout is not a TTY.
 
-  HTEST_FLAG_SET(color, "t");
+  (void)(FLAGS_htest_color = ("t"));
   EXPECT_TRUE(ShouldUseColor(false));  // Stdout is not a TTY.
 
-  HTEST_FLAG_SET(color, "1");
+  (void)(FLAGS_htest_color = ("1"));
   EXPECT_TRUE(ShouldUseColor(false));  // Stdout is not a TTY.
 }
 
 TEST(ColoredOutputTest, UsesNoColorWhenHTestColorFlagIsNo) {
-  HTEST_FLAG_SET(color, "no");
+  (void)(FLAGS_htest_color = ("no"));
 
   SetEnv("TERM", "xterm");              // TERM supports colors.
   EXPECT_FALSE(ShouldUseColor(true));   // Stdout is a TTY.
@@ -6677,18 +6621,18 @@ TEST(ColoredOutputTest, UsesNoColorWhenHTestColorFlagIsNo) {
 TEST(ColoredOutputTest, UsesNoColorWhenHTestColorFlagIsInvalid) {
   SetEnv("TERM", "xterm");  // TERM supports colors.
 
-  HTEST_FLAG_SET(color, "F");
+  (void)(FLAGS_htest_color = ("F"));
   EXPECT_FALSE(ShouldUseColor(true));  // Stdout is a TTY.
 
-  HTEST_FLAG_SET(color, "0");
+  (void)(FLAGS_htest_color = ("0"));
   EXPECT_FALSE(ShouldUseColor(true));  // Stdout is a TTY.
 
-  HTEST_FLAG_SET(color, "unknown");
+  (void)(FLAGS_htest_color = ("unknown"));
   EXPECT_FALSE(ShouldUseColor(true));  // Stdout is a TTY.
 }
 
 TEST(ColoredOutputTest, UsesColorsWhenStdoutIsTty) {
-  HTEST_FLAG_SET(color, "auto");
+  (void)(FLAGS_htest_color = ("auto"));
 
   SetEnv("TERM", "xterm");              // TERM supports colors.
   EXPECT_FALSE(ShouldUseColor(false));  // Stdout is not a TTY.
@@ -6696,7 +6640,7 @@ TEST(ColoredOutputTest, UsesColorsWhenStdoutIsTty) {
 }
 
 TEST(ColoredOutputTest, UsesColorsWhenTermSupportsColors) {
-  HTEST_FLAG_SET(color, "auto");
+  (void)(FLAGS_htest_color = ("auto"));
 
 #if defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_WINDOWS_MINGW)
   // On Windows, we ignore the TERM variable as it's usually not set.

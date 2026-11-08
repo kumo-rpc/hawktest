@@ -167,6 +167,8 @@ set(_hawktest_flags_sources
         flags/gflags.cc
         flags/gflags_reporting.cc
         flags/gflags_completions.cc
+        flags/builtin.cc
+        flags/parser.cc
 )
 if (OS_WINDOWS)
     list(APPEND _hawktest_flags_sources flags/windows_port.cc)

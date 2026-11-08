@@ -175,12 +175,6 @@
 //   HTEST_USES_SIMPLE_RE   - our own simple regex is used;
 //                            the above RE\b(s) are mutually exclusive.
 
-// Misc public macros
-// ------------------
-//
-//   HTEST_FLAG(flag_name)  - references the variable corresponding to
-//                            the given Hawk Test flag.
-
 // Internal utilities
 // ------------------
 //
@@ -195,7 +189,6 @@
 //                                        is suppressed.
 //   HTEST_INTERNAL_HAS_STD_SPAN - for enabling UniversalPrinter<std::span>
 //                                 specializations. Always defined to 0 or 1
-//   HTEST_USE_OWN_FLAGFILE_FLAG_ - Always defined to 0 or 1.
 //   HTEST_HAS_CXXABI_H_ - Always defined to 0 or 1.
 //   HTEST_CAN_STREAM_RESULTS_ - Always defined to 0 or 1.
 //   HTEST_HAS_ALT_PATH_SEP_ - Always defined to 0 or 1.
@@ -236,9 +229,6 @@
 //
 // Environment variable utilities:
 //   GetEnv()             - gets the value of an environment variable.
-//   BoolFromHTestEnv()   - parses a bool environment variable.
-//   Int32FromHTestEnv()  - parses an int32_t environment variable.
-//   StringFromHTestEnv() - parses a string environment variable.
 
 // The definition of HTEST_INTERNAL_CPLUSPLUS_LANG comes first because it can
 // potentially be used as an #include guard.
@@ -2268,61 +2258,6 @@ namespace testing {
         // Integer types of known sizes.
         using TimeInMillis = int64_t; // Represents time in milliseconds.
 
-// Utilities for command line flags and environment variables.
-
-// Macro for referencing flags.
-#if !defined(HTEST_FLAG)
-#define HTEST_FLAG_NAME_(name) htest_##name
-#define HTEST_FLAG(name) FLAGS_htest_##name
-#endif // !defined(HTEST_FLAG)
-
-// Macros for defining flags.
-#define HTEST_DEFINE_bool_(name, default_val, doc)        \
-    HTEST_DECLARE_bool_(name);                            \
-    namespace testing {                                   \
-        HTEST_API_ bool HTEST_FLAG(name) = (default_val); \
-    }                                                     \
-    static_assert(true, "no-op to require trailing semicolon")
-#define HTEST_DEFINE_int32_(name, default_val, doc)               \
-    HTEST_DECLARE_int32_(name);                                   \
-    namespace testing {                                           \
-        HTEST_API_ std::int32_t HTEST_FLAG(name) = (default_val); \
-    }                                                             \
-    static_assert(true, "no-op to require trailing semicolon")
-#define HTEST_DEFINE_string_(name, default_val, doc)               \
-    HTEST_DECLARE_string_(name);                                   \
-    namespace testing {                                            \
-        HTEST_API_ ::std::string HTEST_FLAG(name) = (default_val); \
-    }                                                              \
-    static_assert(true, "no-op to require trailing semicolon")
-
-// Macros for declaring flags.
-//
-// We also need to declare the flag in the public namespace to avoid triggering
-// -Wmissing-variable-declarations warnings, as reported here:
-// https://github.com/google/googletest/issues/4897
-#define HTEST_DECLARE_bool_(name)                \
-    namespace testing {                          \
-        HTEST_API_ extern bool HTEST_FLAG(name); \
-    }                                            \
-    static_assert(true, "no-op to require trailing semicolon")
-#define HTEST_DECLARE_int32_(name)                       \
-    namespace testing {                                  \
-        HTEST_API_ extern std::int32_t HTEST_FLAG(name); \
-    }                                                    \
-    static_assert(true, "no-op to require trailing semicolon")
-#define HTEST_DECLARE_string_(name)                       \
-    namespace testing {                                   \
-        HTEST_API_ extern ::std::string HTEST_FLAG(name); \
-    }                                                     \
-    static_assert(true, "no-op to require trailing semicolon")
-
-#define HTEST_FLAG_SAVER_ ::testing::internal::HTestFlagSaver
-
-#define HTEST_FLAG_GET(name) ::testing::HTEST_FLAG(name)
-#define HTEST_FLAG_SET(name, value) (void)(::testing::HTEST_FLAG(name) = value)
-#define HTEST_USE_OWN_FLAGFILE_FLAG_ 1
-
 // Thread annotations
 #if !defined(HTEST_EXCLUSIVE_LOCK_REQUIRED_)
 #define HTEST_EXCLUSIVE_LOCK_REQUIRED_(locks)
@@ -2334,13 +2269,6 @@ namespace testing {
         // false.
         HTEST_API_ bool ParseInt32(const Message& src_text, const char* str,
             int32_t* value);
-
-        // Parses a bool/int32_t/string from the environment variable
-        // corresponding to the given Hawk Test flag.
-        bool BoolFromHTestEnv(const char* flag, bool default_val);
-        HTEST_API_ int32_t Int32FromHTestEnv(const char* flag, int32_t default_val);
-        std::string OutputFlagAlsoCheckEnvVar();
-        const char* StringFromHTestEnv(const char* flag, const char* default_val);
 
     } // namespace internal
 } // namespace testing

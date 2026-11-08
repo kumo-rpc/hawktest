@@ -94,45 +94,7 @@ namespace testing {
 
     // Constants.
 
-    // The default death test style.
-    //
-    // This is defined in internal/htest-port.h as "fast", but can be overridden by
-    // a definition in internal/custom/htest-port.h. The recommended value, which is
-    // used internally at Google, is "threadsafe".
-    static const char kDefaultDeathTestStyle[] = HTEST_DEFAULT_DEATH_TEST_STYLE;
-
 } // namespace testing
-
-HTEST_DEFINE_string_(
-    death_test_style,
-    testing::internal::StringFromHTestEnv("death_test_style",
-        testing::kDefaultDeathTestStyle),
-    "Indicates how to run a death test in a forked child process: "
-    "\"threadsafe\" (child process re-executes the test binary "
-    "from the beginning, running only the specific death test) or "
-    "\"fast\" (child process runs the death test immediately "
-    "after forking).");
-
-HTEST_DEFINE_bool_(
-    death_test_use_fork,
-    testing::internal::BoolFromHTestEnv("death_test_use_fork", false),
-    "Instructs to use fork()/_Exit() instead of clone() in death tests. "
-    "Ignored and always uses fork() on POSIX systems where clone() is not "
-    "implemented. Useful when running under valgrind or similar tools if "
-    "those do not support clone(). Valgrind 3.3.1 will just fail if "
-    "it sees an unsupported combination of clone() flags. "
-    "It is not recommended to use this flag w/o valgrind though it will "
-    "work in 99% of the cases. Once valgrind is fixed, this flag will "
-    "most likely be removed.");
-
-HTEST_DEFINE_string_(
-    internal_run_death_test, "",
-    "Indicates the file, line number, temporal index of "
-    "the single death test to run, and a file descriptor to "
-    "which a success code may be sent, all separated by "
-    "the '|' characters.  This flag is specified if and only if the "
-    "current process is a sub-process launched for running a thread-safe "
-    "death test.  FOR INTERNAL USE ONLY.");
 
 namespace testing {
 
@@ -156,12 +118,12 @@ namespace testing {
 
             // On Windows and Fuchsia, death tests are thread-safe regardless of the value
             // of the death_test_style flag.
-            return !HTEST_FLAG_GET(internal_run_death_test).empty();
+            return !FLAGS_htest_internal_run_death_test.empty();
 
 #else
 
-            if (HTEST_FLAG_GET(death_test_style) == "threadsafe")
-                return !HTEST_FLAG_GET(internal_run_death_test).empty();
+            if (FLAGS_htest_death_test_style == "threadsafe")
+                return !FLAGS_htest_internal_run_death_test.empty();
             else
                 return g_in_fast_death_test_child;
 #endif
@@ -1283,7 +1245,7 @@ namespace testing {
 #endif // HTEST_OS_LINUX
 
 #if HTEST_HAS_CLONE
-            const bool use_fork = HTEST_FLAG_GET(death_test_use_fork);
+            const bool use_fork = FLAGS_htest_death_test_use_fork;
 
             if (!use_fork) {
                 static const bool stack_grows_down = StackGrowsDown();
@@ -1398,28 +1360,28 @@ namespace testing {
 
 #ifdef HTEST_OS_WINDOWS
 
-            if (HTEST_FLAG_GET(death_test_style) == "threadsafe" || HTEST_FLAG_GET(death_test_style) == "fast") {
+            if (FLAGS_htest_death_test_style == "threadsafe" || FLAGS_htest_death_test_style == "fast") {
                 *test = new WindowsDeathTest(statement, std::move(matcher), file, line);
             }
 
 #elif defined(HTEST_OS_FUCHSIA)
 
-            if (HTEST_FLAG_GET(death_test_style) == "threadsafe" || HTEST_FLAG_GET(death_test_style) == "fast") {
+            if (FLAGS_htest_death_test_style == "threadsafe" || FLAGS_htest_death_test_style == "fast") {
                 *test = new FuchsiaDeathTest(statement, std::move(matcher), file, line);
             }
 
 #else
 
-            if (HTEST_FLAG_GET(death_test_style) == "threadsafe") {
+            if (FLAGS_htest_death_test_style == "threadsafe") {
                 *test = new ExecDeathTest(statement, std::move(matcher), file, line);
-            } else if (HTEST_FLAG_GET(death_test_style) == "fast") {
+            } else if (FLAGS_htest_death_test_style == "fast") {
                 *test = new NoExecDeathTest(statement, std::move(matcher));
             }
 
 #endif // HTEST_OS_WINDOWS
 
             else { // NOLINT - this is more readable than unbalanced brackets inside #if.
-                DeathTest::set_last_death_test_message("Unknown death test style \"" + HTEST_FLAG_GET(death_test_style) + "\" encountered");
+                DeathTest::set_last_death_test_message("Unknown death test style \"" + FLAGS_htest_death_test_style + "\" encountered");
                 return false;
             }
 
@@ -1480,10 +1442,10 @@ namespace testing {
 #endif // HTEST_OS_WINDOWS
 
         // Returns a newly created InternalRunDeathTestFlag object with fields
-        // initialized from the HTEST_FLAG(internal_run_death_test) flag if
+        // initialized from the FLAGS_htest_internal_run_death_test flag if
         // the flag is specified; otherwise returns NULL.
         InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag() {
-            if (HTEST_FLAG_GET(internal_run_death_test).empty())
+            if (FLAGS_htest_internal_run_death_test.empty())
                 return nullptr;
 
             // HTEST_HAS_DEATH_TEST implies that we have ::std::string, so we
@@ -1491,7 +1453,7 @@ namespace testing {
             int line = -1;
             int index = -1;
             ::std::vector<::std::string> fields;
-            SplitString(HTEST_FLAG_GET(internal_run_death_test), '|', &fields);
+            SplitString(FLAGS_htest_internal_run_death_test, '|', &fields);
             int write_fd = -1;
 
 #ifdef HTEST_OS_WINDOWS
@@ -1501,7 +1463,7 @@ namespace testing {
             size_t event_handle_as_size_t = 0;
 
             if (fields.size() != 6 || !ParseNaturalNumber(fields[1], &line) || !ParseNaturalNumber(fields[2], &index) || !ParseNaturalNumber(fields[3], &parent_process_id) || !ParseNaturalNumber(fields[4], &write_handle_as_size_t) || !ParseNaturalNumber(fields[5], &event_handle_as_size_t)) {
-                DeathTestAbort("Bad --htest_internal_run_death_test flag: " + HTEST_FLAG_GET(internal_run_death_test));
+                DeathTestAbort("Bad --htest_internal_run_death_test flag: " + FLAGS_htest_internal_run_death_test);
             }
             write_fd = GetStatusFileDescriptor(parent_process_id, write_handle_as_size_t,
                 event_handle_as_size_t);
@@ -1509,13 +1471,13 @@ namespace testing {
 #elif defined(HTEST_OS_FUCHSIA)
 
             if (fields.size() != 3 || !ParseNaturalNumber(fields[1], &line) || !ParseNaturalNumber(fields[2], &index)) {
-                DeathTestAbort("Bad --htest_internal_run_death_test flag: " + HTEST_FLAG_GET(internal_run_death_test));
+                DeathTestAbort("Bad --htest_internal_run_death_test flag: " + FLAGS_htest_internal_run_death_test);
             }
 
 #else
 
             if (fields.size() != 4 || !ParseNaturalNumber(fields[1], &line) || !ParseNaturalNumber(fields[2], &index) || !ParseNaturalNumber(fields[3], &write_fd)) {
-                DeathTestAbort("Bad --htest_internal_run_death_test flag: " + HTEST_FLAG_GET(internal_run_death_test));
+                DeathTestAbort("Bad --htest_internal_run_death_test flag: " + FLAGS_htest_internal_run_death_test);
             }
 
 #endif // HTEST_OS_WINDOWS

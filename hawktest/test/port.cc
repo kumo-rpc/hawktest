@@ -1337,20 +1337,6 @@ namespace testing {
         } // namespace posix
 #endif // HTEST_OS_WINDOWS_MOBILE
 
-        // Returns the name of the environment variable corresponding to the
-        // given flag.  For example, FlagToEnvVar("foo") will return
-        // "HTEST_FOO" in the open-source version.
-        static std::string FlagToEnvVar(const char* flag) {
-            const std::string full_flag = (Message() << HTEST_FLAG_PREFIX_ << flag).GetString();
-
-            Message env_var;
-            for (size_t i = 0; i != full_flag.length(); i++) {
-                env_var << ToUpper(full_flag.c_str()[i]);
-            }
-
-            return env_var.GetString();
-        }
-
         // Parses 'str' for a 32-bit signed integer.  If successful, writes
         // the result to *value and returns true; otherwise leaves *value
         // unchanged and returns false.
@@ -1390,77 +1376,6 @@ namespace testing {
 
             *value = result;
             return true;
-        }
-
-        // Reads and returns the Boolean environment variable corresponding to
-        // the given flag; if it's not set, returns default_value.
-        //
-        // The value is considered true if and only if it's not "0".
-        bool BoolFromHTestEnv(const char* flag, bool default_value) {
-#if defined(HTEST_GET_BOOL_FROM_ENV_)
-            return HTEST_GET_BOOL_FROM_ENV_(flag, default_value);
-#else
-            const std::string env_var = FlagToEnvVar(flag);
-            const char* const string_value = posix::GetEnv(env_var.c_str());
-            return string_value == nullptr ? default_value
-                                           : strcmp(string_value, "0") != 0;
-#endif // defined(HTEST_GET_BOOL_FROM_ENV_)
-        }
-
-        // Reads and returns a 32-bit integer stored in the environment
-        // variable corresponding to the given flag; if it isn't set or
-        // doesn't represent a valid 32-bit integer, returns default_value.
-        int32_t Int32FromHTestEnv(const char* flag, int32_t default_value) {
-#if defined(HTEST_GET_INT32_FROM_ENV_)
-            return HTEST_GET_INT32_FROM_ENV_(flag, default_value);
-#else
-            const std::string env_var = FlagToEnvVar(flag);
-            const char* const string_value = posix::GetEnv(env_var.c_str());
-            if (string_value == nullptr) {
-                // The environment variable is not set.
-                return default_value;
-            }
-
-            int32_t result = default_value;
-            if (!ParseInt32(Message() << "Environment variable " << env_var, string_value,
-                    &result)) {
-                printf("The default value %s is used.\n",
-                    (Message() << default_value).GetString().c_str());
-                fflush(stdout);
-                return default_value;
-            }
-
-            return result;
-#endif // defined(HTEST_GET_INT32_FROM_ENV_)
-        }
-
-        // As a special case for the 'output' flag, if HTEST_OUTPUT is not
-        // set, we look for XML_OUTPUT_FILE, which is set by the Bazel build
-        // system.  The value of XML_OUTPUT_FILE is a filename without the
-        // "xml:" prefix of HTEST_OUTPUT.
-        // Note that this is meant to be called at the call site so it does
-        // not check that the flag is 'output'
-        // In essence this checks an env variable called XML_OUTPUT_FILE
-        // and if it is set we prepend "xml:" to its value, if it not set we return ""
-        std::string OutputFlagAlsoCheckEnvVar() {
-            std::string default_value_for_output_flag = "";
-            const char* xml_output_file_env = posix::GetEnv("XML_OUTPUT_FILE");
-            if (nullptr != xml_output_file_env) {
-                default_value_for_output_flag = std::string("xml:") + xml_output_file_env;
-            }
-            return default_value_for_output_flag;
-        }
-
-        // Reads and returns the string environment variable corresponding to
-        // the given flag; if it's not set, returns default_value.
-        const char* StringFromHTestEnv(const char* flag, const char* default_value) {
-#if defined(HTEST_GET_STRING_FROM_ENV_)
-            return HTEST_GET_STRING_FROM_ENV_(flag, default_value);
-#else
-            const std::string env_var = FlagToEnvVar(flag);
-            const char* const value = posix::GetEnv(env_var.c_str());
-            return value == nullptr ? default_value : value;
-#endif // defined(HTEST_GET_STRING_FROM_ENV_)
         }
 
     } // namespace internal

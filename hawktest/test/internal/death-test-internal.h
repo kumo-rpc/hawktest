@@ -46,8 +46,7 @@
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
 #include <hawktest/test/matchers.h>
-
-HTEST_DECLARE_string_(internal_run_death_test);
+#include <hawktest/flags/builtin.h>
 
 namespace testing {
     namespace internal {
@@ -303,7 +302,7 @@ namespace testing {
         };
 
         // Returns a newly created InternalRunDeathTestFlag object with fields
-        // initialized from the HTEST_FLAG(internal_run_death_test) flag if
+        // initialized from the FLAGS_htest_internal_run_death_test flag if
         // the flag is specified; otherwise returns NULL.
         InternalRunDeathTestFlag* ParseInternalRunDeathTestFlag();
 

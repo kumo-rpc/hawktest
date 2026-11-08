@@ -449,7 +449,7 @@ TEST(LogTest, NoSkippingStackFrameInOptMode) {
   const std::string log = GetCapturedStdout();
 
   std::string expected_trace =
-      (testing::Message() << HTEST_FLAG_GET(stack_trace_depth) << "::")
+      (testing::Message() << FLAGS_htest_stack_trace_depth << "::")
           .GetString();
   std::string expected_message =
       "\nGMOCK WARNING:\n"

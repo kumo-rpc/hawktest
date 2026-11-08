@@ -360,14 +360,14 @@ TEST_F(TestForDeathTest, SwitchStatement) {
 // Tests that a static member function can be used in a "fast" style
 // death test.
 TEST_F(TestForDeathTest, StaticMemberFunctionFastStyle) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   ASSERT_DEATH(StaticMemberFunction(), "death.*StaticMember");
 }
 
 // Tests that a method of the test fixture can be used in a "fast"
 // style death test.
 TEST_F(TestForDeathTest, MemberFunctionFastStyle) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   should_die_ = true;
   EXPECT_DEATH(MemberFunction(), "inside.*MemberFunction");
 }
@@ -377,7 +377,7 @@ void ChangeToRootDir() { posix::ChDir(HTEST_PATH_SEP_); }
 // Tests that death tests work even if the current directory has been
 // changed.
 TEST_F(TestForDeathTest, FastDeathTestInChangedDir) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
 
   ChangeToRootDir();
   EXPECT_EXIT(_Exit(1), testing::ExitedWithCode(1), "");
@@ -423,7 +423,7 @@ void DisableSigprofActionAndTimer(struct sigaction* old_signal_action) {
 
 // Tests that death tests work when SIGPROF handler and timer are set.
 TEST_F(TestForDeathTest, FastSigprofActionSet) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   SetSigprofActionAndTimer();
   EXPECT_DEATH(_Exit(1), "");
   struct sigaction old_signal_action;
@@ -432,7 +432,7 @@ TEST_F(TestForDeathTest, FastSigprofActionSet) {
 }
 
 TEST_F(TestForDeathTest, ThreadSafeSigprofActionSet) {
-  HTEST_FLAG_SET(death_test_style, "threadsafe");
+  (void)(FLAGS_htest_death_test_style = ("threadsafe"));
   SetSigprofActionAndTimer();
   EXPECT_DEATH(_Exit(1), "");
   struct sigaction old_signal_action;
@@ -444,25 +444,25 @@ TEST_F(TestForDeathTest, ThreadSafeSigprofActionSet) {
 // Repeats a representative sample of death tests in the "threadsafe" style:
 
 TEST_F(TestForDeathTest, StaticMemberFunctionThreadsafeStyle) {
-  HTEST_FLAG_SET(death_test_style, "threadsafe");
+  (void)(FLAGS_htest_death_test_style = ("threadsafe"));
   ASSERT_DEATH(StaticMemberFunction(), "death.*StaticMember");
 }
 
 TEST_F(TestForDeathTest, MemberFunctionThreadsafeStyle) {
-  HTEST_FLAG_SET(death_test_style, "threadsafe");
+  (void)(FLAGS_htest_death_test_style = ("threadsafe"));
   should_die_ = true;
   EXPECT_DEATH(MemberFunction(), "inside.*MemberFunction");
 }
 
 TEST_F(TestForDeathTest, ThreadsafeDeathTestInLoop) {
-  HTEST_FLAG_SET(death_test_style, "threadsafe");
+  (void)(FLAGS_htest_death_test_style = ("threadsafe"));
 
   for (int i = 0; i < 3; ++i)
     EXPECT_EXIT(_Exit(i), testing::ExitedWithCode(i), "") << ": i = " << i;
 }
 
 TEST_F(TestForDeathTest, ThreadsafeDeathTestInChangedDir) {
-  HTEST_FLAG_SET(death_test_style, "threadsafe");
+  (void)(FLAGS_htest_death_test_style = ("threadsafe"));
 
   ChangeToRootDir();
   EXPECT_EXIT(_Exit(1), testing::ExitedWithCode(1), "");
@@ -472,9 +472,9 @@ TEST_F(TestForDeathTest, ThreadsafeDeathTestInChangedDir) {
 }
 
 TEST_F(TestForDeathTest, MixedStyles) {
-  HTEST_FLAG_SET(death_test_style, "threadsafe");
+  (void)(FLAGS_htest_death_test_style = ("threadsafe"));
   EXPECT_DEATH(_Exit(1), "");
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   EXPECT_DEATH(_Exit(1), "");
 }
 
@@ -485,8 +485,8 @@ bool pthread_flag;
 void SetPthreadFlag() { pthread_flag = true; }
 
 TEST_F(TestForDeathTest, DoesNotExecuteAtforkHooks) {
-  if (!HTEST_FLAG_GET(death_test_use_fork)) {
-    HTEST_FLAG_SET(death_test_style, "threadsafe");
+  if (!FLAGS_htest_death_test_use_fork) {
+    (void)(FLAGS_htest_death_test_style = ("threadsafe"));
     pthread_flag = false;
     ASSERT_EQ(0, pthread_atfork(&SetPthreadFlag, nullptr, nullptr));
     ASSERT_DEATH(_Exit(1), "");
@@ -714,7 +714,7 @@ TEST(PopUpDeathTest, DoesNotShowPopUpOnAbort) {
 
   EXPECT_DEATH(
       {
-        HTEST_FLAG_SET(catch_exceptions, false);
+        (void)(FLAGS_htest_catch_exceptions = (false));
         abort();
       },
       "");
@@ -850,12 +850,12 @@ static void TestExitMacros() {
 TEST_F(TestForDeathTest, ExitMacros) { TestExitMacros(); }
 
 TEST_F(TestForDeathTest, ExitMacrosUsingFork) {
-  HTEST_FLAG_SET(death_test_use_fork, true);
+  (void)(FLAGS_htest_death_test_use_fork = (true));
   TestExitMacros();
 }
 
 TEST_F(TestForDeathTest, InvalidStyle) {
-  HTEST_FLAG_SET(death_test_style, "rococo");
+  (void)(FLAGS_htest_death_test_style = ("rococo"));
   EXPECT_NONFATAL_FAILURE(
       {  // NOLINT
         EXPECT_DEATH(_Exit(0), "") << "This failure is expected.";
@@ -864,7 +864,7 @@ TEST_F(TestForDeathTest, InvalidStyle) {
 }
 
 TEST_F(TestForDeathTest, DeathTestFailedOutput) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   EXPECT_NONFATAL_FAILURE(
       EXPECT_DEATH(DieWithMessage("death\n"), "expected message"),
       "Actual msg:\n"
@@ -872,7 +872,7 @@ TEST_F(TestForDeathTest, DeathTestFailedOutput) {
 }
 
 TEST_F(TestForDeathTest, DeathTestUnexpectedReturnOutput) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   EXPECT_NONFATAL_FAILURE(EXPECT_DEATH(
                               {
                                 fprintf(stderr, "returning\n");
@@ -886,7 +886,7 @@ TEST_F(TestForDeathTest, DeathTestUnexpectedReturnOutput) {
 }
 
 TEST_F(TestForDeathTest, DeathTestBadExitCodeOutput) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   EXPECT_NONFATAL_FAILURE(
       EXPECT_EXIT(DieWithMessage("exiting with rc 1\n"),
                   testing::ExitedWithCode(3), "expected message"),
@@ -897,7 +897,7 @@ TEST_F(TestForDeathTest, DeathTestBadExitCodeOutput) {
 }
 
 TEST_F(TestForDeathTest, DeathTestMultiLineMatchFail) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   EXPECT_NONFATAL_FAILURE(
       EXPECT_DEATH(DieWithMessage("line 1\nline 2\nline 3\n"),
                    "line 1\nxyz\nline 3\n"),
@@ -908,7 +908,7 @@ TEST_F(TestForDeathTest, DeathTestMultiLineMatchFail) {
 }
 
 TEST_F(TestForDeathTest, DeathTestMultiLineMatchPass) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   EXPECT_DEATH(DieWithMessage("line 1\nline 2\nline 3\n"),
                "line 1\nline 2\nline 3\n");
 }
@@ -1333,7 +1333,7 @@ TEST(ConditionalDeathMacrosDeathTest, ExpectsDeathWhenDeathTestsAvailable) {
 }
 
 TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInFastStyle) {
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   EXPECT_FALSE(InDeathTestChild());
   EXPECT_DEATH(
       {
@@ -1345,7 +1345,7 @@ TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInFastStyle) {
 }
 
 TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInThreadSafeStyle) {
-  HTEST_FLAG_SET(death_test_style, "threadsafe");
+  (void)(FLAGS_htest_death_test_style = ("threadsafe"));
   EXPECT_FALSE(InDeathTestChild());
   EXPECT_DEATH(
       {

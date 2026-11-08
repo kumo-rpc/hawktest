@@ -277,8 +277,8 @@ int main(int argc, char** argv) {
   HTEST_CHECK_(events.empty())
       << "AddGlobalTestEnvironment should not generate any events itself.";
 
-  HTEST_FLAG_SET(repeat, 2);
-  HTEST_FLAG_SET(recreate_environments_when_repeating, true);
+  (void)(FLAGS_htest_repeat = (2));
+  (void)(FLAGS_htest_recreate_environments_when_repeating = (true));
   int ret_val = RUN_ALL_TESTS();
 
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_

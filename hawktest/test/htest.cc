@@ -34,6 +34,7 @@
 // The Google C++ Testing and Mocking Framework (Hawk Test)
 
 #include <hawktest/test/htest.h>
+#include <hawktest/flags/parser.h>
 
 #include <ctype.h>
 #include <stdarg.h>
@@ -220,194 +221,7 @@ namespace testing {
 
     } // namespace internal
 
-    // Bazel passes in the argument to '--test_filter' via the TESTBRIDGE_TEST_ONLY
-    // environment variable.
-    static const char* GetDefaultFilter() {
-        const char* const testbridge_test_only = internal::posix::GetEnv("TESTBRIDGE_TEST_ONLY");
-        if (testbridge_test_only != nullptr) {
-            return testbridge_test_only;
-        }
-        return kUniversalFilter;
-    }
-
-    // Bazel passes in the argument to '--test_runner_fail_fast' via the
-    // TESTBRIDGE_TEST_RUNNER_FAIL_FAST environment variable.
-    static bool GetDefaultFailFast() {
-        const char* const testbridge_test_runner_fail_fast = internal::posix::GetEnv("TESTBRIDGE_TEST_RUNNER_FAIL_FAST");
-        if (testbridge_test_runner_fail_fast != nullptr) {
-            return strcmp(testbridge_test_runner_fail_fast, "1") == 0;
-        }
-        return false;
-    }
-
 } // namespace testing
-
-HTEST_DEFINE_bool_(
-    fail_fast,
-    testing::internal::BoolFromHTestEnv("fail_fast",
-        testing::GetDefaultFailFast()),
-    "True if and only if a test failure should stop further test execution.");
-
-HTEST_DEFINE_bool_(
-    fail_if_no_test_linked,
-    testing::internal::BoolFromHTestEnv("fail_if_no_test_linked", false),
-    "True if and only if the test should fail if no test case (including "
-    "disabled test cases) is linked.");
-
-HTEST_DEFINE_bool_(
-    fail_if_no_test_selected,
-    testing::internal::BoolFromHTestEnv("fail_if_no_test_selected", false),
-    "True if and only if the test should fail if no test case is selected to "
-    "run. A test case is selected to run if it is not disabled and is matched "
-    "by the filter flag so that it starts executing.");
-
-HTEST_DEFINE_bool_(
-    also_run_disabled_tests,
-    testing::internal::BoolFromHTestEnv("also_run_disabled_tests", false),
-    "Run disabled tests too, in addition to the tests normally being run.");
-
-HTEST_DEFINE_bool_(
-    break_on_failure,
-    testing::internal::BoolFromHTestEnv("break_on_failure", false),
-    "True if and only if a failed assertion should be a debugger "
-    "break-point.");
-
-HTEST_DEFINE_bool_(catch_exceptions,
-    testing::internal::BoolFromHTestEnv("catch_exceptions",
-        true),
-    "True if and only if " HTEST_NAME_
-    " should catch exceptions and treat them as test failures.");
-
-HTEST_DEFINE_string_(
-    color, testing::internal::StringFromHTestEnv("color", "auto"),
-    "Whether to use colors in the output.  Valid values: yes, no, "
-    "and auto.  'auto' means to use colors if the output is "
-    "being sent to a terminal and the TERM environment variable "
-    "is set to a terminal type that supports colors.");
-
-HTEST_DEFINE_string_(
-    filter,
-    testing::internal::StringFromHTestEnv("filter",
-        testing::GetDefaultFilter()),
-    "A colon-separated list of glob (not regex) patterns "
-    "for filtering the tests to run, optionally followed by a "
-    "'-' and a : separated list of negative patterns (tests to "
-    "exclude).  A test is run if it matches one of the positive "
-    "patterns and does not match any of the negative patterns.");
-
-HTEST_DEFINE_bool_(
-    install_failure_signal_handler,
-    testing::internal::BoolFromHTestEnv("install_failure_signal_handler",
-        false),
-    "If true and supported on the current platform, " HTEST_NAME_
-    " should "
-    "install a signal handler that dumps debugging information when fatal "
-    "signals are raised.");
-
-HTEST_DEFINE_bool_(list_tests, false, "List all tests without running them.");
-
-// The net priority order after flag processing is thus:
-//   --htest_output command line flag
-//   HTEST_OUTPUT environment variable
-//   XML_OUTPUT_FILE environment variable
-//   ''
-HTEST_DEFINE_string_(
-    output,
-    testing::internal::StringFromHTestEnv(
-        "output", testing::internal::OutputFlagAlsoCheckEnvVar().c_str()),
-    "A format (defaults to \"xml\" but can be specified to be \"json\"), "
-    "optionally followed by a colon and an output file name or directory. "
-    "A directory is indicated by a trailing pathname separator. "
-    "Examples: \"xml:filename.xml\", \"xml::directoryname/\". "
-    "If a directory is specified, output files will be created "
-    "within that directory, with file-names based on the test "
-    "executable's name and, if necessary, made unique by adding "
-    "digits.");
-
-HTEST_DEFINE_bool_(
-    brief, testing::internal::BoolFromHTestEnv("brief", false),
-    "True if only test failures should be displayed in text output.");
-
-HTEST_DEFINE_bool_(print_time,
-    testing::internal::BoolFromHTestEnv("print_time", true),
-    "True if and only if " HTEST_NAME_
-    " should display elapsed time in text output.");
-
-HTEST_DEFINE_bool_(print_utf8,
-    testing::internal::BoolFromHTestEnv("print_utf8", true),
-    "True if and only if " HTEST_NAME_
-    " prints UTF8 characters as text.");
-
-HTEST_DEFINE_int32_(
-    random_seed, testing::internal::Int32FromHTestEnv("random_seed", 0),
-    "Random number seed to use when shuffling test orders.  Must be in range "
-    "[1, 99999], or 0 to use a seed based on the current time.");
-
-HTEST_DEFINE_int32_(
-    repeat, testing::internal::Int32FromHTestEnv("repeat", 1),
-    "How many times to repeat each test.  Specify a negative number "
-    "for repeating forever.  Useful for shaking out flaky tests.");
-
-HTEST_DEFINE_bool_(
-    recreate_environments_when_repeating,
-    testing::internal::BoolFromHTestEnv("recreate_environments_when_repeating",
-        false),
-    "Controls whether global test environments are recreated for each repeat "
-    "of the tests. If set to false the global test environments are only set "
-    "up once, for the first iteration, and only torn down once, for the last. "
-    "Useful for shaking out flaky tests with stable, expensive test "
-    "environments. If --htest_repeat is set to a negative number, meaning "
-    "there is no last run, the environments will always be recreated to avoid "
-    "leaks.");
-
-HTEST_DEFINE_bool_(show_internal_stack_frames, false,
-    "True if and only if " HTEST_NAME_
-    " should include internal stack frames when "
-    "printing test failure stack traces.");
-
-HTEST_DEFINE_bool_(shuffle,
-    testing::internal::BoolFromHTestEnv("shuffle", false),
-    "True if and only if " HTEST_NAME_
-    " should randomize tests' order on every run.");
-
-HTEST_DEFINE_int32_(
-    stack_trace_depth,
-    testing::internal::Int32FromHTestEnv("stack_trace_depth",
-        testing::kMaxStackTraceDepth),
-    "The maximum number of stack frames to print when an "
-    "assertion fails.  The valid range is 0 through 100, inclusive.");
-
-HTEST_DEFINE_string_(
-    stream_result_to,
-    testing::internal::StringFromHTestEnv("stream_result_to", ""),
-    "This flag specifies the host name and the port number on which to stream "
-    "test results. Example: \"localhost:555\". The flag is effective only on "
-    "Linux and macOS.");
-
-HTEST_DEFINE_bool_(
-    throw_on_failure,
-    testing::internal::BoolFromHTestEnv("throw_on_failure", false),
-    "When this flag is specified, a failed assertion will throw an exception "
-    "if exceptions are enabled or exit the program with a non-zero code "
-    "otherwise. For use with an external test framework.");
-
-HTEST_DEFINE_int32_(
-    shard_index,
-    testing::internal::Int32FromEnvOrDie(testing::kTestShardIndex, -1),
-    "The zero-based index of the shard to run. A value of -1 "
-    "(the default) indicates that sharding is disabled.");
-
-HTEST_DEFINE_int32_(
-    total_shards,
-    testing::internal::Int32FromEnvOrDie(testing::kTestTotalShards, -1),
-    "The total number of shards to use when running tests in parallel. "
-    "A value of -1 (the default) indicates that sharding is disabled.");
-
-#if HTEST_USE_OWN_FLAGFILE_FLAG_
-HTEST_DEFINE_string_(
-    flagfile, testing::internal::StringFromHTestEnv("flagfile", ""),
-    "This flag specifies the flagfile to read command-line flags from.");
-#endif // HTEST_USE_OWN_FLAGFILE_FLAG_
 
 namespace testing {
     namespace internal {
@@ -703,7 +517,7 @@ namespace testing {
 
         // Returns the output format, or "" for normal printed output.
         std::string UnitTestOptions::GetOutputFormat() {
-            std::string s = HTEST_FLAG_GET(output);
+            std::string s = FLAGS_htest_output;
             const char* const htest_output_flag = s.c_str();
             const char* const colon = strchr(htest_output_flag, ':');
             return (colon == nullptr)
@@ -716,7 +530,7 @@ namespace testing {
         // Returns the name of the requested output file, or the default if none
         // was explicitly specified.
         std::string UnitTestOptions::GetAbsolutePathToOutputFile() {
-            std::string s = HTEST_FLAG_GET(output);
+            std::string s = FLAGS_htest_output;
             const char* const htest_output_flag = s.c_str();
 
             std::string format = GetOutputFormat();
@@ -908,7 +722,7 @@ namespace testing {
             const std::string& test_name) {
             // Split --htest_filter at '-', if there is one, to separate into
             // positive filter and negative filter portions
-            return PositiveAndNegativeUnitTestFilter(HTEST_FLAG_GET(filter))
+            return PositiveAndNegativeUnitTestFilter(FLAGS_htest_filter)
                 .MatchesTest(test_suite_name, test_name);
         }
 
@@ -932,7 +746,7 @@ namespace testing {
             // (see https://support.microsoft.com/kb/185294 for more information).
             const DWORD kCxxExceptionCode = 0xe06d7363;
 
-            if (!HTEST_FLAG_GET(catch_exceptions) || seh_code == kCxxExceptionCode || seh_code == EXCEPTION_BREAKPOINT || seh_code == EXCEPTION_STACK_OVERFLOW) {
+            if (!FLAGS_htest_catch_exceptions || seh_code == kCxxExceptionCode || seh_code == EXCEPTION_BREAKPOINT || seh_code == EXCEPTION_STACK_OVERFLOW) {
                 return EXCEPTION_CONTINUE_SEARCH; // Don't handle these exceptions
             }
 
@@ -1193,7 +1007,7 @@ namespace testing {
         // trace but Bar() and CurrentOsStackTraceExceptTop() won't.
         std::string UnitTestImpl::CurrentOsStackTraceExceptTop(int skip_count) {
             return os_stack_trace_getter()->CurrentStackTrace(
-                HTEST_FLAG_GET(stack_trace_depth), skip_count + 1
+                FLAGS_htest_stack_trace_depth, skip_count + 1
                 // Skips the user-specified number of frames plus this function
                 // itself.
             ); // NOLINT
@@ -2542,7 +2356,7 @@ namespace testing {
 
     // The c'tor saves the states of all flags.
     Test::Test()
-        : htest_flag_saver_(new HTEST_FLAG_SAVER_) { }
+        : htest_flag_saver_(new ::testing::internal::HTestFlagSaver) { }
 
     // The d'tor restores the states of all flags.  The actual work is
     // done by the d'tor of the htest_flag_saver_ field, and thus not
@@ -2703,7 +2517,7 @@ namespace testing {
         Result HandleExceptionsInMethodIfSupported(T* object, Result (T::*method)(),
             const char* location) {
             // NOTE: The user code can affect the way in which Hawk Test handles
-            // exceptions by setting HTEST_FLAG(catch_exceptions), but only before
+            // exceptions by setting FLAGS_htest_catch_exceptions, but only before
             // RUN_ALL_TESTS() starts. It is technically possible to check the flag
             // after the exception is caught and either report or re-throw the
             // exception based on the flag's value:
@@ -2711,7 +2525,7 @@ namespace testing {
             // try {
             //   // Perform the test method.
             // } catch (...) {
-            //   if (HTEST_FLAG_GET(catch_exceptions))
+            //   if (FLAGS_htest_catch_exceptions)
             //     // Report the exception as failure.
             //   else
             //     throw;  // Re-throws the original exception.
@@ -3096,7 +2910,7 @@ namespace testing {
             } else {
                 GetMutableTestInfo(i)->Run();
             }
-            if (HTEST_FLAG_GET(fail_fast) && GetMutableTestInfo(i)->result()->Failed()) {
+            if (FLAGS_htest_fail_fast && GetMutableTestInfo(i)->result()->Failed()) {
                 for (int j = i + 1; j < total_test_count(); j++) {
                     GetMutableTestInfo(j)->Skip();
                 }
@@ -3211,12 +3025,6 @@ namespace testing {
     }
 
     namespace internal {
-        namespace {
-            enum class HTestColor { kDefault,
-                kRed,
-                kGreen,
-                kYellow };
-        } // namespace
 
         // Prints a TestPartResult to an std::string.
         static std::string PrintTestPartResultToString(
@@ -3315,7 +3123,7 @@ namespace testing {
 
         // Returns true if and only if Hawk Test should use colors in the output.
         bool ShouldUseColor(bool stdout_is_tty) {
-            std::string c = HTEST_FLAG_GET(color);
+            std::string c = FLAGS_htest_color;
             const char* const htest_color = c.c_str();
 
             if (String::CaseInsensitiveCStringEquals(htest_color, "auto")) {
@@ -3343,7 +3151,7 @@ namespace testing {
         // that would be colored when printed, as can be done on Linux.
 
         HTEST_ATTRIBUTE_PRINTF_(2, 3)
-        static void ColoredPrintf(HTestColor color, const char* fmt, ...) {
+        void ColoredPrintf(HTestColor color, const char* fmt, ...) {
             va_list args;
             va_start(args, fmt);
 
@@ -3456,10 +3264,10 @@ namespace testing {
         // Fired before each iteration of tests starts.
         void PrettyUnitTestResultPrinter::OnTestIterationStart(
             const UnitTest& unit_test, int iteration) {
-            if (HTEST_FLAG_GET(repeat) != 1)
+            if (FLAGS_htest_repeat != 1)
                 printf("\nRepeating all tests (iteration %d) . . .\n\n", iteration + 1);
 
-            std::string f = HTEST_FLAG_GET(filter);
+            std::string f = FLAGS_htest_filter;
             const char* const filter = f.c_str();
 
             // Prints the filter if it's not *.  This reminds the user that some
@@ -3470,13 +3278,13 @@ namespace testing {
             }
 
             if (internal::ShouldShard(false)) {
-                const int32_t shard_index = HTEST_FLAG_GET(shard_index);
+                const int32_t shard_index = FLAGS_htest_shard_index;
                 ColoredPrintf(HTestColor::kYellow, "Note: This is test shard %d of %d.\n",
                     static_cast<int>(shard_index) + 1,
-                    HTEST_FLAG_GET(total_shards));
+                    FLAGS_htest_total_shards);
             }
 
-            if (HTEST_FLAG_GET(shuffle)) {
+            if (FLAGS_htest_shuffle) {
                 ColoredPrintf(HTestColor::kYellow,
                     "Note: Randomizing tests' orders with a seed of %d .\n",
                     unit_test.random_seed());
@@ -3564,7 +3372,7 @@ namespace testing {
             if (test_info.result()->Failed())
                 PrintFullTestCommentIfPresent(test_info);
 
-            if (HTEST_FLAG_GET(print_time)) {
+            if (FLAGS_htest_print_time) {
                 printf(" (%s ms)\n",
                     internal::StreamableToString(test_info.result()->elapsed_time())
                         .c_str());
@@ -3576,7 +3384,7 @@ namespace testing {
 
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
         void PrettyUnitTestResultPrinter::OnTestCaseEnd(const TestCase& test_case) {
-            if (!HTEST_FLAG_GET(print_time))
+            if (!FLAGS_htest_print_time)
                 return;
 
             const std::string counts = FormatCountableNoun(test_case.test_to_run_count(), "test", "tests");
@@ -3587,7 +3395,7 @@ namespace testing {
         }
 #else
         void PrettyUnitTestResultPrinter::OnTestSuiteEnd(const TestSuite& test_suite) {
-            if (!HTEST_FLAG_GET(print_time))
+            if (!FLAGS_htest_print_time)
                 return;
 
             const std::string counts = FormatCountableNoun(test_suite.test_to_run_count(), "test", "tests");
@@ -3683,7 +3491,7 @@ namespace testing {
             printf("%s from %s ran.",
                 FormatTestCount(unit_test.test_to_run_count()).c_str(),
                 FormatTestSuiteCount(unit_test.test_suite_to_run_count()).c_str());
-            if (HTEST_FLAG_GET(print_time)) {
+            if (FLAGS_htest_print_time) {
                 printf(" (%s ms total)",
                     internal::StreamableToString(unit_test.elapsed_time()).c_str());
             }
@@ -3704,7 +3512,7 @@ namespace testing {
             }
 
             int num_disabled = unit_test.reportable_disabled_test_count();
-            if (num_disabled && !HTEST_FLAG_GET(also_run_disabled_tests)) {
+            if (num_disabled && !FLAGS_htest_also_run_disabled_tests) {
                 if (unit_test.Passed()) {
                     printf("\n"); // Add a spacer if no FAILURE banner is displayed.
                 }
@@ -3777,7 +3585,7 @@ namespace testing {
                 PrintTestName(test_info.test_suite_name(), test_info.name());
                 PrintFullTestCommentIfPresent(test_info);
 
-                if (HTEST_FLAG_GET(print_time)) {
+                if (FLAGS_htest_print_time) {
                     printf(" (%s ms)\n",
                         internal::StreamableToString(test_info.result()->elapsed_time())
                             .c_str());
@@ -3794,7 +3602,7 @@ namespace testing {
             printf("%s from %s ran.",
                 FormatTestCount(unit_test.test_to_run_count()).c_str(),
                 FormatTestSuiteCount(unit_test.test_suite_to_run_count()).c_str());
-            if (HTEST_FLAG_GET(print_time)) {
+            if (FLAGS_htest_print_time) {
                 printf(" (%s ms total)",
                     internal::StreamableToString(unit_test.elapsed_time()).c_str());
             }
@@ -3809,7 +3617,7 @@ namespace testing {
             }
 
             int num_disabled = unit_test.reportable_disabled_test_count();
-            if (num_disabled && !HTEST_FLAG_GET(also_run_disabled_tests)) {
+            if (num_disabled && !FLAGS_htest_also_run_disabled_tests) {
                 if (unit_test.Passed()) {
                     printf("\n"); // Add a spacer if no FAILURE banner is displayed.
                 }
@@ -4307,7 +4115,7 @@ namespace testing {
             OutputXmlAttribute(stream, kTestsuite, "file", test_info.file());
             OutputXmlAttribute(stream, kTestsuite, "line",
                 StreamableToString(test_info.line()));
-            if (HTEST_FLAG_GET(list_tests)) {
+            if (FLAGS_htest_list_tests) {
                 *stream << " />\n";
                 return;
             }
@@ -4380,7 +4188,7 @@ namespace testing {
             OutputXmlAttribute(stream, kTestsuite, "name", test_suite.name());
             OutputXmlAttribute(stream, kTestsuite, "tests",
                 StreamableToString(test_suite.reportable_test_count()));
-            if (!HTEST_FLAG_GET(list_tests)) {
+            if (!FLAGS_htest_list_tests) {
                 OutputXmlAttribute(stream, kTestsuite, "failures",
                     StreamableToString(test_suite.failed_test_count()));
                 OutputXmlAttribute(
@@ -4433,7 +4241,7 @@ namespace testing {
                 stream, kTestsuites, "timestamp",
                 FormatEpochTimeInMillisAsIso8601(unit_test.start_timestamp()));
 
-            if (HTEST_FLAG_GET(shuffle)) {
+            if (FLAGS_htest_shuffle) {
                 OutputXmlAttribute(stream, kTestsuites, "random_seed",
                     StreamableToString(unit_test.random_seed()));
             }
@@ -4689,7 +4497,7 @@ namespace testing {
             *stream << Indent(4) << "{\n";
             OutputJsonKey(stream, "testsuite", "name", "NonTestSuiteFailure", Indent(6));
             OutputJsonKey(stream, "testsuite", "tests", 1, Indent(6));
-            if (!HTEST_FLAG_GET(list_tests)) {
+            if (!FLAGS_htest_list_tests) {
                 OutputJsonKey(stream, "testsuite", "failures", 1, Indent(6));
                 OutputJsonKey(stream, "testsuite", "disabled", 0, Indent(6));
                 OutputJsonKey(stream, "testsuite", "skipped", 0, Indent(6));
@@ -4754,7 +4562,7 @@ namespace testing {
 
             OutputJsonKey(stream, kTestsuite, "file", test_info.file(), kIndent);
             OutputJsonKey(stream, kTestsuite, "line", test_info.line(), kIndent, false);
-            if (HTEST_FLAG_GET(list_tests)) {
+            if (FLAGS_htest_list_tests) {
                 *stream << "\n"
                         << Indent(8) << "}";
                 return;
@@ -4846,7 +4654,7 @@ namespace testing {
             OutputJsonKey(stream, kTestsuite, "name", test_suite.name(), kIndent);
             OutputJsonKey(stream, kTestsuite, "tests", test_suite.reportable_test_count(),
                 kIndent);
-            if (!HTEST_FLAG_GET(list_tests)) {
+            if (!FLAGS_htest_list_tests) {
                 OutputJsonKey(stream, kTestsuite, "failures",
                     test_suite.failed_test_count(), kIndent);
                 OutputJsonKey(stream, kTestsuite, "disabled",
@@ -4905,7 +4713,7 @@ namespace testing {
             OutputJsonKey(stream, kTestsuites, "disabled",
                 unit_test.reportable_disabled_test_count(), kIndent);
             OutputJsonKey(stream, kTestsuites, "errors", 0, kIndent);
-            if (HTEST_FLAG_GET(shuffle)) {
+            if (FLAGS_htest_shuffle) {
                 OutputJsonKey(stream, kTestsuites, "random_seed", unit_test.random_seed(),
                     kIndent);
             }
@@ -5429,7 +5237,7 @@ namespace testing {
             // in the code (perhaps in order to use Hawk Test assertions
             // with another testing framework) and specify the former on the
             // command line for debugging.
-            if (HTEST_FLAG_GET(break_on_failure)) {
+            if (FLAGS_htest_break_on_failure) {
 #if defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_WINDOWS_PHONE) && !defined(HTEST_OS_WINDOWS_RT)
                 // Using DebugBreak on Windows allows htest to still break into a debugger
                 // when a failure happens and both the --htest_break_on_failure and
@@ -5448,7 +5256,7 @@ namespace testing {
                 // portability: some debuggers don't correctly trap abort().
                 *static_cast<volatile int*>(nullptr) = 1;
 #endif // HTEST_OS_WINDOWS
-            } else if (HTEST_FLAG_GET(throw_on_failure)) {
+            } else if (FLAGS_htest_throw_on_failure) {
 #if HTEST_HAS_EXCEPTIONS
                 throw internal::HawkTestFailureException(result);
 #else
@@ -5477,7 +5285,7 @@ namespace testing {
     // from the main thread.
     int UnitTest::Run() {
 #ifdef HTEST_INTERNAL_HAS_PREMATURE_EXIT_FILE
-        const bool in_death_test_child_process = !HTEST_FLAG_GET(internal_run_death_test).empty();
+        const bool in_death_test_child_process = !FLAGS_htest_internal_run_death_test.empty();
 
         // Hawk Test implements this protocol for catching that a test
         // program exits before returning control to Hawk Test:
@@ -5508,9 +5316,9 @@ namespace testing {
         const bool in_death_test_child_process = false;
 #endif // HTEST_INTERNAL_HAS_PREMATURE_EXIT_FILE
 
-        // Captures the value of HTEST_FLAG(catch_exceptions).  This value will be
+        // Captures the value of FLAGS_htest_catch_exceptions.  This value will be
         // used for the duration of the program.
-        impl()->set_catch_exceptions(HTEST_FLAG_GET(catch_exceptions));
+        impl()->set_catch_exceptions(FLAGS_htest_catch_exceptions);
 
 #ifdef HTEST_OS_WINDOWS
         // Either the user wants Hawk Test to catch exceptions thrown by the
@@ -5536,7 +5344,7 @@ namespace testing {
             // this dialog or it will pop up for every EXPECT/ASSERT_DEATH statement
             // executed. Hawk Test will notify the user of any unexpected
             // failure via stderr.
-            if (!HTEST_FLAG_GET(break_on_failure))
+            if (!FLAGS_htest_break_on_failure)
                 _set_abort_behavior(
                     0x0, // Clear the following flags:
                     _WRITE_ABORT_MSG | _CALL_REPORTFAULT); // pop-up window, core dump.
@@ -5735,7 +5543,7 @@ namespace testing {
         // Initializes event listeners for streaming test results in string form.
         // Must not be called before init_hawk_test.
         void UnitTestImpl::ConfigureStreamingOutput() {
-            const std::string& target = HTEST_FLAG_GET(stream_result_to);
+            const std::string& target = FLAGS_htest_stream_result_to;
             if (!target.empty()) {
                 const size_t pos = target.find(':');
                 if (pos != std::string::npos) {
@@ -5778,7 +5586,7 @@ namespace testing {
                 // to shut down the default XML output before invoking RUN_ALL_TESTS.
                 ConfigureXmlOutput();
 
-                if (HTEST_FLAG_GET(brief)) {
+                if (FLAGS_htest_brief) {
                     listeners()->SetDefaultResultPrinter(new BriefUnitTestResultPrinter);
                 }
 
@@ -5895,7 +5703,7 @@ namespace testing {
                 constexpr char kNoTestLinkedMessage[] = "This test program does NOT link in any test case.";
                 constexpr char kNoTestLinkedFatal[] = "This is INVALID. Please make sure to link in at least one test case.";
                 constexpr char kNoTestLinkedWarning[] = "Please make sure this is intended.";
-                const bool fail_if_no_test_linked = HTEST_FLAG_GET(fail_if_no_test_linked);
+                const bool fail_if_no_test_linked = FLAGS_htest_fail_if_no_test_linked;
                 ColoredPrintf(
                     HTestColor::kRed, "%s %s\n", kNoTestLinkedMessage,
                     fail_if_no_test_linked ? kNoTestLinkedFatal : kNoTestLinkedWarning);
@@ -5936,13 +5744,13 @@ namespace testing {
                 > 0;
 
             // Lists the tests and exits if the --htest_list_tests flag was specified.
-            if (HTEST_FLAG_GET(list_tests)) {
+            if (FLAGS_htest_list_tests) {
                 // This must be called *after* FilterTests() has been called.
                 ListTestsMatchingFilter();
                 return true;
             }
 
-            random_seed_ = GetRandomSeedFromFlag(HTEST_FLAG_GET(random_seed));
+            random_seed_ = GetRandomSeedFromFlag(FLAGS_htest_random_seed);
 
             // True if and only if at least one test has failed.
             bool failed = false;
@@ -5954,7 +5762,7 @@ namespace testing {
 
             // How many times to repeat the tests?  We don't want to repeat them
             // when we are inside the subprocess of a death test.
-            const int repeat = in_subprocess_for_death_test ? 1 : HTEST_FLAG_GET(repeat);
+            const int repeat = in_subprocess_for_death_test ? 1 : FLAGS_htest_repeat;
 
             // Repeats forever if the repeat count is negative.
             const bool htest_repeat_forever = repeat < 0;
@@ -5965,7 +5773,7 @@ namespace testing {
             // environments to avoid leaks in case one of the environments is using
             // resources that are external to this process. Without this check there would
             // be no way to clean up those external resources automatically.
-            const bool recreate_environments_when_repeating = HTEST_FLAG_GET(recreate_environments_when_repeating) || htest_repeat_forever;
+            const bool recreate_environments_when_repeating = FLAGS_htest_recreate_environments_when_repeating || htest_repeat_forever;
 
             for (int i = 0; htest_repeat_forever || i != repeat; i++) {
                 // We want to preserve failures generated by ad-hoc test
@@ -5975,7 +5783,7 @@ namespace testing {
                 Timer timer;
 
                 // Shuffles test suites and tests if requested.
-                if (has_tests_to_run && HTEST_FLAG_GET(shuffle)) {
+                if (has_tests_to_run && FLAGS_htest_shuffle) {
                     random()->Reseed(static_cast<uint32_t>(random_seed_));
                     // This should be done before calling OnTestIterationStart(),
                     // such that a test event listener can see the actual test order
@@ -6014,7 +5822,7 @@ namespace testing {
                         for (int test_index = 0; test_index < total_test_suite_count();
                             test_index++) {
                             GetMutableSuiteCase(test_index)->Run();
-                            if (HTEST_FLAG_GET(fail_fast) && GetMutableSuiteCase(test_index)->Failed()) {
+                            if (FLAGS_htest_fail_fast && GetMutableSuiteCase(test_index)->Failed()) {
                                 for (int j = test_index + 1; j < total_test_suite_count(); j++) {
                                     GetMutableSuiteCase(j)->Skip();
                                 }
@@ -6040,7 +5848,7 @@ namespace testing {
                             TearDownEnvironment);
                         repeater->OnEnvironmentsTearDownEnd(*parent_);
                     }
-                } else if (HTEST_FLAG_GET(fail_if_no_test_selected)) {
+                } else if (FLAGS_htest_fail_if_no_test_selected) {
                     // If there were no tests to run, bail if we were requested to be
                     // strict.
                     constexpr char kNoTestsSelectedMessage[] = "No tests ran. Check that tests exist and are not disabled or "
@@ -6068,12 +5876,12 @@ namespace testing {
                 // Restores the original test order after the iteration.  This
                 // allows the user to quickly repro a failure that happens in the
                 // N-th iteration without repeating the first (N - 1) iterations.
-                // This is not enclosed in "if (HTEST_FLAG(shuffle)) { ... }", in
+                // This is not enclosed in "if (FLAGS_htest_shuffle) { ... }", in
                 // case the user somehow changes the value of the flag somewhere
                 // (it's always safe to unshuffle the tests).
                 UnshuffleTests();
 
-                if (HTEST_FLAG_GET(shuffle)) {
+                if (FLAGS_htest_shuffle) {
                     // Picks a new random seed for each iteration.
                     random_seed_ = GetNextRandomSeed(random_seed_);
                 }
@@ -6089,7 +5897,7 @@ namespace testing {
 
             // Try to warn the user if no tests matched the test filter.
             if (ShouldWarnIfNoTestsMatchFilter()) {
-                const std::string filter_warning = std::string("filter \"") + HTEST_FLAG_GET(filter) + "\" did not match any test; no tests were run\n";
+                const std::string filter_warning = std::string("filter \"") + FLAGS_htest_filter + "\" did not match any test; no tests were run\n";
                 ColoredPrintf(HTestColor::kRed, "WARNING: %s", filter_warning.c_str());
 #if HTEST_HAS_FILE_SYSTEM
                 AppendToTestWarningsOutputFile(filter_warning);
@@ -6142,8 +5950,8 @@ namespace testing {
                 return false;
             }
 
-            const int32_t total_shards = HTEST_FLAG_GET(total_shards);
-            const int32_t shard_index = HTEST_FLAG_GET(shard_index);
+            const int32_t total_shards = FLAGS_htest_total_shards;
+            const int32_t shard_index = FLAGS_htest_shard_index;
 
             if (total_shards == -1 && shard_index == -1) {
                 return false;
@@ -6206,12 +6014,12 @@ namespace testing {
         // each TestSuite and TestInfo object.
         int UnitTestImpl::FilterTests(ReactionToSharding shard_tests) {
             const int32_t total_shards = shard_tests == HONOR_SHARDING_PROTOCOL
-                ? HTEST_FLAG_GET(total_shards)
+                ? FLAGS_htest_total_shards
                 : -1;
-            const int32_t shard_index = shard_tests == HONOR_SHARDING_PROTOCOL ? HTEST_FLAG_GET(shard_index) : -1;
+            const int32_t shard_index = shard_tests == HONOR_SHARDING_PROTOCOL ? FLAGS_htest_shard_index : -1;
 
             const PositiveAndNegativeUnitTestFilter htest_flag_filter(
-                HTEST_FLAG_GET(filter));
+                FLAGS_htest_filter);
             const UnitTestFilter disable_test_filter(kDisableTestFilter);
             // num_runnable_tests are the number of tests that will
             // run across all shards (i.e., match filter and are not disabled).
@@ -6233,7 +6041,7 @@ namespace testing {
                     const bool matches_filter = htest_flag_filter.MatchesTest(test_suite_name, test_name);
                     test_info->matches_filter_ = matches_filter;
 
-                    const bool is_runnable = (HTEST_FLAG_GET(also_run_disabled_tests) || !is_disabled) && matches_filter;
+                    const bool is_runnable = (FLAGS_htest_also_run_disabled_tests || !is_disabled) && matches_filter;
 
                     const bool is_in_another_shard = shard_tests != IGNORE_SHARDING_PROTOCOL && !ShouldRunTestOnShard(total_shards, shard_index, num_runnable_tests);
                     test_info->is_in_another_shard_ = is_in_another_shard;
@@ -6260,7 +6068,7 @@ namespace testing {
                 return false;
             }
             const PositiveAndNegativeUnitTestFilter htest_flag_filter(
-                HTEST_FLAG_GET(filter));
+                FLAGS_htest_filter);
             for (auto* test_suite : test_suites_) {
                 const std::string& test_suite_name = test_suite->name_;
                 for (TestInfo* test_info : test_suite->test_info_list()) {
@@ -6451,407 +6259,6 @@ namespace testing {
             return true;
         }
 
-        // If *pstr starts with the given prefix, modifies *pstr to be right
-        // past the prefix and returns true; otherwise leaves *pstr unchanged
-        // and returns false.  None of pstr, *pstr, and prefix can be NULL.
-        bool SkipPrefix(const char* prefix, const char** pstr) {
-            const size_t prefix_len = strlen(prefix);
-            if (strncmp(*pstr, prefix, prefix_len) == 0) {
-                *pstr += prefix_len;
-                return true;
-            }
-            return false;
-        }
-
-        // Parses a string as a command line flag.  The string should have
-        // the format "--flag=value".  When def_optional is true, the "=value"
-        // part can be omitted.
-        //
-        // Returns the value of the flag, or NULL if the parsing failed.
-        static const char* ParseFlagValue(const char* str, const char* flag_name,
-            bool def_optional) {
-            // str and flag must not be NULL.
-            if (str == nullptr || flag_name == nullptr)
-                return nullptr;
-
-            // The flag must start with "--" followed by HTEST_FLAG_PREFIX_.
-            const std::string flag_str = std::string("--") + HTEST_FLAG_PREFIX_ + flag_name;
-            const size_t flag_len = flag_str.length();
-            if (strncmp(str, flag_str.c_str(), flag_len) != 0)
-                return nullptr;
-
-            // Skips the flag name.
-            const char* flag_end = str + flag_len;
-
-            // When def_optional is true, it's OK to not have a "=value" part.
-            if (def_optional && (flag_end[0] == '\0')) {
-                return flag_end;
-            }
-
-            // If def_optional is true and there are more characters after the
-            // flag name, or if def_optional is false, there must be a '=' after
-            // the flag name.
-            if (flag_end[0] != '=')
-                return nullptr;
-
-            // Returns the string after "=".
-            return flag_end + 1;
-        }
-
-        // Parses a string for a bool flag, in the form of either
-        // "--flag=value" or "--flag".
-        //
-        // In the former case, the value is taken as true as long as it does
-        // not start with '0', 'f', or 'F'.
-        //
-        // In the latter case, the value is taken as true.
-        //
-        // On success, stores the value of the flag in *value, and returns
-        // true.  On failure, returns false without changing *value.
-        static bool ParseFlag(const char* str, const char* flag_name, bool* value) {
-            // Gets the value of the flag as a string.
-            const char* const value_str = ParseFlagValue(str, flag_name, true);
-
-            // Aborts if the parsing failed.
-            if (value_str == nullptr)
-                return false;
-
-            // Converts the string value to a bool.
-            *value = !(*value_str == '0' || *value_str == 'f' || *value_str == 'F');
-            return true;
-        }
-
-        // Parses a string for an int32_t flag, in the form of "--flag=value".
-        //
-        // On success, stores the value of the flag in *value, and returns
-        // true.  On failure, returns false without changing *value.
-        bool ParseFlag(const char* str, const char* flag_name, int32_t* value) {
-            // Gets the value of the flag as a string.
-            const char* const value_str = ParseFlagValue(str, flag_name, false);
-
-            // Aborts if the parsing failed.
-            if (value_str == nullptr)
-                return false;
-
-            // Sets *value to the value of the flag.
-            return ParseInt32(Message() << "The value of flag --" << flag_name, value_str,
-                value);
-        }
-
-        // Parses a string for a string flag, in the form of "--flag=value".
-        //
-        // On success, stores the value of the flag in *value, and returns
-        // true.  On failure, returns false without changing *value.
-        template <typename String>
-        static bool ParseFlag(const char* str, const char* flag_name, String* value) {
-            // Gets the value of the flag as a string.
-            const char* const value_str = ParseFlagValue(str, flag_name, false);
-
-            // Aborts if the parsing failed.
-            if (value_str == nullptr)
-                return false;
-
-            // Sets *value to the value of the flag.
-            *value = value_str;
-            return true;
-        }
-
-        // Determines whether a string has a prefix that Hawk Test uses for its
-        // flags, i.e., starts with HTEST_FLAG_PREFIX_ or HTEST_FLAG_PREFIX_DASH_.
-        // If Hawk Test detects that a command line flag has its prefix but is not
-        // recognized, it will print its help message. Flags starting with
-        // HTEST_INTERNAL_PREFIX_ followed by "internal_" are considered Hawk Test
-        // internal flags and do not trigger the help message.
-        static bool HasHawkTestFlagPrefix(const char* str) {
-            return (SkipPrefix("--", &str) || SkipPrefix("-", &str) || SkipPrefix("/", &str)) && !SkipPrefix(HTEST_FLAG_PREFIX_ "internal_", &str) && (SkipPrefix(HTEST_FLAG_PREFIX_, &str) || SkipPrefix(HTEST_FLAG_PREFIX_DASH_, &str));
-        }
-
-        // Prints a string containing code-encoded text.  The following escape
-        // sequences can be used in the string to control the text color:
-        //
-        //   @@    prints a single '@' character.
-        //   @R    changes the color to red.
-        //   @G    changes the color to green.
-        //   @Y    changes the color to yellow.
-        //   @D    changes to the default terminal text color.
-        //
-        static void PrintColorEncoded(const char* str) {
-            HTestColor color = HTestColor::kDefault; // The current color.
-
-            // Conceptually, we split the string into segments divided by escape
-            // sequences.  Then we print one segment at a time.  At the end of
-            // each iteration, the str pointer advances to the beginning of the
-            // next segment.
-            for (;;) {
-                const char* p = strchr(str, '@');
-                if (p == nullptr) {
-                    ColoredPrintf(color, "%s", str);
-                    return;
-                }
-
-                ColoredPrintf(color, "%s", std::string(str, p).c_str());
-
-                const char ch = p[1];
-                str = p + 2;
-                if (ch == '@') {
-                    ColoredPrintf(color, "@");
-                } else if (ch == 'D') {
-                    color = HTestColor::kDefault;
-                } else if (ch == 'R') {
-                    color = HTestColor::kRed;
-                } else if (ch == 'G') {
-                    color = HTestColor::kGreen;
-                } else if (ch == 'Y') {
-                    color = HTestColor::kYellow;
-                } else {
-                    --str;
-                }
-            }
-        }
-
-        static const char kColorEncodedHelpMessage[] = "This program contains tests written using " HTEST_NAME_
-                                                       ". You can use the\n"
-                                                       "following command line flags to control its behavior:\n"
-                                                       "\n"
-                                                       "Test Selection:\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "list_tests@D\n"
-                                                       "      List the names of all tests instead of running them. The name of\n"
-                                                       "      TEST(Foo, Bar) is \"Foo.Bar\".\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "filter=@YPOSITIVE_PATTERNS"
-                                                       "[@G-@YNEGATIVE_PATTERNS]@D\n"
-                                                       "      Run only the tests whose name matches one of the positive patterns "
-                                                       "but\n"
-                                                       "      none of the negative patterns. '?' matches any single character; "
-                                                       "'*'\n"
-                                                       "      matches any substring; ':' separates two patterns.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "also_run_disabled_tests@D\n"
-                                                       "      Run all disabled tests too.\n"
-                                                       "\n"
-                                                       "Test Execution:\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "repeat=@Y[COUNT]@D\n"
-                                                       "      Run the tests repeatedly; use a negative count to repeat forever.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "shuffle@D\n"
-                                                       "      Randomize tests' orders on every iteration.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "random_seed=@Y[NUMBER]@D\n"
-                                                       "      Random number seed to use for shuffling test orders (between 1 and\n"
-                                                       "      99999, or 0 to use a seed based on the current time).\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "recreate_environments_when_repeating@D\n"
-                                                       "      Sets up and tears down the global test environment on each repeat\n"
-                                                       "      of the test.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "fail_fast@D\n"
-                                                       "      Stop running tests after the first failure.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "fail_if_no_test_linked@D\n"
-                                                       "      Fail if no test is linked into the test program.\n"
-                                                       "\n"
-                                                       "Test Output:\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "color=@Y(@Gyes@Y|@Gno@Y|@Gauto@Y)@D\n"
-                                                       "      Enable/disable colored output. The default is @Gauto@D.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "brief=1@D\n"
-                                                       "      Only print test failures.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "print_time=0@D\n"
-                                                       "      Don't print the elapsed time of each test.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "print_utf8=0@D\n"
-                                                       "      Don't print UTF-8 characters as text.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "output=@Y(@Gjson@Y|@Gxml@Y)[@G:@YDIRECTORY_PATH@G" HTEST_PATH_SEP_
-                                                       "@Y|@G:@YFILE_PATH]@D\n"
-                                                       "      Generate a JSON or XML report in the given directory or with the "
-                                                       "given\n"
-                                                       "      file name. @YFILE_PATH@D defaults to @Gtest_detail.xml@D.\n"
-#if HTEST_CAN_STREAM_RESULTS_
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "stream_result_to=@YHOST@G:@YPORT@D\n"
-                                                       "      Stream test results to the given server.\n"
-#endif // HTEST_CAN_STREAM_RESULTS_
-                                                       "\n"
-                                                       "Assertion Behavior:\n"
-#if defined(HTEST_HAS_DEATH_TEST) && !defined(HTEST_OS_WINDOWS)
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "death_test_style=@Y(@Gfast@Y|@Gthreadsafe@Y)@D\n"
-                                                       "      Set the default death test style.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "death_test_use_fork@D\n"
-                                                       "      Use fork() instead of clone() to spawn death test child processes.\n"
-#endif // HTEST_HAS_DEATH_TEST && !HTEST_OS_WINDOWS
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "break_on_failure@D\n"
-                                                       "      Turn assertion failures into debugger break-points.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "throw_on_failure@D\n"
-                                                       "      Turn assertion failures into C++ exceptions for use by an external\n"
-                                                       "      test framework.\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "catch_exceptions=0@D\n"
-                                                       "      Do not report exceptions as test failures. Instead, allow them\n"
-                                                       "      to crash the program or throw a pop-up (on Windows).\n"
-                                                       "  @G--" HTEST_FLAG_PREFIX_
-                                                       "stack_trace_depth=@Y[NUMBER]@D\n"
-                                                       "      Maximum number of stack frames to print when an assertion fails.\n"
-                                                       "\n"
-                                                       "Except for @G--" HTEST_FLAG_PREFIX_
-                                                       "list_tests@D, you can alternatively set "
-                                                       "the corresponding\n"
-                                                       "environment variable of a flag (all letters in upper-case). For example, "
-                                                       "to\n"
-                                                       "disable colored text output, you can either specify "
-                                                       "@G--" HTEST_FLAG_PREFIX_
-                                                       "color=no@D or set\n"
-                                                       "the @G" HTEST_FLAG_PREFIX_UPPER_
-                                                       "COLOR@D environment variable to @Gno@D.\n"
-                                                       "\n"
-                                                       "For more information, please read the " HTEST_NAME_
-                                                       " documentation at\n"
-                                                       "@G" HTEST_PROJECT_URL_ "@D. If you find a bug in " HTEST_NAME_
-                                                       "\n"
-                                                       "(not one in your own code or tests), please report it to\n"
-                                                       "@G<" HTEST_DEV_EMAIL_ ">@D.\n";
-
-        static bool parse_hawk_test_flag(const char* const arg) {
-#define HTEST_INTERNAL_PARSE_FLAG(flag_name)      \
-    do {                                          \
-        auto value = HTEST_FLAG_GET(flag_name);   \
-        if (ParseFlag(arg, #flag_name, &value)) { \
-            HTEST_FLAG_SET(flag_name, value);     \
-            return true;                          \
-        }                                         \
-    } while (false)
-
-            HTEST_INTERNAL_PARSE_FLAG(also_run_disabled_tests);
-            HTEST_INTERNAL_PARSE_FLAG(break_on_failure);
-            HTEST_INTERNAL_PARSE_FLAG(catch_exceptions);
-            HTEST_INTERNAL_PARSE_FLAG(color);
-            HTEST_INTERNAL_PARSE_FLAG(death_test_style);
-            HTEST_INTERNAL_PARSE_FLAG(death_test_use_fork);
-            HTEST_INTERNAL_PARSE_FLAG(fail_fast);
-            HTEST_INTERNAL_PARSE_FLAG(fail_if_no_test_linked);
-            HTEST_INTERNAL_PARSE_FLAG(fail_if_no_test_selected);
-            HTEST_INTERNAL_PARSE_FLAG(filter);
-            HTEST_INTERNAL_PARSE_FLAG(internal_run_death_test);
-            HTEST_INTERNAL_PARSE_FLAG(list_tests);
-            HTEST_INTERNAL_PARSE_FLAG(output);
-            HTEST_INTERNAL_PARSE_FLAG(brief);
-            HTEST_INTERNAL_PARSE_FLAG(print_time);
-            HTEST_INTERNAL_PARSE_FLAG(print_utf8);
-            HTEST_INTERNAL_PARSE_FLAG(random_seed);
-            HTEST_INTERNAL_PARSE_FLAG(repeat);
-            HTEST_INTERNAL_PARSE_FLAG(shard_index);
-            HTEST_INTERNAL_PARSE_FLAG(total_shards);
-            HTEST_INTERNAL_PARSE_FLAG(recreate_environments_when_repeating);
-            HTEST_INTERNAL_PARSE_FLAG(shuffle);
-            HTEST_INTERNAL_PARSE_FLAG(stack_trace_depth);
-            HTEST_INTERNAL_PARSE_FLAG(stream_result_to);
-            HTEST_INTERNAL_PARSE_FLAG(throw_on_failure);
-            return false;
-        }
-
-#if HTEST_USE_OWN_FLAGFILE_FLAG_ && HTEST_HAS_FILE_SYSTEM
-        static void LoadFlagsFromFile(const std::string& path) {
-            FILE* flagfile = posix::FOpen(path.c_str(), "r");
-            if (!flagfile) {
-                HTEST_LOG_(FATAL) << "Unable to open file \"" << HTEST_FLAG_GET(flagfile)
-                                  << "\"";
-            }
-            std::string contents(ReadEntireFile(flagfile));
-            posix::FClose(flagfile);
-            std::vector<std::string> lines;
-            SplitString(contents, '\n', &lines);
-            for (size_t i = 0; i < lines.size(); ++i) {
-                if (lines[i].empty())
-                    continue;
-                if (!parse_hawk_test_flag(lines[i].c_str()))
-                    g_help_flag = true;
-            }
-        }
-#endif // HTEST_USE_OWN_FLAGFILE_FLAG_ && HTEST_HAS_FILE_SYSTEM
-
-        // Parses the command line for Hawk Test flags, without initializing
-        // other parts of Hawk Test.  The type parameter CharType can be
-        // instantiated to either char or wchar_t.
-        template <typename CharType>
-        void parse_hawk_test_flags_only_impl(int* argc, CharType** argv) {
-            std::string flagfile_value;
-            for (int i = 1; i < *argc; i++) {
-                const std::string arg_string = StreamableToString(argv[i]);
-                const char* const arg = arg_string.c_str();
-
-                using internal::ParseFlag;
-
-                bool remove_flag = false;
-                if (parse_hawk_test_flag(arg)) {
-                    remove_flag = true;
-#if HTEST_USE_OWN_FLAGFILE_FLAG_ && HTEST_HAS_FILE_SYSTEM
-                } else if (ParseFlag(arg, "flagfile", &flagfile_value)) {
-                    HTEST_FLAG_SET(flagfile, flagfile_value);
-                    LoadFlagsFromFile(flagfile_value);
-                    remove_flag = true;
-#endif // HTEST_USE_OWN_FLAGFILE_FLAG_ && HTEST_HAS_FILE_SYSTEM
-                } else if (arg_string == "--help" || HasHawkTestFlagPrefix(arg)) {
-                    // Both help flag and unrecognized Hawk Test flags (excluding
-                    // internal ones) trigger help display.
-                    g_help_flag = true;
-                }
-
-                if (remove_flag) {
-                    // Shift the remainder of the argv list left by one.
-                    for (int j = i + 1; j < *argc; ++j) {
-                        argv[j - 1] = argv[j];
-                    }
-
-                    // Decrements the argument count.
-                    (*argc)--;
-
-                    // Terminate the array with nullptr.
-                    argv[*argc] = nullptr;
-
-                    // We also need to decrement the iterator as we just removed
-                    // an element.
-                    i--;
-                }
-            }
-
-            if (g_help_flag) {
-                // We print the help here instead of in RUN_ALL_TESTS(), as the
-                // latter may not be called at all if the user is using Google
-                // Test with another testing framework.
-                PrintColorEncoded(kColorEncodedHelpMessage);
-            }
-        }
-
-        // Parses the command line for Hawk Test flags, without initializing
-        // other parts of Hawk Test. This function updates argc and argv by removing
-        // flags that are known to HawkTest. Other arguments
-        // remain in place. Unrecognized flags are not reported and do not cause the
-        // program to exit.
-        void parse_hawk_test_flags_only(int* argc, char** argv) {
-            parse_hawk_test_flags_only_impl(argc, argv);
-
-            // Fix the value of *_NSGetArgc() on macOS, but if and only if
-            // *_NSGetArgv() == argv
-            // Only applicable to char** version of argv
-#ifdef HTEST_OS_MAC
-#ifndef HTEST_OS_IOS
-            if (*_NSGetArgv() == argv) {
-                *_NSGetArgc() = *argc;
-            }
-#endif
-#endif
-        }
-        void parse_hawk_test_flags_only(int* argc, wchar_t** argv) {
-            parse_hawk_test_flags_only_impl(argc, argv);
-        }
 
         // The internal implementation of init_hawk_test().
         //

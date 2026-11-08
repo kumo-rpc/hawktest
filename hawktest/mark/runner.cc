@@ -12,10 +12,6 @@
 #include <cstdlib>
 #include <sstream>
 
-HTEST_DECLARE_bool_(death_test_use_fork);
-HTEST_DECLARE_bool_(fail_if_no_test_linked);
-HTEST_DECLARE_bool_(fail_if_no_test_selected);
-
 namespace md_test {
 namespace {
 
@@ -106,10 +102,10 @@ private:
             }                                                                                 \
             SavedFlag saved;                                                                  \
             saved.kind = SavedFlag::Kind::kBool;                                              \
-            saved.bool_value = HTEST_FLAG_GET(flag_name);                                     \
-            saved.restore = [](const SavedFlag &item) { HTEST_FLAG_SET(flag_name, item.bool_value); }; \
+            saved.bool_value = FLAGS_htest_##flag_name;                                     \
+            saved.restore = [](const SavedFlag &item) { (void)(FLAGS_htest_##flag_name = (item.bool_value)); }; \
             saved_.push_back(std::move(saved));                                               \
-            HTEST_FLAG_SET(flag_name, parsed);                                                \
+            (void)(FLAGS_htest_##flag_name = (parsed));                                                \
             return true;                                                                      \
         }
 #define APPLY_INT(flag_name)                                                                  \
@@ -121,20 +117,20 @@ private:
             }                                                                                 \
             SavedFlag saved;                                                                  \
             saved.kind = SavedFlag::Kind::kInt;                                               \
-            saved.int_value = HTEST_FLAG_GET(flag_name);                                      \
-            saved.restore = [](const SavedFlag &item) { HTEST_FLAG_SET(flag_name, item.int_value); }; \
+            saved.int_value = FLAGS_htest_##flag_name;                                      \
+            saved.restore = [](const SavedFlag &item) { (void)(FLAGS_htest_##flag_name = (item.int_value)); }; \
             saved_.push_back(std::move(saved));                                               \
-            HTEST_FLAG_SET(flag_name, parsed);                                                \
+            (void)(FLAGS_htest_##flag_name = (parsed));                                                \
             return true;                                                                      \
         }
 #define APPLY_STRING(flag_name)                                                               \
         if (name == #flag_name) {                                                             \
             SavedFlag saved;                                                                  \
             saved.kind = SavedFlag::Kind::kString;                                            \
-            saved.string_value = HTEST_FLAG_GET(flag_name);                                   \
-            saved.restore = [](const SavedFlag &item) { HTEST_FLAG_SET(flag_name, item.string_value); }; \
+            saved.string_value = FLAGS_htest_##flag_name;                                   \
+            saved.restore = [](const SavedFlag &item) { (void)(FLAGS_htest_##flag_name = (item.string_value)); }; \
             saved_.push_back(std::move(saved));                                               \
-            HTEST_FLAG_SET(flag_name, value);                                                 \
+            (void)(FLAGS_htest_##flag_name = (value));                                                 \
             return true;                                                                      \
         }
 

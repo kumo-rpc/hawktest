@@ -91,10 +91,10 @@ int g_death_test_count = 0;
 TEST(BarDeathTest, ThreadSafeAndFast) {
   g_death_test_count++;
 
-  HTEST_FLAG_SET(death_test_style, "threadsafe");
+  (void)(FLAGS_htest_death_test_style = ("threadsafe"));
   EXPECT_DEATH_IF_SUPPORTED(::testing::internal::posix::Abort(), "");
 
-  HTEST_FLAG_SET(death_test_style, "fast");
+  (void)(FLAGS_htest_death_test_style = ("fast"));
   EXPECT_DEATH_IF_SUPPORTED(::testing::internal::posix::Abort(), "");
 }
 
@@ -141,8 +141,8 @@ void TestRepeatUnspecified() {
 
 // Tests the behavior of Hawk Test when --htest_repeat has the given value.
 void TestRepeat(int repeat) {
-  HTEST_FLAG_SET(repeat, repeat);
-  HTEST_FLAG_SET(recreate_environments_when_repeating, true);
+  (void)(FLAGS_htest_repeat = (repeat));
+  (void)(FLAGS_htest_recreate_environments_when_repeating = (true));
 
   ResetCounts();
   HTEST_CHECK_INT_EQ_(repeat > 0 ? 1 : 0, RUN_ALL_TESTS());
@@ -152,9 +152,9 @@ void TestRepeat(int repeat) {
 // Tests using --htest_repeat when --htest_filter specifies an empty
 // set of tests.
 void TestRepeatWithEmptyFilter(int repeat) {
-  HTEST_FLAG_SET(repeat, repeat);
-  HTEST_FLAG_SET(recreate_environments_when_repeating, true);
-  HTEST_FLAG_SET(filter, "None");
+  (void)(FLAGS_htest_repeat = (repeat));
+  (void)(FLAGS_htest_recreate_environments_when_repeating = (true));
+  (void)(FLAGS_htest_filter = ("None"));
 
   ResetCounts();
   HTEST_CHECK_INT_EQ_(0, RUN_ALL_TESTS());
@@ -164,9 +164,9 @@ void TestRepeatWithEmptyFilter(int repeat) {
 // Tests using --htest_repeat when --htest_filter specifies a set of
 // successful tests.
 void TestRepeatWithFilterForSuccessfulTests(int repeat) {
-  HTEST_FLAG_SET(repeat, repeat);
-  HTEST_FLAG_SET(recreate_environments_when_repeating, true);
-  HTEST_FLAG_SET(filter, "*-*ShouldFail");
+  (void)(FLAGS_htest_repeat = (repeat));
+  (void)(FLAGS_htest_recreate_environments_when_repeating = (true));
+  (void)(FLAGS_htest_filter = ("*-*ShouldFail"));
 
   ResetCounts();
   HTEST_CHECK_INT_EQ_(0, RUN_ALL_TESTS());
@@ -181,9 +181,9 @@ void TestRepeatWithFilterForSuccessfulTests(int repeat) {
 // Tests using --htest_repeat when --htest_filter specifies a set of
 // failed tests.
 void TestRepeatWithFilterForFailedTests(int repeat) {
-  HTEST_FLAG_SET(repeat, repeat);
-  HTEST_FLAG_SET(recreate_environments_when_repeating, true);
-  HTEST_FLAG_SET(filter, "*ShouldFail");
+  (void)(FLAGS_htest_repeat = (repeat));
+  (void)(FLAGS_htest_recreate_environments_when_repeating = (true));
+  (void)(FLAGS_htest_filter = ("*ShouldFail"));
 
   ResetCounts();
   HTEST_CHECK_INT_EQ_(1, RUN_ALL_TESTS());
@@ -213,7 +213,7 @@ int main(int argc, char **argv) {
   TestRepeatWithFilterForFailedTests(4);
 
   // It would be nice to verify that the tests indeed loop forever
-  // when HTEST_FLAG(repeat) is negative, but this test will be quite
+  // when FLAGS_htest_repeat is negative, but this test will be quite
   // complicated to write.  Since this flag is for interactive
   // debugging only and doesn't affect the normal test result, such a
   // test would be an overkill.

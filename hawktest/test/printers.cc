@@ -557,7 +557,7 @@ namespace testing {
 
         void PrintStringTo(std::string_view s, ostream* os) {
             if (PrintCharsAsStringTo(s.data(), s.size(), os) == kHexEscape) {
-                if (HTEST_FLAG_GET(print_utf8)) {
+                if (FLAGS_htest_print_utf8) {
                     ConditionalPrintAsText(s.data(), s.size(), os);
                 }
             }

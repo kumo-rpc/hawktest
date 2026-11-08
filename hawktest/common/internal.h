@@ -149,7 +149,7 @@ namespace testing {
             4275 /* an exported class was derived from a class that was not exported */)
 
         // This exception is thrown by (and only by) a failed Hawk Test
-        // assertion when HTEST_FLAG(throw_on_failure) is true (if exceptions
+        // assertion when FLAGS_htest_throw_on_failure is true (if exceptions
         // are enabled).  We derive it from std::runtime_error, which is for
         // errors presumably detectable only at run time.  Since
         // std::runtime_error inherits from std::exception, many testing

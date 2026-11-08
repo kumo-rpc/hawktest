@@ -78,94 +78,7 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
-// Declares the flags.
-
-// This flag temporary enables the disabled tests.
-HTEST_DECLARE_bool_(also_run_disabled_tests);
-
-// This flag brings the debugger on an assertion failure.
-HTEST_DECLARE_bool_(break_on_failure);
-
-// This flag controls whether Hawk Test catches all test-thrown exceptions
-// and logs them as failures.
-HTEST_DECLARE_bool_(catch_exceptions);
-
-// This flag enables using colors in terminal output. Available values are
-// "yes" to enable colors, "no" (disable colors), or "auto" (the default)
-// to let Hawk Test decide.
-HTEST_DECLARE_string_(color);
-
-// This flag controls whether the test runner should continue execution past
-// first failure.
-HTEST_DECLARE_bool_(fail_fast);
-
-// This flag sets up the filter to select by name using a glob pattern
-// the tests to run. If the filter is not given all tests are executed.
-HTEST_DECLARE_string_(filter);
-
-// This flag controls whether Hawk Test installs a signal handler that dumps
-// debugging information when fatal signals are raised.
-HTEST_DECLARE_bool_(install_failure_signal_handler);
-
-// This flag causes the Hawk Test to list tests. None of the tests listed
-// are actually run if the flag is provided.
-HTEST_DECLARE_bool_(list_tests);
-
-// This flag controls whether Hawk Test emits a detailed XML report to a file
-// in addition to its normal textual output.
-HTEST_DECLARE_string_(output);
-
-// This flags control whether Hawk Test prints only test failures.
-HTEST_DECLARE_bool_(brief);
-
-// This flags control whether Hawk Test prints the elapsed time for each
-// test.
-HTEST_DECLARE_bool_(print_time);
-
-// This flags control whether Hawk Test prints UTF8 characters as text.
-HTEST_DECLARE_bool_(print_utf8);
-
-// This flag specifies the random number seed.
-HTEST_DECLARE_int32_(random_seed);
-
-// This flag sets how many times the tests are repeated. The default value
-// is 1. If the value is -1 the tests are repeating forever.
-HTEST_DECLARE_int32_(repeat);
-
-// This flag controls whether Hawk Test Environments are recreated for each
-// repeat of the tests. The default value is true. If set to false the global
-// test Environment objects are only set up once, for the first iteration, and
-// only torn down once, for the last.
-HTEST_DECLARE_bool_(recreate_environments_when_repeating);
-
-// Together these flags determine which tests are run if the test is sharded.
-HTEST_DECLARE_int32_(shard_index);
-HTEST_DECLARE_int32_(total_shards);
-
-// This flag controls whether Hawk Test includes Hawk Test internal
-// stack frames in failure stack traces.
-HTEST_DECLARE_bool_(show_internal_stack_frames);
-
-// When this flag is specified, tests' order is randomized on every iteration.
-HTEST_DECLARE_bool_(shuffle);
-
-// This flag specifies the maximum number of stack frames to be
-// printed in a failure message.
-HTEST_DECLARE_int32_(stack_trace_depth);
-
-// When this flag is specified, a failed assertion will throw an
-// exception if exceptions are enabled, or exit the program with a
-// non-zero code otherwise. For use with an external test framework.
-HTEST_DECLARE_bool_(throw_on_failure);
-
-// When this flag is set with a "host:port" string, on supported
-// platforms test results are streamed to the specified port on
-// the specified host machine.
-HTEST_DECLARE_string_(stream_result_to);
-
-#if HTEST_USE_OWN_FLAGFILE_FLAG_
-HTEST_DECLARE_string_(flagfile);
-#endif // HTEST_USE_OWN_FLAGFILE_FLAG_
+#include <hawktest/flags/builtin.h>
 
 namespace testing {
 
@@ -339,7 +252,7 @@ namespace testing {
         // internal method to avoid clashing with names used in user TESTs.
         void DeleteSelf_() { delete this; }
 
-        const std::unique_ptr<HTEST_FLAG_SAVER_> htest_flag_saver_;
+        const std::unique_ptr<::testing::internal::HTestFlagSaver> htest_flag_saver_;
 
         // Often a user misspells SetUp() as Setup() and spends a long time
         // wondering why it is never called by Hawk Test.  The declaration of
@@ -939,7 +852,7 @@ namespace testing {
         virtual void OnTestProgramStart(const UnitTest& unit_test) = 0;
 
         // Fired before each iteration of tests starts.  There may be more than
-        // one iteration if HTEST_FLAG(repeat) is set. iteration is the iteration
+        // one iteration if FLAGS_htest_repeat is set. iteration is the iteration
         // index, starting from 0.
         virtual void OnTestIterationStart(const UnitTest& unit_test,
             int iteration) = 0;

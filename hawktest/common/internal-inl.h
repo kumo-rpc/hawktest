@@ -63,13 +63,6 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
-// Declares the flags.
-//
-// We don't want the users to modify this flag in the code, but want
-// Hawk Test's own unit tests to be able to access it. Therefore we
-// declare it here as opposed to in htest.h.
-HTEST_DECLARE_bool_(death_test_use_fork);
-
 namespace testing {
     namespace internal {
 
@@ -135,53 +128,52 @@ namespace testing {
         public:
             // The c'tor.
             HTestFlagSaver() {
-                also_run_disabled_tests_ = HTEST_FLAG_GET(also_run_disabled_tests);
-                break_on_failure_ = HTEST_FLAG_GET(break_on_failure);
-                catch_exceptions_ = HTEST_FLAG_GET(catch_exceptions);
-                color_ = HTEST_FLAG_GET(color);
-                death_test_style_ = HTEST_FLAG_GET(death_test_style);
-                death_test_use_fork_ = HTEST_FLAG_GET(death_test_use_fork);
-                fail_fast_ = HTEST_FLAG_GET(fail_fast);
-                filter_ = HTEST_FLAG_GET(filter);
-                internal_run_death_test_ = HTEST_FLAG_GET(internal_run_death_test);
-                list_tests_ = HTEST_FLAG_GET(list_tests);
-                output_ = HTEST_FLAG_GET(output);
-                brief_ = HTEST_FLAG_GET(brief);
-                print_time_ = HTEST_FLAG_GET(print_time);
-                print_utf8_ = HTEST_FLAG_GET(print_utf8);
-                random_seed_ = HTEST_FLAG_GET(random_seed);
-                repeat_ = HTEST_FLAG_GET(repeat);
-                recreate_environments_when_repeating_ = HTEST_FLAG_GET(recreate_environments_when_repeating);
-                shuffle_ = HTEST_FLAG_GET(shuffle);
-                stack_trace_depth_ = HTEST_FLAG_GET(stack_trace_depth);
-                stream_result_to_ = HTEST_FLAG_GET(stream_result_to);
-                throw_on_failure_ = HTEST_FLAG_GET(throw_on_failure);
+                also_run_disabled_tests_ = FLAGS_htest_also_run_disabled_tests;
+                break_on_failure_ = FLAGS_htest_break_on_failure;
+                catch_exceptions_ = FLAGS_htest_catch_exceptions;
+                color_ = FLAGS_htest_color;
+                death_test_style_ = FLAGS_htest_death_test_style;
+                death_test_use_fork_ = FLAGS_htest_death_test_use_fork;
+                fail_fast_ = FLAGS_htest_fail_fast;
+                filter_ = FLAGS_htest_filter;
+                internal_run_death_test_ = FLAGS_htest_internal_run_death_test;
+                list_tests_ = FLAGS_htest_list_tests;
+                output_ = FLAGS_htest_output;
+                brief_ = FLAGS_htest_brief;
+                print_time_ = FLAGS_htest_print_time;
+                print_utf8_ = FLAGS_htest_print_utf8;
+                random_seed_ = FLAGS_htest_random_seed;
+                repeat_ = FLAGS_htest_repeat;
+                recreate_environments_when_repeating_ = FLAGS_htest_recreate_environments_when_repeating;
+                shuffle_ = FLAGS_htest_shuffle;
+                stack_trace_depth_ = FLAGS_htest_stack_trace_depth;
+                stream_result_to_ = FLAGS_htest_stream_result_to;
+                throw_on_failure_ = FLAGS_htest_throw_on_failure;
             }
 
             // The d'tor is not virtual.  DO NOT INHERIT FROM THIS CLASS.
             ~HTestFlagSaver() {
-                HTEST_FLAG_SET(also_run_disabled_tests, also_run_disabled_tests_);
-                HTEST_FLAG_SET(break_on_failure, break_on_failure_);
-                HTEST_FLAG_SET(catch_exceptions, catch_exceptions_);
-                HTEST_FLAG_SET(color, color_);
-                HTEST_FLAG_SET(death_test_style, death_test_style_);
-                HTEST_FLAG_SET(death_test_use_fork, death_test_use_fork_);
-                HTEST_FLAG_SET(filter, filter_);
-                HTEST_FLAG_SET(fail_fast, fail_fast_);
-                HTEST_FLAG_SET(internal_run_death_test, internal_run_death_test_);
-                HTEST_FLAG_SET(list_tests, list_tests_);
-                HTEST_FLAG_SET(output, output_);
-                HTEST_FLAG_SET(brief, brief_);
-                HTEST_FLAG_SET(print_time, print_time_);
-                HTEST_FLAG_SET(print_utf8, print_utf8_);
-                HTEST_FLAG_SET(random_seed, random_seed_);
-                HTEST_FLAG_SET(repeat, repeat_);
-                HTEST_FLAG_SET(recreate_environments_when_repeating,
-                    recreate_environments_when_repeating_);
-                HTEST_FLAG_SET(shuffle, shuffle_);
-                HTEST_FLAG_SET(stack_trace_depth, stack_trace_depth_);
-                HTEST_FLAG_SET(stream_result_to, stream_result_to_);
-                HTEST_FLAG_SET(throw_on_failure, throw_on_failure_);
+                (void)(FLAGS_htest_also_run_disabled_tests = (also_run_disabled_tests_));
+                (void)(FLAGS_htest_break_on_failure = (break_on_failure_));
+                (void)(FLAGS_htest_catch_exceptions = (catch_exceptions_));
+                (void)(FLAGS_htest_color = (color_));
+                (void)(FLAGS_htest_death_test_style = (death_test_style_));
+                (void)(FLAGS_htest_death_test_use_fork = (death_test_use_fork_));
+                (void)(FLAGS_htest_filter = (filter_));
+                (void)(FLAGS_htest_fail_fast = (fail_fast_));
+                (void)(FLAGS_htest_internal_run_death_test = (internal_run_death_test_));
+                (void)(FLAGS_htest_list_tests = (list_tests_));
+                (void)(FLAGS_htest_output = (output_));
+                (void)(FLAGS_htest_brief = (brief_));
+                (void)(FLAGS_htest_print_time = (print_time_));
+                (void)(FLAGS_htest_print_utf8 = (print_utf8_));
+                (void)(FLAGS_htest_random_seed = (random_seed_));
+                (void)(FLAGS_htest_repeat = (repeat_));
+                (void)(FLAGS_htest_recreate_environments_when_repeating = (recreate_environments_when_repeating_));
+                (void)(FLAGS_htest_shuffle = (shuffle_));
+                (void)(FLAGS_htest_stack_trace_depth = (stack_trace_depth_));
+                (void)(FLAGS_htest_stream_result_to = (stream_result_to_));
+                (void)(FLAGS_htest_throw_on_failure = (throw_on_failure_));
             }
 
         private:
@@ -800,7 +792,7 @@ namespace testing {
             // Restores the test suites and tests to their order before the first shuffle.
             void UnshuffleTests();
 
-            // Returns the value of HTEST_FLAG(catch_exceptions) at the moment
+            // Returns the value of FLAGS_htest_catch_exceptions at the moment
             // UnitTest::Run() starts.
             bool catch_exceptions() const { return catch_exceptions_; }
 
@@ -818,7 +810,7 @@ namespace testing {
             friend class ::testing::UnitTest;
 
             // Used by UnitTest::Run() to capture the state of
-            // HTEST_FLAG(catch_exceptions) at the moment it starts.
+            // FLAGS_htest_catch_exceptions at the moment it starts.
             void set_catch_exceptions(bool value) { catch_exceptions_ = value; }
 
             // Sets the TestSuite object for the test that's currently running.
@@ -948,7 +940,7 @@ namespace testing {
             // A per-thread stack of traces created by the SCOPED_TRACE() macro.
             internal::ThreadLocal<std::vector<TraceInfo>> htest_trace_stack_;
 
-            // The value of HTEST_FLAG(catch_exceptions) at the moment RunAllTests()
+            // The value of FLAGS_htest_catch_exceptions at the moment RunAllTests()
             // starts.
             bool catch_exceptions_;
 

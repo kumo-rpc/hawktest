@@ -56,7 +56,7 @@ TEST(CxxExceptionDeathTest, ExceptionIsFailure) {
   } catch (...) {  // NOLINT
     FAIL() << "An exception escaped a death test macro invocation "
            << "with catch_exceptions "
-           << (HTEST_FLAG_GET(catch_exceptions) ? "enabled" : "disabled");
+           << (FLAGS_htest_catch_exceptions ? "enabled" : "disabled");
   }
 }
 
@@ -81,7 +81,7 @@ TEST(CxxExceptionDeathTest, PrintsMessageForStdExceptions) {
 TEST(SehExceptionDeasTest, CatchExceptionsDoesNotInterfere) {
   EXPECT_DEATH(RaiseException(42, 0x0, 0, NULL), "")
       << "with catch_exceptions "
-      << (HTEST_FLAG_GET(catch_exceptions) ? "enabled" : "disabled");
+      << (FLAGS_htest_catch_exceptions ? "enabled" : "disabled");
 }
 #endif
 
@@ -89,6 +89,6 @@ TEST(SehExceptionDeasTest, CatchExceptionsDoesNotInterfere) {
 
 int main(int argc, char** argv) {
   testing::init_hawk_test(&argc, argv);
-  HTEST_FLAG_SET(catch_exceptions, HTEST_ENABLE_CATCH_EXCEPTIONS_ != 0);
+  (void)(FLAGS_htest_catch_exceptions = (HTEST_ENABLE_CATCH_EXCEPTIONS_ != 0));
   return RUN_ALL_TESTS();
 }

@@ -1023,7 +1023,7 @@ TEST_F(TestSuiteThatSkipsInSetUp, ShouldNotRun) { std::abort(); }
 // of them are intended to fail), and then compare the test results
 // with the "golden" file.
 int main(int argc, char** argv) {
-  HTEST_FLAG_SET(print_time, false);
+  (void)(FLAGS_htest_print_time = (false));
 
   // We just run the tests, knowing some of them are intended to fail.
   // We will use a separate Python script to compare the output of
@@ -1038,7 +1038,7 @@ int main(int argc, char** argv) {
                  std::string("internal_skip_environment_and_ad_hoc_tests")) > 0;
 
 #ifdef HTEST_HAS_DEATH_TEST
-  if (!HTEST_FLAG_GET(internal_run_death_test).empty()) {
+  if (!FLAGS_htest_internal_run_death_test.empty()) {
     // Skip the usual output capturing if we're running as the child
     // process of an threadsafe-style death test.
 #if defined(HTEST_OS_WINDOWS)

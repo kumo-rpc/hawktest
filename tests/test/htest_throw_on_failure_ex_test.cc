@@ -53,7 +53,7 @@ void Fail(const char* msg) {
 // Tests that an assertion failure throws a subclass of
 // std::runtime_error.
 void TestFailureThrowsRuntimeError() {
-  HTEST_FLAG_SET(throw_on_failure, true);
+  (void)(FLAGS_htest_throw_on_failure = (true));
 
   // A successful assertion shouldn't throw.
   try {
