@@ -148,7 +148,7 @@ else ()
     set(HAVE_RWLOCK 0)
 endif ()
 
-set(GFLAGS_NAMESPACE gflags)
+set(GFLAGS_NAMESPACE htest::flags)
 set(INCLUDE_GFLAGS_NS_H "")
 set(GFLAGS_IS_A_DLL 0)
 if (CMAKE_COMPILER_IS_GNUCXX)

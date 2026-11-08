@@ -40,7 +40,7 @@
 
 // ---------------------------------------------------------------------------
 // Namespace of gflags library symbols.
-#define GFLAGS_NAMESPACE gflags
+#define GFLAGS_NAMESPACE htest::flags
 
 // ---------------------------------------------------------------------------
 // Windows DLL import/export.
