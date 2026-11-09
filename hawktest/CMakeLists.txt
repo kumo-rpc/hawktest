@@ -182,14 +182,18 @@ kmcmake_cc_library(
         common/ascii.cc
         common/utf8.cc
         common/filepath.cc
+        common/string.cc
         test/assertion-result.cc
         test/death-test.cc
         test/matchers.cc
+        test/test_suite.cc
         test/port.cc
+        test/test.cc
         test/printers.cc
         test/test-part.cc
         test/typed-test.cc
         test/htest.cc
+        test/utility.cc
         mock/cardinalities.cc
         mock/internal-utils.cc
         mock/matchers.cc

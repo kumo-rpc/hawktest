@@ -113,7 +113,7 @@ def RemoveLocations(test_output):
   """
 
   return re.sub(
-      r'.*[/\\]((hawktest-output-test_|htest).cc)(\:\d+|\(\d+\))\: ',
+      r'.*[/\\]((hawktest-output-test_|htest|test).cc)(\:\d+|\(\d+\))\: ',
       r'\1:#: ',
       test_output,
   )

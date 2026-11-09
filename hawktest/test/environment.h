@@ -1,0 +1,58 @@
+// Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
+//
+// Portions of this software are derived from GoogleTest and Google Mock,
+// originally distributed under the BSD 3-Clause License.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+#pragma once
+
+#include <hawktest/test/fwd.h>
+
+namespace testing {
+
+
+    // An Environment object is capable of setting up and tearing down an
+    // environment.  You should subclass this to define your own
+    // environment(s).
+    //
+    // An Environment object does the set-up and tear-down in virtual
+    // methods SetUp() and TearDown() instead of the constructor and the
+    // destructor, as:
+    //
+    //   1. You cannot safely throw from a destructor.  This is a problem
+    //      as in some cases Hawk Test is used where exceptions are enabled, and
+    //      we may want to implement ASSERT_* using exceptions where they are
+    //      available.
+    //   2. You cannot use ASSERT_* directly in a constructor or
+    //      destructor.
+    class [[nodiscard]] Environment {
+    public:
+        // The d'tor is virtual as we need to subclass Environment.
+        virtual ~Environment() = default;
+
+        // Override this to define how to set up the environment.
+        virtual void SetUp() { }
+
+        // Override this to define how to tear down the environment.
+        virtual void TearDown() { }
+
+    private:
+        // If you see an error about overriding the following function or
+        // about it being private, you have mis-spelled SetUp() as Setup().
+        struct Setup_should_be_spelled_SetUp { };
+        virtual Setup_should_be_spelled_SetUp* Setup() { return nullptr; }
+    };
+
+
+}  // namespace testing

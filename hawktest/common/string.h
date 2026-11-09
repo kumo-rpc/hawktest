@@ -20,24 +20,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// For third-party components and portions derived from GoogleTest or
-// Google Mock, the applicable original license terms and notices are
-// retained in accordance with their respective licenses.
-//
-//
-// For third-party components and portions derived from GoogleTest or
-// Google Mock, the applicable original license terms and notices are
-// retained in accordance with their respective licenses.
-//
-
-// The Google C++ Testing and Mocking Framework (Hawk Test)
-//
-// This header file declares the String class and functions used internally by
-// Hawk Test.  They are subject to change without notice. They should not used
-// by code external to Hawk Test.
-//
-// This header file is #included by htest-internal.h.
-// It should not be #included by other files.
 
 #pragma once
 
