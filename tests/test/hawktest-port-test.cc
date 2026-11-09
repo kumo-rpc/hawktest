@@ -1088,7 +1088,7 @@ class AtomicCounterWithMutex {
  private:
   volatile int value_;
   Mutex& mutex_;  // Protects value_.
-  Random random_;
+  hawk::Random random_;
 };
 
 void CountingThreadFunc(pair<AtomicCounterWithMutex*, int> param) {

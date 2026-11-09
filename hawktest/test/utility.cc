@@ -17,6 +17,8 @@
 //
 
 #include <hawktest/test/utility.h>
+#include <hawktest/test/unit_test.h>
+#include <hawktest/test/internal/unit_test_impl.h>
 
 namespace testing {
 
@@ -98,6 +100,47 @@ namespace testing {
             }
         }
 
+            // AssertHelper constructor.
+            AssertHelper::AssertHelper(TestPartResult::Type type, const char* file,
+                int line, const char* message)
+                : AssertHelper(
+                      type, file == nullptr ? std::string_view() : std::string_view(file),
+                      line,
+                      message == nullptr ? std::string_view() : std::string_view(message)) {
+            }
+
+
+            AssertHelper::AssertHelper(TestPartResult::Type type,
+                const std::string_view file, int line,
+                const std::string_view message)
+                : data_(new AssertHelperData(type, file, line, message)) { }
+
+
+
+            AssertHelper::~AssertHelper() {
+                delete data_;
+            }
+
+            // Returns true if test part results of type `type` should include a stack
+            // trace.
+            bool ShouldEmitStackTraceForResultType(TestPartResult::Type type) {
+                // Suppress emission of the stack trace for SUCCEED() since it likely never
+                // requires investigation, and HTEST_SKIP() since skipping is an intentional
+                // act by the developer rather than a failure requiring investigation.
+                return type != TestPartResult::kSuccess && type != TestPartResult::kSkip;
+            }
+
+            // Message assignment, for assertion streaming support.
+            void AssertHelper::operator=(const Message& message) const {
+                UnitTest::GetInstance()->AddTestPartResult(
+                    data_->type, data_->file, data_->line,
+                    AppendUserMessage(data_->message, message),
+                    ShouldEmitStackTraceForResultType(data_->type)
+                        ? UnitTest::GetInstance()->impl()->CurrentOsStackTraceExceptTop(1)
+                        : ""
+                    // Skips the stack frame for this function itself.
+                ); // NOLINT
+            }
     } // namespace internal
 
 
@@ -208,4 +251,57 @@ namespace testing {
     }
 #endif // HTEST_HAS_STD_WSTRING
 
+    namespace internal {
+            // Helper function for implementing ASSERT_NEAR. Treats infinity as a specific
+            // value, such that comparing infinity to infinity is equal, the distance
+            // between -infinity and +infinity is infinity, and infinity <= infinity is
+            // true.
+            AssertionResult DoubleNearPredFormat(const char* expr1, const char* expr2,
+                const char* abs_error_expr, double val1,
+                double val2, double abs_error) {
+                // We want to return success when the two values are infinity and at least
+                // one of the following is true:
+                //  * The values are the same-signed infinity.
+                //  * The error limit itself is infinity.
+                // This is done here so that we don't end up with a NaN when calculating the
+                // difference in values.
+                if (std::isinf(val1) && std::isinf(val2) && (std::signbit(val1) == std::signbit(val2) || (abs_error > 0.0 && std::isinf(abs_error)))) {
+                    return AssertionSuccess();
+                }
+
+                const double diff = fabs(val1 - val2);
+                if (diff <= abs_error)
+                    return AssertionSuccess();
+
+                // Find the value which is closest to zero.
+                const double min_abs = std::min(fabs(val1), fabs(val2));
+                // Find the distance to the next double from that value.
+                const double epsilon = nextafter(min_abs, std::numeric_limits<double>::infinity()) - min_abs;
+                // Detect the case where abs_error is so small that EXPECT_NEAR is
+                // effectively the same as EXPECT_EQUAL, and give an informative error
+                // message so that the situation can be more easily understood without
+                // requiring exotic floating-point knowledge.
+                // Don't do an epsilon check if abs_error is zero because that implies
+                // that an equality check was actually intended.
+                if (!(std::isnan)(val1) && !(std::isnan)(val2) && abs_error > 0 && abs_error < epsilon) {
+                    return AssertionFailure()
+                        << "The difference between " << expr1 << " and " << expr2 << " is "
+                        << diff << ", where\n"
+                        << expr1 << " evaluates to " << val1 << ",\n"
+                        << expr2 << " evaluates to " << val2 << ".\nThe abs_error parameter "
+                        << abs_error_expr << " evaluates to " << abs_error
+                        << " which is smaller than the minimum distance between doubles for "
+                           "numbers of this magnitude which is "
+                        << epsilon
+                        << ", thus making this EXPECT_NEAR check equivalent to "
+                           "EXPECT_EQUAL. Consider using EXPECT_DOUBLE_EQ instead.";
+                }
+                return AssertionFailure()
+                    << "The difference between " << expr1 << " and " << expr2 << " is "
+                    << diff << ", which exceeds " << abs_error_expr << ", where\n"
+                    << expr1 << " evaluates to " << val1 << ",\n"
+                    << expr2 << " evaluates to " << val2 << ", and\n"
+                    << abs_error_expr << " evaluates to " << abs_error << ".";
+            }
+        }
 }  // namespace testing

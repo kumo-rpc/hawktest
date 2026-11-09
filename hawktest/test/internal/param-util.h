@@ -54,6 +54,8 @@
 #include <hawktest/common/port.h>
 #include <hawktest/test/printers.h>
 #include <hawktest/test/test-part.h>
+#include <hawktest/test/test.h>
+#include <hawktest/test/utility.h>
 
 namespace testing {
     // Input to a parameterized test name generator, describing a test parameter.
@@ -1072,5 +1074,29 @@ namespace testing {
         template <typename R, typename P>
         struct IsSingleArgStdFunction<std::function<R(P)>> : public std::true_type { };
 
+
+        // A test that fails at a given file/line location with a given message.
+        class FailureTest : public Test {
+        public:
+            explicit FailureTest(const CodeLocation& loc, std::string error_message,
+                bool as_error)
+                : loc_(loc)
+                , error_message_(std::move(error_message))
+                , as_error_(as_error) { }
+
+            void TestBody() override {
+                if (as_error_) {
+                    AssertHelper(TestPartResult::kNonFatalFailure, loc_.file.c_str(),
+                        loc_.line, "") = Message() << error_message_;
+                } else {
+                    std::cout << error_message_ << std::endl;
+                }
+            }
+
+        private:
+            const CodeLocation loc_;
+            const std::string error_message_;
+            const bool as_error_;
+        };
     } // namespace internal
 } // namespace testing

@@ -480,7 +480,7 @@ Stack trace: (omitted)
 [0;32m[       OK ] [mExpectNonfatalFailureTest.SucceedsWhenThereIsOneNonfatalFailure
 [0;32m[ RUN      ] [mExpectNonfatalFailureTest.FailsWhenThereIsNoNonfatalFailure
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual: 0 failures
 Stack trace: (omitted)
@@ -488,7 +488,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectNonfatalFailureTest.FailsWhenThereIsNoNonfatalFailure
 [0;32m[ RUN      ] [mExpectNonfatalFailureTest.FailsWhenThereAreTwoNonfatalFailures
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual: 2 failures
 hawktest-output-test_.cc:#: Non-fatal failure:
@@ -508,7 +508,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectNonfatalFailureTest.FailsWhenThereAreTwoNonfatalFailures
 [0;32m[ RUN      ] [mExpectNonfatalFailureTest.FailsWhenThereIsOneFatalFailure
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual:
 hawktest-output-test_.cc:#: Fatal failure:
@@ -522,7 +522,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectNonfatalFailureTest.FailsWhenThereIsOneFatalFailure
 [0;32m[ RUN      ] [mExpectNonfatalFailureTest.FailsWhenStatementReturns
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual: 0 failures
 Stack trace: (omitted)
@@ -530,7 +530,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectNonfatalFailureTest.FailsWhenStatementReturns
 [0;32m[ RUN      ] [mExpectNonfatalFailureTest.FailsWhenStatementThrows
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual: 0 failures
 Stack trace: (omitted)
@@ -545,7 +545,7 @@ Stack trace: (omitted)
 [0;32m[       OK ] [mExpectFatalFailureTest.SucceedsWhenThereIsOneFatalFailure
 [0;32m[ RUN      ] [mExpectFatalFailureTest.FailsWhenThereIsNoFatalFailure
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual: 0 failures
 Stack trace: (omitted)
@@ -553,7 +553,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectFatalFailureTest.FailsWhenThereIsNoFatalFailure
 [0;32m[ RUN      ] [mExpectFatalFailureTest.FailsWhenThereAreTwoFatalFailures
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual: 2 failures
 hawktest-output-test_.cc:#: Fatal failure:
@@ -573,7 +573,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectFatalFailureTest.FailsWhenThereAreTwoFatalFailures
 [0;32m[ RUN      ] [mExpectFatalFailureTest.FailsWhenThereIsOneNonfatalFailure
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual:
 hawktest-output-test_.cc:#: Non-fatal failure:
@@ -587,7 +587,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectFatalFailureTest.FailsWhenThereIsOneNonfatalFailure
 [0;32m[ RUN      ] [mExpectFatalFailureTest.FailsWhenStatementReturns
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual: 0 failures
 Stack trace: (omitted)
@@ -595,7 +595,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectFatalFailureTest.FailsWhenStatementReturns
 [0;32m[ RUN      ] [mExpectFatalFailureTest.FailsWhenStatementThrows
 (expecting a failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual: 0 failures
 Stack trace: (omitted)
@@ -691,7 +691,7 @@ Stack trace: (omitted)
 [0;32m[----------] [m4 tests from ExpectFailureTest
 [0;32m[ RUN      ] [mExpectFailureTest.ExpectFatalFailure
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual:
 hawktest-output-test_.cc:#: Success:
@@ -701,7 +701,7 @@ Succeeded
 Stack trace: (omitted)
 
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual:
 hawktest-output-test_.cc:#: Non-fatal failure:
@@ -713,7 +713,7 @@ Stack trace: (omitted)
 Stack trace: (omitted)
 
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure containing "Some other fatal failure expected."
   Actual:
 hawktest-output-test_.cc:#: Fatal failure:
@@ -727,7 +727,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectFailureTest.ExpectFatalFailure
 [0;32m[ RUN      ] [mExpectFailureTest.ExpectNonFatalFailure
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual:
 hawktest-output-test_.cc:#: Success:
@@ -737,7 +737,7 @@ Succeeded
 Stack trace: (omitted)
 
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual:
 hawktest-output-test_.cc:#: Fatal failure:
@@ -749,7 +749,7 @@ Stack trace: (omitted)
 Stack trace: (omitted)
 
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure containing "Some other non-fatal failure."
   Actual:
 hawktest-output-test_.cc:#: Non-fatal failure:
@@ -763,7 +763,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectFailureTest.ExpectNonFatalFailure
 [0;32m[ RUN      ] [mExpectFailureTest.ExpectFatalFailureOnAllThreads
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual:
 hawktest-output-test_.cc:#: Success:
@@ -773,7 +773,7 @@ Succeeded
 Stack trace: (omitted)
 
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual:
 hawktest-output-test_.cc:#: Non-fatal failure:
@@ -785,7 +785,7 @@ Stack trace: (omitted)
 Stack trace: (omitted)
 
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure containing "Some other fatal failure expected."
   Actual:
 hawktest-output-test_.cc:#: Fatal failure:
@@ -799,7 +799,7 @@ Stack trace: (omitted)
 [0;31m[  FAILED  ] [mExpectFailureTest.ExpectFatalFailureOnAllThreads
 [0;32m[ RUN      ] [mExpectFailureTest.ExpectNonFatalFailureOnAllThreads
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual:
 hawktest-output-test_.cc:#: Success:
@@ -809,7 +809,7 @@ Succeeded
 Stack trace: (omitted)
 
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual:
 hawktest-output-test_.cc:#: Fatal failure:
@@ -821,7 +821,7 @@ Stack trace: (omitted)
 Stack trace: (omitted)
 
 (expecting 1 failure)
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure containing "Some other non-fatal failure."
   Actual:
 hawktest-output-test_.cc:#: Non-fatal failure:
@@ -841,7 +841,7 @@ Failed
 Expected fatal failure.
 Stack trace: (omitted)
 
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 fatal failure
   Actual: 0 failures
 Stack trace: (omitted)
@@ -854,7 +854,7 @@ Failed
 Expected non-fatal failure.
 Stack trace: (omitted)
 
-htest.cc:#: Failure
+spi.cc:#: Failure
 Expected: 1 non-fatal failure
   Actual: 0 failures
 Stack trace: (omitted)

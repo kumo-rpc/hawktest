@@ -211,6 +211,11 @@ namespace testing {
             return (Message() << streamable).GetString();
         }
 
+        // Appends the user-supplied message to the Google-Test-generated message.
+        HTEST_API_ std::string AppendUserMessage(const std::string& htest_msg,
+            const Message& user_msg);
+
+
     } // namespace internal
 } // namespace testing
 

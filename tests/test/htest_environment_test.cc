@@ -38,6 +38,7 @@
 
 #include <hawktest/test/htest.h>
 #include <hawktest/common/internal-inl.h>
+#include <hawktest/test/internal/unit_test_impl.h>
 
 namespace {
 

@@ -1130,8 +1130,6 @@ namespace testing {
         // Reads the entire content of a file as a string.
         HTEST_API_ std::string ReadEntireFile(FILE* file);
 
-        // All command line arguments.
-        HTEST_API_ std::vector<std::string> GetArgvs();
 
 #ifdef HTEST_HAS_DEATH_TEST
 
@@ -2254,9 +2252,6 @@ namespace testing {
             using Int = std::int64_t;
             using UInt = std::uint64_t;
         };
-
-        // Integer types of known sizes.
-        using TimeInMillis = int64_t; // Represents time in milliseconds.
 
 // Thread annotations
 #if !defined(HTEST_EXCLUSIVE_LOCK_REQUIRED_)

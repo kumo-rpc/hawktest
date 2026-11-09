@@ -113,6 +113,15 @@ namespace testing {
 
     namespace internal {
 
+        template <size_t kSize>
+        std::vector<std::string> ArrayAsVector(const char* const (&array)[kSize]) {
+            return std::vector<std::string>(array, array + kSize);
+        }
+
+        inline std::string Indent(size_t width) {
+            return std::string(width, ' ');
+        }
+
         struct TraceInfo; // Information about a trace point.
         class [[nodiscard]] TestInfoImpl; // Opaque implementation of TestInfo
         class [[nodiscard]] UnitTestImpl; // Opaque implementation of UnitTest
@@ -138,31 +147,6 @@ namespace testing {
                     int>::type = 0>
             IgnoredValue(const T& /* ignored */) { } // NOLINT(runtime/explicit)
         };
-
-        // Appends the user-supplied message to the Google-Test-generated message.
-        HTEST_API_ std::string AppendUserMessage(const std::string& htest_msg,
-            const Message& user_msg);
-
-#if HTEST_HAS_EXCEPTIONS
-
-        HTEST_DISABLE_MSC_WARNINGS_PUSH_(
-            4275 /* an exported class was derived from a class that was not exported */)
-
-        // This exception is thrown by (and only by) a failed Hawk Test
-        // assertion when FLAGS_htest_throw_on_failure is true (if exceptions
-        // are enabled).  We derive it from std::runtime_error, which is for
-        // errors presumably detectable only at run time.  Since
-        // std::runtime_error inherits from std::exception, many testing
-        // frameworks know how to extract and print the message inside it.
-        class HTEST_API_ [[nodiscard]] HawkTestFailureException
-            : public ::std::runtime_error {
-        public:
-            explicit HawkTestFailureException(const TestPartResult& failure);
-        };
-
-        HTEST_DISABLE_MSC_WARNINGS_POP_() //  4275
-
-#endif // HTEST_HAS_EXCEPTIONS
 
         namespace edit_distance {
             // Returns the optimal edits to go from 'left' to 'right'.
@@ -640,10 +624,6 @@ namespace testing {
             return comma == nullptr ? str : std::string(str, comma);
         }
 
-        // Splits a given string on a given delimiter, populating a given
-        // vector with the fields.
-        void SplitString(const ::std::string& str, char delimiter,
-            ::std::vector<::std::string>* dest);
 
         // The default argument to the template below for the case when the user does
         // not provide a name generator.
@@ -786,18 +766,6 @@ namespace testing {
             }
         };
 
-        // Returns the current OS stack trace as an std::string.
-        //
-        // The maximum number of stack frames to be included is specified by
-        // the htest_stack_trace_depth flag.  The skip_count parameter
-        // specifies the number of top frames to be skipped, which doesn't
-        // count against the number of frames to be included.
-        //
-        // For example, if Foo() calls Bar(), which in turn calls
-        // GetCurrentOsStackTraceExceptTop(..., 1), Foo() will be included in
-        // the trace but Bar() and GetCurrentOsStackTraceExceptTop() won't.
-        HTEST_API_ std::string GetCurrentOsStackTraceExceptTop(int skip_count);
-
         // Helpers for suppressing warnings on unreachable code or constant
         // condition.
 
@@ -831,29 +799,6 @@ namespace testing {
             std::string value;
         };
 
-        // A simple Linear Congruential Generator for generating random
-        // numbers with a uniform distribution.  Unlike rand() and srand(), it
-        // doesn't use global state (and therefore can't interfere with user
-        // code).  Unlike rand_r(), it's portable.  An LCG isn't very random,
-        // but it's good enough for our purposes.
-        class HTEST_API_ [[nodiscard]] Random {
-        public:
-            static const uint32_t kMaxRange = 1u << 31;
-
-            explicit Random(uint32_t seed)
-                : state_(seed) { }
-
-            void Reseed(uint32_t seed) { state_ = seed; }
-
-            // Generates a random number from [0, range).  Crashes if 'range' is
-            // 0 or greater than kMaxRange.
-            uint32_t Generate(uint32_t range);
-
-        private:
-            uint32_t state_;
-            Random(const Random&) = delete;
-            Random& operator=(const Random&) = delete;
-        };
 
 // Turns const U&, U&, const U, and U all into U.
 #define HTEST_REMOVE_REFERENCE_AND_CONST_(T) \

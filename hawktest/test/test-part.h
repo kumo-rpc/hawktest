@@ -158,6 +158,8 @@ namespace testing {
         virtual void ReportTestPartResult(const TestPartResult& result) = 0;
     };
 
+    const char* TestPartResultTypeToString(TestPartResult::Type type);
+
     namespace internal {
 
         // This helper class is used by {ASSERT|EXPECT}_NO_FATAL_FAILURE to check if a
@@ -182,6 +184,8 @@ namespace testing {
             HasNewFatalFailureHelper& operator=(const HasNewFatalFailureHelper&) = delete;
         };
 
+        std::string PrintTestPartResultToString(const TestPartResult& test_part_result);
+        void PrintTestPartResult(const TestPartResult& test_part_result);
     } // namespace internal
 
 } // namespace testing

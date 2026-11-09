@@ -182,13 +182,33 @@ kmcmake_cc_library(
         common/ascii.cc
         common/utf8.cc
         common/filepath.cc
+        common/random.cc
+        common/time.cc
         common/string.cc
+        common/colored_printf.cc
         test/assertion-result.cc
         test/death-test.cc
         test/matchers.cc
+        test/message.cc
+        test/exception.cc
+        test/initialize.cc
+        test/scoped_trace.cc
+        test/listener.cc
+        test/internal/streaming_listener.cc
+        test/internal/stack.cc
+        test/spi.cc
         test/test_suite.cc
+        test/internal/unit_test_impl.cc
+        test/internal/pretty_unit_test_result_printer.cc
+        test/internal/param-util.cc
+        test/internal/brief_unit_test_result_printer.cc
+        test/internal/json_unit_test_result_printer.cc
+        test/internal/xml_unit_test_result_printer.cc
+        test/internal/test_event_repeater.cc
+        test/internal/unit_test_option.cc
         test/port.cc
         test/test.cc
+        test/unit_test.cc
         test/printers.cc
         test/test-part.cc
         test/typed-test.cc

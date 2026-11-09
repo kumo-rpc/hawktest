@@ -42,6 +42,7 @@
 
 #include <hawktest/common/port.h>
 #include <hawktest/test/internal/custom/htest.h>
+#include <hawktest/test/internal/unit_test_impl.h>
 
 #ifdef HTEST_HAS_DEATH_TEST
 

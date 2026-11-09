@@ -22,6 +22,13 @@
 
 namespace testing {
 
+    namespace internal {
+        // All command line arguments.
+        HTEST_API_ std::vector<std::string> GetArgvs();
+        bool HTestIsInitialized();
+
+        ::std::vector<std::string> GetArgvs();
+    }
 
     // Initializes Hawk Test.  This must be called before calling
     // RUN_ALL_TESTS().  In particular, it parses a command line for the

@@ -50,7 +50,8 @@
 #include <hawktest/mock/internal/port.h>
 #include <hawktest/test/spi.h>
 #include <hawktest/test/htest.h>
-
+#include <hawktest/test/internal/stack.h>
+#include <hawktest/test/internal/unit_test_impl.h>
 // Indicates that this translation unit is part of Hawk Test's
 // implementation.  It must come before htest-internal-inl.h is
 // included, or there will be a compiler error.  This trick is to

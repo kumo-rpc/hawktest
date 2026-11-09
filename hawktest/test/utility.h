@@ -22,6 +22,8 @@
 #include <hawktest/test/assertion-result.h>
 #include <hawktest/test/printers.h>
 #include <hawktest/test/test-part.h>
+#include <iomanip>
+#include <iostream>
 
 namespace testing {
 
@@ -321,5 +323,38 @@ namespace testing {
             AssertHelper& operator=(const AssertHelper&) = delete;
         };
 
+
+        // Helper template for implementing FloatLE() and DoubleLE().
+        template <typename RawType>
+        AssertionResult FloatingPointLE(const char* expr1, const char* expr2,
+            RawType val1, RawType val2) {
+            // Returns success if val1 is less than val2,
+            if (val1 < val2) {
+                return AssertionSuccess();
+            }
+
+            // or if val1 is almost equal to val2.
+            const FloatingPoint<RawType> lhs(val1), rhs(val2);
+            if (lhs.AlmostEquals(rhs)) {
+                return AssertionSuccess();
+            }
+
+            // Note that the above two checks will both fail if either val1 or
+            // val2 is NaN, as the IEEE floating-point standard requires that
+            // any predicate involving a NaN must return false.
+
+            ::std::stringstream val1_ss;
+            val1_ss << std::setprecision(std::numeric_limits<RawType>::digits10 + 2)
+                    << val1;
+
+            ::std::stringstream val2_ss;
+            val2_ss << std::setprecision(std::numeric_limits<RawType>::digits10 + 2)
+                    << val2;
+
+            return AssertionFailure()
+                << "Expected: (" << expr1 << ") <= (" << expr2 << ")\n"
+                << "  Actual: " << StringStreamToString(&val1_ss) << " vs "
+                << StringStreamToString(&val2_ss);
+        }
     } // namespace internal
 }  // namespace testing

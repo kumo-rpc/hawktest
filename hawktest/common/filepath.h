@@ -225,6 +225,14 @@ namespace testing {
             std::string pathname_;
         }; // class FilePath
 
+
+#if HTEST_HAS_FILE_SYSTEM
+        // Returns the current application's name, removing directory path if that
+        // is present.  Used by UnitTestOptions::GetOutputFile.
+        HTEST_API_ FilePath GetCurrentExecutableName();
+#endif // HTEST_HAS_FILE_SYSTEM
+
+        FILE* OpenFileForWriting(const std::string& output_file);
     } // namespace internal
 } // namespace testing
 

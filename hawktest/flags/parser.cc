@@ -7,7 +7,7 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 
 #include <hawktest/flags/parser.h>
-
+#include <hawktest/common/internal-inl.h>
 #include <hawktest/flags/builtin.h>
 
 #include <cstring>

@@ -42,6 +42,7 @@
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
+#include <hawktest/test/internal/unit_test_impl.h>
 
 namespace testing {
 
@@ -86,6 +87,29 @@ namespace testing {
         return static_cast<int>(array_.size());
     }
 
+    // Converts a TestPartResult::Type enum to human-friendly string
+    // representation.  Both kNonFatalFailure and kFatalFailure are translated
+    // to "Failure", as the user usually doesn't care about the difference
+    // between the two when viewing the test result.
+    const char* TestPartResultTypeToString(TestPartResult::Type type) {
+        switch (type) {
+        case TestPartResult::kSkip:
+            return "Skipped\n";
+        case TestPartResult::kSuccess:
+            return "Success";
+
+        case TestPartResult::kNonFatalFailure:
+        case TestPartResult::kFatalFailure:
+#ifdef _MSC_VER
+            return "error: ";
+#else
+            return "Failure\n";
+#endif
+        default:
+            return "Unknown result type";
+        }
+    }
+
     namespace internal {
 
         HasNewFatalFailureHelper::HasNewFatalFailureHelper()
@@ -105,6 +129,35 @@ namespace testing {
             if (result.fatally_failed())
                 has_new_fatal_failure_ = true;
             original_reporter_->ReportTestPartResult(result);
+        }
+
+        // Prints a TestPartResult to an std::string.
+        std::string PrintTestPartResultToString(
+            const TestPartResult& test_part_result) {
+            return (Message() << internal::FormatFileLocation(
+                        test_part_result.file_name(),
+                        test_part_result.line_number())
+                              << " "
+                              << TestPartResultTypeToString(test_part_result.type())
+                              << test_part_result.message())
+                .GetString();
+        }
+        // Prints a TestPartResult.
+        void PrintTestPartResult(const TestPartResult& test_part_result) {
+            const std::string& result = PrintTestPartResultToString(test_part_result);
+            printf("%s\n", result.c_str());
+            fflush(stdout);
+            // If the test program runs in Visual Studio or a debugger, the
+            // following statements add the test part result message to the Output
+            // window such that the user can double-click on it to jump to the
+            // corresponding source code location; otherwise they do nothing.
+#if defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_WINDOWS_MOBILE)
+            // We don't call OutputDebugString*() on Windows Mobile, as printing
+            // to stdout is done by OutputDebugString() there already - we don't
+            // want the same message printed twice.
+            ::OutputDebugStringA(result.c_str());
+            ::OutputDebugStringA("\n");
+#endif
         }
 
     } // namespace internal

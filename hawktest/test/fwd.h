@@ -19,6 +19,7 @@
 #pragma once
 
 #include <hawktest/common/port.h>
+#include <hawktest/common/time.h>
 #include <hawktest/test/test-part.h>
 #include <set>
 
@@ -76,7 +77,7 @@ namespace testing {
 
 
 
-    typedef internal::TimeInMillis TimeInMillis;
+    typedef hawk::TimeInMillis TimeInMillis;
 
 }  // namespace testing
 

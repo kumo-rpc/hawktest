@@ -35,7 +35,12 @@
 // Hawk Test work.
 
 #include <hawktest/test/htest.h>
-
+#include <hawktest/flags/parser.h>
+#include <hawktest/common/time.h>
+#include <hawktest/common/random.h>
+#include <hawktest/test/internal/unit_test_impl.h>
+#include <hawktest/test/internal/unit_test_option.h>
+#include <hawktest/test/internal/streaming_listener.h>
 #include <iterator>
 
 // Verifies that the command line flag variables can be accessed in
@@ -260,13 +265,13 @@ using testing::internal::CountIf;
 using testing::internal::EqFailure;
 using testing::internal::FloatingPoint;
 using testing::internal::ForEach;
-using testing::internal::FormatEpochTimeInMillisAsIso8601;
-using testing::internal::FormatTimeInMillisAsSeconds;
+using hawk::FormatEpochTimeInMillisAsIso8601;
+using hawk::FormatTimeInMillisAsSeconds;
 using testing::internal::GetElementOr;
 using testing::internal::GetNextRandomSeed;
 using testing::internal::GetRandomSeedFromFlag;
 using testing::internal::GetTestTypeId;
-using testing::internal::GetTimeInMillis;
+using hawk::GetTimeInMillis;
 using testing::internal::GetTypeId;
 using testing::internal::GetUnitTestImpl;
 using testing::internal::HTestFlagSaver;
@@ -807,23 +812,23 @@ TEST(WideStringToUtf8Test, ConcatenatesCodepointsCorrectly) {
 // Tests the Random class.
 
 TEST(RandomDeathTest, GeneratesCrashesOnInvalidRange) {
-  testing::internal::Random random(42);
+  hawk::Random random(42);
   EXPECT_DEATH_IF_SUPPORTED(random.Generate(0),
                             "Cannot generate a number in the range \\[0, 0\\)");
   EXPECT_DEATH_IF_SUPPORTED(
-      random.Generate(testing::internal::Random::kMaxRange + 1),
+      random.Generate(hawk::Random::kMaxRange + 1),
       "Generation of a number in \\[0, 2147483649\\) was requested, "
       "but this can only generate numbers in \\[0, 2147483648\\)");
 }
 
 TEST(RandomTest, GeneratesNumbersWithinRange) {
   constexpr uint32_t kRange = 10000;
-  testing::internal::Random random(12345);
+  hawk::Random random(12345);
   for (int i = 0; i < 10; i++) {
     EXPECT_LT(random.Generate(kRange), kRange) << " for iteration " << i;
   }
 
-  testing::internal::Random random2(testing::internal::Random::kMaxRange);
+  hawk::Random random2(hawk::Random::kMaxRange);
   for (int i = 0; i < 10; i++) {
     EXPECT_LT(random2.Generate(kRange), kRange) << " for iteration " << i;
   }
@@ -835,7 +840,7 @@ TEST(RandomTest, RepeatsWhenReseeded) {
   constexpr uint32_t kRange = 10000;
   uint32_t values[kArraySize];
 
-  testing::internal::Random random(kSeed);
+  hawk::Random random(kSeed);
   for (int i = 0; i < kArraySize; i++) {
     values[i] = random.Generate(kRange);
   }
@@ -907,7 +912,7 @@ TEST(ContainerUtilityDeathTest, ShuffleRange) {
   a.push_back(0);
   a.push_back(1);
   a.push_back(2);
-  testing::internal::Random random(1);
+  hawk::Random random(1);
 
   EXPECT_DEATH_IF_SUPPORTED(
       ShuffleRange(&random, -1, 1, &a),
@@ -978,7 +983,7 @@ class VectorShuffleTest : public Test {
     return !VectorIsShuffled(vector);
   }
 
-  testing::internal::Random random_;
+  hawk::Random random_;
   TestingVector vector_;
 };  // class VectorShuffleTest
 

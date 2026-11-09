@@ -19,6 +19,7 @@
 #pragma once
 
 #include <hawktest/test/fwd.h>
+#include <hawktest/test/flags_saver.h>
 
 namespace testing {
 

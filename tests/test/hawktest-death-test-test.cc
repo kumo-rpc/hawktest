@@ -66,6 +66,7 @@ using testing::internal::AlwaysTrue;
 
 #include <hawktest/test/spi.h>
 #include <hawktest/common/internal-inl.h>
+#include <hawktest/test/internal/unit_test_impl.h>
 
 namespace posix = ::testing::internal::posix;
 

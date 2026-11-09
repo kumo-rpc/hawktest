@@ -19,6 +19,7 @@
 
 #include <hawktest/test/test_suite.h>
 #include <hawktest/common/internal-inl.h>
+#include <hawktest/test/internal/unit_test_impl.h>
 
 namespace testing {
 
@@ -207,7 +208,7 @@ namespace testing {
     }
 
     // Shuffles the tests in this test suite.
-    void TestSuite::ShuffleTests(internal::Random* random) {
+    void TestSuite::ShuffleTests(hawk::Random* random) {
         Shuffle(random, &test_indices_);
     }
 
@@ -218,4 +219,147 @@ namespace testing {
         }
     }
 
+    namespace internal {
+
+        void PrintFullTestCommentIfPresent(const TestInfo& test_info) {
+            const char* const type_param = test_info.type_param();
+            const char* const value_param = test_info.value_param();
+
+            if (type_param != nullptr || value_param != nullptr) {
+                printf(", where ");
+                if (type_param != nullptr) {
+                    printf("%s = %s", kTypeParamLabel, type_param);
+                    if (value_param != nullptr)
+                        printf(" and ");
+                }
+                if (value_param != nullptr) {
+                    printf("%s = %s", kValueParamLabel, value_param);
+                }
+            }
+        }
+
+    }
+
+    // Creates the test object, runs it, records its result, and then
+    // deletes it.
+    void TestInfo::Run() {
+        TestEventListener* repeater = UnitTest::GetInstance()->listeners().repeater();
+        if (!should_run_) {
+            if (is_disabled_ && matches_filter_)
+                repeater->OnTestDisabled(*this);
+            return;
+        }
+
+        // Tells UnitTest where to store test result.
+        UnitTest::GetInstance()->set_current_test_info(this);
+
+        // Notifies the unit test event listeners that a test is about to start.
+        repeater->OnTestStart(*this);
+        result_.set_start_timestamp(hawk::GetTimeInMillis());
+        hawk::Timer timer;
+        UnitTest::GetInstance()->UponLeavingHTest();
+
+        // Creates the test object.
+        Test* const test = internal::HandleExceptionsInMethodIfSupported(
+            factory_, &internal::TestFactoryBase::CreateTest,
+            "the test fixture's constructor");
+
+        // Runs the test if the constructor didn't generate a fatal failure or invoke
+        // HTEST_SKIP().
+        // Note that the object will not be null
+        if (!Test::HasFatalFailure() && !Test::IsSkipped()) {
+            // This doesn't throw as all user code that can throw are wrapped into
+            // exception handling code.
+            test->Run();
+        }
+
+        if (test != nullptr) {
+            // Deletes the test object.
+            UnitTest::GetInstance()->UponLeavingHTest();
+            internal::HandleExceptionsInMethodIfSupported(
+                test, &Test::DeleteSelf_, "the test fixture's destructor");
+        }
+
+        result_.set_elapsed_time(timer.Elapsed());
+
+        // Notifies the unit test event listener that a test has just finished.
+        repeater->OnTestEnd(*this);
+
+        // Tells UnitTest to stop associating assertion results to this
+        // test.
+        UnitTest::GetInstance()->set_current_test_info(nullptr);
+    }
+
+
+    // Runs every test in this TestSuite.
+    void TestSuite::Run() {
+        if (!should_run_)
+            return;
+
+        UnitTest::GetInstance()->set_current_test_suite(this);
+
+        TestEventListener* repeater = UnitTest::GetInstance()->listeners().repeater();
+
+        // Ensure our tests are in a deterministic order.
+        //
+        // We do this by sorting lexicographically on (file, line number), providing
+        // an order matching what the user can see in the source code.
+        //
+        // In the common case the line number comparison shouldn't be necessary,
+        // because the registrations made by the TEST macro are executed in order
+        // within a translation unit. But this is not true of the manual registration
+        // API, and in more exotic scenarios a single file may be part of multiple
+        // translation units.
+        std::stable_sort(test_info_list_.begin(), test_info_list_.end(),
+            [](const TestInfo* const a, const TestInfo* const b) {
+                if (const int result = std::strcmp(a->file(), b->file())) {
+                    return result < 0;
+                }
+
+                return a->line() < b->line();
+            });
+
+        // Call both legacy and the new API
+        repeater->OnTestSuiteStart(*this);
+//  Legacy API is deprecated but still available
+#ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
+        repeater->OnTestCaseStart(*this);
+#endif //  HTEST_REMOVE_LEGACY_TEST_CASEAPI_
+
+        UnitTest::GetInstance()->UponLeavingHTest();
+        internal::HandleExceptionsInMethodIfSupported(
+            this, &TestSuite::RunSetUpTestSuite, "SetUpTestSuite()");
+
+        const bool skip_all = ad_hoc_test_result().Failed() || ad_hoc_test_result().Skipped();
+
+        start_timestamp_ = hawk::GetTimeInMillis();
+        hawk::Timer timer;
+        for (int i = 0; i < total_test_count(); i++) {
+            if (skip_all) {
+                GetMutableTestInfo(i)->Skip();
+            } else {
+                GetMutableTestInfo(i)->Run();
+            }
+            if (FLAGS_htest_fail_fast && GetMutableTestInfo(i)->result()->Failed()) {
+                for (int j = i + 1; j < total_test_count(); j++) {
+                    GetMutableTestInfo(j)->Skip();
+                }
+                break;
+            }
+        }
+        elapsed_time_ = timer.Elapsed();
+
+        UnitTest::GetInstance()->UponLeavingHTest();
+        internal::HandleExceptionsInMethodIfSupported(
+            this, &TestSuite::RunTearDownTestSuite, "TearDownTestSuite()");
+
+        // Call both legacy and the new API
+        repeater->OnTestSuiteEnd(*this);
+//  Legacy API is deprecated but still available
+#ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
+        repeater->OnTestCaseEnd(*this);
+#endif //  HTEST_REMOVE_LEGACY_TEST_CASEAPI_
+
+        UnitTest::GetInstance()->set_current_test_suite(nullptr);
+    }
 }  // namespace testing

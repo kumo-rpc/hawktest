@@ -36,7 +36,7 @@
 // Hawk Test runtime instantiates correct tests from those sequences.
 
 #include <tests/test/hawktest-param-test-test.h>
-
+#include <hawktest/test/internal/unit_test_option.h>
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>

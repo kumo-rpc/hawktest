@@ -42,7 +42,7 @@
 #include <string>
 
 #include <hawktest/test/htest.h>
-
+#include <hawktest/test/internal/unit_test_option.h>
 #ifdef HTEST_OS_WINDOWS_MOBILE
 #include <windows.h>
 #elif defined(HTEST_OS_WINDOWS)

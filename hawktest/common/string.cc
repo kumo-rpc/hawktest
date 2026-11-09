@@ -23,6 +23,7 @@
 
 #include <hawktest/common/string.h>
 #include <hawktest/common/port.h>
+#include <hawktest/common/internal.h>
 #include <iomanip>
 #include <iostream>
 
@@ -332,6 +333,96 @@ namespace testing {
                 return false;
 
             return wcscmp(lhs, rhs) == 0;
+        }
+
+        void SplitString(const ::std::string& str, char delimiter,
+         ::std::vector<::std::string>* dest) {
+            ::std::vector<::std::string> parsed;
+            ::std::string::size_type pos = 0;
+            while (::testing::internal::AlwaysTrue()) {
+                const ::std::string::size_type colon = str.find(delimiter, pos);
+                if (colon == ::std::string::npos) {
+                    parsed.push_back(str.substr(pos));
+                    break;
+                } else {
+                    parsed.push_back(str.substr(pos, colon - pos));
+                    pos = colon + 1;
+                }
+            }
+            dest->swap(parsed);
+        }
+
+                // Returns true if and only if the wildcard pattern matches the string. Each
+        // pattern consists of regular characters, single-character wildcards (?), and
+        // multi-character wildcards (*).
+        //
+        // This function implements a linear-time string globbing algorithm based on
+        // https://research.swtch.com/glob.
+        bool PatternMatchesString(const std::string& name_str,
+            const char* pattern, const char* pattern_end) {
+            const char* name = name_str.c_str();
+            const char* const name_begin = name;
+            const char* const name_end = name + name_str.size();
+
+            const char* pattern_next = pattern;
+            const char* name_next = name;
+
+            while (pattern < pattern_end || name < name_end) {
+                if (pattern < pattern_end) {
+                    switch (*pattern) {
+                    default: // Match an ordinary character.
+                        if (name < name_end && *name == *pattern) {
+                            ++pattern;
+                            ++name;
+                            continue;
+                        }
+                        break;
+                    case '?': // Match any single character.
+                        if (name < name_end) {
+                            ++pattern;
+                            ++name;
+                            continue;
+                        }
+                        break;
+                    case '*':
+                        // Match zero or more characters. Start by skipping over the wildcard
+                        // and matching zero characters from name. If that fails, restart and
+                        // match one more character than the last attempt.
+                        pattern_next = pattern;
+                        name_next = name + 1;
+                        ++pattern;
+                        continue;
+                    }
+                }
+                // Failed to match a character. Restart if possible.
+                if (name_begin < name_next && name_next <= name_end) {
+                    pattern = pattern_next;
+                    name = name_next;
+                    continue;
+                }
+                return false;
+            }
+            return true;
+        }
+
+        // Converts the buffer in a stringstream to an std::string, converting NUL
+        // bytes to "\\0" along the way.
+        std::string StringStreamToString(::std::stringstream* ss) {
+            const ::std::string& str = ss->str();
+            const char* const start = str.c_str();
+            const char* const end = start + str.length();
+
+            std::string result;
+            result.reserve(static_cast<size_t>(2 * (end - start)));
+            for (const char* ch = start; ch != end; ++ch) {
+                if (*ch == '\0') {
+                    result += "\\0"; // Replaces NUL with "\\0";
+                } else {
+                    result += *ch;
+                }
+            }
+
+            return result;
         }
 
     }

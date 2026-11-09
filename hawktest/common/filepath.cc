@@ -39,6 +39,7 @@
 
 #include <hawktest/common/port.h>
 #include <hawktest/test/message.h>
+#include <hawktest/test/initialize.h>
 
 #ifdef HTEST_OS_WINDOWS_MOBILE
 #include <windows.h>
@@ -399,6 +400,40 @@ namespace testing {
             pathname_.erase(out, pathname_.end());
         }
 
+
+#if HTEST_HAS_FILE_SYSTEM
+        // Returns the current application's name, removing directory path if that
+        // is present.
+        FilePath GetCurrentExecutableName() {
+            FilePath result;
+
+            auto args = GetArgvs();
+            if (!args.empty()) {
+#if defined(HTEST_OS_WINDOWS) || defined(HTEST_OS_OS2)
+                result.Set(FilePath(args[0]).RemoveExtension("exe"));
+#else
+                result.Set(FilePath(args[0]));
+#endif // HTEST_OS_WINDOWS
+            }
+
+            return result.RemoveDirectoryName();
+        }
+#endif // HTEST_HAS_FILE_SYSTEM
+
+        // Utility function to Open File for Writing
+        FILE* OpenFileForWriting(const std::string& output_file) {
+            FILE* fileout = nullptr;
+            FilePath output_file_path(output_file);
+            FilePath output_dir(output_file_path.RemoveFileName());
+
+            if (output_dir.CreateDirectoriesRecursively()) {
+                fileout = posix::FOpen(output_file.c_str(), "w");
+            }
+            if (fileout == nullptr) {
+                HTEST_LOG_(FATAL) << "Unable to open file \"" << output_file << "\"";
+            }
+            return fileout;
+        }
     } // namespace internal
 } // namespace testing
 

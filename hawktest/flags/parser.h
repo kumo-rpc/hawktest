@@ -8,22 +8,22 @@
 
 #pragma once
 
-#include <hawktest/common/internal-inl.h>
+#include <hawktest/common/port.h>
+#include <hawktest/common/colored_printf.h>
 
 namespace testing {
 namespace internal {
 
-enum class HTestColor { kDefault,
-    kRed,
-    kGreen,
-    kYellow };
-
-HTEST_ATTRIBUTE_PRINTF_(2, 3)
-void ColoredPrintf(HTestColor color, const char* fmt, ...);
-
+    // Parses a string for an Int32 flag, in the form of "--flag=value".
+    //
+    // On success, stores the value of the flag in *value, and returns
+    // true.  On failure, returns false without changing *value.
 HTEST_API_ bool ParseFlag(const char* str, const char* flag, int32_t* value);
 HTEST_API_ void parse_hawk_test_flags_only(int* argc, char** argv);
 HTEST_API_ void parse_hawk_test_flags_only(int* argc, wchar_t** argv);
 
+    // g_help_flag is true if and only if the --help flag or an equivalent form
+    // is specified on the command line.
+    HTEST_API_ extern bool g_help_flag;
 } // namespace internal
 } // namespace testing
