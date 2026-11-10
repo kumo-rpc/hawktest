@@ -50,6 +50,7 @@
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
 #include <hawktest/format/printers.h>
+#include <hawktest/matcher/re.h>
 
 // MSVC warning C5046 is new as of VS2017 version 15.8.
 #if defined(_MSC_VER) && _MSC_VER >= 1915

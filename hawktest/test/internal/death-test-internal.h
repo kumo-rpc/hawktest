@@ -47,6 +47,7 @@
 #include <hawktest/common/port.h>
 #include <hawktest/test/matchers.h>
 #include <hawktest/flags/builtin.h>
+#include <hawktest/matcher/re.h>
 
 namespace hawk {
     namespace internal {

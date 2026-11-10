@@ -203,6 +203,7 @@ kmcmake_cc_library(
         format/report_sink.cc
         format/message.cc
         matcher/compare.cc
+        matcher/re.cc
         numeric/parse.cc
         test/death-test.cc
         test/matchers.cc
