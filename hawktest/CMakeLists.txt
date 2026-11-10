@@ -198,6 +198,7 @@ kmcmake_cc_library(
         reporter/pretty_unit_test_result_printer.cc
         reporter/test_event_repeater.cc
         format/color.cc
+        format/printers.cc
         format/printer.cc
         format/report_sink.cc
         format/message.cc
@@ -217,7 +218,6 @@ kmcmake_cc_library(
         test/port.cc
         test/test.cc
         test/unit_test.cc
-        test/printers.cc
         test/test-part.cc
         test/typed-test.cc
         test/htest.cc

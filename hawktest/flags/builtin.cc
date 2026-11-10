@@ -23,6 +23,7 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
+#include <system_error>
 
 namespace hawk {
 
@@ -80,14 +81,25 @@ namespace hawk {
                 return default_value;
             }
 
-            int32_t result = default_value;
-            if (!ParseInt32(hawk::Message() << "Environment variable " << env_var, string_value->c_str(), &result)) {
+            hawk::Message err;
+            const std::optional<int32_t> parsed = hawk::parse_numeric<int32_t>(*string_value, err);
+            if (!parsed.has_value()) {
+                const bool overflow = err.GetString() == std::make_error_code(std::errc::result_out_of_range).message();
+                hawk::Message msg;
+                msg << "WARNING: Environment variable " << env_var
+                    << " is expected to be a 32-bit integer, but actually";
+                if (overflow) {
+                    msg << " has value " << *string_value << ", which overflows.\n";
+                } else {
+                    msg << " has value \"" << *string_value << "\".\n";
+                }
+                printf("%s", msg.GetString().c_str());
                 printf("The default value %s is used.\n", (hawk::Message() << default_value).GetString().c_str());
                 fflush(stdout);
                 return default_value;
             }
 
-            return result;
+            return *parsed;
 #endif
         }
 

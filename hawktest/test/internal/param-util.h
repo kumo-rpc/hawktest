@@ -52,7 +52,7 @@
 
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
-#include <hawktest/test/printers.h>
+#include <hawktest/format/printers.h>
 #include <hawktest/test/test-part.h>
 #include <hawktest/test/test.h>
 #include <hawktest/analysis/assert_help.h>

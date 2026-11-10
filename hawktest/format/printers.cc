@@ -43,7 +43,7 @@
 // or void PrintTo(const Foo&, ::std::ostream*) in the namespace that
 // defines Foo.
 
-#include <hawktest/test/printers.h>
+#include <hawktest/format/printers.h>
 
 #include <stdio.h>
 

@@ -17,7 +17,7 @@
 
 #include <hawktest/analysis/failure_reason.h>
 #include <hawktest/common/port.h>
-#include <hawktest/test/printers.h>
+#include <hawktest/format/printers.h>
 #include <hawktest/common/string.h>
 #include <hawktest/common/internal.h>
 #include <iomanip>

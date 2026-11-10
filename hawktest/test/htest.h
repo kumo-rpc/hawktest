@@ -75,7 +75,7 @@
 #include <hawktest/test/matchers.h> // IWYU pragma: export
 #include <hawktest/test/param-test.h> // IWYU pragma: export
 #include <hawktest/test/pred_impl.h> // IWYU pragma: export
-#include <hawktest/test/printers.h> // IWYU pragma: export
+#include <hawktest/format/printers.h> // IWYU pragma: export
 #include <hawktest/test/prod.h> // IWYU pragma: export
 #include <hawktest/test/scoped_trace.h>
 #include <hawktest/test/test-part.h> // IWYU pragma: export

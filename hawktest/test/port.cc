@@ -1337,46 +1337,5 @@ namespace hawk {
         } // namespace posix
 #endif // HTEST_OS_WINDOWS_MOBILE
 
-        // Parses 'str' for a 32-bit signed integer.  If successful, writes
-        // the result to *value and returns true; otherwise leaves *value
-        // unchanged and returns false.
-        bool ParseInt32(const hawk::Message& src_text, const char* str, int32_t* value) {
-            // Parses the environment variable as a decimal integer.
-            char* end = nullptr;
-            const long long_value = strtol(str, &end, 10); // NOLINT
-
-            // Has strtol() consumed all characters in the string?
-            if (*end != '\0') {
-                // No - an invalid character was encountered.
-                hawk::Message msg;
-                msg << "WARNING: " << src_text
-                    << " is expected to be a 32-bit integer, but actually"
-                    << " has value \"" << str << "\".\n";
-                printf("%s", msg.GetString().c_str());
-                fflush(stdout);
-                return false;
-            }
-
-            // Is the parsed value in the range of an int32_t?
-            const auto result = static_cast<int32_t>(long_value);
-            if (long_value == LONG_MAX || long_value == LONG_MIN ||
-                // The parsed value overflows as a long.  (strtol() returns
-                // LONG_MAX or LONG_MIN when the input overflows.)
-                result != long_value
-                // The parsed value overflows as an int32_t.
-            ) {
-                hawk::Message msg;
-                msg << "WARNING: " << src_text
-                    << " is expected to be a 32-bit integer, but actually" << " has value "
-                    << str << ", which overflows.\n";
-                printf("%s", msg.GetString().c_str());
-                fflush(stdout);
-                return false;
-            }
-
-            *value = result;
-            return true;
-        }
-
     } // namespace internal
 } // namespace hawk

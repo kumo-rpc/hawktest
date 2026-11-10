@@ -60,7 +60,7 @@
 #include <variant>
 #include <vector>
 
-#include <hawktest/test/printers.h>
+#include <hawktest/format/printers.h>
 #include <hawktest/test/htest.h>
 #include <hawktest/common/port.h>
 

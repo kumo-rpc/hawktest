@@ -32,7 +32,11 @@
 
 #include <hawktest/mock/hmock.h>
 
+#include <cstdio>
 #include <string>
+#include <system_error>
+
+#include <hawktest/numeric/parse.h>
 
 #include <hawktest/mock/internal/port.h>
 
@@ -135,9 +139,25 @@ static bool ParseGoogleMockFlag(const char* str, const char* flag_name,
   // Aborts if the parsing failed.
   if (value_str == nullptr) return false;
 
-  // Sets *value to the value of the flag.
-  return ParseInt32(hawk::Message() << "The value of flag --" << flag_name, value_str,
-                    value);
+  hawk::Message err;
+  const std::optional<int32_t> parsed = hawk::parse_numeric<int32_t>(value_str, err);
+  if (parsed.has_value()) {
+    *value = *parsed;
+    return true;
+  }
+
+  const bool overflow = err.GetString() == std::make_error_code(std::errc::result_out_of_range).message();
+  hawk::Message msg;
+  msg << "WARNING: The value of flag --" << flag_name
+      << " is expected to be a 32-bit integer, but actually";
+  if (overflow) {
+    msg << " has value " << value_str << ", which overflows.\n";
+  } else {
+    msg << " has value \"" << value_str << "\".\n";
+  }
+  printf("%s", msg.GetString().c_str());
+  fflush(stdout);
+  return false;
 }
 
 // The internal implementation of InitGoogleMock().

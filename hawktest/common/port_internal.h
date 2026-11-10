@@ -168,7 +168,6 @@
 //   HTEST_HAS_TYPED_TEST   - typed tests
 //   HTEST_HAS_TYPED_TEST_P - type-parameterized tests
 //   HTEST_IS_THREADSAFE    - Hawk Test is thread-safe.
-//   HTEST_USES_RE2         - the RE2 regular expression library is used
 //   HTEST_USES_POSIX_RE    - enhanced POSIX regex is used. Do not confuse with
 //                            HTEST_HAS_POSIX_RE (see above) which users can
 //                            define themselves.
