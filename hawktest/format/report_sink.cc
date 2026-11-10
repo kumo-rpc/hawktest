@@ -13,6 +13,7 @@
 // limitations under the License.
 //
 
+#include <hawktest/common/environment.h>
 #include <hawktest/format/report_sink.h>
 #include <hawktest/common/port_internal.h>
 #include <hawktest/common/string.h>
@@ -49,8 +50,8 @@ namespace {
 
     const std::string& term_name() {
         static std::string value;
-        const char* term = testing::internal::posix::GetEnv("TERM");
-        value = term != nullptr ? term : "";
+        const std::optional<std::string> term = hawk::get_env("TERM");
+        value = term.has_value() ? *term : "";
         return value;
     }
 

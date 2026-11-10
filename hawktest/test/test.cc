@@ -255,7 +255,7 @@ namespace testing {
 
 
     static std::string FormatWordList(const std::vector<std::string>& words) {
-        Message word_list;
+        hawk::Message word_list;
         for (size_t i = 0; i < words.size(); ++i) {
             if (i > 0 && words.size() > 2) {
                 word_list << ", ";

@@ -107,7 +107,7 @@ namespace internal {
                 return false;
 
             // Sets *value to the value of the flag.
-            return ParseInt32(Message() << "The value of flag --" << flag_name, value_str,
+            return ParseInt32(hawk::Message() << "The value of flag --" << flag_name, value_str,
                 value);
         }
 
@@ -366,7 +366,7 @@ namespace internal {
         void parse_hawk_test_flags_only_impl(int* argc, CharType** argv) {
             std::string flagfile_value;
             for (int i = 1; i < *argc; i++) {
-                const std::string arg_string = StreamableToString(argv[i]);
+                const std::string arg_string = hawk::internal::StreamableToString(argv[i]);
                 const char* const arg = arg_string.c_str();
 
                 using internal::ParseFlag;

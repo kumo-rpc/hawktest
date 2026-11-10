@@ -1,8 +1,5 @@
 // Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
 //
-// Portions of this software are derived from GoogleTest and Google Mock,
-// originally distributed under the BSD 3-Clause License.
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -16,11 +13,11 @@
 // limitations under the License.
 //
 
-#include <hawktest/test/message.h>
+#include <hawktest/format/message.h>
 #include <hawktest/common/string.h>
 #include <iomanip>
 
-namespace testing {
+namespace hawk {
 
     // Constructs an empty Message.
     // We allocate the stringstream separately because otherwise each use of
@@ -37,10 +34,10 @@ namespace testing {
     // These two overloads allow streaming a wide C string to a Message
     // using the UTF-8 encoding.
     Message& Message::operator<<(const wchar_t* wide_c_str) {
-        return *this << internal::String::ShowWideCString(wide_c_str);
+        return *this << testing::internal::String::ShowWideCString(wide_c_str);
     }
     Message& Message::operator<<(wchar_t* wide_c_str) {
-        return *this << internal::String::ShowWideCString(wide_c_str);
+        return *this << testing::internal::String::ShowWideCString(wide_c_str);
     }
 
     namespace internal {
@@ -53,7 +50,7 @@ namespace testing {
             Message* msg) {
             for (size_t i = 0; i != length;) { // NOLINT
                 if (wstr[i] != L'\0') {
-                    *msg << WideStringToUtf8(wstr + i, static_cast<int>(length - i));
+                    *msg << testing::internal::WideStringToUtf8(wstr + i, static_cast<int>(length - i));
                     while (i != length && wstr[i] != L'\0')
                         i++;
                 } else {
@@ -92,6 +89,6 @@ namespace testing {
     // Gets the text streamed to this object so far as an std::string.
     // Each '\0' character in the buffer is replaced with "\\0".
     std::string Message::GetString() const {
-        return internal::StringStreamToString(ss_.get());
+        return testing::internal::StringStreamToString(ss_.get());
     }
-}
+}  // namespace hawk

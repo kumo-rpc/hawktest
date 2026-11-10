@@ -122,12 +122,14 @@ namespace testing {
 
             void OnTestIterationStart(const UnitTest& /* unit_test */,
                 int iteration) override {
-                SendLn("event=TestIterationStart&iteration=" + StreamableToString(iteration));
+                SendLn("event=TestIterationStart&iteration=" +
+                    hawk::internal::StreamableToString(iteration));
             }
 
             void OnTestIterationEnd(const UnitTest& unit_test,
                 int /* iteration */) override {
-                SendLn("event=TestIterationEnd&passed=" + FormatBool(unit_test.Passed()) + "&elapsed_time=" + StreamableToString(unit_test.elapsed_time()) + "ms");
+                SendLn("event=TestIterationEnd&passed=" + FormatBool(unit_test.Passed()) +
+                    "&elapsed_time=" + hawk::internal::StreamableToString(unit_test.elapsed_time()) + "ms");
             }
 
             // Note that "event=TestCaseStart" is a wire format and has to remain
@@ -139,7 +141,8 @@ namespace testing {
             // Note that "event=TestCaseEnd" is a wire format and has to remain
             // "case" for compatibility
             void OnTestSuiteEnd(const TestSuite& test_suite) override {
-                SendLn("event=TestCaseEnd&passed=" + FormatBool(test_suite.Passed()) + "&elapsed_time=" + StreamableToString(test_suite.elapsed_time()) + "ms");
+                SendLn("event=TestCaseEnd&passed=" + FormatBool(test_suite.Passed()) + "&elapsed_time=" +
+                    hawk::internal::StreamableToString(test_suite.elapsed_time()) + "ms");
             }
 
             void OnTestStart(const TestInfo& test_info) override {
@@ -147,14 +150,16 @@ namespace testing {
             }
 
             void OnTestEnd(const TestInfo& test_info) override {
-                SendLn("event=TestEnd&passed=" + FormatBool((test_info.result())->Passed()) + "&elapsed_time=" + StreamableToString((test_info.result())->elapsed_time()) + "ms");
+                SendLn("event=TestEnd&passed=" + FormatBool((test_info.result())->Passed()) + "&elapsed_time=" +
+                    hawk::internal::StreamableToString((test_info.result())->elapsed_time()) + "ms");
             }
 
             void OnTestPartResult(const TestPartResult& test_part_result) override {
                 const char* file_name = test_part_result.file_name();
                 if (file_name == nullptr)
                     file_name = "";
-                SendLn("event=TestPartResult&file=" + UrlEncode(file_name) + "&line=" + StreamableToString(test_part_result.line_number()) + "&message=" + UrlEncode(test_part_result.message()));
+                SendLn("event=TestPartResult&file=" + UrlEncode(file_name) + "&line=" +
+                    hawk::internal::StreamableToString(test_part_result.line_number()) + "&message=" + UrlEncode(test_part_result.message()));
             }
 
         private:

@@ -24,6 +24,19 @@
 
 namespace hawk {
 
+    void set_env(const std::string &key, const std::string &value);
+
+    bool set_env_if_not_exists(const std::string &key, const std::string &value);
+    /// return the old one, if no older one, return std::nullopt
+    std::optional<std::string> exchange_env(const std::string &key, const std::string &value);
+
+    bool exists_env(const std::string &key);
+
+    std::optional<std::string> get_env(const std::string &key);
+
+    /// return the old one, if no older one, return std::nullopt
+    std::optional<std::string> unset_env(const std::string &key);
+    
     /// Stores env entries by full name (`suite.KEY` or `suite.sub.KEY`).
     /// Does not touch the process environment.
     class EnvRegistry {
@@ -58,9 +71,8 @@ namespace hawk {
                 overlay(registry.entries(), prefix, &flat);
             }
             for (const auto& entry : flat) {
-                const char* previous = std::getenv(entry.first.c_str());
-                saved_.push_back(Saved{entry.first, previous != nullptr ? std::optional<std::string>(previous) : std::nullopt});
-                set_process_env(entry.first, entry.second);
+                saved_.push_back(Saved{entry.first, get_env(entry.first)});
+                set_env(entry.first, entry.second);
             }
         }
 
@@ -77,9 +89,9 @@ namespace hawk {
         ~EnvScope() {
             for (auto it = saved_.rbegin(); it != saved_.rend(); ++it) {
                 if (it->previous.has_value()) {
-                    set_process_env(it->key, *it->previous);
+                    set_env(it->key, *it->previous);
                 } else {
-                    unset_process_env(it->key);
+                    unset_env(it->key);
                 }
             }
         }
@@ -116,22 +128,6 @@ namespace hawk {
                 }
                 flat->insert_or_assign(std::string(local), it->second);
             }
-        }
-
-        static void set_process_env(const std::string& key, const std::string& value) {
-#if defined(_WIN32)
-            _putenv_s(key.c_str(), value.c_str());
-#else
-            ::setenv(key.c_str(), value.c_str(), 1);
-#endif
-        }
-
-        static void unset_process_env(const std::string& key) {
-#if defined(_WIN32)
-            _putenv_s(key.c_str(), "");
-#else
-            ::unsetenv(key.c_str());
-#endif
         }
 
         std::vector<Saved> saved_;

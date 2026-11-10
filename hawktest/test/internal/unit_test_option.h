@@ -82,7 +82,7 @@ namespace testing::internal {
         UnitTestFilter() = default;
 
         // Constructs a filter from a string of patterns separated by `:`.
-        explicit UnitTestFilter(const std::string& filter) {
+        explicit UnitTestFilter(std::string filter) {
             // By design "" filter matches "" string.
             std::vector<std::string> all_patterns;
             SplitString(filter, ':', &all_patterns);

@@ -65,7 +65,7 @@ namespace testing {
         // most invalid characters can be retained using character references.
         std::string XmlUnitTestResultPrinter::EscapeXml(const std::string& str,
             bool is_attribute) {
-            Message m;
+            hawk::Message m;
 
             for (size_t i = 0; i < str.size(); ++i) {
                 const char ch = str[i];
@@ -241,7 +241,7 @@ namespace testing {
 
             OutputXmlAttribute(stream, kTestsuite, "file", test_info.file());
             OutputXmlAttribute(stream, kTestsuite, "line",
-                StreamableToString(test_info.line()));
+                hawk::internal::StreamableToString(test_info.line()));
             if (FLAGS_htest_list_tests) {
                 *stream << " />\n";
                 return;
@@ -315,15 +315,15 @@ namespace testing {
             *stream << "  <" << kTestsuite;
             OutputXmlAttribute(stream, kTestsuite, "name", test_suite.name());
             OutputXmlAttribute(stream, kTestsuite, "tests",
-                StreamableToString(test_suite.reportable_test_count()));
+                hawk::internal::StreamableToString(test_suite.reportable_test_count()));
             if (!FLAGS_htest_list_tests) {
                 OutputXmlAttribute(stream, kTestsuite, "failures",
-                    StreamableToString(test_suite.failed_test_count()));
+                    hawk::internal::StreamableToString(test_suite.failed_test_count()));
                 OutputXmlAttribute(
                     stream, kTestsuite, "disabled",
-                    StreamableToString(test_suite.reportable_disabled_test_count()));
+                    hawk::internal::StreamableToString(test_suite.reportable_disabled_test_count()));
                 OutputXmlAttribute(stream, kTestsuite, "skipped",
-                    StreamableToString(test_suite.skipped_test_count()));
+                    hawk::internal::StreamableToString(test_suite.skipped_test_count()));
 
                 OutputXmlAttribute(stream, kTestsuite, "errors", "0");
 
@@ -356,12 +356,12 @@ namespace testing {
             *stream << "<" << kTestsuites;
 
             OutputXmlAttribute(stream, kTestsuites, "tests",
-                StreamableToString(unit_test.reportable_test_count()));
+                hawk::internal::StreamableToString(unit_test.reportable_test_count()));
             OutputXmlAttribute(stream, kTestsuites, "failures",
-                StreamableToString(unit_test.failed_test_count()));
+                hawk::internal::StreamableToString(unit_test.failed_test_count()));
             OutputXmlAttribute(
                 stream, kTestsuites, "disabled",
-                StreamableToString(unit_test.reportable_disabled_test_count()));
+                hawk::internal::StreamableToString(unit_test.reportable_disabled_test_count()));
             OutputXmlAttribute(stream, kTestsuites, "errors", "0");
             OutputXmlAttribute(stream, kTestsuites, "time",
                 hawk::FormatTimeInMillisAsSeconds(unit_test.elapsed_time()));
@@ -371,7 +371,7 @@ namespace testing {
 
             if (FLAGS_htest_shuffle) {
                 OutputXmlAttribute(stream, kTestsuites, "random_seed",
-                    StreamableToString(unit_test.random_seed()));
+                    hawk::internal::StreamableToString(unit_test.random_seed()));
             }
 
             OutputXmlAttribute(stream, kTestsuites, "name", "AllTests");
@@ -405,7 +405,7 @@ namespace testing {
                 total_tests += test_suite->total_test_count();
             }
             OutputXmlAttribute(stream, kTestsuites, "tests",
-                StreamableToString(total_tests));
+                hawk::internal::StreamableToString(total_tests));
             OutputXmlAttribute(stream, kTestsuites, "name", "AllTests");
             *stream << ">\n";
 

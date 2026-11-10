@@ -68,7 +68,7 @@
 #include <hawktest/test/assertion-result.h> // IWYU pragma: export
 #include <hawktest/test/death-test.h> // IWYU pragma: export
 #include <hawktest/test/matchers.h> // IWYU pragma: export
-#include <hawktest/test/message.h> // IWYU pragma: export
+#include <hawktest/format/message.h> // IWYU pragma: export
 #include <hawktest/test/param-test.h> // IWYU pragma: export
 #include <hawktest/test/pred_impl.h> // IWYU pragma: export
 #include <hawktest/test/printers.h> // IWYU pragma: export

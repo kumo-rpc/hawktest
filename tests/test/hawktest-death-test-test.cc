@@ -72,7 +72,7 @@ namespace posix = ::testing::internal::posix;
 
 using testing::ContainsRegex;
 using testing::Matcher;
-using testing::Message;
+using hawk::Message;
 using testing::internal::DeathTest;
 using testing::internal::DeathTestFactory;
 using testing::internal::FilePath;

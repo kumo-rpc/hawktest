@@ -292,7 +292,7 @@ namespace testing {
             // Message assignment is a semantic trick to enable assertion
             // streaming; see the HTEST_MESSAGE_ macro below.
             HawkTest_NotSupported_OnFunctionReturningNonVoid operator=(
-                const Message& message) const;
+                const hawk::Message& message) const;
 
         private:
             // We put our data in a struct so that the size of the AssertHelper class can

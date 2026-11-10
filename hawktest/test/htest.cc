@@ -33,6 +33,7 @@
 //
 // The Google C++ Testing and Mocking Framework (Hawk Test)
 
+#include <hawktest/common/environment.h>
 #include <hawktest/test/htest.h>
 #include <hawktest/format/printer.h>
 #include <hawktest/flags/parser.h>
@@ -535,7 +536,7 @@ namespace testing {
             const char* rhs_expression,
             const std::string& lhs_value,
             const std::string& rhs_value, bool ignoring_case) {
-            Message msg;
+            hawk::Message msg;
             msg << "Expected equality of these values:";
             msg << "\n  " << lhs_expression;
             if (lhs_value != lhs_expression) {
@@ -567,7 +568,7 @@ namespace testing {
             const AssertionResult& assertion_result, const char* expression_text,
             const char* actual_predicate_value, const char* expected_predicate_value) {
             const char* actual_message = assertion_result.message();
-            Message msg;
+            hawk::Message msg;
             msg << "Value of: " << expression_text
                 << "\n  Actual: " << actual_predicate_value;
             if (actual_message[0] != '\0')
@@ -699,14 +700,14 @@ namespace testing {
         // function will write over it. If the variable is present, but the file cannot
         // be created, prints an error and exits.
         void WriteToShardStatusFileIfNeeded() {
-            const char* const test_shard_file = posix::GetEnv(hawk::Constants::kTestShardStatusFile.c_str());
-            if (test_shard_file != nullptr) {
-                FILE* const file = posix::FOpen(test_shard_file, "w");
+            const std::optional<std::string> test_shard_file = hawk::get_env(hawk::Constants::kTestShardStatusFile);
+            if (test_shard_file.has_value()) {
+                FILE* const file = posix::FOpen(test_shard_file->c_str(), "w");
                 if (file == nullptr) {
                     hawk::stdout_printer().fmt_red(
                         "Could not write to the test shard status file \"{}\" "
                         "specified by the {} environment variable.\n",
-                        test_shard_file, hawk::Constants::kTestShardStatusFile);
+                        *test_shard_file, hawk::Constants::kTestShardStatusFile);
                     fflush(stdout);
                     exit(EXIT_FAILURE);
                 }
@@ -732,7 +733,7 @@ namespace testing {
             if (total_shards == -1 && shard_index == -1) {
                 return false;
             } else if (total_shards == -1 && shard_index != -1) {
-                const Message msg = Message()
+                const hawk::Message msg = hawk::Message()
                     << "Invalid sharding: you have " << hawk::Constants::kTestShardIndex
                     << " = " << shard_index << ", but have left "
                     << hawk::Constants::kTestTotalShards << " unset.\n";
@@ -740,7 +741,7 @@ namespace testing {
                 fflush(stdout);
                 exit(EXIT_FAILURE);
             } else if (total_shards != -1 && shard_index == -1) {
-                const Message msg = Message()
+                const hawk::Message msg = hawk::Message()
                     << "Invalid sharding: you have " << hawk::Constants::kTestTotalShards
                     << " = " << total_shards << ", but have left "
                     << hawk::Constants::kTestShardIndex << " unset.\n";
@@ -748,7 +749,7 @@ namespace testing {
                 fflush(stdout);
                 exit(EXIT_FAILURE);
             } else if (shard_index < 0 || shard_index >= total_shards) {
-                const Message msg = Message() << "Invalid sharding: we require 0 <= " << hawk::Constants::kTestShardIndex
+                const hawk::Message msg = hawk::Message() << "Invalid sharding: we require 0 <= " << hawk::Constants::kTestShardIndex
                                               << " < " << hawk::Constants::kTestTotalShards << ", but you have "
                                               << hawk::Constants::kTestShardIndex << "=" << shard_index << ", "
                                               << hawk::Constants::kTestTotalShards << "=" << total_shards << ".\n";
@@ -764,14 +765,14 @@ namespace testing {
         // returns default_val. If it is not an Int32, prints an error
         // and aborts.
         int32_t Int32FromEnvOrDie(const char* var, int32_t default_val) {
-            const char* str_val = posix::GetEnv(var);
-            if (str_val == nullptr) {
+            const std::optional<std::string> str_val = hawk::get_env(var);
+            if (!str_val.has_value()) {
                 return default_val;
             }
 
             int32_t result;
-            if (!ParseInt32(Message() << "The value of environment variable " << var,
-                    str_val, &result)) {
+            if (!ParseInt32(hawk::Message() << "The value of environment variable " << var,
+                    str_val->c_str(), &result)) {
                 exit(EXIT_FAILURE);
             }
             return result;
@@ -819,12 +820,12 @@ namespace testing {
         std::initializer_list<const char*> environment_variables,
         const char* fallback, char separator) {
         for (const char* variable_name : environment_variables) {
-            const char* value = internal::posix::GetEnv(variable_name);
-            if (value != nullptr && value[0] != '\0') {
-                if (value[strlen(value) - 1] != separator) {
-                    return std::string(value).append(1, separator);
+            const std::optional<std::string> value = hawk::get_env(variable_name);
+            if (value.has_value() && !value->empty()) {
+                if (value->back() != separator) {
+                    return std::string(*value).append(1, separator);
                 }
-                return value;
+                return *value;
             }
         }
         return fallback;

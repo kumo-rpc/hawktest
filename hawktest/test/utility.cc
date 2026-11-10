@@ -131,10 +131,10 @@ namespace testing {
             }
 
             // Message assignment, for assertion streaming support.
-            void AssertHelper::operator=(const Message& message) const {
+            void AssertHelper::operator=(const hawk::Message& message) const {
                 UnitTest::GetInstance()->AddTestPartResult(
                     data_->type, data_->file, data_->line,
-                    AppendUserMessage(data_->message, message),
+                    hawk::internal::AppendUserMessage(data_->message, message),
                     ShouldEmitStackTraceForResultType(data_->type)
                         ? UnitTest::GetInstance()->impl()->CurrentOsStackTraceExceptTop(1)
                         : ""

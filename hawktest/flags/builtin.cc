@@ -14,6 +14,7 @@
 
 #include <hawktest/flags/builtin.h>
 
+#include <hawktest/common/environment.h>
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/common/port_internal.h>
 #include <hawktest/flags/gflags.h>
@@ -29,18 +30,18 @@ namespace testing {
     static const char kTestTotalShards[] = "HTEST_TOTAL_SHARDS";
     static const char kDefaultDeathTestStyle[] = HTEST_DEFAULT_DEATH_TEST_STYLE;
 
-    static const char* GetDefaultFilter() {
-        const char* const testbridge_test_only = internal::posix::GetEnv("TESTBRIDGE_TEST_ONLY");
-        if (testbridge_test_only != nullptr) {
-            return testbridge_test_only;
+    static std::string GetDefaultFilter() {
+        const std::optional<std::string> testbridge_test_only = hawk::get_env("TESTBRIDGE_TEST_ONLY");
+        if (testbridge_test_only.has_value()) {
+            return *testbridge_test_only;
         }
         return kUniversalFilter;
     }
 
     static bool GetDefaultFailFast() {
-        const char* const testbridge_test_runner_fail_fast = internal::posix::GetEnv("TESTBRIDGE_TEST_RUNNER_FAIL_FAST");
-        if (testbridge_test_runner_fail_fast != nullptr) {
-            return strcmp(testbridge_test_runner_fail_fast, "1") == 0;
+        const std::optional<std::string> testbridge_test_runner_fail_fast = hawk::get_env("TESTBRIDGE_TEST_RUNNER_FAIL_FAST");
+        if (testbridge_test_runner_fail_fast.has_value()) {
+            return testbridge_test_runner_fail_fast->compare("1") == 0;
         }
         return false;
     }
@@ -48,9 +49,9 @@ namespace testing {
     namespace internal {
 
         static std::string FlagToEnvVar(const char* flag) {
-            const std::string full_flag = (Message() << HTEST_FLAG_PREFIX_ << flag).GetString();
+            const std::string full_flag = (hawk::Message() << HTEST_FLAG_PREFIX_ << flag).GetString();
 
-            Message env_var;
+            hawk::Message env_var;
             for (size_t i = 0; i != full_flag.length(); i++) {
                 env_var << ToUpper(full_flag.c_str()[i]);
             }
@@ -63,8 +64,8 @@ namespace testing {
             return HTEST_GET_BOOL_FROM_ENV_(flag, default_value);
 #else
             const std::string env_var = FlagToEnvVar(flag);
-            const char* const string_value = posix::GetEnv(env_var.c_str());
-            return string_value == nullptr ? default_value : strcmp(string_value, "0") != 0;
+            const std::optional<std::string> string_value = hawk::get_env(env_var);
+            return string_value.has_value() ? string_value->compare("0") != 0 : default_value;
 #endif
         }
 
@@ -73,14 +74,14 @@ namespace testing {
             return HTEST_GET_INT32_FROM_ENV_(flag, default_value);
 #else
             const std::string env_var = FlagToEnvVar(flag);
-            const char* const string_value = posix::GetEnv(env_var.c_str());
-            if (string_value == nullptr) {
+            const std::optional<std::string> string_value = hawk::get_env(env_var);
+            if (!string_value.has_value()) {
                 return default_value;
             }
 
             int32_t result = default_value;
-            if (!ParseInt32(Message() << "Environment variable " << env_var, string_value, &result)) {
-                printf("The default value %s is used.\n", (Message() << default_value).GetString().c_str());
+            if (!ParseInt32(hawk::Message() << "Environment variable " << env_var, string_value->c_str(), &result)) {
+                printf("The default value %s is used.\n", (hawk::Message() << default_value).GetString().c_str());
                 fflush(stdout);
                 return default_value;
             }
@@ -91,20 +92,20 @@ namespace testing {
 
         static std::string OutputFlagAlsoCheckEnvVar() {
             std::string default_value_for_output_flag = "";
-            const char* xml_output_file_env = posix::GetEnv("XML_OUTPUT_FILE");
-            if (nullptr != xml_output_file_env) {
-                default_value_for_output_flag = std::string("xml:") + xml_output_file_env;
+            const std::optional<std::string> xml_output_file_env = hawk::get_env("XML_OUTPUT_FILE");
+            if (xml_output_file_env.has_value()) {
+                default_value_for_output_flag = std::string("xml:") + *xml_output_file_env;
             }
             return default_value_for_output_flag;
         }
 
-        static const char* StringFromHTestEnv(const char* flag, const char* default_value) {
+        static std::string StringFromHTestEnv(const char* flag, const char* default_value) {
 #if defined(HTEST_GET_STRING_FROM_ENV_)
             return HTEST_GET_STRING_FROM_ENV_(flag, default_value);
 #else
             const std::string env_var = FlagToEnvVar(flag);
-            const char* const value = posix::GetEnv(env_var.c_str());
-            return value == nullptr ? default_value : value;
+            const std::optional<std::string> value = hawk::get_env(env_var);
+            return value.has_value() ? *value : std::string(default_value);
 #endif
         }
 
@@ -148,7 +149,7 @@ DEFINE_string(htest_color,
     "is set to a terminal type that supports colors.");
 
 DEFINE_string(htest_filter,
-    testing::internal::StringFromHTestEnv("filter", testing::GetDefaultFilter()),
+    testing::internal::StringFromHTestEnv("filter", testing::GetDefaultFilter().c_str()),
     "A colon-separated list of glob (not regex) patterns "
     "for filtering the tests to run, optionally followed by a "
     "'-' and a : separated list of negative patterns (tests to "

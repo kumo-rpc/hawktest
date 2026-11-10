@@ -3813,8 +3813,8 @@ class [[nodiscard]] ElementsAreMatcherImpl
   }
 
  private:
-  static Message Elements(size_t count) {
-    return Message() << count << (count == 1 ? " element" : " elements");
+  static hawk::Message Elements(size_t count) {
+    return hawk::Message() << count << (count == 1 ? " element" : " elements");
   }
 
   size_t count() const { return matchers_.size(); }
@@ -3909,8 +3909,8 @@ class HTEST_API_ [[nodiscard]] UnorderedElementsAreMatcherImplBase {
 
   MatcherDescriberVec& matcher_describers() { return matcher_describers_; }
 
-  static Message Elements(size_t n) {
-    return Message() << n << " element" << (n == 1 ? "" : "s");
+  static hawk::Message Elements(size_t n) {
+    return hawk::Message() << n << " element" << (n == 1 ? "" : "s");
   }
 
   UnorderedMatcherRequire::Flags match_flags() const { return match_flags_; }

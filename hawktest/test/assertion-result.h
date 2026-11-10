@@ -43,7 +43,7 @@
 #include <type_traits>
 
 #include <hawktest/common/port.h>
-#include <hawktest/test/message.h>
+#include <hawktest/format/message.h>
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
@@ -199,7 +199,7 @@ namespace testing {
         // Streams a custom failure message into this object.
         template <typename T>
         AssertionResult& operator<<(const T& value) {
-            AppendMessage(Message() << value);
+            AppendMessage(hawk::Message() << value);
             return *this;
         }
 
@@ -207,13 +207,13 @@ namespace testing {
         // this object.
         AssertionResult& operator<<(
             ::std::ostream& (*basic_manipulator)(::std::ostream& stream)) {
-            AppendMessage(Message() << basic_manipulator);
+            AppendMessage(hawk::Message() << basic_manipulator);
             return *this;
         }
 
     private:
         // Appends the contents of message to message_.
-        void AppendMessage(const Message& a_message) {
+        void AppendMessage(const hawk::Message& a_message) {
             if (message_ == nullptr)
                 message_ = ::std::make_unique<::std::string>();
             message_->append(a_message.GetString().c_str());
@@ -257,7 +257,7 @@ namespace testing {
 
     // Makes a failed assertion result with the given failure message.
     // Deprecated; use AssertionFailure() << msg.
-    HTEST_API_ AssertionResult AssertionFailure(const Message& msg);
+    HTEST_API_ AssertionResult AssertionFailure(const hawk::Message& msg);
 
 } // namespace testing
 

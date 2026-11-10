@@ -267,7 +267,7 @@ namespace testing {
     } else if (!::testing::internal::AlwaysTrue()) {                       \
         (void)::testing::internal::MakeDeathTestMatcher(regex_or_matcher); \
     } else                                                                 \
-        ::testing::Message()
+        ::hawk::Message()
 
         // A class representing the parsed contents of the
         // --htest_internal_run_death_test flag, as it existed when

@@ -38,7 +38,7 @@
 #include <string>
 
 #include <hawktest/common/port.h>
-#include <hawktest/test/message.h>
+#include <hawktest/format/message.h>
 #include <hawktest/test/initialize.h>
 
 #ifdef HTEST_OS_WINDOWS_MOBILE
@@ -228,7 +228,7 @@ namespace testing {
             if (number == 0) {
                 file = base_name.string() + "." + extension;
             } else {
-                file = base_name.string() + "_" + StreamableToString(number) + "." + extension;
+                file = base_name.string() + "_" + hawk::internal::StreamableToString(number) + "." + extension;
             }
             return ConcatPaths(directory, FilePath(file));
         }

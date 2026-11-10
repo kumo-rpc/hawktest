@@ -108,7 +108,7 @@ namespace testing {
         // converted to int64_t, but other values could be logged in this way.
         template <typename T, std::enable_if_t<std::is_convertible<T, int64_t>::value, bool> = true>
         static void RecordProperty(const std::string& key, const T& value) {
-            RecordProperty(key, (Message() << value).GetString());
+            RecordProperty(key, (hawk::Message() << value).GetString());
         }
 
     protected:

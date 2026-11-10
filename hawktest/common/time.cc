@@ -18,7 +18,7 @@
 
 #include <hawktest/common/time.h>
 #include <hawktest/common/string.h>
-#include <hawktest/test/message.h>
+#include <hawktest/format/message.h>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -78,7 +78,7 @@ namespace hawk {
         if (!PortableLocaltime(static_cast<time_t>(ms / 1000), &time_struct))
             return "";
         // YYYY-MM-DDThh:mm:ss.sss
-        return testing::internal::StreamableToString(time_struct.tm_year + 1900) + "-" + testing::internal::String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" + testing::internal::String::FormatIntWidth2(time_struct.tm_mday) + "T" + testing::internal::String::FormatIntWidth2(time_struct.tm_hour) + ":" + testing::internal::String::FormatIntWidth2(time_struct.tm_min) + ":" + testing::internal::String::FormatIntWidth2(time_struct.tm_sec) + "." + testing::internal::String::FormatIntWidthN(static_cast<int>(ms % 1000), 3);
+        return hawk::internal::StreamableToString(time_struct.tm_year + 1900) + "-" + testing::internal::String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" + testing::internal::String::FormatIntWidth2(time_struct.tm_mday) + "T" + testing::internal::String::FormatIntWidth2(time_struct.tm_hour) + ":" + testing::internal::String::FormatIntWidth2(time_struct.tm_min) + ":" + testing::internal::String::FormatIntWidth2(time_struct.tm_sec) + "." + testing::internal::String::FormatIntWidthN(static_cast<int>(ms % 1000), 3);
     }
 
     // Formats the given time in milliseconds as seconds.
@@ -95,7 +95,7 @@ namespace hawk {
         if (!hawk::PortableLocaltime(static_cast<time_t>(ms / 1000), &time_struct))
             return "";
         // YYYY-MM-DDThh:mm:ss
-        return testing::internal::StreamableToString(time_struct.tm_year + 1900) + "-" +
+        return hawk::internal::StreamableToString(time_struct.tm_year + 1900) + "-" +
             testing::internal::String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" +
             testing::internal::String::FormatIntWidth2(time_struct.tm_mday) + "T" +
                 testing::internal::String::FormatIntWidth2(time_struct.tm_hour) + ":" +

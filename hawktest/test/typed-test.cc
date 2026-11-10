@@ -71,7 +71,7 @@ namespace testing {
 
             std::vector<std::string> name_vec = SplitIntoTestNames(registered_tests);
 
-            Message errors;
+            hawk::Message errors;
 
             std::set<std::string> tests;
             for (std::vector<std::string>::const_iterator name_it = name_vec.begin();

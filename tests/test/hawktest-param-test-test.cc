@@ -62,7 +62,7 @@ using ::testing::AddGlobalTestEnvironment;
 using ::testing::Bool;
 using ::testing::Combine;
 using ::testing::ConvertGenerator;
-using ::testing::Message;
+using ::hawk::Message;
 using ::testing::Range;
 using ::testing::TestWithParam;
 using ::testing::Values;

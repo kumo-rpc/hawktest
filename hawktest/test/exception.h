@@ -60,7 +60,7 @@ namespace testing {
         // Adds an "exception thrown" fatal failure to the current test.
         static std::string FormatCxxExceptionMessage(const char* description,
             const char* location) {
-            Message message;
+            hawk::Message message;
             if (description != nullptr) {
                 message << "C++ exception with description \"" << description << "\"";
             } else {

@@ -16,6 +16,7 @@
 // limitations under the License.
 //
 
+#include <hawktest/common/environment.h>
 #include <hawktest/test/internal/unit_test_impl.h>
 #include <hawktest/format/printer.h>
 #include <hawktest/test/internal/unit_test_option.h>
@@ -24,6 +25,7 @@
 #include <hawktest/reporter/json_unit_test_result_printer.h>
 #include <hawktest/reporter/brief_unit_test_result_printer.h>
 #include <hawktest/reporter/streaming_listener.h>
+#include <hawktest/reporter/constants.h>
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/flags/parser.h>
 
@@ -371,7 +373,8 @@ namespace testing {
             auto* const new_test_suite = new TestSuite(test_suite_name, type_param, set_up_tc, tear_down_tc);
             test_suites_by_name_.emplace(test_suite_name, new_test_suite);
 
-            const UnitTestFilter death_test_suite_filter(hawk::Constants::kDeathTestSuiteFilter);
+            const UnitTestFilter death_test_suite_filter{
+                std::string(hawk::Constants::kDeathTestSuiteFilter)};
             // Is this a death test suite?
             if (death_test_suite_filter.MatchesName(test_suite_name)) {
                 // Yes.  Inserts the test suite after the last death test suite
@@ -614,11 +617,11 @@ namespace testing {
         // `str` to the file, creating the file if necessary.
 #if HTEST_HAS_FILE_SYSTEM
         static void AppendToTestWarningsOutputFile(const std::string& str) {
-            const char* const filename = posix::GetEnv(hawk::Constants::kTestWarningsOutputFile.c_str());
-            if (filename == nullptr) {
+            const std::optional<std::string> filename = hawk::get_env(hawk::Constants::kTestWarningsOutputFile);
+            if (!filename.has_value()) {
                 return;
             }
-            auto* const file = posix::FOpen(filename, "a");
+            auto* const file = posix::FOpen(filename->c_str(), "a");
             if (file == nullptr) {
                 return;
             }

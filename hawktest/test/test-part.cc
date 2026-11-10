@@ -137,7 +137,7 @@ namespace testing {
         // Prints a TestPartResult to an std::string.
         std::string PrintTestPartResultToString(
             const TestPartResult& test_part_result) {
-            return (Message() << internal::FormatFileLocation(
+            return (hawk::Message() << internal::FormatFileLocation(
                         test_part_result.file_name(),
                         test_part_result.line_number())
                               << " "

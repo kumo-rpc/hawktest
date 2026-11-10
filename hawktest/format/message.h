@@ -1,12 +1,4 @@
-// Copyright 2005, Google Inc.
 // Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
-//
-// Portions of this software are derived from GoogleTest and Google Mock,
-// originally distributed under the BSD 3-Clause License.
-// Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
-//
-// Portions of this software are derived from GoogleTest and Google Mock,
-// originally distributed under the BSD 3-Clause License.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,29 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// For third-party components and portions derived from GoogleTest or
-// Google Mock, the applicable original license terms and notices are
-// retained in accordance with their respective licenses.
-//
-//
-// For third-party components and portions derived from GoogleTest or
-// Google Mock, the applicable original license terms and notices are
-// retained in accordance with their respective licenses.
-//
-
-// The Google C++ Testing and Mocking Framework (Hawk Test)
-//
-// This header file defines the Message class.
-//
-// IMPORTANT NOTE: Due to limitation of the C++ language, we have to
-// leave some internal implementation details in this header file.
-// They are clearly marked by comments like this:
-//
-//   // INTERNAL IMPLEMENTATION - DO NOT USE IN A USER PROGRAM.
-//
-// Such code is NOT meant to be used by a user directly, and is subject
-// to CHANGE WITHOUT NOTICE.  Therefore DO NOT DEPEND ON IT in a user
-// program!
 
 #pragma once
 
@@ -60,7 +29,7 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to 
 // See Message& operator<<(...) below for why.
 void operator<<(const testing::internal::Secret&, int);
 
-namespace testing {
+namespace hawk {
 
     // The Message class works like an ostream repeater.
     //
@@ -217,7 +186,7 @@ namespace testing {
 
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
 

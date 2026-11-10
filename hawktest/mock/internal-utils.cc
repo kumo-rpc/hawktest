@@ -108,7 +108,7 @@ class HawkTestFailureReporter : public FailureReporterInterface {
                      const std::string& message) override {
     AssertHelper(type == kFatal ? TestPartResult::kFatalFailure
                                 : TestPartResult::kNonFatalFailure,
-                 file, line, message.c_str()) = Message();
+                 file, line, message.c_str()) = hawk::Message();
     if (type == kFatal) {
       posix::Abort();
     }

@@ -32,7 +32,7 @@ namespace internal {
     // FormatCountableNoun(5, "book", "books") returns "5 books".
     static std::string FormatCountableNoun(int count, const char* singular_form,
         const char* plural_form) {
-        return internal::StreamableToString(count) + " " + (count == 1 ? singular_form : plural_form);
+        return hawk::internal::StreamableToString(count) + " " + (count == 1 ? singular_form : plural_form);
     }
 
 
@@ -98,9 +98,9 @@ namespace internal {
         hawk::stdout_printer().print_green("[----------] ");
         printf("%s from %s", counts.c_str(), test_case.name());
         if (test_case.type_param() == nullptr) {
-            printf("\n");
+            hawk::stdout_printer().new_line();
         } else {
-            hawk::stdout_printer().fmt(", where %s = %s\n", hawk::Constants::kTypeParamLabel, test_case.type_param());
+            hawk::stdout_printer().fmt(", where {} = {}\n", hawk::Constants::kTypeParamLabel, test_case.type_param());
         }
         fflush(stdout);
     }
@@ -162,7 +162,7 @@ namespace internal {
 
             if (FLAGS_htest_print_time) {
                 printf(" (%s ms)\n",
-                    internal::StreamableToString(test_info.result()->elapsed_time())
+                    hawk::internal::StreamableToString(test_info.result()->elapsed_time())
                         .c_str());
             } else {
                 printf("\n");
@@ -178,7 +178,7 @@ namespace internal {
             const std::string counts = FormatCountableNoun(test_case.test_to_run_count(), "test", "tests");
             hawk::stdout_printer().print_green("[----------] ");
             printf("%s from %s (%s ms total)\n\n", counts.c_str(), test_case.name(),
-                internal::StreamableToString(test_case.elapsed_time()).c_str());
+                hawk::internal::StreamableToString(test_case.elapsed_time()).c_str());
             fflush(stdout);
         }
 #else
@@ -281,7 +281,7 @@ namespace internal {
                 FormatTestSuiteCount(unit_test.test_suite_to_run_count()).c_str());
             if (FLAGS_htest_print_time) {
                 printf(" (%s ms total)",
-                    internal::StreamableToString(unit_test.elapsed_time()).c_str());
+                    hawk::internal::StreamableToString(unit_test.elapsed_time()).c_str());
             }
             printf("\n");
             hawk::stdout_printer().print_green("[  PASSED  ] ");

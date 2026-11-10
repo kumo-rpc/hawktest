@@ -63,7 +63,7 @@ namespace testing {
 
             g_argvs.clear();
             for (int i = 0; i != *argc; i++) {
-                g_argvs.push_back(StreamableToString(argv[i]));
+                g_argvs.push_back(hawk::internal::StreamableToString(argv[i]));
             }
 
             parse_hawk_test_flags_only(argc, argv);

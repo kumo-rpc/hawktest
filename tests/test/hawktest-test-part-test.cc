@@ -35,7 +35,7 @@
 #include <hawktest/test/htest.h>
 #include <hawktest/test/test-part.h>
 
-using testing::Message;
+using hawk::Message;
 using testing::Test;
 using testing::TestPartResult;
 using testing::TestPartResultArray;

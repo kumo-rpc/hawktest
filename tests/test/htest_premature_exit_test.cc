@@ -36,11 +36,11 @@
 
 #include <stdio.h>
 
+#include <hawktest/common/environment.h>
 #include <hawktest/test/htest.h>
 
 using ::testing::init_hawk_test;
 using ::testing::Test;
-using ::testing::internal::posix::GetEnv;
 using ::testing::internal::posix::Stat;
 using ::testing::internal::posix::StatStruct;
 
@@ -56,20 +56,16 @@ class PrematureExitTest : public Test {
 
  protected:
   PrematureExitTest() {
-    premature_exit_file_path_ = GetEnv("TEST_PREMATURE_EXIT_FILE");
-
-    // Normalize NULL to "" for ease of handling.
-    if (premature_exit_file_path_ == nullptr) {
-      premature_exit_file_path_ = "";
-    }
+    const std::optional<std::string> path = hawk::get_env("TEST_PREMATURE_EXIT_FILE");
+    premature_exit_path_ = path.has_value() ? *path : "";
   }
 
   // Returns true if and only if the premature-exit file exists.
   bool PrematureExitFileExists() const {
-    return FileExists(premature_exit_file_path_);
+    return FileExists(premature_exit_path_.c_str());
   }
 
-  const char* premature_exit_file_path_;
+  std::string premature_exit_path_;
 };
 
 typedef PrematureExitTest PrematureExitDeathTest;
@@ -80,7 +76,7 @@ typedef PrematureExitTest PrematureExitDeathTest;
 //   - a death test doesn't interfere with the main test process's
 //     handling of the premature-exit file.
 TEST_F(PrematureExitDeathTest, FileExistsDuringExecutionOfDeathTest) {
-  if (*premature_exit_file_path_ == '\0') {
+  if (premature_exit_path_.empty()) {
     return;
   }
 
@@ -100,12 +96,12 @@ TEST_F(PrematureExitDeathTest, FileExistsDuringExecutionOfDeathTest) {
 // Tests that the premature-exit file exists during the execution of a
 // normal (non-death) test.
 TEST_F(PrematureExitTest, PrematureExitFileExistsDuringTestExecution) {
-  if (*premature_exit_file_path_ == '\0') {
+  if (premature_exit_path_.empty()) {
     return;
   }
 
   EXPECT_TRUE(PrematureExitFileExists())
-      << " file " << premature_exit_file_path_
+      << " file " << premature_exit_path_
       << " should exist during test execution, but doesn't.";
 }
 
@@ -117,12 +113,12 @@ int main(int argc, char** argv) {
 
   // Test that the premature-exit file is deleted upon return from
   // RUN_ALL_TESTS().
-  const char* const filepath = GetEnv("TEST_PREMATURE_EXIT_FILE");
-  if (filepath != nullptr && *filepath != '\0') {
-    if (PrematureExitTest::FileExists(filepath)) {
+  const std::optional<std::string> filepath = hawk::get_env("TEST_PREMATURE_EXIT_FILE");
+  if (filepath.has_value() && !filepath->empty()) {
+    if (PrematureExitTest::FileExists(filepath->c_str())) {
       printf(
           "File %s shouldn't exist after the test program finishes, but does.",
-          filepath);
+          filepath->c_str());
       return 1;
     }
   }

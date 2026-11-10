@@ -36,13 +36,13 @@
 #include <sstream>
 #include <string>
 
-#include <hawktest/test/message.h>
+#include <hawktest/format/message.h>
 #include <hawktest/test/htest.h>
 
 
 namespace {
 
-using ::testing::Message;
+using ::hawk::Message;
 
 
 // Tests the testing::Message class

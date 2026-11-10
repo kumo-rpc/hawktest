@@ -39,7 +39,7 @@
 #include <string>
 #include <utility>
 
-#include <hawktest/test/message.h>
+#include <hawktest/format/message.h>
 
 namespace testing {
 
@@ -78,7 +78,7 @@ namespace testing {
 
     // Makes a failed assertion result with the given failure message.
     // Deprecated; use AssertionFailure() << message.
-    AssertionResult AssertionFailure(const Message& message) {
+    AssertionResult AssertionFailure(const hawk::Message& message) {
         return AssertionFailure() << message;
     }
 

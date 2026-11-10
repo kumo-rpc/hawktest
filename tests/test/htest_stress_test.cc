@@ -58,13 +58,13 @@ using internal::ThreadWithParam;
 const int kThreadCount = 50;
 
 std::string IdToKey(int id, const char* suffix) {
-  Message key;
+  hawk::Message key;
   key << "key_" << id << "_" << suffix;
   return key.GetString();
 }
 
 std::string IdToString(int id) {
-  Message id_message;
+  hawk::Message id_message;
   id_message << id;
   return id_message.GetString();
 }
@@ -84,10 +84,10 @@ void ExpectKeyAndValueWereRecordedForId(
 void ManyAsserts(int id) {
   HTEST_LOG_(INFO) << "Thread #" << id << " running...";
 
-  SCOPED_TRACE(Message() << "Thread #" << id);
+  SCOPED_TRACE(hawk::Message() << "Thread #" << id);
 
   for (int i = 0; i < kThreadCount; i++) {
-    SCOPED_TRACE(Message() << "Iteration #" << i);
+    SCOPED_TRACE(hawk::Message() << "Iteration #" << i);
 
     // A bunch of assertions that should succeed.
     EXPECT_TRUE(true);

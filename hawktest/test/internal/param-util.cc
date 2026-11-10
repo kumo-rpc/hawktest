@@ -136,7 +136,7 @@ namespace testing {
 
         void ReportInvalidTestSuiteType(const char* test_suite_name,
       const CodeLocation& code_location) {
-            Message errors;
+            hawk::Message errors;
             errors
                 << "Attempted redefinition of test suite " << test_suite_name << ".\n"
                 << "All tests in the same test suite must use the same test fixture\n"

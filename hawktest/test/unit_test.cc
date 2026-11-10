@@ -16,6 +16,7 @@
 // limitations under the License.
 //
 
+#include <hawktest/common/environment.h>
 #include <hawktest/test/unit_test.h>
 #include <hawktest/test/scoped_trace.h>
 #include <hawktest/test/exception.h>
@@ -130,7 +131,7 @@ namespace testing {
         int line_number, const std::string& message,
         const std::string& os_stack_trace)
         HTEST_LOCK_EXCLUDED_(mutex_) {
-        Message msg;
+        hawk::Message msg;
         msg << message;
 
         internal::MutexLock lock(mutex_);
@@ -463,10 +464,11 @@ namespace testing {
         // premature-exit file will be left undeleted, causing a test runner
         // that understands the premature-exit-file protocol to report the
         // test as having failed.
+        const std::optional<std::string> premature_exit_filepath = hawk::get_env("TEST_PREMATURE_EXIT_FILE");
         const internal::ScopedPrematureExitFile premature_exit_file(
-            in_death_test_child_process
+            in_death_test_child_process || !premature_exit_filepath.has_value()
                 ? nullptr
-                : internal::posix::GetEnv("TEST_PREMATURE_EXIT_FILE"));
+                : premature_exit_filepath->c_str());
 #else
         const bool in_death_test_child_process = false;
 #endif // HTEST_INTERNAL_HAS_PREMATURE_EXIT_FILE

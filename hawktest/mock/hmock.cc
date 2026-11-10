@@ -136,7 +136,7 @@ static bool ParseGoogleMockFlag(const char* str, const char* flag_name,
   if (value_str == nullptr) return false;
 
   // Sets *value to the value of the flag.
-  return ParseInt32(Message() << "The value of flag --" << flag_name, value_str,
+  return ParseInt32(hawk::Message() << "The value of flag --" << flag_name, value_str,
                     value);
 }
 
@@ -152,7 +152,7 @@ void InitGoogleMockImpl(int* argc, CharType** argv) {
   if (*argc <= 0) return;
 
   for (int i = 1; i != *argc; i++) {
-    const std::string arg_string = StreamableToString(argv[i]);
+    const std::string arg_string = hawk::internal::StreamableToString(argv[i]);
     const char* const arg = arg_string.c_str();
 
     // Do we see a Google Mock flag?

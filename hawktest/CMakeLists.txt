@@ -184,6 +184,7 @@ kmcmake_cc_library(
         common/random.cc
         common/time.cc
         common/string.cc
+        common/environment.cc
         reporter/constants.cc
         reporter/listener.cc
         reporter/brief_unit_test_result_printer.cc
@@ -195,10 +196,11 @@ kmcmake_cc_library(
         format/color.cc
         format/printer.cc
         format/report_sink.cc
+        format/message.cc
+        numeric/parse.cc
         test/assertion-result.cc
         test/death-test.cc
         test/matchers.cc
-        test/message.cc
         test/exception.cc
         test/initialize.cc
         test/scoped_trace.cc

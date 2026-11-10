@@ -1087,7 +1087,7 @@ namespace testing {
             void TestBody() override {
                 if (as_error_) {
                     AssertHelper(TestPartResult::kNonFatalFailure, loc_.file.c_str(),
-                        loc_.line, "") = Message() << error_message_;
+                        loc_.line, "") = hawk::Message() << error_message_;
                 } else {
                     std::cout << error_message_ << std::endl;
                 }

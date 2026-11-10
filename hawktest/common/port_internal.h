@@ -227,8 +227,6 @@
 // Command-line utilities:
 //   GetInjectableArgvs() - returns the command line as a vector of strings.
 //
-// Environment variable utilities:
-//   GetEnv()             - gets the value of an environment variable.
 
 // The definition of HTEST_INTERNAL_CPLUSPLUS_LANG comes first because it can
 // potentially be used as an #include guard.
@@ -851,9 +849,12 @@ typedef struct _RTL_CRITICAL_SECTION HTEST_CRITICAL_SECTION;
 #define HTEST_ATTRIBUTE_NO_SANITIZE_THREAD_
 #endif
 
+namespace hawk {
+    class Message;
+}
 namespace testing {
 
-    class Message;
+
 
     // Legacy imports for backwards compatibility.
     // New code should use std:: names directly.
@@ -2157,21 +2158,6 @@ namespace testing {
             }
 #endif // !HTEST_OS_WINDOWS_MOBILE && !HTEST_OS_QURT
 
-            inline const char* GetEnv(const char* name) {
-#if defined(HTEST_OS_WINDOWS_MOBILE) || defined(HTEST_OS_WINDOWS_PHONE) || defined(HTEST_OS_ESP8266) || defined(HTEST_OS_XTENSA) || defined(HTEST_OS_QURT)
-                // We are on an embedded platform, which has no environment variables.
-                static_cast<void>(name); // To prevent 'unused argument' warning.
-                return nullptr;
-#elif defined(__BORLANDC__) || defined(__SunOS_5_8) || defined(__SunOS_5_9)
-                // Environment variables which we programmatically clear will be set to the
-                // empty string rather than unset (NULL).  Handle that case.
-                const char* const env = getenv(name);
-                return (env != nullptr && env[0] != '\0') ? env : nullptr;
-#else
-                return getenv(name);
-#endif
-            }
-
             HTEST_DISABLE_DEPRECATED_POP_()
 
 #ifdef HTEST_OS_WINDOWS_MOBILE
@@ -2262,7 +2248,7 @@ namespace testing {
         // Parses 'str' for a 32-bit signed integer.  If successful, writes the result
         // to *value and returns true; otherwise leaves *value unchanged and returns
         // false.
-        HTEST_API_ bool ParseInt32(const Message& src_text, const char* str,
+        HTEST_API_ bool ParseInt32(const hawk::Message& src_text, const char* str,
             int32_t* value);
 
     } // namespace internal

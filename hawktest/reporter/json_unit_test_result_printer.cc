@@ -43,7 +43,7 @@ namespace testing {
 
         // Returns an JSON-escaped copy of the input string str.
         std::string JsonUnitTestResultPrinter::EscapeJson(const std::string& str) {
-            Message m;
+            hawk::Message m;
 
             for (size_t i = 0; i < str.size(); ++i) {
                 const char ch = str[i];
@@ -122,7 +122,7 @@ namespace testing {
                 << "Key \"" << name << "\" is not allowed for value \"" << element_name
                 << "\".";
 
-            *stream << indent << "\"" << name << "\": " << StreamableToString(value);
+            *stream << indent << "\"" << name << "\": " << hawk::internal::StreamableToString(value);
             if (comma)
                 *stream << ",\n";
         }
@@ -428,7 +428,7 @@ namespace testing {
         // a JSON dictionary.
         std::string JsonUnitTestResultPrinter::TestPropertiesAsJson(
             const TestResult& result, const std::string& indent) {
-            Message attributes;
+            hawk::Message attributes;
             for (int i = 0; i < result.test_property_count(); ++i) {
                 const TestProperty& property = result.GetTestProperty(i);
                 attributes << ",\n"

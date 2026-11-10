@@ -62,7 +62,7 @@
 #include <hawktest/common/filepath.h>
 #include <hawktest/common/string.h>
 #include <hawktest/test/internal/type-util.h>
-#include <hawktest/test/message.h>
+#include <hawktest/format/message.h>
 
 // Due to C++ preprocessor weirdness, we need double indirection to
 // concatenate two tokens when one of them is __LINE__.  Writing
@@ -97,12 +97,15 @@ namespace proto2 {
     T DynamicCastMessage() = delete;
 }
 
+namespace hawk {
+    class Message; // Represents a failure message.
+}
+
 namespace testing {
 
     // Forward declarations.
 
     class AssertionResult; // Result of an assertion.
-    class Message; // Represents a failure message.
     class Test; // Represents a test.
     class TestInfo; // Information about a test.
     class TestPartResult; // Result of a test part.
@@ -626,7 +629,7 @@ namespace testing {
         struct DefaultNameGenerator {
             template <typename T>
             static std::string GetName(int i) {
-                return StreamableToString(i);
+                return hawk::internal::StreamableToString(i);
             }
         };
 
@@ -1224,7 +1227,7 @@ namespace std {
 } // namespace std
 
 #define HTEST_MESSAGE_AT_(file, line, message, result_type) \
-    ::testing::internal::AssertHelper(result_type, file, line, message) = ::testing::Message()
+    ::testing::internal::AssertHelper(result_type, file, line, message) = ::hawk::Message()
 
 #define HTEST_MESSAGE_(message, result_type) \
     HTEST_MESSAGE_AT_(__FILE__, __LINE__, message, result_type)

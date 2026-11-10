@@ -34,7 +34,7 @@ namespace testing {
             const std::string expected(type == TestPartResult::kFatalFailure
                     ? "1 fatal failure"
                     : "1 non-fatal failure");
-            Message msg;
+            hawk::Message msg;
             if (results.size() != 1) {
                 msg << "Expected: " << expected << "\n"
                     << "  Actual: " << results.size() << " failures";

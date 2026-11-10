@@ -46,7 +46,7 @@ namespace testing {
 
                 if (FLAGS_htest_print_time) {
                     printf(" (%s ms)\n",
-                        internal::StreamableToString(test_info.result()->elapsed_time())
+                        hawk::internal::StreamableToString(test_info.result()->elapsed_time())
                             .c_str());
                 } else {
                     printf("\n");
@@ -63,7 +63,7 @@ namespace testing {
                 FormatTestSuiteCount(unit_test.test_suite_to_run_count()).c_str());
             if (FLAGS_htest_print_time) {
                 printf(" (%s ms total)",
-                    internal::StreamableToString(unit_test.elapsed_time()).c_str());
+                    hawk::internal::StreamableToString(unit_test.elapsed_time()).c_str());
             }
             printf("\n");
             hawk::stdout_printer().print_green("[  PASSED  ] ");

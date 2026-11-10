@@ -56,7 +56,9 @@ namespace hawk {
         // A test suite whose name matches this filter is considered a death
         // test suite and will be run before test suites whose name doesn't
         // match this filter.
-        static const std::string kDeathTestSuiteFilter;
+        // constexpr: TEST() registers suites during dynamic initialization,
+        // before a std::string in another .cc is constructed.
+        static constexpr std::string_view kDeathTestSuiteFilter = "*DeathTest:*DeathTest/*";
 
         // A test whose test suite name or test name matches this filter is
         // disabled and not run.

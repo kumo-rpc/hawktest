@@ -91,7 +91,7 @@
 
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/common/string.h>
-#include <hawktest/test/message.h>
+#include <hawktest/format/message.h>
 
 namespace testing {
 
@@ -177,7 +177,7 @@ namespace testing {
         // Generates a textual description of a given exit code, in the format
         // specified by wait(2).
         static std::string ExitSummary(int exit_code) {
-            Message m;
+            hawk::Message m;
 
 #if defined(HTEST_OS_WINDOWS) || defined(HTEST_OS_FUCHSIA)
 
@@ -212,7 +212,7 @@ namespace testing {
         // to executing the given statement.  It is the responsibility of the
         // caller not to pass a thread_count of 1.
         static std::string DeathTestThreadWarning(size_t thread_count) {
-            Message msg;
+            hawk::Message msg;
             msg << "Death tests use fork(), which is unsafe particularly"
                 << " in a threaded context. For this test, " << HTEST_NAME_ << " ";
             if (thread_count == 0) {
@@ -277,7 +277,7 @@ namespace testing {
 #define HTEST_DEATH_TEST_CHECK_(expression)                                                                                                                       \
     do {                                                                                                                                                          \
         if (!::testing::internal::IsTrue(expression)) {                                                                                                           \
-            DeathTestAbort(::std::string("CHECK failed: File ") + __FILE__ + ", line " + ::testing::internal::StreamableToString(__LINE__) + ": " + #expression); \
+            DeathTestAbort(::std::string("CHECK failed: File ") + __FILE__ + ", line " + hawk::internal::StreamableToString(__LINE__) + ": " + #expression); \
         }                                                                                                                                                         \
     } while (::testing::internal::AlwaysFalse())
 
@@ -295,7 +295,7 @@ namespace testing {
             htest_retval = (expression);                                                                                                                                     \
         } while (htest_retval == -1 && errno == EINTR);                                                                                                                      \
         if (htest_retval == -1) {                                                                                                                                            \
-            DeathTestAbort(::std::string("CHECK failed: File ") + __FILE__ + ", line " + ::testing::internal::StreamableToString(__LINE__) + ": " + #expression + " != -1"); \
+            DeathTestAbort(::std::string("CHECK failed: File ") + __FILE__ + ", line " + hawk::internal::StreamableToString(__LINE__) + ": " + #expression + " != -1"); \
         }                                                                                                                                                                    \
     } while (::testing::internal::AlwaysFalse())
 
@@ -309,7 +309,7 @@ namespace testing {
         // severity. On Windows, the message is read from a pipe handle. On other
         // platforms, it is read from a file descriptor.
         static void FailFromInternalError(int fd) {
-            Message error;
+            hawk::Message error;
             char buffer[256];
             int num_read;
 
@@ -539,7 +539,7 @@ namespace testing {
             const std::string error_message = GetErrorLogs();
 
             bool success = false;
-            Message buffer;
+            hawk::Message buffer;
 
             buffer << "Death test: " << statement() << "\n";
             switch (outcome()) {
@@ -1306,7 +1306,10 @@ namespace testing {
             HTEST_DEATH_TEST_CHECK_(fcntl(pipe_fd[1], F_SETFD, 0) != -1);
 
             const std::string filter_flag = std::string("--") + HTEST_FLAG_PREFIX_ + "filter=" + info->test_suite_name() + "." + info->name();
-            const std::string internal_flag = std::string("--") + HTEST_FLAG_PREFIX_ + "internal_run_death_test=" + file_ + "|" + StreamableToString(line_) + "|" + StreamableToString(death_test_index) + "|" + StreamableToString(pipe_fd[1]);
+            const std::string internal_flag = std::string("--") + HTEST_FLAG_PREFIX_ + "internal_run_death_test=" + file_ + "|" +
+                hawk::internal::StreamableToString(line_) + "|" +
+                    hawk::internal::StreamableToString(death_test_index) + "|" +
+                    hawk::internal::StreamableToString(pipe_fd[1]);
             std::vector<std::string> args = GetArgvsForDeathTestChildProcess();
             args.push_back(filter_flag);
             args.push_back(internal_flag);
@@ -1345,7 +1348,7 @@ namespace testing {
             if (flag != nullptr) {
                 if (death_test_index > flag->index()) {
                     DeathTest::set_last_death_test_message(
-                        "Death test count (" + StreamableToString(death_test_index) + ") somehow exceeded expected maximum (" + StreamableToString(flag->index()) + ")");
+                        "Death test count (" + hawk::internal::StreamableToString(death_test_index) + ") somehow exceeded expected maximum (" + hawk::internal::StreamableToString(flag->index()) + ")");
                     return false;
                 }
 

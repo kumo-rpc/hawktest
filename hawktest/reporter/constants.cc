@@ -50,8 +50,6 @@ namespace hawk {
     // The environment variable name for the test shard status file.
     const std::string Constants::kTestShardStatusFile = "HTEST_SHARD_STATUS_FILE";
 
-    const std::string Constants::kDeathTestSuiteFilter = "*DeathTest:*DeathTest/*";
-
     const std::string Constants::kDisableTestFilter = "DISABLED_*:*/DISABLED_*";
 
     // The environment variable name for the test output warnings file.

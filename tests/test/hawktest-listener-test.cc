@@ -60,7 +60,7 @@ class EventRecordingListener : public TestEventListener {
 
   void OnTestIterationStart(const UnitTest& /*unit_test*/,
                             int iteration) override {
-    Message message;
+    hawk::Message message;
     message << GetFullMethodName("OnTestIterationStart") << "(" << iteration
             << ")";
     g_events->push_back(message.GetString());
@@ -107,7 +107,7 @@ class EventRecordingListener : public TestEventListener {
 
   void OnTestIterationEnd(const UnitTest& /*unit_test*/,
                           int iteration) override {
-    Message message;
+    hawk::Message message;
     message << GetFullMethodName("OnTestIterationEnd") << "(" << iteration
             << ")";
     g_events->push_back(message.GetString());
@@ -135,7 +135,7 @@ class EventRecordingListener2 : public TestEventListener {
 
   void OnTestIterationStart(const UnitTest& /*unit_test*/,
                             int iteration) override {
-    Message message;
+    hawk::Message message;
     message << GetFullMethodName("OnTestIterationStart") << "(" << iteration
             << ")";
     g_events->push_back(message.GetString());
@@ -179,7 +179,7 @@ class EventRecordingListener2 : public TestEventListener {
 
   void OnTestIterationEnd(const UnitTest& /*unit_test*/,
                           int iteration) override {
-    Message message;
+    hawk::Message message;
     message << GetFullMethodName("OnTestIterationEnd") << "(" << iteration
             << ")";
     g_events->push_back(message.GetString());

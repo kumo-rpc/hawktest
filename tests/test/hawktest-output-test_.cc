@@ -169,7 +169,7 @@ void SubWithoutTrace(int n) {
 
 // Another helper function for testing SCOPED_TRACE.
 void SubWithTrace(int n) {
-  SCOPED_TRACE(testing::Message() << "n = " << n);
+  SCOPED_TRACE(hawk::Message() << "n = " << n);
 
   SubWithoutTrace(n);
 }
@@ -208,7 +208,7 @@ TEST(SCOPED_TRACETest, WorksInLoop) {
   printf("(expected to fail)\n");
 
   for (int i = 1; i <= 2; i++) {
-    SCOPED_TRACE(testing::Message() << "i = " << i);
+    SCOPED_TRACE(hawk::Message() << "i = " << i);
 
     SubWithoutTrace(i);
   }
