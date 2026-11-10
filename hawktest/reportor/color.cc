@@ -20,13 +20,13 @@ namespace hawk {
     const std::map<std::string, std::string>& color_map() {
         static const std::map<std::string, std::string> colors = {
             { std::string(kDefaultKey), "\033[0m" },
-            { std::string(kRedKey), "\033[31m" },
-            { std::string(kGreenKey), "\033[32m" },
-            { std::string(kYellowKey), "\033[33m" },
-            { std::string(kBlueKey), "\033[34m" },
-            { std::string(kMagentaKey), "\033[35m" },
-            { std::string(kCyanKey), "\033[36m" },
-            { std::string(kWhiteKey), "\033[37m" },
+            { std::string(kRedKey), "\033[0;31m" },
+            { std::string(kGreenKey), "\033[0;32m" },
+            { std::string(kYellowKey), "\033[0;33m" },
+            { std::string(kBlueKey), "\033[0;34m" },
+            { std::string(kMagentaKey), "\033[0;35m" },
+            { std::string(kCyanKey), "\033[0;36m" },
+            { std::string(kWhiteKey), "\033[0;37m" },
             { std::string(kResetKey), "\033[0m" },
         };
         return colors;

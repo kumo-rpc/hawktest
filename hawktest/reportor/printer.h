@@ -165,18 +165,18 @@ namespace hawk {
 
 #define HAWK_PRINT_ONE_COLOR(method, color)                                                                 \
     Printer& print_##method(const char* text) {                                                             \
-        return print_color(Color::color, text);                                                             \
+        return print_auto_color(Color::color, text);                                                        \
     }                                                                                                        \
     Printer& print_##method(const char* text, const std::map<std::string, std::string>& variables) {        \
-        return print_color(Color::color, text, variables);                                                  \
+        return print_auto_color(Color::color, text, variables);                                             \
     }                                                                                                        \
     template <typename... Args>                                                                              \
     Printer& fmt_##method(fmt::format_string<Args...> format, Args&&... args) {                             \
-        return fmt_color(Color::color, format, std::forward<Args>(args)...);                                \
+        return fmt_auto_color(Color::color, format, std::forward<Args>(args)...);                           \
     }                                                                                                        \
     template <typename... Args>                                                                              \
     Printer& fmt_##method(fmt::format_string<Args...> format, const std::map<std::string, std::string>& variables, Args&&... args) { \
-        return fmt_color(Color::color, format, variables, std::forward<Args>(args)...);                     \
+        return fmt_auto_color(Color::color, format, variables, std::forward<Args>(args)...);                \
     }
 
         HAWK_PRINT_ONE_COLOR(default, COLOR_DEFAULT)

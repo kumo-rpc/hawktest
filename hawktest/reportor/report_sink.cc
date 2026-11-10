@@ -15,6 +15,8 @@
 
 #include <hawktest/reportor/report_sink.h>
 #include <hawktest/common/port_internal.h>
+#include <hawktest/common/string.h>
+#include <hawktest/flags/builtin.h>
 #include <cstdio>
 
 namespace hawk {
@@ -26,6 +28,38 @@ namespace {
         }
         std::fwrite(data.data(), 1, data.size(), file);
         std::fflush(file);
+    }
+
+    bool term_supports_color(const char* term) {
+        if (term == nullptr) {
+            return false;
+        }
+        return testing::internal::String::CStringEquals(term, "xterm")
+            || testing::internal::String::CStringEquals(term, "xterm-color")
+            || testing::internal::String::CStringEquals(term, "xterm-ghostty")
+            || testing::internal::String::CStringEquals(term, "xterm-kitty")
+            || testing::internal::String::CStringEquals(term, "alacritty")
+            || testing::internal::String::CStringEquals(term, "screen")
+            || testing::internal::String::CStringEquals(term, "tmux")
+            || testing::internal::String::CStringEquals(term, "rxvt-unicode")
+            || testing::internal::String::CStringEquals(term, "linux")
+            || testing::internal::String::CStringEquals(term, "cygwin")
+            || testing::internal::String::EndsWithCaseInsensitive(term, std::string("-256color"));
+    }
+
+    const std::string& term_name() {
+        static std::string value;
+        const char* term = testing::internal::posix::GetEnv("TERM");
+        value = term != nullptr ? term : "";
+        return value;
+    }
+
+    bool file_supports_ansi() {
+#if defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_WINDOWS_MINGW)
+        return true;
+#else
+        return term_supports_color(term_name().c_str());
+#endif
     }
 
     bool file_is_tty(std::FILE* file) {
@@ -43,8 +77,18 @@ namespace {
 
 } // namespace
 
-    StdoutSink::StdoutSink()
-        : ReportSink(false) {
+    bool ReportSink::should_use_color(const ReportSink* sink) {
+        const char* const htest_color = FLAGS_htest_color.c_str();
+        if (testing::internal::String::CaseInsensitiveCStringEquals(htest_color, "auto")) {
+            return sink != nullptr && sink->is_tty() && sink->is_ansi_color();
+        }
+        return testing::internal::String::CaseInsensitiveCStringEquals(htest_color, "yes")
+            || testing::internal::String::CaseInsensitiveCStringEquals(htest_color, "true")
+            || testing::internal::String::CaseInsensitiveCStringEquals(htest_color, "t")
+            || testing::internal::String::CStringEquals(htest_color, "1");
+    }
+
+    StdoutSink::StdoutSink() {
         set_color_policy(ColorPolicy::AUTO);
     }
 
@@ -54,10 +98,13 @@ namespace {
 
     void StdoutSink::close() { std::fflush(stdout); }
 
-    bool StdoutSink::detect_color() { return file_is_tty(stdout); }
+    bool StdoutSink::is_tty() const { return file_is_tty(stdout); }
 
-    StderrSink::StderrSink()
-        : ReportSink(false) {
+    const std::string& StdoutSink::tty() const { return term_name(); }
+
+    bool StdoutSink::is_ansi_color() const { return file_supports_ansi(); }
+
+    StderrSink::StderrSink() {
         set_color_policy(ColorPolicy::AUTO);
     }
 
@@ -67,12 +114,15 @@ namespace {
 
     void StderrSink::close() { std::fflush(stderr); }
 
-    bool StderrSink::detect_color() { return file_is_tty(stderr); }
+    bool StderrSink::is_tty() const { return file_is_tty(stderr); }
+
+    const std::string& StderrSink::tty() const { return term_name(); }
+
+    bool StderrSink::is_ansi_color() const { return file_supports_ansi(); }
 
     OStreamSink::OStreamSink(std::ostream& stream, bool color)
-        : ReportSink(false)
-        , stream_(stream) {
-        set_color_policy(color ? ColorPolicy::ON : ColorPolicy::OFF);
+        : stream_(stream) {
+        set_color_policy(color ? ColorPolicy::FORCE : ColorPolicy::OFF);
     }
 
     bool OStreamSink::open() { return static_cast<bool>(stream_); }
@@ -84,11 +134,10 @@ namespace {
 
     void OStreamSink::close() { stream_.flush(); }
 
-    bool OStreamSink::detect_color() { return false; }
-
     FileSink::FileSink(std::string path)
-        : ReportSink(false)
-        , path_(std::move(path)) { }
+        : path_(std::move(path)) {
+        set_color_policy(ColorPolicy::OFF);
+    }
 
     bool FileSink::open() {
         if (file_.is_open()) {
@@ -111,7 +160,5 @@ namespace {
             file_.close();
         }
     }
-
-    bool FileSink::detect_color() { return false; }
 
 } // namespace hawk

@@ -17,18 +17,18 @@ namespace {
 class MemorySink : public hawk::ReportSink {
 public:
     explicit MemorySink(bool color)
-        : hawk::ReportSink(false) {
-        set_color_policy(color ? hawk::ColorPolicy::ON : hawk::ColorPolicy::OFF);
-    }
+        : color_(color) { }
 
     bool open() override { return true; }
     void sink(std::string_view data) override { bytes_.append(data); }
     void close() override { }
-    bool detect_color() override { return false; }
+    bool is_tty() const override { return color_; }
+    bool is_ansi_color() const override { return color_; }
 
     const std::string& bytes() const { return bytes_; }
 
 private:
+    bool color_;
     std::string bytes_;
 };
 
@@ -209,24 +209,24 @@ TEST(PrinterApi, PrintOneColor) {
 }
 
 TEST(PrinterApi, ColorWrappers) {
-    MemorySink red_sink(false);
+    MemorySink red_sink(true);
     hawk::Printer red(red_sink);
     red.print_red("bad");
     EXPECT_EQ(red_sink.bytes(), tint("RED", "bad"));
 
-    MemorySink fmt_sink(false);
+    MemorySink fmt_sink(true);
     hawk::Printer formatted(fmt_sink);
     formatted.fmt_red("{}", "bad");
     EXPECT_EQ(fmt_sink.bytes(), tint("RED", "bad"));
 
-    MemorySink green_sink(false);
+    MemorySink green_sink(true);
     hawk::Printer green(green_sink);
     green.print_green("bad");
     EXPECT_EQ(green_sink.bytes(), tint("GREEN", "bad"));
 }
 
 TEST(PrinterApi, NewLineAndIndent) {
-    MemorySink sink(false);
+    MemorySink sink(true);
     hawk::Printer printer(sink);
     printer.print_red("x").new_line().indent().print_raw("y");
     EXPECT_EQ(sink.bytes(), tint("RED", "x") + "\n  y");

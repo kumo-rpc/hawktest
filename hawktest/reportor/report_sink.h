@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <fmt/format.h>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -25,7 +26,7 @@
 
 namespace hawk {
 
-    enum class ColorPolicy { AUTO, ON, OFF };
+    enum class ColorPolicy { AUTO, FORCE, OFF };
 
     class ReportSink {
     public:
@@ -38,40 +39,41 @@ namespace hawk {
 
         virtual void close() = 0;
 
-        virtual bool detect_color() = 0;
-
         ColorPolicy color_policy() const {
             return _color_policy;
         }
 
         bool set_color_policy(ColorPolicy c) {
             switch (c) {
-            case ColorPolicy::AUTO: {
-                _cache_enabled_color = detect_color();
-                break;
-            }
-            case ColorPolicy::ON: {
-                _cache_enabled_color = true;
-                break;
-            }
-            case ColorPolicy::OFF: {
-                _cache_enabled_color = false;
-                break;
-            }
+            case ColorPolicy::AUTO:
+            case ColorPolicy::FORCE:
+            case ColorPolicy::OFF:
+                _color_policy = c;
+                return true;
             default:
                 return false;
             }
-            _color_policy = c;
-            return true;
         }
 
-        bool color_enabled() const {
-            return _cache_enabled_color;
+        // Reads --htest_color. yes/true/t/1 forces color. auto uses the sink's
+        // is_tty() and is_ansi_color(). Anything else is off. A null sink is off
+        // except when the flag forces color.
+        static bool should_use_color(const ReportSink* sink);
+
+        virtual bool is_tty() const {
+            return false;
+        }
+
+        virtual const std::string& tty() const {
+            static const std::string empty;
+            return empty;
+        }
+
+        virtual bool is_ansi_color() const {
+            return false;
         }
     protected:
-        ReportSink(bool cache_enable) : _cache_enabled_color(cache_enable) {}
-        ColorPolicy  _color_policy{};
-        bool         _cache_enabled_color{false};
+        ColorPolicy _color_policy{ColorPolicy::AUTO};
     };
 
     class StdoutSink : public ReportSink {
@@ -81,7 +83,9 @@ namespace hawk {
         bool open() override;
         void sink(std::string_view data) override;
         void close() override;
-        bool detect_color() override;
+        bool is_tty() const override;
+        const std::string& tty() const override;
+        bool is_ansi_color() const override;
     };
 
     class StderrSink : public ReportSink {
@@ -91,11 +95,13 @@ namespace hawk {
         bool open() override;
         void sink(std::string_view data) override;
         void close() override;
-        bool detect_color() override;
+        bool is_tty() const override;
+        const std::string& tty() const override;
+        bool is_ansi_color() const override;
     };
 
-    // Writes to a caller-owned stream. Does not close it. Detection is off.
-    // `color` sets the policy to ON or OFF.
+    // Writes to a caller-owned stream. Does not close it.
+    // `color` sets the policy to FORCE or OFF.
     class OStreamSink : public ReportSink {
     public:
         explicit OStreamSink(std::ostream& stream, bool color = false);
@@ -103,13 +109,12 @@ namespace hawk {
         bool open() override;
         void sink(std::string_view data) override;
         void close() override;
-        bool detect_color() override;
 
     private:
         std::ostream& stream_;
     };
 
-    // Opens `path` in open(). Detection is off.
+    // Opens `path` in open(). Policy is OFF.
     class FileSink : public ReportSink {
     public:
         explicit FileSink(std::string path);
@@ -117,7 +122,6 @@ namespace hawk {
         bool open() override;
         void sink(std::string_view data) override;
         void close() override;
-        bool detect_color() override;
 
     private:
         std::string path_;

@@ -75,7 +75,7 @@ $RED$bad$GREEN$ok$YELLOW$y$BLUE$b$MAGENTA$m$CYAN$c$WHITE$w$DEFAULT$d$RESET$
 ```
 
 ```text @htest.label@ output
-[31mbad[32mok[33my[34mb[35mm[36mc[37mw[0md[0m
+[0;31mbad[0;32mok[0;33my[0;34mb[0;35mm[0;36mc[0;37mw[0md[0m
 ```
 
 - @htest.match@ ordered

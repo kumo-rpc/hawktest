@@ -69,15 +69,6 @@ namespace testing {
         public:
             // Static utility methods
 
-            // Clones a 0-terminated C string, allocating memory using new.  The
-            // caller is responsible for deleting the return value using
-            // delete[].  Returns the cloned string, or NULL if the input is
-            // NULL.
-            //
-            // This is different from strdup() in string.h, which allocates
-            // memory using malloc().
-            static const char* CloneCString(const char* c_str);
-
 #ifdef HTEST_OS_WINDOWS_MOBILE
             // Windows CE does not have the 'ANSI' versions of Win32 APIs. To be
             // able to pass strings to Win32 APIs on CE we need to convert them

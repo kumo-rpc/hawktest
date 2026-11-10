@@ -32,4 +32,17 @@ namespace hawk {
 
     bool ascii_isalpha(char c);
 
+    bool starts_with(std::string_view str, std::string_view prefix);
+
+    bool ends_with(std::string_view str, std::string_view suffix);
+
+    bool starts_with_ignore_case(std::string_view str, std::string_view prefix);
+
+    bool ends_with_ignore_case(std::string_view str, std::string_view suffix);
+
+    int compare(std::string_view lhs, std::string_view rhs);
+
+    std::string str_to_lower(std::string_view str);
+
+    std::string str_to_upper(std::string_view str);
 } // namespace hawk

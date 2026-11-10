@@ -109,11 +109,11 @@ namespace hawk {
     }
 
     Printer& Printer::print_auto_color(const char* text) {
-        return sink_.color_enabled() ? print_color(text) : print_no_color(text);
+        return ReportSink::should_use_color(&sink_) ? print_color(text) : print_no_color(text);
     }
 
     Printer& Printer::print_auto_color(const char* text, const std::map<std::string, std::string>& variables) {
-        return sink_.color_enabled() ? print_color(text, variables) : print_no_color(text, variables);
+        return ReportSink::should_use_color(&sink_) ? print_color(text, variables) : print_no_color(text, variables);
     }
 
     Printer& Printer::print_tint(Color color, const char* text, const std::map<std::string, std::string>& variables, const std::map<std::string, std::string>& colors) {
@@ -146,11 +146,11 @@ namespace hawk {
     }
 
     Printer& Printer::print_auto_color(Color color, const char* text) {
-        return sink_.color_enabled() ? print_color(color, text) : print_no_color(color, text);
+        return ReportSink::should_use_color(&sink_) ? print_color(color, text) : print_no_color(color, text);
     }
 
     Printer& Printer::print_auto_color(Color color, const char* text, const std::map<std::string, std::string>& variables) {
-        return sink_.color_enabled() ? print_color(color, text, variables) : print_no_color(color, text, variables);
+        return ReportSink::should_use_color(&sink_) ? print_color(color, text, variables) : print_no_color(color, text, variables);
     }
 
     Printer& Printer::new_line() {

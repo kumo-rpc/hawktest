@@ -21,3 +21,11 @@ kmcmake_cc_test(
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS ${PROJECT_NAME}::hawktest_static hawktest::htest_main_static
 )
+
+kmcmake_cc_test(
+        NAME should_use_color_test
+        MODULE reportor
+        SOURCES should_use_color_test.cc
+        CXXOPTS ${KMCMAKE_CXX_OPTIONS}
+        LINKS ${PROJECT_NAME}::hawktest_static hawktest::htest_main_static
+)
