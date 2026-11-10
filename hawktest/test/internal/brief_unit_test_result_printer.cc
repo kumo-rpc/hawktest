@@ -12,7 +12,7 @@
 //
 
 #include <hawktest/test/internal/brief_unit_test_result_printer.h>
-#include <hawktest/reportor/printer.h>
+#include <hawktest/format/printer.h>
 #include <hawktest/test/internal/pretty_unit_test_result_printer.h>
 #include <hawktest/test/listener.h>
 #include <hawktest/flags/builtin.h>

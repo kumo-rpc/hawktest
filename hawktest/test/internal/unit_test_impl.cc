@@ -17,7 +17,7 @@
 //
 
 #include <hawktest/test/internal/unit_test_impl.h>
-#include <hawktest/reportor/printer.h>
+#include <hawktest/format/printer.h>
 #include <hawktest/test/internal/unit_test_option.h>
 #include <hawktest/test/internal/pretty_unit_test_result_printer.h>
 #include <hawktest/test/internal/xml_unit_test_result_printer.h>
@@ -338,12 +338,6 @@ namespace testing {
         }
 
 
-        // A test suite whose name matches this filter is considered a death
-        // test suite and will be run before test suites whose name doesn't
-        // match this filter.
-        static const char kDeathTestSuiteFilter[] = "*DeathTest:*DeathTest/*";
-
-
         // Finds and returns a TestSuite with the given name.  If one doesn't
         // exist, creates one and returns it.  It's the CALLER'S
         // RESPONSIBILITY to ensure that this function is only called WHEN THE
@@ -377,7 +371,7 @@ namespace testing {
             auto* const new_test_suite = new TestSuite(test_suite_name, type_param, set_up_tc, tear_down_tc);
             test_suites_by_name_.emplace(test_suite_name, new_test_suite);
 
-            const UnitTestFilter death_test_suite_filter(kDeathTestSuiteFilter);
+            const UnitTestFilter death_test_suite_filter(hawk::Constants::kDeathTestSuiteFilter);
             // Is this a death test suite?
             if (death_test_suite_filter.MatchesName(test_suite_name)) {
                 // Yes.  Inserts the test suite after the last death test suite
@@ -397,10 +391,6 @@ namespace testing {
         }
 
 
-        // A test whose test suite name or test name matches this filter is
-        // disabled and not run.
-        static const char kDisableTestFilter[] = "DISABLED_*:*/DISABLED_*";
-
         // Compares the name of each test with the user-specified filter to
         // decide whether the test should be run, then records the result in
         // each TestSuite and TestInfo object.
@@ -412,7 +402,7 @@ namespace testing {
 
             const PositiveAndNegativeUnitTestFilter htest_flag_filter(
                 FLAGS_htest_filter);
-            const UnitTestFilter disable_test_filter(kDisableTestFilter);
+            const UnitTestFilter disable_test_filter(hawk::Constants::kDisableTestFilter);
             // num_runnable_tests are the number of tests that will
             // run across all shards (i.e., match filter and are not disabled).
             // num_selected_tests are the number of tests to be run on
@@ -514,7 +504,7 @@ namespace testing {
                             printed_test_suite_name = true;
                             printf("%s.", test_suite->name());
                             if (test_suite->type_param() != nullptr) {
-                                printf("  # %s = ", kTypeParamLabel);
+                                hawk::stdout_printer().fmt("  # {} = ", hawk::Constants::kTypeParamLabel);
                                 // We print the type parameter on a single line to make
                                 // the output easy to parse by a program.
                                 PrintOnOneLine(test_suite->type_param(), kMaxParamLength);
@@ -523,7 +513,7 @@ namespace testing {
                         }
                         printf("  %s", test_info->name());
                         if (test_info->value_param() != nullptr) {
-                            printf("  # %s = ", kValueParamLabel);
+                             hawk::stdout_printer().fmt("  # {} = ", hawk::Constants::kValueParamLabel);
                             // We print the value parameter on a single line to make the
                             // output easy to parse by a program.
                             PrintOnOneLine(test_info->value_param(), kMaxParamLength);
@@ -620,15 +610,11 @@ namespace testing {
             }
         }
 
-
-        // The environment variable name for the test output warnings file.
-        static const char kTestWarningsOutputFile[] = "TEST_WARNINGS_OUTPUT_FILE";
-
         // If the environment variable TEST_WARNINGS_OUTPUT_FILE was provided, appends
         // `str` to the file, creating the file if necessary.
 #if HTEST_HAS_FILE_SYSTEM
         static void AppendToTestWarningsOutputFile(const std::string& str) {
-            const char* const filename = posix::GetEnv(kTestWarningsOutputFile);
+            const char* const filename = posix::GetEnv(hawk::Constants::kTestWarningsOutputFile.c_str());
             if (filename == nullptr) {
                 return;
             }

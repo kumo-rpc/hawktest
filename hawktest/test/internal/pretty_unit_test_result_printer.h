@@ -24,9 +24,6 @@
 namespace testing {
     namespace internal {
 
-       // A test filter that matches everything.
-        static const char kUniversalFilter[] = "*";
-
         // This class implements the TestEventListener interface.
         //
         // Class PrettyUnitTestResultPrinter is copyable.

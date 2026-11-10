@@ -389,12 +389,6 @@ namespace testing {
 
 
     namespace internal {
-
-        // Text printed in Hawk Test's text output and --htest_list_tests
-        // output to label the type parameter and value parameter for a test.
-        static const char kTypeParamLabel[] = "TypeParam";
-        static const char kValueParamLabel[] = "GetParam()";
-
         void PrintFullTestCommentIfPresent(const TestInfo& test_info);
     }
 }  // namespace testing

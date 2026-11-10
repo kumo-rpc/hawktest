@@ -15,17 +15,20 @@
 
 kmcmake_cc_test(
         NAME printer_test
-        MODULE reportor
+        MODULE format
         SOURCES printer_test.cc
-        DEFINES HAWK_REPORTOR_MARK="${CMAKE_SOURCE_DIR}/tests/reportor/printer.md"
+        DEFINES HAWK_FORMAT_MARK="${CMAKE_SOURCE_DIR}/tests/format/printer.md"
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS ${PROJECT_NAME}::hawktest_static hawktest::htest_main_static
 )
 
 kmcmake_cc_test(
         NAME should_use_color_test
-        MODULE reportor
+        MODULE format
         SOURCES should_use_color_test.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
         LINKS ${PROJECT_NAME}::hawktest_static hawktest::htest_main_static
 )
+
+test_executable(hawktest-color-test_ ${PROJECT_NAME}::hawktest_static)
+py_test(hawktest-color-test)

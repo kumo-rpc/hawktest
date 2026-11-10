@@ -30,8 +30,10 @@
 // retained in accordance with their respective licenses.
 //
 
-#include <hawktest/test/test-part.h>
+#include "hawktest/reportor/constants.h"
+
 #include <hawktest/test/htest.h>
+#include <hawktest/test/test-part.h>
 
 using testing::Message;
 using testing::Test;
@@ -57,7 +59,7 @@ class TestPartResultTest : public Test {
 TEST_F(TestPartResultTest, ConstructorWorks) {
   Message message;
   message << "something is terribly wrong";
-  message << static_cast<const char*>(testing::internal::kStackTraceMarker);
+  message << hawk::Constants::kStackTraceMarker;
   message << "some unimportant stack trace";
 
   const TestPartResult result(TestPartResult::kNonFatalFailure, "some_file.cc",

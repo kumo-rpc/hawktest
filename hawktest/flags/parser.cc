@@ -7,7 +7,7 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 
 #include <hawktest/flags/parser.h>
-#include <hawktest/reportor/printer.h>
+#include <hawktest/format/printer.h>
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/flags/builtin.h>
 
@@ -148,26 +148,17 @@ namespace internal {
         //   @Y    changes the color to yellow.
         //   @D    changes to the default terminal text color.
         //
-        static void print_segment(HTestColor color, const char* text) {
+        static void print_segment(hawk::Color color, const char* text) {
             hawk::Printer& out = hawk::stdout_printer();
-            switch (color) {
-            case HTestColor::kRed:
-                out.print_red(text);
-                break;
-            case HTestColor::kGreen:
-                out.print_green(text);
-                break;
-            case HTestColor::kYellow:
-                out.print_yellow(text);
-                break;
-            default:
+            if (color == hawk::Color::COLOR_DEFAULT) {
                 out.fmt("{}", text);
-                break;
+                return;
             }
+            out.print_auto_color(color, text);
         }
 
         static void PrintColorEncoded(const char* str) {
-            HTestColor color = HTestColor::kDefault; // The current color.
+            hawk::Color color = hawk::Color::COLOR_DEFAULT;
 
             // Conceptually, we split the string into segments divided by escape
             // sequences.  Then we print one segment at a time.  At the end of
@@ -187,13 +178,13 @@ namespace internal {
                 if (ch == '@') {
                     print_segment(color, "@");
                 } else if (ch == 'D') {
-                    color = HTestColor::kDefault;
+                    color = hawk::Color::COLOR_DEFAULT;
                 } else if (ch == 'R') {
-                    color = HTestColor::kRed;
+                    color = hawk::Color::COLOR_RED;
                 } else if (ch == 'G') {
-                    color = HTestColor::kGreen;
+                    color = hawk::Color::COLOR_GREEN;
                 } else if (ch == 'Y') {
-                    color = HTestColor::kYellow;
+                    color = hawk::Color::COLOR_YELLOW;
                 } else {
                     --str;
                 }

@@ -126,10 +126,6 @@ namespace testing {
         class [[nodiscard]] TestInfoImpl; // Opaque implementation of TestInfo
         class [[nodiscard]] UnitTestImpl; // Opaque implementation of UnitTest
 
-        // The text used in failure messages to indicate the start of the
-        // stack trace.
-        HTEST_API_ extern const char kStackTraceMarker[];
-
         // An IgnoredValue object can be implicitly constructed from ANY value.
         class [[nodiscard]] IgnoredValue {
             struct Sink { };

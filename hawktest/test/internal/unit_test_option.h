@@ -20,6 +20,7 @@
 
 #include <hawktest/common/port.h>
 #include <hawktest/common/string.h>
+#include <hawktest/reportor/constants.h>
 #include <unordered_set>
 #include <hawktest/test/internal/pretty_unit_test_result_printer.h>
 
@@ -128,7 +129,7 @@ namespace testing::internal {
 
                     if (positive_and_negative_filters.size() > 1) {
                         positive_filter_ = UnitTestFilter(
-                            positive_filter.empty() ? kUniversalFilter : positive_filter);
+                            positive_filter.empty() ? hawk::Constants::kUniversalFilter : positive_filter);
 
                         // TODO(b/214626361): Fail on multiple '-' characters
                         // For the moment to preserve old behavior we concatenate the rest of the

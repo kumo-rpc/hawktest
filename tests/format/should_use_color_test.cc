@@ -2,7 +2,7 @@
 
 #include <hawktest/common/port.h>
 #include <hawktest/flags/builtin.h>
-#include <hawktest/reportor/report_sink.h>
+#include <hawktest/format/report_sink.h>
 #include <hawktest/test/htest.h>
 
 #include <cstdlib>

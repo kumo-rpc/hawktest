@@ -34,7 +34,7 @@
 // The Google C++ Testing and Mocking Framework (Hawk Test)
 
 #include <hawktest/test/htest.h>
-#include <hawktest/reportor/printer.h>
+#include <hawktest/format/printer.h>
 #include <hawktest/flags/parser.h>
 
 #include <ctype.h>
@@ -164,25 +164,7 @@ namespace testing {
     using internal::GetElementOr;
     using internal::Shuffle;
 
-    // Constants.
-
-
-    // These environment variables are set by Bazel.
-    // https://bazel.build/reference/test-encyclopedia#initial-conditions
-    //
-    // The environment variable name for the test shard index.
-    static const char kTestShardIndex[] = "HTEST_SHARD_INDEX";
-    // The environment variable name for the total number of test shards.
-    static const char kTestTotalShards[] = "HTEST_TOTAL_SHARDS";
-    // The environment variable name for the test shard status file.
-    static const char kTestShardStatusFile[] = "HTEST_SHARD_STATUS_FILE";
-
-
     namespace internal {
-
-        // The text used in failure messages to indicate the start of the
-        // stack trace.
-        const char kStackTraceMarker[] = "\nStack trace:\n";
 
         // g_help_flag is true if and only if the --help flag or an equivalent form
         // is specified on the command line.
@@ -708,65 +690,6 @@ namespace testing {
 
     } // namespace internal
 
-
-    namespace internal {
-
-// class PrettyUnitTestResultPrinter
-#if defined(HTEST_OS_WINDOWS) && !defined(HTEST_OS_WINDOWS_MOBILE) && !defined(HTEST_OS_WINDOWS_GAMES) && !defined(HTEST_OS_WINDOWS_PHONE) && !defined(HTEST_OS_WINDOWS_RT) && !defined(HTEST_OS_WINDOWS_MINGW)
-
-        // Returns the character attribute for the given color.
-        static WORD GetColorAttribute(HTestColor color) {
-            switch (color) {
-            case HTestColor::kRed:
-                return FOREGROUND_RED;
-            case HTestColor::kGreen:
-                return FOREGROUND_GREEN;
-            case HTestColor::kYellow:
-                return FOREGROUND_RED | FOREGROUND_GREEN;
-            default:
-                return 0;
-            }
-        }
-
-        static int GetBitOffset(WORD color_mask) {
-            if (color_mask == 0)
-                return 0;
-
-            int bitOffset = 0;
-            while ((color_mask & 1) == 0) {
-                color_mask >>= 1;
-                ++bitOffset;
-            }
-            return bitOffset;
-        }
-
-        static WORD GetNewColor(HTestColor color, WORD old_color_attrs) {
-            // Let's reuse the BG
-            static const WORD background_mask = BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY;
-            static const WORD foreground_mask = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
-            const WORD existing_bg = old_color_attrs & background_mask;
-
-            WORD new_color = GetColorAttribute(color) | existing_bg | FOREGROUND_INTENSITY;
-            static const int bg_bitOffset = GetBitOffset(background_mask);
-            static const int fg_bitOffset = GetBitOffset(foreground_mask);
-
-            if (((new_color & background_mask) >> bg_bitOffset) == ((new_color & foreground_mask) >> fg_bitOffset)) {
-                new_color ^= FOREGROUND_INTENSITY; // invert intensity
-            }
-            return new_color;
-        }
-
-#else
-
-#endif // HTEST_OS_WINDOWS && !HTEST_OS_WINDOWS_MOBILE
-
-    } // namespace internal
-
-
-
-    // class UnitTest
-
-
     namespace internal {
 
 
@@ -776,14 +699,14 @@ namespace testing {
         // function will write over it. If the variable is present, but the file cannot
         // be created, prints an error and exits.
         void WriteToShardStatusFileIfNeeded() {
-            const char* const test_shard_file = posix::GetEnv(kTestShardStatusFile);
+            const char* const test_shard_file = posix::GetEnv(hawk::Constants::kTestShardStatusFile.c_str());
             if (test_shard_file != nullptr) {
                 FILE* const file = posix::FOpen(test_shard_file, "w");
                 if (file == nullptr) {
                     hawk::stdout_printer().fmt_red(
                         "Could not write to the test shard status file \"{}\" "
                         "specified by the {} environment variable.\n",
-                        test_shard_file, kTestShardStatusFile);
+                        test_shard_file, hawk::Constants::kTestShardStatusFile);
                     fflush(stdout);
                     exit(EXIT_FAILURE);
                 }
@@ -810,25 +733,25 @@ namespace testing {
                 return false;
             } else if (total_shards == -1 && shard_index != -1) {
                 const Message msg = Message()
-                    << "Invalid sharding: you have " << kTestShardIndex
+                    << "Invalid sharding: you have " << hawk::Constants::kTestShardIndex
                     << " = " << shard_index << ", but have left "
-                    << kTestTotalShards << " unset.\n";
+                    << hawk::Constants::kTestTotalShards << " unset.\n";
                 hawk::stdout_printer().fmt_red("{}", msg.GetString());
                 fflush(stdout);
                 exit(EXIT_FAILURE);
             } else if (total_shards != -1 && shard_index == -1) {
                 const Message msg = Message()
-                    << "Invalid sharding: you have " << kTestTotalShards
+                    << "Invalid sharding: you have " << hawk::Constants::kTestTotalShards
                     << " = " << total_shards << ", but have left "
-                    << kTestShardIndex << " unset.\n";
+                    << hawk::Constants::kTestShardIndex << " unset.\n";
                 hawk::stdout_printer().fmt_red("{}", msg.GetString());
                 fflush(stdout);
                 exit(EXIT_FAILURE);
             } else if (shard_index < 0 || shard_index >= total_shards) {
-                const Message msg = Message() << "Invalid sharding: we require 0 <= " << kTestShardIndex
-                                              << " < " << kTestTotalShards << ", but you have "
-                                              << kTestShardIndex << "=" << shard_index << ", "
-                                              << kTestTotalShards << "=" << total_shards << ".\n";
+                const Message msg = Message() << "Invalid sharding: we require 0 <= " << hawk::Constants::kTestShardIndex
+                                              << " < " << hawk::Constants::kTestTotalShards << ", but you have "
+                                              << hawk::Constants::kTestShardIndex << "=" << shard_index << ", "
+                                              << hawk::Constants::kTestTotalShards << "=" << total_shards << ".\n";
                 hawk::stdout_printer().fmt_red("{}", msg.GetString());
                 fflush(stdout);
                 exit(EXIT_FAILURE);

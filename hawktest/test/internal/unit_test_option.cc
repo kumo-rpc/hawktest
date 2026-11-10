@@ -17,9 +17,12 @@
 //
 
 #include <hawktest/test/internal/unit_test_option.h>
-#include <hawktest/test/unit_test.h>
-#include <hawktest/flags/builtin.h>
+
+#include "hawktest/reportor/constants.h"
+
 #include <hawktest/common/filepath.h>
+#include <hawktest/flags/builtin.h>
+#include <hawktest/test/unit_test.h>
 
 namespace testing::internal {
 
@@ -35,14 +38,6 @@ namespace testing::internal {
     }
 
 
-
-
-    // The default output format.
-    static const char kDefaultOutputFormat[] = "xml";
-
-    // The default output file.
-    static const char kDefaultOutputFile[] = "test_detail";
-
 #if HTEST_HAS_FILE_SYSTEM
     // Returns the name of the requested output file, or the default if none
     // was explicitly specified.
@@ -52,14 +47,14 @@ namespace testing::internal {
 
         std::string format = GetOutputFormat();
         if (format.empty())
-            format = kDefaultOutputFormat;
+            format = hawk::Constants::kDefaultOutputFormat;
 
         const char* const colon = strchr(htest_output_flag, ':');
         if (colon == nullptr)
             return internal::FilePath::MakeFileName(
                 internal::FilePath(
                     UnitTest::GetInstance()->original_working_dir()),
-                internal::FilePath(kDefaultOutputFile), 0, format.c_str())
+                internal::FilePath( hawk::Constants::kDefaultOutputFile), 0, format.c_str())
                 .string();
 
         internal::FilePath output_name(colon + 1);

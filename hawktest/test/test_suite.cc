@@ -18,6 +18,9 @@
 
 
 #include <hawktest/test/test_suite.h>
+
+#include "hawktest/format/printer.h"
+
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/test/internal/unit_test_impl.h>
 
@@ -228,12 +231,12 @@ namespace testing {
             if (type_param != nullptr || value_param != nullptr) {
                 printf(", where ");
                 if (type_param != nullptr) {
-                    printf("%s = %s", kTypeParamLabel, type_param);
+                    hawk::stdout_printer().fmt("{} = {}", hawk::Constants::kTypeParamLabel, type_param);
                     if (value_param != nullptr)
                         printf(" and ");
                 }
                 if (value_param != nullptr) {
-                    printf("%s = %s", kValueParamLabel, value_param);
+                    hawk::stdout_printer().fmt("{} = {}", hawk::Constants::kValueParamLabel, value_param);
                 }
             }
         }

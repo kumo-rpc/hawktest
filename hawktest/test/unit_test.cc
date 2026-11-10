@@ -20,6 +20,7 @@
 #include <hawktest/test/scoped_trace.h>
 #include <hawktest/test/exception.h>
 #include <hawktest/test/internal/unit_test_impl.h>
+#include <hawktest/reportor/constants.h>
 
 // Checks builtin compiler feature |x| while avoiding an extra layer of #ifdefs
 // at the callsite.
@@ -146,7 +147,7 @@ namespace testing {
         }
 
         if (os_stack_trace.c_str() != nullptr && !os_stack_trace.empty()) {
-            msg << internal::kStackTraceMarker << os_stack_trace;
+            msg << hawk::Constants::kStackTraceMarker << os_stack_trace;
         } else {
             msg << "\n";
         }

@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 
-#include <hawktest/reportor/color.h>
+#include <hawktest/format/color.h>
 
 namespace hawk {
 

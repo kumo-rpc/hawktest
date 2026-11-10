@@ -94,26 +94,6 @@ namespace testing {
 
         std::vector<std::string> GetReservedOutputAttributesForElement(const std::string& xml_element);
 
-        // The list of reserved attributes used in the <testsuites> element of XML
-        // output.
-        static const char* const kReservedTestSuitesAttributes[] = {
-            "disabled", "errors", "failures", "name",
-            "random_seed", "tests", "time", "timestamp"
-        };
-
-        // The list of reserved attributes used in the <testsuite> element of XML
-        // output.
-        static const char* const kReservedTestSuiteAttributes[] = {
-            "disabled", "errors", "failures", "name",
-            "tests", "time", "timestamp", "skipped"
-        };
-
-        // Use a slightly different set for allowed output to ensure existing tests can
-        // still RecordProperty("result") or RecordProperty("timestamp")
-        static const char* const kReservedOutputTestCaseAttributes[] = {
-            "classname", "name", "status", "time", "type_param",
-            "value_param", "file", "line", "result", "timestamp"
-        };
     }
 
 

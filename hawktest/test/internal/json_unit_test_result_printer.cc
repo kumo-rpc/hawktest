@@ -19,6 +19,7 @@
 #include <hawktest/test/internal/json_unit_test_result_printer.h>
 #include <hawktest/test/test_suite.h>
 #include <hawktest/test/unit_test.h>
+#include <hawktest/reportor/constants.h>
 
 namespace testing {
     namespace internal {
@@ -100,16 +101,16 @@ namespace testing {
         std::vector<std::string> GetReservedOutputAttributesForElement(
         const std::string& xml_element) {
             if (xml_element == "testsuites") {
-                return ArrayAsVector(kReservedTestSuitesAttributes);
+                return hawk::Constants::kReservedTestSuitesAttributes;
             } else if (xml_element == "testsuite") {
-                return ArrayAsVector(kReservedTestSuiteAttributes);
+                return hawk::Constants::kReservedTestSuiteAttributes;
             } else if (xml_element == "testcase") {
-                return ArrayAsVector(kReservedOutputTestCaseAttributes);
+                return hawk::Constants::kReservedOutputTestCaseAttributes;
             } else {
                 HTEST_CHECK_(false) << "Unrecognized xml_element provided: " << xml_element;
             }
             // This code is unreachable but some compilers may not realizes that.
-            return std::vector<std::string>();
+            return std::vector<std::string>{};
         }
 
         void JsonUnitTestResultPrinter::OutputJsonKey(

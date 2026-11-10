@@ -184,10 +184,10 @@ kmcmake_cc_library(
         common/random.cc
         common/time.cc
         common/string.cc
-        common/colored_printf.cc
-        reportor/color.cc
-        reportor/printer.cc
-        reportor/report_sink.cc
+        reportor/constants.cc
+        format/color.cc
+        format/printer.cc
+        format/report_sink.cc
         test/assertion-result.cc
         test/death-test.cc
         test/matchers.cc

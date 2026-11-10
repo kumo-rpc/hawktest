@@ -9,7 +9,6 @@
 #pragma once
 
 #include <hawktest/common/port.h>
-#include <hawktest/common/colored_printf.h>
 
 namespace testing {
 namespace internal {

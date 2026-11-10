@@ -31,6 +31,8 @@
 
 #include <hawktest/test/death-test.h>
 
+#include "hawktest/reportor/constants.h"
+
 #include <stdlib.h>
 
 #include <functional>
@@ -227,12 +229,6 @@ namespace testing {
         }
 #endif // !HTEST_OS_WINDOWS && !HTEST_OS_FUCHSIA
 
-        // Flag characters for reporting a death test that did not die.
-        static const char kDeathTestLived = 'L';
-        static const char kDeathTestReturned = 'R';
-        static const char kDeathTestThrew = 'T';
-        static const char kDeathTestInternalError = 'I';
-
 #ifdef HTEST_OS_FUCHSIA
 
         // File descriptor used for the pipe in the child process.
@@ -265,7 +261,7 @@ namespace testing {
             const InternalRunDeathTestFlag* const flag = GetUnitTestImpl()->internal_run_death_test_flag();
             if (flag != nullptr) {
                 FILE* parent = posix::FDOpen(flag->write_fd(), "w");
-                fputc(kDeathTestInternalError, parent);
+                fputc(hawk::Constants::kDeathTestInternalError, parent);
                 fprintf(parent, "%s", message.c_str());
                 fflush(parent);
                 _Exit(1);
@@ -444,16 +440,16 @@ namespace testing {
                 set_outcome(DIED);
             } else if (bytes_read == 1) {
                 switch (flag) {
-                case kDeathTestReturned:
+                case hawk::Constants::kDeathTestReturned:
                     set_outcome(RETURNED);
                     break;
-                case kDeathTestThrew:
+                case hawk::Constants::kDeathTestThrew:
                     set_outcome(THREW);
                     break;
-                case kDeathTestLived:
+                case hawk::Constants::kDeathTestLived:
                     set_outcome(LIVED);
                     break;
-                case kDeathTestInternalError:
+                case hawk::Constants::kDeathTestInternalError:
                     FailFromInternalError(read_fd()); // Does not return.
                     break;
                 default:
@@ -481,9 +477,9 @@ namespace testing {
             // The parent process considers the death test to be a failure if
             // it finds any data in our pipe.  So, here we write a single flag byte
             // to the pipe, then exit.
-            const char status_ch = reason == TEST_DID_NOT_DIE ? kDeathTestLived
-                : reason == TEST_THREW_EXCEPTION              ? kDeathTestThrew
-                                                              : kDeathTestReturned;
+            const char status_ch = reason == TEST_DID_NOT_DIE ? hawk::Constants::kDeathTestLived
+                : reason == TEST_THREW_EXCEPTION              ? hawk::Constants::kDeathTestThrew
+                                                              : hawk::Constants::kDeathTestReturned;
 
             HTEST_DEATH_TEST_CHECK_SYSCALL_(posix::Write(write_fd(), &status_ch, 1));
             // We are leaking the descriptor here because on some platforms (i.e.,

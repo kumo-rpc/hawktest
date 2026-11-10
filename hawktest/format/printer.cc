@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 
-#include <hawktest/reportor/printer.h>
+#include <hawktest/format/printer.h>
 
 #include <cassert>
 #include <cstring>

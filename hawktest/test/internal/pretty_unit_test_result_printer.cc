@@ -18,7 +18,7 @@
 
 
 #include <hawktest/test/internal/pretty_unit_test_result_printer.h>
-#include <hawktest/reportor/printer.h>
+#include <hawktest/format/printer.h>
 #include <hawktest/flags/builtin.h>
 #include <hawktest/common/internal-inl.h>
 
@@ -57,7 +57,7 @@ namespace internal {
 
         // Prints the filter if it's not *.  This reminds the user that some
         // tests may be skipped.
-        if (!String::CStringEquals(filter, kUniversalFilter)) {
+        if (!String::CStringEquals(filter, hawk::Constants::kUniversalFilter.c_str())) {
             hawk::stdout_printer().fmt_yellow("Note: {} filter = {}\n", HTEST_NAME_,
                 filter);
         }
@@ -100,7 +100,7 @@ namespace internal {
         if (test_case.type_param() == nullptr) {
             printf("\n");
         } else {
-            printf(", where %s = %s\n", kTypeParamLabel, test_case.type_param());
+            hawk::stdout_printer().fmt(", where %s = %s\n", hawk::Constants::kTypeParamLabel, test_case.type_param());
         }
         fflush(stdout);
     }

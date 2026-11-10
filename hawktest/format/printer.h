@@ -15,8 +15,9 @@
 
 #pragma once
 
-#include <hawktest/reportor/color.h>
-#include <hawktest/reportor/report_sink.h>
+#include <hawktest/format/color.h>
+#include <hawktest/format/report_sink.h>
+#include <hawktest/reportor/constants.h>
 #include <fmt/format.h>
 #include <map>
 #include <string>

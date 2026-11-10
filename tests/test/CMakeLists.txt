@@ -82,9 +82,6 @@ kmcmake_cc_binary(
 
 py_test(hawktest-catch-exceptions-test)
 
-test_executable(hawktest-color-test_ hawktest::hawktest_static)
-py_test(hawktest-color-test)
-
 test_executable(hawktest-env-var-test_ hawktest::hawktest_static)
 py_test(hawktest-env-var-test)
 

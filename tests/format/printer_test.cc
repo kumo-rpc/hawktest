@@ -4,9 +4,9 @@
 #include <hawktest/common/label.h>
 #include <hawktest/mark/loader.h>
 #include <hawktest/mark/suite.h>
-#include <hawktest/reportor/color.h>
-#include <hawktest/reportor/printer.h>
-#include <hawktest/reportor/report_sink.h>
+#include <hawktest/format/color.h>
+#include <hawktest/format/printer.h>
+#include <hawktest/format/report_sink.h>
 #include <hawktest/test/htest.h>
 
 #include <map>
@@ -40,7 +40,7 @@ struct MarkLoad {
 const MarkLoad& mark_load() {
     static const MarkLoad load = [] {
         MarkLoad state;
-        if (!md_test::load_mark_file(HAWK_REPORTOR_MARK, md_test::suite_registry(), hawk::label_registry(), &state.error)) {
+        if (!md_test::load_mark_file(HAWK_FORMAT_MARK, md_test::suite_registry(), hawk::label_registry(), &state.error)) {
             return state;
         }
         state.suites = md_test::registered_suites(md_test::suite_registry());

@@ -21,6 +21,7 @@
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/test/internal/unit_test_impl.h>
 #include <hawktest/test/internal/json_unit_test_result_printer.h>
+#include <hawktest/reportor/constants.h>
 
 namespace testing {
 
@@ -280,26 +281,20 @@ namespace testing {
         return true;
     }
 
-    // The list of reserved attributes used in the <testcase> element of XML output.
-    static const char* const kReservedTestCaseAttributes[] = {
-        "classname", "name", "status", "time",
-        "type_param", "value_param", "file", "line"
-    };
-
 
     static std::vector<std::string> GetReservedAttributesForElement(
         const std::string& xml_element) {
         if (xml_element == "testsuites") {
-            return internal::ArrayAsVector(internal::kReservedTestSuitesAttributes);
+            return hawk::Constants::kReservedTestSuitesAttributes;
         } else if (xml_element == "testsuite") {
-            return internal::ArrayAsVector(internal::kReservedTestSuiteAttributes);
+            return hawk::Constants::kReservedTestSuiteAttributes;
         } else if (xml_element == "testcase") {
-            return internal::ArrayAsVector(kReservedTestCaseAttributes);
+            return hawk::Constants::kReservedTestCaseAttributes;
         } else {
             HTEST_CHECK_(false) << "Unrecognized xml_element provided: " << xml_element;
         }
         // This code is unreachable but some compilers may not realizes that.
-        return std::vector<std::string>();
+        return std::vector<std::string>{};
     }
 
     // Adds a failure if the key is a reserved attribute of the element named

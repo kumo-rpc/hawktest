@@ -64,7 +64,6 @@
 #include <vector>
 
 #include <hawktest/common/internal.h>
-#include <hawktest/common/colored_printf.h>
 #include <hawktest/common/string.h>
 #include <hawktest/test/assertion-result.h> // IWYU pragma: export
 #include <hawktest/test/death-test.h> // IWYU pragma: export

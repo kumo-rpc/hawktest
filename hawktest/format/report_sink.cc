@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 
-#include <hawktest/reportor/report_sink.h>
+#include <hawktest/format/report_sink.h>
 #include <hawktest/common/port_internal.h>
 #include <hawktest/common/string.h>
 #include <hawktest/flags/builtin.h>
