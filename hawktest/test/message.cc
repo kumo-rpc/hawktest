@@ -16,8 +16,6 @@
 // limitations under the License.
 //
 
-#pragma once
-
 #include <hawktest/test/message.h>
 #include <hawktest/common/string.h>
 #include <iomanip>

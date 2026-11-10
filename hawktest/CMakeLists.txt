@@ -180,12 +180,14 @@ kmcmake_cc_library(
         NAME hawktest
         SOURCES
         common/ascii.cc
-        common/utf8.cc
         common/filepath.cc
         common/random.cc
         common/time.cc
         common/string.cc
         common/colored_printf.cc
+        reportor/color.cc
+        reportor/printer.cc
+        reportor/report_sink.cc
         test/assertion-result.cc
         test/death-test.cc
         test/matchers.cc
@@ -269,7 +271,7 @@ kmcmake_cc_library(
         ${KMCMAKE_CXX_OPTIONS}
         PUBLIC
         LINKS
-        ${KMCMAKE_SYSTEM_DYLINK}
+        ${KMCMAKE_DEPS_LINK}
 )
 
 kmcmake_cc_library(
