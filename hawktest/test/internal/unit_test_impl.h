@@ -27,7 +27,7 @@
 #include <hawktest/test/fwd.h>
 #include <hawktest/test/internal/death-test-internal.h>
 #include <hawktest/test/internal/stack.h>
-#include <hawktest/test/internal/default_global_reporter.h>
+#include <hawktest/reporter/default_global_reporter.h>
 
 namespace testing::internal {
 

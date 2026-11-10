@@ -16,10 +16,10 @@
 // limitations under the License.
 //
 
-#include <hawktest/test/internal/json_unit_test_result_printer.h>
+#include <hawktest/reporter/json_unit_test_result_printer.h>
 #include <hawktest/test/test_suite.h>
 #include <hawktest/test/unit_test.h>
-#include <hawktest/reportor/constants.h>
+#include <hawktest/reporter/constants.h>
 
 namespace testing {
     namespace internal {

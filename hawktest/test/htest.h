@@ -79,7 +79,7 @@
 #include <hawktest/test/test_suite.h>
 #include <hawktest/test/environment.h>
 #include <hawktest/test/exception.h>
-#include <hawktest/test/listener.h>
+#include <hawktest/reporter/listener.h>
 #include <hawktest/test/unit_test.h>
 #include <hawktest/test/initialize.h>
 #include <hawktest/test/utility.h>

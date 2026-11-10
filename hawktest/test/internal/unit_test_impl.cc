@@ -19,11 +19,11 @@
 #include <hawktest/test/internal/unit_test_impl.h>
 #include <hawktest/format/printer.h>
 #include <hawktest/test/internal/unit_test_option.h>
-#include <hawktest/test/internal/pretty_unit_test_result_printer.h>
-#include <hawktest/test/internal/xml_unit_test_result_printer.h>
-#include <hawktest/test/internal/json_unit_test_result_printer.h>
-#include <hawktest/test/internal/brief_unit_test_result_printer.h>
-#include <hawktest/test/internal/streaming_listener.h>
+#include <hawktest/reporter/pretty_unit_test_result_printer.h>
+#include <hawktest/reporter/xml_unit_test_result_printer.h>
+#include <hawktest/reporter/json_unit_test_result_printer.h>
+#include <hawktest/reporter/brief_unit_test_result_printer.h>
+#include <hawktest/reporter/streaming_listener.h>
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/flags/parser.h>
 

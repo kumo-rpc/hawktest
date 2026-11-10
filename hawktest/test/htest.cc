@@ -74,11 +74,11 @@
 #include <hawktest/test/assertion-result.h>
 #include <hawktest/test/internal/custom/htest.h>
 #include <hawktest/test/spi.h>
-#include <hawktest/test/internal/pretty_unit_test_result_printer.h>
-#include <hawktest/test/internal/brief_unit_test_result_printer.h>
-#include <hawktest/test/internal/json_unit_test_result_printer.h>
-#include <hawktest/test/internal/xml_unit_test_result_printer.h>
-#include <hawktest/test/internal/test_event_repeater.h>
+#include <hawktest/reporter/pretty_unit_test_result_printer.h>
+#include <hawktest/reporter/brief_unit_test_result_printer.h>
+#include <hawktest/reporter/json_unit_test_result_printer.h>
+#include <hawktest/reporter/xml_unit_test_result_printer.h>
+#include <hawktest/reporter/test_event_repeater.h>
 #include <hawktest/test/initialize.h>
 
 #ifdef HTEST_OS_LINUX

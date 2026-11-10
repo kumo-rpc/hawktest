@@ -17,7 +17,7 @@
 
 #include <hawktest/format/color.h>
 #include <hawktest/format/report_sink.h>
-#include <hawktest/reportor/constants.h>
+#include <hawktest/reporter/constants.h>
 #include <fmt/format.h>
 #include <map>
 #include <string>

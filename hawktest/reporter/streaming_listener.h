@@ -19,7 +19,7 @@
 #pragma once
 
 #include <hawktest/common/port.h>
-#include <hawktest/test/listener.h>
+#include <hawktest/reporter/listener.h>
 #include <hawktest/test/test_suite.h>
 #include <hawktest/test/unit_test.h>
 

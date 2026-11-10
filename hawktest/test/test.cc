@@ -20,8 +20,8 @@
 #include <hawktest/test/test.h>
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/test/internal/unit_test_impl.h>
-#include <hawktest/test/internal/json_unit_test_result_printer.h>
-#include <hawktest/reportor/constants.h>
+#include <hawktest/reporter/json_unit_test_result_printer.h>
+#include <hawktest/reporter/constants.h>
 
 namespace testing {
 

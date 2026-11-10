@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 
-#include <hawktest/reportor/constants.h>
+#include <hawktest/reporter/constants.h>
 
 namespace hawk {
 

@@ -30,7 +30,7 @@
 // retained in accordance with their respective licenses.
 //
 
-#include "hawktest/reportor/constants.h"
+#include "hawktest/reporter/constants.h"
 
 #include <hawktest/test/htest.h>
 #include <hawktest/test/test-part.h>

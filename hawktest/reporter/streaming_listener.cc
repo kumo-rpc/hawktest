@@ -16,7 +16,7 @@
 // limitations under the License.
 //
 
-#include <hawktest/test/internal/streaming_listener.h>
+#include <hawktest/reporter/streaming_listener.h>
 
 
 #ifdef HTEST_OS_LINUX

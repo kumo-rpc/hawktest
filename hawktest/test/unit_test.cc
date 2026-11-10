@@ -20,7 +20,7 @@
 #include <hawktest/test/scoped_trace.h>
 #include <hawktest/test/exception.h>
 #include <hawktest/test/internal/unit_test_impl.h>
-#include <hawktest/reportor/constants.h>
+#include <hawktest/reporter/constants.h>
 
 // Checks builtin compiler feature |x| while avoiding an extra layer of #ifdefs
 // at the callsite.

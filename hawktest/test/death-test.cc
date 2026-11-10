@@ -31,7 +31,7 @@
 
 #include <hawktest/test/death-test.h>
 
-#include "hawktest/reportor/constants.h"
+#include "hawktest/reporter/constants.h"
 
 #include <stdlib.h>
 

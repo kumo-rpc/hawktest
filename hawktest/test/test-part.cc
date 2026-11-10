@@ -35,7 +35,7 @@
 
 #include <hawktest/test/test-part.h>
 
-#include "hawktest/reportor/constants.h"
+#include "hawktest/reporter/constants.h"
 
 #include <ostream>
 #include <string>
@@ -45,7 +45,7 @@
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
 #include <hawktest/test/internal/unit_test_impl.h>
-#include <hawktest/reportor/constants.h>
+#include <hawktest/reporter/constants.h>
 
 namespace testing {
 

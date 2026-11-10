@@ -20,7 +20,7 @@
 
 #include <hawktest/test/fwd.h>
 #include <hawktest/test/environment.h>
-#include <hawktest/test/listener.h>
+#include <hawktest/reporter/listener.h>
 #include <hawktest/test/internal/param-util.h>
 
 namespace testing {

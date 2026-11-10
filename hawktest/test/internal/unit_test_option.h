@@ -20,9 +20,9 @@
 
 #include <hawktest/common/port.h>
 #include <hawktest/common/string.h>
-#include <hawktest/reportor/constants.h>
+#include <hawktest/reporter/constants.h>
 #include <unordered_set>
-#include <hawktest/test/internal/pretty_unit_test_result_printer.h>
+#include <hawktest/reporter/pretty_unit_test_result_printer.h>
 
 namespace testing::internal {
 

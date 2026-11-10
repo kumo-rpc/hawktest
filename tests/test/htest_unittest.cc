@@ -40,7 +40,7 @@
 #include <hawktest/common/random.h>
 #include <hawktest/test/internal/unit_test_impl.h>
 #include <hawktest/test/internal/unit_test_option.h>
-#include <hawktest/test/internal/streaming_listener.h>
+#include <hawktest/reporter/streaming_listener.h>
 #include <iterator>
 
 // Verifies that the command line flag variables can be accessed in

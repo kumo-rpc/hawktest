@@ -18,7 +18,7 @@
 
 #include <hawktest/test/internal/unit_test_option.h>
 
-#include "hawktest/reportor/constants.h"
+#include "hawktest/reporter/constants.h"
 
 #include <hawktest/common/filepath.h>
 #include <hawktest/flags/builtin.h>

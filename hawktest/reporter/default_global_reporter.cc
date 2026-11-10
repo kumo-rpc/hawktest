@@ -16,7 +16,7 @@
 // limitations under the License.
 //
 
-#include <hawktest/test/internal/default_global_reporter.h>
+#include <hawktest/reporter/default_global_reporter.h>
 
 namespace testing {
     namespace internal {

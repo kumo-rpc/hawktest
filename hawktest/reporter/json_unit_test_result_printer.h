@@ -19,7 +19,7 @@
 #pragma once
 
 #include <hawktest/test/fwd.h>
-#include <hawktest/test/listener.h>
+#include <hawktest/reporter/listener.h>
 #include <hawktest/test/test.h>
 
 namespace testing {

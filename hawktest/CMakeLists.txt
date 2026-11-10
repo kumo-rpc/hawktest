@@ -184,7 +184,14 @@ kmcmake_cc_library(
         common/random.cc
         common/time.cc
         common/string.cc
-        reportor/constants.cc
+        reporter/constants.cc
+        reporter/listener.cc
+        reporter/brief_unit_test_result_printer.cc
+        reporter/json_unit_test_result_printer.cc
+        reporter/xml_unit_test_result_printer.cc
+        reporter/streaming_listener.cc
+        reporter/pretty_unit_test_result_printer.cc
+        reporter/test_event_repeater.cc
         format/color.cc
         format/printer.cc
         format/report_sink.cc
@@ -195,18 +202,11 @@ kmcmake_cc_library(
         test/exception.cc
         test/initialize.cc
         test/scoped_trace.cc
-        test/listener.cc
-        test/internal/streaming_listener.cc
         test/internal/stack.cc
         test/spi.cc
         test/test_suite.cc
         test/internal/unit_test_impl.cc
-        test/internal/pretty_unit_test_result_printer.cc
         test/internal/param-util.cc
-        test/internal/brief_unit_test_result_printer.cc
-        test/internal/json_unit_test_result_printer.cc
-        test/internal/xml_unit_test_result_printer.cc
-        test/internal/test_event_repeater.cc
         test/internal/unit_test_option.cc
         test/port.cc
         test/test.cc

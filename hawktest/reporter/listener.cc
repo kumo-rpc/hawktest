@@ -16,8 +16,8 @@
 // limitations under the License.
 //
 
-#include <hawktest/test/listener.h>
-#include <hawktest/test/internal/test_event_repeater.h>
+#include <hawktest/reporter/listener.h>
+#include <hawktest/reporter/test_event_repeater.h>
 
 namespace testing {
 

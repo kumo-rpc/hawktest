@@ -16,8 +16,8 @@
 // limitations under the License.
 //
 
-#include <hawktest/test/internal/xml_unit_test_result_printer.h>
-#include <hawktest/test/internal/json_unit_test_result_printer.h>
+#include <hawktest/reporter/xml_unit_test_result_printer.h>
+#include <hawktest/reporter/json_unit_test_result_printer.h>
 #include <hawktest/test/test_suite.h>
 #include <hawktest/test/unit_test.h>
 

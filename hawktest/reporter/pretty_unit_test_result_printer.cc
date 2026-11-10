@@ -17,7 +17,7 @@
 //
 
 
-#include <hawktest/test/internal/pretty_unit_test_result_printer.h>
+#include <hawktest/reporter/pretty_unit_test_result_printer.h>
 #include <hawktest/format/printer.h>
 #include <hawktest/flags/builtin.h>
 #include <hawktest/common/internal-inl.h>
