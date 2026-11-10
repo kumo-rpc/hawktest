@@ -64,7 +64,7 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // The value of GetTestTypeId() as seen from within the Hawk Test
@@ -111,11 +111,6 @@ namespace testing {
         // disabled because it must only be applied to the original test
         // process. Otherwise, we could filter out death tests we intended to execute.
         HTEST_API_ bool ShouldShard(bool in_subprocess_for_death_test);
-
-        // Parses the environment variable var as a 32-bit integer. If it is unset,
-        // returns default_val. If it is not a 32-bit integer, prints an error and
-        // and aborts.
-        HTEST_API_ int32_t Int32FromEnvOrDie(const char* env_var, int32_t default_val);
 
         // Given the total number of shards, the shard index, and the test id,
         // returns true if and only if the test should be run on this shard. The test id
@@ -282,13 +277,13 @@ namespace testing {
                 test_result->ClearTestPartResults();
             }
 
-            static const std::vector<testing::TestPartResult>& test_part_results(
+            static const std::vector<hawk::TestPartResult>& test_part_results(
                 const TestResult& test_result) {
                 return test_result.test_part_results();
             }
         };
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251

@@ -41,7 +41,7 @@
 
 #include <hawktest/test/internal/death-test-internal.h>
 
-namespace testing {
+namespace hawk {
 
 #ifdef HTEST_HAS_DEATH_TEST
 
@@ -83,7 +83,7 @@ namespace testing {
 //                  << "Failed to die on request " << i;
 //   }
 //
-//   ASSERT_EXIT(server.ExitNow(), ::testing::ExitedWithCode(0), "Exiting");
+//   ASSERT_EXIT(server.ExitNow(), ::hawk::ExitedWithCode(0), "Exiting");
 //
 //   bool KilledBySIGHUP(int exit_code) {
 //     return WIFSIGNALED(exit_code) && WTERMSIG(exit_code) == SIGHUP;
@@ -174,12 +174,12 @@ namespace testing {
 // explicitly exiting with a nonzero exit code or being killed by a
 // signal, and emitting error output that matches `matcher`.
 #define ASSERT_DEATH(statement, matcher) \
-    ASSERT_EXIT(statement, ::testing::internal::ExitedUnsuccessfully, matcher)
+    ASSERT_EXIT(statement, ::hawk::internal::ExitedUnsuccessfully, matcher)
 
 // Like `ASSERT_DEATH`, but continues on to successive tests in the
 // test suite, if any:
 #define EXPECT_DEATH(statement, matcher) \
-    EXPECT_EXIT(statement, ::testing::internal::ExitedUnsuccessfully, matcher)
+    EXPECT_EXIT(statement, ::hawk::internal::ExitedUnsuccessfully, matcher)
 
     // Two predicate classes that can be used in {ASSERT,EXPECT}_EXIT*:
 
@@ -305,15 +305,15 @@ namespace testing {
 //  macro, for compilational compatibility with EXPECT_DEATH/ASSERT_DEATH.
 #define HTEST_UNSUPPORTED_DEATH_TEST(statement, regex_or_matcher, terminator)      \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                                  \
-    if (::testing::internal::AlwaysTrue()) {                                       \
+    if (::hawk::internal::AlwaysTrue()) {                                       \
         HTEST_LOG_(WARNING) << "Death tests are not supported on this platform.\n" \
                             << "Statement '" #statement "' cannot be verified.";   \
-    } else if (::testing::internal::AlwaysFalse()) {                               \
-        (void)::testing::internal::MakeDeathTestMatcher(regex_or_matcher);         \
+    } else if (::hawk::internal::AlwaysFalse()) {                               \
+        (void)::hawk::internal::MakeDeathTestMatcher(regex_or_matcher);         \
         HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement);                 \
         terminator;                                                                \
     } else                                                                         \
-        ::testing::Message()
+        ::hawk::Message()
 
 // EXPECT_DEATH_IF_SUPPORTED(statement, regex) and
 // ASSERT_DEATH_IF_SUPPORTED(statement, regex) expand to real death tests if
@@ -332,5 +332,5 @@ namespace testing {
     HTEST_UNSUPPORTED_DEATH_TEST(statement, regex, return)
 #endif
 
-} // namespace testing
+} // namespace hawk
 

@@ -1,12 +1,4 @@
-// Copyright 2005, Google Inc.
 // Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
-//
-// Portions of this software are derived from GoogleTest and Google Mock,
-// originally distributed under the BSD 3-Clause License.
-// Copyright (C) 2026 Kumo inc. and its affiliates. All Rights Reserved.
-//
-// Portions of this software are derived from GoogleTest and Google Mock,
-// originally distributed under the BSD 3-Clause License.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,22 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// For third-party components and portions derived from GoogleTest or
-// Google Mock, the applicable original license terms and notices are
-// retained in accordance with their respective licenses.
-//
-//
-// For third-party components and portions derived from GoogleTest or
-// Google Mock, the applicable original license terms and notices are
-// retained in accordance with their respective licenses.
-//
-
-// The Google C++ Testing and Mocking Framework (Hawk Test)
-//
-// This file implements the AssertionResult type.
 
 #pragma once
-
 
 #include <memory>
 #include <ostream>
@@ -47,7 +25,7 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
-namespace testing {
+namespace hawk {
 
 // A class for indicating whether an assertion was successful.  When
 // the assertion wasn't successful, the AssertionResult object
@@ -64,11 +42,11 @@ namespace testing {
 //
 // For example, if you define IsEven predicate:
 //
-//   testing::AssertionResult IsEven(int n) {
+//   hawk::AssertionResult IsEven(int n) {
 //     if ((n % 2) == 0)
-//       return testing::AssertionSuccess();
+//       return hawk::AssertionSuccess();
 //     else
-//       return testing::AssertionFailure() << n << " is odd";
+//       return hawk::AssertionFailure() << n << " is odd";
 //   }
 //
 // Then the failed expectation EXPECT_TRUE(IsEven(Fib(5)))
@@ -91,11 +69,11 @@ namespace testing {
 // about half as often as positive ones in our tests), supply messages for
 // both success and failure cases:
 //
-//   testing::AssertionResult IsEven(int n) {
+//   hawk::AssertionResult IsEven(int n) {
 //     if ((n % 2) == 0)
-//       return testing::AssertionSuccess() << n << " is even";
+//       return hawk::AssertionSuccess() << n << " is even";
 //     else
-//       return testing::AssertionFailure() << n << " is odd";
+//       return hawk::AssertionFailure() << n << " is odd";
 //   }
 //
 // Then a statement EXPECT_FALSE(IsEven(Fib(6))) will print
@@ -115,11 +93,11 @@ namespace testing {
 //
 // you need to define:
 //
-//   testing::AssertionResult IsEven(const char* expr, int n) {
+//   hawk::AssertionResult IsEven(const char* expr, int n) {
 //     if ((n % 2) == 0)
-//       return testing::AssertionSuccess();
+//       return hawk::AssertionSuccess();
 //     else
-//       return testing::AssertionFailure()
+//       return hawk::AssertionFailure()
 //         << "Expected: " << expr << " is even\n  Actual: it's " << n;
 //   }
 //
@@ -238,7 +216,7 @@ namespace testing {
         //
         // Contains a conversion operator that indicates whether the two match.
         struct AssertionResultExpectation {
-            testing::AssertionResult assertion_result;
+            AssertionResult assertion_result;
             bool expected_result;
 
             explicit operator bool() const {
@@ -259,7 +237,7 @@ namespace testing {
     // Deprecated; use AssertionFailure() << msg.
     HTEST_API_ AssertionResult AssertionFailure(const hawk::Message& msg);
 
-} // namespace testing
+} // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() // 4251
 

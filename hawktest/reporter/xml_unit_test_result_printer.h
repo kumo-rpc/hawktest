@@ -22,7 +22,7 @@
 #include <hawktest/reporter/listener.h>
 #include <hawktest/test/test.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
                 // This class generates an XML output file.
         class XmlUnitTestResultPrinter : public EmptyTestEventListener {

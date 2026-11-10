@@ -34,14 +34,14 @@
 //
 // This file defines the AssertionResult type.
 
-#include <hawktest/test/assertion-result.h>
+#include <hawktest/analysis/assertion_result.h>
 
 #include <string>
 #include <utility>
 
 #include <hawktest/format/message.h>
 
-namespace testing {
+namespace hawk {
 
     // AssertionResult constructors.
     // Used in EXPECT_TRUE/FALSE(assertion_result).
@@ -82,4 +82,4 @@ namespace testing {
         return AssertionFailure() << message;
     }
 
-} // namespace testing
+} // namespace hawk

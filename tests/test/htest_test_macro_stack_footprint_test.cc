@@ -84,7 +84,7 @@
 THOUSAND_TESTS_(T)
 
 int main(int argc, char **argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
   // We don't actually need to run the dummy tests - the purpose is to
   // ensure that they compile.

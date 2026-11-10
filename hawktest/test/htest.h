@@ -63,35 +63,35 @@
 #include <type_traits>
 #include <vector>
 
+#include <hawktest/analysis/assertion_result.h> // IWYU pragma: export
 #include <hawktest/common/internal.h>
 #include <hawktest/common/string.h>
-#include <hawktest/test/assertion-result.h> // IWYU pragma: export
-#include <hawktest/test/death-test.h> // IWYU pragma: export
-#include <hawktest/test/matchers.h> // IWYU pragma: export
 #include <hawktest/format/message.h> // IWYU pragma: export
+#include <hawktest/reporter/listener.h>
+#include <hawktest/test/death-test.h> // IWYU pragma: export
+#include <hawktest/test/environment.h>
+#include <hawktest/test/exception.h>
+#include <hawktest/test/initialize.h>
+#include <hawktest/test/matchers.h> // IWYU pragma: export
 #include <hawktest/test/param-test.h> // IWYU pragma: export
 #include <hawktest/test/pred_impl.h> // IWYU pragma: export
 #include <hawktest/test/printers.h> // IWYU pragma: export
 #include <hawktest/test/prod.h> // IWYU pragma: export
+#include <hawktest/test/scoped_trace.h>
 #include <hawktest/test/test-part.h> // IWYU pragma: export
-#include <hawktest/test/typed-test.h> // IWYU pragma: export
 #include <hawktest/test/test.h>
 #include <hawktest/test/test_suite.h>
-#include <hawktest/test/environment.h>
-#include <hawktest/test/exception.h>
-#include <hawktest/reporter/listener.h>
+#include <hawktest/test/typed-test.h> // IWYU pragma: export
 #include <hawktest/test/unit_test.h>
-#include <hawktest/test/initialize.h>
-#include <hawktest/test/utility.h>
 #include <hawktest/test/with_param.h>
-#include <hawktest/test/scoped_trace.h>
-
+#include <hawktest/matcher/compare.h>
+#include <hawktest/analysis/failure_reason.h>
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
 #include <hawktest/flags/builtin.h>
 
-namespace testing {
+namespace hawk {
 
     // Silence C4100 (unreferenced formal parameter) and 4805
     // unsafe mix of type 'const int' and type 'const bool'
@@ -129,7 +129,7 @@ namespace testing {
 // a generic message.
 #define ADD_FAILURE_AT(file, line)          \
     HTEST_MESSAGE_AT_(file, line, "Failed", \
-        ::testing::TestPartResult::kNonFatalFailure)
+        ::hawk::TestPartResult::kNonFatalFailure)
 
 // Generates a fatal failure with a generic message.
 #define HTEST_FAIL() HTEST_FATAL_FAILURE_("Failed")
@@ -137,7 +137,7 @@ namespace testing {
 // Like HTEST_FAIL(), but at the given source file location.
 #define HTEST_FAIL_AT(file, line)                  \
     return HTEST_MESSAGE_AT_(file, line, "Failed", \
-        ::testing::TestPartResult::kFatalFailure)
+        ::hawk::TestPartResult::kFatalFailure)
 
 // Define this macro to 1 to omit the definition of FAIL(), which is a
 // generic name and clashes with some other libraries.
@@ -257,30 +257,30 @@ namespace testing {
     //   ASSERT_GT(records.size(), 0) << "There is no record left.";
 
 #define EXPECT_EQ(val1, val2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::EqHelper::Compare, val1, val2)
+    EXPECT_PRED_FORMAT2(::hawk::EqHelper::Compare, val1, val2)
 #define EXPECT_NE(val1, val2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperNE, val1, val2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperNE, val1, val2)
 #define EXPECT_LE(val1, val2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperLE, val1, val2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperLE, val1, val2)
 #define EXPECT_LT(val1, val2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperLT, val1, val2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperLT, val1, val2)
 #define EXPECT_GE(val1, val2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperGE, val1, val2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperGE, val1, val2)
 #define EXPECT_GT(val1, val2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperGT, val1, val2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperGT, val1, val2)
 
 #define HTEST_ASSERT_EQ(val1, val2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::EqHelper::Compare, val1, val2)
+    ASSERT_PRED_FORMAT2(::hawk::EqHelper::Compare, val1, val2)
 #define HTEST_ASSERT_NE(val1, val2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperNE, val1, val2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperNE, val1, val2)
 #define HTEST_ASSERT_LE(val1, val2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperLE, val1, val2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperLE, val1, val2)
 #define HTEST_ASSERT_LT(val1, val2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperLT, val1, val2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperLT, val1, val2)
 #define HTEST_ASSERT_GE(val1, val2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperGE, val1, val2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperGE, val1, val2)
 #define HTEST_ASSERT_GT(val1, val2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperGT, val1, val2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperGT, val1, val2)
 
     // Define macro HTEST_DONT_DEFINE_ASSERT_XY to 1 to omit the definition of
     // ASSERT_XY(), which clashes with some users' own code.
@@ -326,22 +326,22 @@ namespace testing {
     // These macros evaluate their arguments exactly once.
 
 #define EXPECT_STREQ(s1, s2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperSTREQ, s1, s2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperSTREQ, s1, s2)
 #define EXPECT_STRNE(s1, s2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperSTRNE, s1, s2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperSTRNE, s1, s2)
 #define EXPECT_STRCASEEQ(s1, s2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperSTRCASEEQ, s1, s2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperSTRCASEEQ, s1, s2)
 #define EXPECT_STRCASENE(s1, s2) \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperSTRCASENE, s1, s2)
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperSTRCASENE, s1, s2)
 
 #define ASSERT_STREQ(s1, s2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperSTREQ, s1, s2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperSTREQ, s1, s2)
 #define ASSERT_STRNE(s1, s2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperSTRNE, s1, s2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperSTRNE, s1, s2)
 #define ASSERT_STRCASEEQ(s1, s2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperSTRCASEEQ, s1, s2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperSTRCASEEQ, s1, s2)
 #define ASSERT_STRCASENE(s1, s2) \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperSTRCASENE, s1, s2)
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperSTRCASENE, s1, s2)
 
     // Macros for comparing floating-point numbers.
     //
@@ -358,40 +358,29 @@ namespace testing {
     // interested in the implementation details.
 
 #define EXPECT_FLOAT_EQ(val1, val2)                                           \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<float>, \
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperFloatingPointEQ<float>, \
         val1, val2)
 
 #define EXPECT_DOUBLE_EQ(val1, val2)                                           \
-    EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, \
+    EXPECT_PRED_FORMAT2(::hawk::CmpHelperFloatingPointEQ<double>, \
         val1, val2)
 
 #define ASSERT_FLOAT_EQ(val1, val2)                                           \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<float>, \
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperFloatingPointEQ<float>, \
         val1, val2)
 
 #define ASSERT_DOUBLE_EQ(val1, val2)                                           \
-    ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, \
+    ASSERT_PRED_FORMAT2(::hawk::CmpHelperFloatingPointEQ<double>, \
         val1, val2)
 
 #define EXPECT_NEAR(val1, val2, abs_error)                                     \
-    EXPECT_PRED_FORMAT3(::testing::internal::DoubleNearPredFormat, val1, val2, \
+    EXPECT_PRED_FORMAT3(::hawk::DoubleNearPredFormat, val1, val2, \
         abs_error)
 
 #define ASSERT_NEAR(val1, val2, abs_error)                                     \
-    ASSERT_PRED_FORMAT3(::testing::internal::DoubleNearPredFormat, val1, val2, \
+    ASSERT_PRED_FORMAT3(::hawk::DoubleNearPredFormat, val1, val2, \
         abs_error)
 
-    // These predicate format functions work on floating-point values, and
-    // can be used in {ASSERT|EXPECT}_PRED_FORMAT2*(), e.g.
-    //
-    //   EXPECT_PRED_FORMAT2(testing::DoubleLE, Foo(), 5.0);
-
-    // Asserts that val1 is less than, or almost equal to, val2.  Fails
-    // otherwise.  In particular, it fails if either val1 or val2 is NaN.
-    HTEST_API_ AssertionResult FloatLE(const char* expr1, const char* expr2,
-        float val1, float val2);
-    HTEST_API_ AssertionResult DoubleLE(const char* expr1, const char* expr2,
-        double val1, double val2);
 
 #ifdef HTEST_OS_WINDOWS
 
@@ -405,16 +394,16 @@ namespace testing {
 // string representation of the error, if available, as well as the
 // hex result code.
 #define EXPECT_HRESULT_SUCCEEDED(expr) \
-    EXPECT_PRED_FORMAT1(::testing::internal::IsHRESULTSuccess, (expr))
+    EXPECT_PRED_FORMAT1(::hawk::IsHRESULTSuccess, (expr))
 
 #define ASSERT_HRESULT_SUCCEEDED(expr) \
-    ASSERT_PRED_FORMAT1(::testing::internal::IsHRESULTSuccess, (expr))
+    ASSERT_PRED_FORMAT1(::hawk::IsHRESULTSuccess, (expr))
 
 #define EXPECT_HRESULT_FAILED(expr) \
-    EXPECT_PRED_FORMAT1(::testing::internal::IsHRESULTFailure, (expr))
+    EXPECT_PRED_FORMAT1(::hawk::IsHRESULTFailure, (expr))
 
 #define ASSERT_HRESULT_FAILED(expr) \
-    ASSERT_PRED_FORMAT1(::testing::internal::IsHRESULTFailure, (expr))
+    ASSERT_PRED_FORMAT1(::hawk::IsHRESULTFailure, (expr))
 
 #endif // HTEST_OS_WINDOWS
 
@@ -449,7 +438,7 @@ namespace testing {
 // Therefore, a SCOPED_TRACE() would (correctly) only affect the
 // assertions in its own thread.
 #define SCOPED_TRACE(message)                                                 \
-    const ::testing::ScopedTrace HTEST_CONCAT_TOKEN_(htest_trace_, __LINE__)( \
+    const ::hawk::ScopedTrace HTEST_CONCAT_TOKEN_(htest_trace_, __LINE__)( \
         __FILE__, __LINE__, (message))
 
     // Compile-time assertion for type equality.
@@ -469,7 +458,7 @@ namespace testing {
     //
     //   template <typename T> class Foo {
     //    public:
-    //     void Bar() { testing::StaticAssertTypeEq<int, T>(); }
+    //     void Bar() { hawk::StaticAssertTypeEq<int, T>(); }
     //   };
     //
     // the code:
@@ -505,17 +494,17 @@ namespace testing {
 //   }
 
 // Note that we call GetTestTypeId() instead of GetTypeId<
-// ::testing::Test>() here to get the type ID of testing::Test.  This
+// ::hawk::Test>() here to get the type ID of hawk::Test.  This
 // is to work around a suspected linker bug when using Hawk Test as
 // a framework on Mac OS X.  The bug causes GetTypeId<
-// ::testing::Test>() to return different values depending on whether
+// ::hawk::Test>() to return different values depending on whether
 // the call is from the Hawk Test framework itself or from user test
 // code.  GetTestTypeId() is guaranteed to always return the same
 // value, as it always calls GetTypeId<>() from the Hawk Test
 // framework.
 #define HTEST_TEST(test_suite_name, test_name)               \
-    HTEST_TEST_(test_suite_name, test_name, ::testing::Test, \
-        ::testing::internal::GetTestTypeId())
+    HTEST_TEST_(test_suite_name, test_name, ::hawk::Test, \
+        ::hawk::internal::GetTestTypeId())
 
 // Define this macro to 1 to omit the definition of TEST(), which
 // is a generic name and clashes with some other libraries.
@@ -532,7 +521,7 @@ namespace testing {
 // A test fixture class must be declared earlier.  The user should put
 // the test code between braces after using this macro.  Example:
 //
-//   class FooTest : public testing::Test {
+//   class FooTest : public hawk::Test {
 //    protected:
 //     void SetUp() override { b_.AddElement(3); }
 //
@@ -550,7 +539,7 @@ namespace testing {
 //   }
 #define HTEST_TEST_F(test_fixture, test_name)          \
     HTEST_TEST_(test_fixture, test_name, test_fixture, \
-        ::testing::internal::GetTypeId<test_fixture>())
+        ::hawk::internal::GetTypeId<test_fixture>())
 #if !(defined(HTEST_DONT_DEFINE_TEST_F) && HTEST_DONT_DEFINE_TEST_F)
 #define TEST_F(test_fixture, test_name) HTEST_TEST_F(test_fixture, test_name)
 #endif
@@ -589,7 +578,7 @@ namespace testing {
     //
     // Use case example:
     //
-    // class MyFixture : public ::testing::Test {
+    // class MyFixture : public ::hawk::Test {
     //  public:
     //   // All of these optional, just like in regular macro usage.
     //   static void SetUpTestSuite() { ... }
@@ -609,7 +598,7 @@ namespace testing {
     //
     // void RegisterMyTests(const std::vector<int>& values) {
     //   for (int v : values) {
-    //     ::testing::RegisterTest(
+    //     ::hawk::RegisterTest(
     //         "MyFixture", ("Test" + std::to_string(v)).c_str(), nullptr,
     //         std::to_string(v).c_str(),
     //         __FILE__, __LINE__,
@@ -619,7 +608,7 @@ namespace testing {
     // }
     // ...
     // int main(int argc, char** argv) {
-    //   ::testing::init_hawk_test(&argc, argv);
+    //   ::hawk::init_hawk_test(&argc, argv);
     //   std::vector<int> values_to_test = LoadValuesFromConfig();
     //   RegisterMyTests(values_to_test);
     //   ...
@@ -650,7 +639,7 @@ namespace testing {
             new FactoryImpl { std::move(factory) });
     }
 
-} // namespace testing
+} // namespace hawk
 
 // Use this function in main() to run all tests.  It returns 0 if all
 // tests are successful, or 1 otherwise.
@@ -664,7 +653,7 @@ namespace testing {
 [[nodiscard]] int RUN_ALL_TESTS();
 
 inline int RUN_ALL_TESTS() {
-    return ::testing::UnitTest::GetInstance()->Run();
+    return ::hawk::UnitTest::GetInstance()->Run();
 }
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251

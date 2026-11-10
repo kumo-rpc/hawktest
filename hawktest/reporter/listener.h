@@ -20,7 +20,7 @@
 
 #include <hawktest/test/fwd.h>
 
-namespace testing {
+namespace hawk {
 
 
     // The interface for tracing execution of tests. The methods are organized in
@@ -203,5 +203,5 @@ namespace testing {
         TestEventListeners& operator=(const TestEventListeners&) = delete;
     };
 
-}  // namespace testing
+}  // namespace hawk
 

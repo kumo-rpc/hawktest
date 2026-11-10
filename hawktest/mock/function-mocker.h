@@ -48,7 +48,7 @@
 #include <hawktest/mock/internal/internal-utils.h>
 #include <hawktest/mock/internal/pp.h>
 
-namespace testing {
+namespace hawk {
 namespace internal {
 template <typename T>
 using identity_t = T;
@@ -110,7 +110,7 @@ constexpr bool ValidateSpec(const char (&spec)[N]) {
 // line is just a trick for working around a bug in MSVC 8.0, which
 // cannot handle it if we define FunctionMocker in ::testing.
 using internal::FunctionMocker;
-}  // namespace testing
+}  // namespace hawk
 
 #define MOCK_METHOD(...)                                               \
   GMOCK_INTERNAL_WARNING_PUSH()                                        \
@@ -169,7 +169,7 @@ using internal::FunctionMocker;
       "Signature must be a function type, maybe return type contains " \
       "unprotected comma.");                                           \
   static_assert(                                                       \
-      ::testing::tuple_size<typename ::testing::internal::Function<    \
+      ::hawk::tuple_size<typename ::hawk::internal::Function<    \
               __VA_ARGS__>::ArgumentTuple>::value == _N,               \
       "This method does not take " GMOCK_PP_STRINGIZE(                 \
           _N) " arguments. Parenthesize all types with unprotected commas.")
@@ -180,7 +180,7 @@ using internal::FunctionMocker;
 #define GMOCK_INTERNAL_MOCK_METHOD_IMPL(_N, _MethodName, _Constness,           \
                                         _Override, _Final, _NoexceptSpec,      \
                                         _CallType, _RefSpec, _Signature)       \
-  typename ::testing::internal::Function<GMOCK_PP_REMOVE_PARENS(               \
+  typename ::hawk::internal::Function<GMOCK_PP_REMOVE_PARENS(               \
       _Signature)>::Result                                                     \
   GMOCK_INTERNAL_EXPAND(_CallType)                                             \
       _MethodName(GMOCK_PP_REPEAT(GMOCK_INTERNAL_PARAMETER, _Signature, _N))   \
@@ -192,23 +192,23 @@ using internal::FunctionMocker;
     return GMOCK_MOCKER_(_N, _Constness, _MethodName)                          \
         .Invoke(GMOCK_PP_REPEAT(GMOCK_INTERNAL_FORWARD_ARG, _Signature, _N));  \
   }                                                                            \
-  ::testing::MockSpec<GMOCK_PP_REMOVE_PARENS(_Signature)> gmock_##_MethodName( \
+  ::hawk::MockSpec<GMOCK_PP_REMOVE_PARENS(_Signature)> gmock_##_MethodName( \
       GMOCK_PP_REPEAT(GMOCK_INTERNAL_MATCHER_PARAMETER, _Signature, _N))       \
       GMOCK_PP_IF(_Constness, const, ) _RefSpec {                              \
     GMOCK_MOCKER_(_N, _Constness, _MethodName).RegisterOwner(this);            \
     return GMOCK_MOCKER_(_N, _Constness, _MethodName)                          \
         .With(GMOCK_PP_REPEAT(GMOCK_INTERNAL_MATCHER_ARGUMENT, , _N));         \
   }                                                                            \
-  ::testing::MockSpec<GMOCK_PP_REMOVE_PARENS(_Signature)> gmock_##_MethodName( \
-      const ::testing::internal::WithoutMatchers&,                             \
-      GMOCK_PP_IF(_Constness, const, )::testing::internal::Function<           \
+  ::hawk::MockSpec<GMOCK_PP_REMOVE_PARENS(_Signature)> gmock_##_MethodName( \
+      const ::hawk::internal::WithoutMatchers&,                             \
+      GMOCK_PP_IF(_Constness, const, )::hawk::internal::Function<           \
           GMOCK_PP_REMOVE_PARENS(_Signature)>*) const _RefSpec _NoexceptSpec { \
-    return ::testing::internal::ThisRefAdjuster<GMOCK_PP_IF(                   \
+    return ::hawk::internal::ThisRefAdjuster<GMOCK_PP_IF(                   \
         _Constness, const, ) int _RefSpec>::Adjust(*this)                      \
         .gmock_##_MethodName(GMOCK_PP_REPEAT(                                  \
             GMOCK_INTERNAL_A_MATCHER_ARGUMENT, _Signature, _N));               \
   }                                                                            \
-  mutable ::testing::FunctionMocker<GMOCK_PP_REMOVE_PARENS(_Signature)>        \
+  mutable ::hawk::FunctionMocker<GMOCK_PP_REMOVE_PARENS(_Signature)>        \
   GMOCK_MOCKER_(_N, _Constness, _MethodName)
 
 #define GMOCK_INTERNAL_EXPAND(...) __VA_ARGS__
@@ -250,7 +250,7 @@ using internal::FunctionMocker;
 #ifdef GMOCK_INTERNAL_STRICT_SPEC_ASSERT
 #define GMOCK_INTERNAL_ASSERT_VALID_SPEC_ELEMENT(_i, _, _elem) \
   static_assert(                                                     \
-      ::testing::internal::ValidateSpec(GMOCK_PP_STRINGIZE(_elem)),  \
+      ::hawk::internal::ValidateSpec(GMOCK_PP_STRINGIZE(_elem)),  \
       "Token \'" GMOCK_PP_STRINGIZE(                                 \
           _elem) "\' cannot be recognized as a valid specification " \
                  "modifier. Is a ',' missing?");
@@ -316,7 +316,7 @@ using internal::FunctionMocker;
 // This allows us to work around the syntactic oddities of function/method
 // types.
 #define GMOCK_INTERNAL_SIGNATURE(_Ret, _Args)                                 \
-  ::testing::internal::identity_t<GMOCK_PP_IF(GMOCK_PP_IS_BEGIN_PARENS(_Ret), \
+  ::hawk::internal::identity_t<GMOCK_PP_IF(GMOCK_PP_IS_BEGIN_PARENS(_Ret), \
                                               GMOCK_PP_REMOVE_PARENS,         \
                                               GMOCK_PP_IDENTITY)(_Ret)>(      \
       GMOCK_PP_FOR_EACH(GMOCK_INTERNAL_GET_TYPE, _, _Args))
@@ -348,13 +348,13 @@ using internal::FunctionMocker;
 
 #define GMOCK_INTERNAL_A_MATCHER_ARGUMENT(_i, _Signature, _) \
   GMOCK_PP_COMMA_IF(_i)                                      \
-  ::testing::A<GMOCK_INTERNAL_ARG_O(_i, GMOCK_PP_REMOVE_PARENS(_Signature))>()
+  ::hawk::A<GMOCK_INTERNAL_ARG_O(_i, GMOCK_PP_REMOVE_PARENS(_Signature))>()
 
 #define GMOCK_INTERNAL_ARG_O(_i, ...) \
-  typename ::testing::internal::Function<__VA_ARGS__>::template Arg<_i>::type
+  typename ::hawk::internal::Function<__VA_ARGS__>::template Arg<_i>::type
 
 #define GMOCK_INTERNAL_MATCHER_O(_i, ...)                          \
-  const ::testing::Matcher<typename ::testing::internal::Function< \
+  const ::hawk::Matcher<typename ::hawk::internal::Function< \
       __VA_ARGS__>::template Arg<_i>::type>&
 
 #define MOCK_METHOD0(m, ...) GMOCK_INTERNAL_MOCK_METHODN(, , m, 0, __VA_ARGS__)
@@ -511,10 +511,10 @@ using internal::FunctionMocker;
 
 #define GMOCK_INTERNAL_MOCK_METHODN(constness, ct, Method, args_num, ...) \
   GMOCK_INTERNAL_ASSERT_VALID_SIGNATURE(                                  \
-      args_num, ::testing::internal::identity_t<__VA_ARGS__>);            \
+      args_num, ::hawk::internal::identity_t<__VA_ARGS__>);            \
   GMOCK_INTERNAL_MOCK_METHOD_IMPL(                                        \
       args_num, Method, GMOCK_PP_NARG0(constness), 0, 0, , ct, ,          \
-      (::testing::internal::identity_t<__VA_ARGS__>))
+      (::hawk::internal::identity_t<__VA_ARGS__>))
 
 #define GMOCK_MOCKER_(arity, constness, Method) \
   HTEST_CONCAT_TOKEN_(gmock##constness##arity##_##Method##_, __LINE__)

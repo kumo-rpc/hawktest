@@ -23,7 +23,7 @@
 #include <hawktest/reporter/json_unit_test_result_printer.h>
 #include <hawktest/reporter/constants.h>
 
-namespace testing {
+namespace hawk {
 
     // class Test
 
@@ -31,7 +31,7 @@ namespace testing {
 
     // The c'tor saves the states of all flags.
     Test::Test()
-        : htest_flag_saver_(new ::testing::internal::HTestFlagSaver) { }
+        : htest_flag_saver_(new ::hawk::internal::HTestFlagSaver) { }
 
     // The d'tor restores the states of all flags.  The actual work is
     // done by the d'tor of the htest_flag_saver_ field, and thus not
@@ -329,4 +329,4 @@ namespace testing {
             "TearDown()");
     }
 
-}  // namespace testing
+}  // namespace hawk

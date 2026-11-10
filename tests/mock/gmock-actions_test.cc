@@ -62,10 +62,10 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100 4503)
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4800)
 #endif
 
-namespace testing {
+namespace hawk {
 namespace {
 
-using ::testing::internal::BuiltInDefaultValue;
+using ::hawk::internal::BuiltInDefaultValue;
 
 TEST(TypeTraits, Negation) {
   // Direct use with std types.
@@ -830,7 +830,7 @@ TEST(ReturnTest, IsCovariant) {
 
 // Tests that the type of the value passed into Return is converted into T
 // when the action is cast to Action<T(...)> rather than when the action is
-// performed. See comments on testing::internal::ReturnAction in
+// performed. See comments on hawk::internal::ReturnAction in
 // gmock-actions.h for more information.
 class FromType {
  public:
@@ -1659,7 +1659,7 @@ TEST(WithArgsTest, ProvideAsLvalueToWillOnce) {
 
 #ifndef HTEST_OS_WINDOWS_MOBILE
 
-class SetErrnoAndReturnTest : public testing::Test {
+class SetErrnoAndReturnTest : public hawk::Test {
  protected:
   void SetUp() override { errno = 0; }
   void TearDown() override { errno = 0; }
@@ -1764,8 +1764,8 @@ TEST(ByRefTest, ExplicitType) {
 TEST(ByRefTest, PrintsCorrectly) {
   int n = 42;
   ::std::stringstream expected, actual;
-  testing::internal::UniversalPrinter<const int&>::Print(n, &expected);
-  testing::internal::UniversalPrint(ByRef(n), &actual);
+  hawk::internal::UniversalPrinter<const int&>::Print(n, &expected);
+  hawk::internal::UniversalPrint(ByRef(n), &actual);
   EXPECT_EQ(expected.str(), actual.str());
 }
 
@@ -1847,13 +1847,13 @@ TEST(MockMethodTest, CanReturnMoveOnlyValue_Return) {
 }
 
 TEST(MockMethodTest, CanReturnMoveOnlyValue_DoAllReturn) {
-  testing::MockFunction<void()> mock_function;
+  hawk::MockFunction<void()> mock_function;
   MockClass mock;
   std::unique_ptr<int> i = std::make_unique<int>(19);
   EXPECT_CALL(mock_function, Call());
   EXPECT_CALL(mock, MakeUnique())
       .WillOnce(DoAll(InvokeWithoutArgs(&mock_function,
-                                        &testing::MockFunction<void()>::Call),
+                                        &hawk::MockFunction<void()>::Call),
                       Return(ByMove(std::move(i)))));
 
   std::unique_ptr<int> result1 = mock.MakeUnique();
@@ -1893,10 +1893,10 @@ TEST(MockMethodTest, CanTakeMoveOnlyValue) {
   // EXPECT_CALL(mock, TakeUnique(_, _))
   //     .WillRepeatedly(DoAll([](std::unique_ptr<int> j) {})),
   //     Return(1)));
-  EXPECT_CALL(mock, TakeUnique(testing::Pointee(7)))
+  EXPECT_CALL(mock, TakeUnique(hawk::Pointee(7)))
       .WillOnce(Return(-7))
       .RetiresOnSaturation();
-  EXPECT_CALL(mock, TakeUnique(testing::IsNull()))
+  EXPECT_CALL(mock, TakeUnique(hawk::IsNull()))
       .WillOnce(Return(-1))
       .RetiresOnSaturation();
 
@@ -2191,10 +2191,10 @@ TEST(MoveOnlyArgumentsTest, ReturningActions) {
   Action<int(std::unique_ptr<int>)> a = Return(1);
   EXPECT_EQ(1, a.Perform(std::make_tuple(nullptr)));
 
-  a = testing::WithoutArgs([]() { return 7; });
+  a = hawk::WithoutArgs([]() { return 7; });
   EXPECT_EQ(7, a.Perform(std::make_tuple(nullptr)));
 
-  Action<void(std::unique_ptr<int>, int*)> a2 = testing::SetArgPointee<1>(3);
+  Action<void(std::unique_ptr<int>, int*)> a2 = hawk::SetArgPointee<1>(3);
   int x = 0;
   a2.Perform(std::make_tuple(nullptr, &x));
   EXPECT_EQ(x, 3);
@@ -2204,15 +2204,15 @@ ACTION(ReturnArity) { return std::tuple_size_v<args_type>; }
 
 TEST(ActionMacro, LargeArity) {
   EXPECT_EQ(
-      1, testing::Action<int(int)>(ReturnArity()).Perform(std::make_tuple(0)));
+      1, hawk::Action<int(int)>(ReturnArity()).Perform(std::make_tuple(0)));
   EXPECT_EQ(
       10,
-      testing::Action<int(int, int, int, int, int, int, int, int, int, int)>(
+      hawk::Action<int(int, int, int, int, int, int, int, int, int, int)>(
           ReturnArity())
           .Perform(std::make_tuple(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
   EXPECT_EQ(
       20,
-      testing::Action<int(int, int, int, int, int, int, int, int, int, int, int,
+      hawk::Action<int(int, int, int, int, int, int, int, int, int, int, int,
                           int, int, int, int, int, int, int, int, int)>(
           ReturnArity())
           .Perform(std::make_tuple(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
@@ -2220,7 +2220,7 @@ TEST(ActionMacro, LargeArity) {
 }
 
 }  // namespace
-}  // namespace testing
+}  // namespace hawk
 
 #if defined(_MSC_VER) && (_MSC_VER == 1900)
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4800

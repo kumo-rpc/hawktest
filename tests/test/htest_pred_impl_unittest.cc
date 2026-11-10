@@ -94,24 +94,24 @@ struct PredFunctor1 {
 
 // A unary predicate-formatter function.
 template <typename T1>
-testing::AssertionResult PredFormatFunction1(const char* e1, const T1& v1) {
-  if (PredFunction1(v1)) return testing::AssertionSuccess();
+hawk::AssertionResult PredFormatFunction1(const char* e1, const T1& v1) {
+  if (PredFunction1(v1)) return hawk::AssertionSuccess();
 
-  return testing::AssertionFailure()
+  return hawk::AssertionFailure()
          << e1 << " is expected to be positive, but evaluates to " << v1 << ".";
 }
 
 // A unary predicate-formatter functor.
 struct PredFormatFunctor1 {
   template <typename T1>
-  testing::AssertionResult operator()(const char* e1, const T1& v1) const {
+  hawk::AssertionResult operator()(const char* e1, const T1& v1) const {
     return PredFormatFunction1(e1, v1);
   }
 };
 
 // Tests for {EXPECT|ASSERT}_PRED_FORMAT1.
 
-class Predicate1Test : public testing::Test {
+class Predicate1Test : public hawk::Test {
  protected:
   void SetUp() override {
     expected_to_finish_ = true;
@@ -470,11 +470,11 @@ struct PredFunctor2 {
 
 // A binary predicate-formatter function.
 template <typename T1, typename T2>
-testing::AssertionResult PredFormatFunction2(const char* e1, const char* e2,
+hawk::AssertionResult PredFormatFunction2(const char* e1, const char* e2,
                                              const T1& v1, const T2& v2) {
-  if (PredFunction2(v1, v2)) return testing::AssertionSuccess();
+  if (PredFunction2(v1, v2)) return hawk::AssertionSuccess();
 
-  return testing::AssertionFailure()
+  return hawk::AssertionFailure()
          << e1 << " + " << e2
          << " is expected to be positive, but evaluates to " << v1 + v2 << ".";
 }
@@ -482,7 +482,7 @@ testing::AssertionResult PredFormatFunction2(const char* e1, const char* e2,
 // A binary predicate-formatter functor.
 struct PredFormatFunctor2 {
   template <typename T1, typename T2>
-  testing::AssertionResult operator()(const char* e1, const char* e2,
+  hawk::AssertionResult operator()(const char* e1, const char* e2,
                                       const T1& v1, const T2& v2) const {
     return PredFormatFunction2(e1, e2, v1, v2);
   }
@@ -490,7 +490,7 @@ struct PredFormatFunctor2 {
 
 // Tests for {EXPECT|ASSERT}_PRED_FORMAT2.
 
-class Predicate2Test : public testing::Test {
+class Predicate2Test : public hawk::Test {
  protected:
   void SetUp() override {
     expected_to_finish_ = true;
@@ -853,12 +853,12 @@ struct PredFunctor3 {
 
 // A ternary predicate-formatter function.
 template <typename T1, typename T2, typename T3>
-testing::AssertionResult PredFormatFunction3(const char* e1, const char* e2,
+hawk::AssertionResult PredFormatFunction3(const char* e1, const char* e2,
                                              const char* e3, const T1& v1,
                                              const T2& v2, const T3& v3) {
-  if (PredFunction3(v1, v2, v3)) return testing::AssertionSuccess();
+  if (PredFunction3(v1, v2, v3)) return hawk::AssertionSuccess();
 
-  return testing::AssertionFailure()
+  return hawk::AssertionFailure()
          << e1 << " + " << e2 << " + " << e3
          << " is expected to be positive, but evaluates to " << v1 + v2 + v3
          << ".";
@@ -867,7 +867,7 @@ testing::AssertionResult PredFormatFunction3(const char* e1, const char* e2,
 // A ternary predicate-formatter functor.
 struct PredFormatFunctor3 {
   template <typename T1, typename T2, typename T3>
-  testing::AssertionResult operator()(const char* e1, const char* e2,
+  hawk::AssertionResult operator()(const char* e1, const char* e2,
                                       const char* e3, const T1& v1,
                                       const T2& v2, const T3& v3) const {
     return PredFormatFunction3(e1, e2, e3, v1, v2, v3);
@@ -876,7 +876,7 @@ struct PredFormatFunctor3 {
 
 // Tests for {EXPECT|ASSERT}_PRED_FORMAT3.
 
-class Predicate3Test : public testing::Test {
+class Predicate3Test : public hawk::Test {
  protected:
   void SetUp() override {
     expected_to_finish_ = true;
@@ -1255,13 +1255,13 @@ struct PredFunctor4 {
 
 // A 4-ary predicate-formatter function.
 template <typename T1, typename T2, typename T3, typename T4>
-testing::AssertionResult PredFormatFunction4(const char* e1, const char* e2,
+hawk::AssertionResult PredFormatFunction4(const char* e1, const char* e2,
                                              const char* e3, const char* e4,
                                              const T1& v1, const T2& v2,
                                              const T3& v3, const T4& v4) {
-  if (PredFunction4(v1, v2, v3, v4)) return testing::AssertionSuccess();
+  if (PredFunction4(v1, v2, v3, v4)) return hawk::AssertionSuccess();
 
-  return testing::AssertionFailure()
+  return hawk::AssertionFailure()
          << e1 << " + " << e2 << " + " << e3 << " + " << e4
          << " is expected to be positive, but evaluates to "
          << v1 + v2 + v3 + v4 << ".";
@@ -1270,7 +1270,7 @@ testing::AssertionResult PredFormatFunction4(const char* e1, const char* e2,
 // A 4-ary predicate-formatter functor.
 struct PredFormatFunctor4 {
   template <typename T1, typename T2, typename T3, typename T4>
-  testing::AssertionResult operator()(const char* e1, const char* e2,
+  hawk::AssertionResult operator()(const char* e1, const char* e2,
                                       const char* e3, const char* e4,
                                       const T1& v1, const T2& v2, const T3& v3,
                                       const T4& v4) const {
@@ -1280,7 +1280,7 @@ struct PredFormatFunctor4 {
 
 // Tests for {EXPECT|ASSERT}_PRED_FORMAT4.
 
-class Predicate4Test : public testing::Test {
+class Predicate4Test : public hawk::Test {
  protected:
   void SetUp() override {
     expected_to_finish_ = true;
@@ -1672,14 +1672,14 @@ struct PredFunctor5 {
 
 // A 5-ary predicate-formatter function.
 template <typename T1, typename T2, typename T3, typename T4, typename T5>
-testing::AssertionResult PredFormatFunction5(const char* e1, const char* e2,
+hawk::AssertionResult PredFormatFunction5(const char* e1, const char* e2,
                                              const char* e3, const char* e4,
                                              const char* e5, const T1& v1,
                                              const T2& v2, const T3& v3,
                                              const T4& v4, const T5& v5) {
-  if (PredFunction5(v1, v2, v3, v4, v5)) return testing::AssertionSuccess();
+  if (PredFunction5(v1, v2, v3, v4, v5)) return hawk::AssertionSuccess();
 
-  return testing::AssertionFailure()
+  return hawk::AssertionFailure()
          << e1 << " + " << e2 << " + " << e3 << " + " << e4 << " + " << e5
          << " is expected to be positive, but evaluates to "
          << v1 + v2 + v3 + v4 + v5 << ".";
@@ -1688,7 +1688,7 @@ testing::AssertionResult PredFormatFunction5(const char* e1, const char* e2,
 // A 5-ary predicate-formatter functor.
 struct PredFormatFunctor5 {
   template <typename T1, typename T2, typename T3, typename T4, typename T5>
-  testing::AssertionResult operator()(const char* e1, const char* e2,
+  hawk::AssertionResult operator()(const char* e1, const char* e2,
                                       const char* e3, const char* e4,
                                       const char* e5, const T1& v1,
                                       const T2& v2, const T3& v3, const T4& v4,
@@ -1699,7 +1699,7 @@ struct PredFormatFunctor5 {
 
 // Tests for {EXPECT|ASSERT}_PRED_FORMAT5.
 
-class Predicate5Test : public testing::Test {
+class Predicate5Test : public hawk::Test {
  protected:
   void SetUp() override {
     expected_to_finish_ = true;

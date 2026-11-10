@@ -21,7 +21,7 @@
 #endif
 #endif
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
         // If *pstr starts with the given prefix, modifies *pstr to be right
@@ -436,4 +436,4 @@ namespace internal {
         }
 
 } // namespace internal
-} // namespace testing
+} // namespace hawk

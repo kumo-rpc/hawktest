@@ -42,6 +42,7 @@
 #include <hawktest/test/internal/unit_test_option.h>
 #include <hawktest/reporter/streaming_listener.h>
 #include <iterator>
+#include <hawktest/analysis/failure_reason.h>
 
 // Verifies that the command line flag variables can be accessed in
 // code once "htest.h" has been #included.
@@ -112,7 +113,7 @@ struct Bitfield {
 
 }  // namespace
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 #if HTEST_CAN_STREAM_RESULTS_
@@ -139,7 +140,7 @@ class StreamingListenerTest : public Test {
   FakeSocketWriter* const fake_sock_writer_;
   StreamingListener streamer_;
   UnitTest unit_test_;
-  TestInfo test_info_obj_;  // The name test_info_ was taken by testing::Test.
+  TestInfo test_info_obj_;  // The name test_info_ was taken by hawk::Test.
 };
 
 TEST_F(StreamingListenerTest, OnTestProgramEnd) {
@@ -230,83 +231,82 @@ class UnitTestRecordPropertyTestHelper : public Test {
 };
 
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk
 
-using testing::AssertionFailure;
-using testing::AssertionResult;
-using testing::AssertionSuccess;
-using testing::DoubleLE;
-using testing::EmptyTestEventListener;
-using testing::Environment;
-using testing::FloatLE;
-using testing::IsNotSubstring;
-using testing::IsSubstring;
-using testing::kMaxStackTraceDepth;
+using hawk::AssertionFailure;
+using hawk::AssertionResult;
+using hawk::AssertionSuccess;
+using hawk::DoubleLE;
+using hawk::EmptyTestEventListener;
+using hawk::Environment;
+using hawk::FloatLE;
+using hawk::IsNotSubstring;
+using hawk::IsSubstring;
+using hawk::kMaxStackTraceDepth;
 using hawk::Message;
-using testing::ScopedFakeTestPartResultReporter;
-using testing::StaticAssertTypeEq;
-using testing::Test;
-using testing::TestEventListeners;
-using testing::TestInfo;
-using testing::TestPartResult;
-using testing::TestPartResultArray;
-using testing::TestProperty;
-using testing::TestResult;
-using testing::TimeInMillis;
-using testing::UnitTest;
-using testing::internal::AlwaysFalse;
-using testing::internal::AlwaysTrue;
+using hawk::ScopedFakeTestPartResultReporter;
+using hawk::StaticAssertTypeEq;
+using hawk::Test;
+using hawk::TestEventListeners;
+using hawk::TestInfo;
+using hawk::TestPartResult;
+using hawk::TestPartResultArray;
+using hawk::TestProperty;
+using hawk::TestResult;
+using hawk::TimeInMillis;
+using hawk::UnitTest;
+using hawk::internal::AlwaysFalse;
+using hawk::internal::AlwaysTrue;
 using hawk::internal::AppendUserMessage;
-using testing::internal::ArrayAwareFind;
-using testing::internal::ArrayEq;
-using testing::internal::CodePointToUtf8;
-using testing::internal::CopyArray;
-using testing::internal::CountIf;
-using testing::internal::EqFailure;
-using testing::internal::FloatingPoint;
-using testing::internal::ForEach;
+using hawk::internal::ArrayAwareFind;
+using hawk::internal::ArrayEq;
+using hawk::internal::CodePointToUtf8;
+using hawk::internal::CopyArray;
+using hawk::internal::CountIf;
+using hawk::EqFailure;
+using hawk::internal::FloatingPoint;
+using hawk::internal::ForEach;
 using hawk::FormatEpochTimeInMillisAsIso8601;
 using hawk::FormatTimeInMillisAsSeconds;
-using testing::internal::GetElementOr;
-using testing::internal::GetNextRandomSeed;
-using testing::internal::GetRandomSeedFromFlag;
-using testing::internal::GetTestTypeId;
+using hawk::internal::GetElementOr;
+using hawk::internal::GetNextRandomSeed;
+using hawk::internal::GetRandomSeedFromFlag;
+using hawk::internal::GetTestTypeId;
 using hawk::GetTimeInMillis;
-using testing::internal::GetTypeId;
-using testing::internal::GetUnitTestImpl;
-using testing::internal::HTestFlagSaver;
-using testing::internal::HasDebugStringAndShortDebugString;
-using testing::internal::Int32FromEnvOrDie;
-using testing::internal::IsContainer;
-using testing::internal::IsContainerTest;
-using testing::internal::IsNotContainer;
-using testing::internal::kMaxRandomSeed;
-using testing::internal::kTestTypeIdInHawkTest;
-using testing::internal::NativeArray;
-using testing::internal::ParseFlag;
-using testing::internal::RelationToSourceCopy;
-using testing::internal::RelationToSourceReference;
-using testing::internal::ShouldRunTestOnShard;
-using testing::internal::ShouldShard;
-using testing::internal::Shuffle;
-using testing::internal::ShuffleRange;
-using testing::internal::SkipPrefix;
+using hawk::internal::GetTypeId;
+using hawk::internal::GetUnitTestImpl;
+using hawk::internal::HTestFlagSaver;
+using hawk::internal::HasDebugStringAndShortDebugString;
+using hawk::internal::IsContainer;
+using hawk::internal::IsContainerTest;
+using hawk::internal::IsNotContainer;
+using hawk::internal::kMaxRandomSeed;
+using hawk::internal::kTestTypeIdInHawkTest;
+using hawk::internal::NativeArray;
+using hawk::internal::ParseFlag;
+using hawk::internal::RelationToSourceCopy;
+using hawk::internal::RelationToSourceReference;
+using hawk::internal::ShouldRunTestOnShard;
+using hawk::internal::ShouldShard;
+using hawk::internal::Shuffle;
+using hawk::internal::ShuffleRange;
+using hawk::internal::SkipPrefix;
 using hawk::internal::StreamableToString;
-using testing::internal::String;
-using testing::internal::TestEventListenersAccessor;
-using testing::internal::TestResultAccessor;
-using testing::internal::WideStringToUtf8;
-using testing::internal::edit_distance::CalculateOptimalEdits;
-using testing::internal::edit_distance::CreateUnifiedDiff;
-using testing::internal::edit_distance::EditType;
+using hawk::internal::String;
+using hawk::internal::TestEventListenersAccessor;
+using hawk::internal::TestResultAccessor;
+using hawk::internal::WideStringToUtf8;
+using hawk::edit_distance::CalculateOptimalEdits;
+using hawk::edit_distance::CreateUnifiedDiff;
+using hawk::edit_distance::EditType;
 
 #if HTEST_HAS_STREAM_REDIRECTION
-using testing::internal::CaptureStdout;
-using testing::internal::GetCapturedStdout;
+using hawk::internal::CaptureStdout;
+using hawk::internal::GetCapturedStdout;
 #endif
 
 #ifdef HTEST_IS_THREADSAFE
-using testing::internal::ThreadWithParam;
+using hawk::internal::ThreadWithParam;
 #endif
 
 class TestingVector : public std::vector<int> {};
@@ -392,7 +392,7 @@ TEST(GetTestTypeIdTest, ReturnsTheSameValueInsideOrOutsideOfHawkTest) {
 
 // Tests canonicalize_for_std_lib_versioning.
 
-using ::testing::internal::canonicalize_for_std_lib_versioning;
+using ::hawk::internal::canonicalize_for_std_lib_versioning;
 
 TEST(canonicalize_for_std_lib_versioning, LeavesUnversionedNamesUnchanged) {
   EXPECT_EQ("std::bind", canonicalize_for_std_lib_versioning("std::bind"));
@@ -1097,7 +1097,7 @@ TEST_F(VectorShuffleTest, ShufflesRepeatably) {
 TEST(AssertHelperTest, AssertHelperIsSmall) {
   // To avoid breaking clients that use lots of assertions in one
   // function, we cannot grow the size of AssertHelper.
-  EXPECT_LE(sizeof(testing::internal::AssertHelper), sizeof(void*));
+  EXPECT_LE(sizeof(hawk::internal::AssertHelper), sizeof(void*));
 }
 
 // Tests String::EndsWithCaseInsensitive().
@@ -1711,44 +1711,6 @@ TEST_F(HTestFlagSaverTest, ModifyHTestFlags) { VerifyAndModifyFlags(); }
 // restored to their original values.
 TEST_F(HTestFlagSaverTest, VerifyHTestFlags) { VerifyAndModifyFlags(); }
 
-// Sets an environment variable with the given name to the given
-// value.  If the value argument is "", unsets the environment
-// variable.  The caller must ensure that both arguments are not NULL.
-static void SetEnv(const char* name, const char* value) {
-#ifdef HTEST_OS_WINDOWS_MOBILE
-  // Environment variables are not supported on Windows CE.
-  return;
-#elif defined(__BORLANDC__) || defined(__SunOS_5_8) || defined(__SunOS_5_9)
-  // C++Builder's putenv only stores a pointer to its parameter; we have to
-  // ensure that the string remains valid as long as it might be needed.
-  // We use an std::map to do so.
-  static std::map<std::string, std::string*> added_env;
-
-  // Because putenv stores a pointer to the string buffer, we can't delete the
-  // previous string (if present) until after it's replaced.
-  std::string* prev_env = NULL;
-  if (added_env.find(name) != added_env.end()) {
-    prev_env = added_env[name];
-  }
-  added_env[name] =
-      new std::string((Message() << name << "=" << value).GetString());
-
-  // The standard signature of putenv accepts a 'char*' argument. Other
-  // implementations, like C++Builder's, accept a 'const char*'.
-  // We cast away the 'const' since that would work for both variants.
-  putenv(const_cast<char*>(added_env[name]->c_str()));
-  delete prev_env;
-#elif defined(HTEST_OS_WINDOWS)  // If we are on Windows proper.
-  _putenv((Message() << name << "=" << value).GetString().c_str());
-#else
-  if (*value == '\0') {
-    unsetenv(name);
-  } else {
-    setenv(name, value, 1);
-  }
-#endif  // HTEST_OS_WINDOWS_MOBILE
-}
-
 // Tests ParseFlag().
 
 // Tests that ParseInt32Flag() returns false and doesn't change the
@@ -1801,35 +1763,6 @@ TEST(ParseInt32FlagTest, ParsesAndReturnsValidValue) {
   EXPECT_EQ(-789, value);
 }
 
-// Tests that Int32FromEnvOrDie() parses the value of the var or
-// returns the correct default.
-// Environment variables are not supported on Windows CE.
-#ifndef HTEST_OS_WINDOWS_MOBILE
-TEST(Int32FromEnvOrDieTest, ParsesAndReturnsValidValue) {
-  EXPECT_EQ(333, Int32FromEnvOrDie(HTEST_FLAG_PREFIX_UPPER_ "UnsetVar", 333));
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "UnsetVar", "123");
-  EXPECT_EQ(123, Int32FromEnvOrDie(HTEST_FLAG_PREFIX_UPPER_ "UnsetVar", 333));
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "UnsetVar", "-123");
-  EXPECT_EQ(-123, Int32FromEnvOrDie(HTEST_FLAG_PREFIX_UPPER_ "UnsetVar", 333));
-}
-#endif  // !HTEST_OS_WINDOWS_MOBILE
-
-// Tests that Int32FromEnvOrDie() aborts with an error message
-// if the variable is not an int32_t.
-TEST(Int32FromEnvOrDieDeathTest, AbortsOnFailure) {
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "VAR", "xxx");
-  EXPECT_DEATH_IF_SUPPORTED(
-      Int32FromEnvOrDie(HTEST_FLAG_PREFIX_UPPER_ "VAR", 123), ".*");
-}
-
-// Tests that Int32FromEnvOrDie() aborts with an error message
-// if the variable cannot be represented by an int32_t.
-TEST(Int32FromEnvOrDieDeathTest, AbortsOnInt32Overflow) {
-  SetEnv(HTEST_FLAG_PREFIX_UPPER_ "VAR", "1234567891234567891234");
-  EXPECT_DEATH_IF_SUPPORTED(
-      Int32FromEnvOrDie(HTEST_FLAG_PREFIX_UPPER_ "VAR", 123), ".*");
-}
-
 // Tests that ShouldRunTestOnShard() selects all tests
 // where there is 1 shard.
 TEST(ShouldRunTestOnShardTest, IsPartitionWhenThereIsOneShard) {
@@ -1840,7 +1773,7 @@ TEST(ShouldRunTestOnShardTest, IsPartitionWhenThereIsOneShard) {
   EXPECT_TRUE(ShouldRunTestOnShard(1, 0, 4));
 }
 
-class ShouldShardTest : public testing::Test {
+class ShouldShardTest : public hawk::Test {
  protected:
   void SetUp() override {}
 
@@ -1988,7 +1921,7 @@ void ExpectNonFatalFailureRecordingPropertyWithReservedKeyForCurrentTest(
 
 void ExpectNonFatalFailureRecordingPropertyWithReservedKeyForCurrentTestSuite(
     const char* key) {
-  const testing::TestSuite* test_suite =
+  const hawk::TestSuite* test_suite =
       UnitTest::GetInstance()->current_test_suite();
   ASSERT_TRUE(test_suite != nullptr);
   ExpectNonFatalFailureRecordingPropertyWithReservedKey(
@@ -2005,7 +1938,7 @@ void ExpectNonFatalFailureRecordingPropertyWithReservedKeyOutsideOfTestSuite(
 // functions correctly.  Creating a separate instance of UnitTest ensures it
 // is in a state similar to the UnitTest's singleton's between tests.
 class UnitTestRecordPropertyTest
-    : public testing::internal::UnitTestRecordPropertyTestHelper {
+    : public hawk::internal::UnitTestRecordPropertyTestHelper {
  public:
   static void SetUpTestSuite() {
     ExpectNonFatalFailureRecordingPropertyWithReservedKeyForCurrentTestSuite(
@@ -2023,7 +1956,7 @@ class UnitTestRecordPropertyTest
 
     Test::RecordProperty("test_case_key_1", "1");
 
-    const testing::TestSuite* test_suite =
+    const hawk::TestSuite* test_suite =
         UnitTest::GetInstance()->current_test_suite();
 
     ASSERT_TRUE(test_suite != nullptr);
@@ -2573,7 +2506,7 @@ TEST(StringAssertionTest, STRNE_Wide) {
   ASSERT_STRNE(L"abc\x8119", L"abc\x8120") << "This shouldn't happen";
 }
 
-// Tests for ::testing::IsSubstring().
+// Tests for ::hawk::IsSubstring().
 
 // Tests that IsSubstring() returns the correct result when the input
 // argument type is const char*.
@@ -2640,7 +2573,7 @@ TEST(IsSubstringTest, GeneratesCorrectMessageForWstring) {
 
 #endif  // HTEST_HAS_STD_WSTRING
 
-// Tests for ::testing::IsNotSubstring().
+// Tests for ::hawk::IsNotSubstring().
 
 // Tests that IsNotSubstring() returns the correct result when the input
 // argument type is const char*.
@@ -2721,7 +2654,7 @@ class FloatingPointTest : public Test {
     RawType nan2;
   };
 
-  typedef typename testing::internal::FloatingPoint<RawType> Floating;
+  typedef typename hawk::internal::FloatingPoint<RawType> Floating;
   typedef typename Floating::Bits Bits;
 
   void SetUp() override {
@@ -3196,7 +3129,7 @@ TEST_F(DisabledTestsTest, DISABLED_TestShouldNotRun_2) {
 template <typename T>
 class TypedTest : public Test {};
 
-typedef testing::Types<int, double> NumericTypes;
+typedef hawk::Types<int, double> NumericTypes;
 TYPED_TEST_SUITE(TypedTest, NumericTypes);
 
 TYPED_TEST(TypedTest, DISABLED_ShouldNotRun) {
@@ -3458,9 +3391,9 @@ TEST_F(NoFatalFailureTest, AssertNoFatalFailureOnFatalFailure) {
             htest_failures.GetTestPartResult(0).type());
   EXPECT_EQ(TestPartResult::kFatalFailure,
             htest_failures.GetTestPartResult(1).type());
-  EXPECT_PRED_FORMAT2(testing::IsSubstring, "some fatal failure",
+  EXPECT_PRED_FORMAT2(hawk::IsSubstring, "some fatal failure",
                       htest_failures.GetTestPartResult(0).message());
-  EXPECT_PRED_FORMAT2(testing::IsSubstring, "it does",
+  EXPECT_PRED_FORMAT2(hawk::IsSubstring, "it does",
                       htest_failures.GetTestPartResult(1).message());
 }
 
@@ -3477,11 +3410,11 @@ TEST_F(NoFatalFailureTest, ExpectNoFatalFailureOnFatalFailure) {
             htest_failures.GetTestPartResult(1).type());
   EXPECT_EQ(TestPartResult::kNonFatalFailure,
             htest_failures.GetTestPartResult(2).type());
-  EXPECT_PRED_FORMAT2(testing::IsSubstring, "some fatal failure",
+  EXPECT_PRED_FORMAT2(hawk::IsSubstring, "some fatal failure",
                       htest_failures.GetTestPartResult(0).message());
-  EXPECT_PRED_FORMAT2(testing::IsSubstring, "it does",
+  EXPECT_PRED_FORMAT2(hawk::IsSubstring, "it does",
                       htest_failures.GetTestPartResult(1).message());
-  EXPECT_PRED_FORMAT2(testing::IsSubstring, "other failure",
+  EXPECT_PRED_FORMAT2(hawk::IsSubstring, "other failure",
                       htest_failures.GetTestPartResult(2).message());
 }
 
@@ -3496,9 +3429,9 @@ TEST_F(NoFatalFailureTest, MessageIsStreamable) {
             htest_failures.GetTestPartResult(0).type());
   EXPECT_EQ(TestPartResult::kNonFatalFailure,
             htest_failures.GetTestPartResult(1).type());
-  EXPECT_PRED_FORMAT2(testing::IsSubstring, "foo",
+  EXPECT_PRED_FORMAT2(hawk::IsSubstring, "foo",
                       htest_failures.GetTestPartResult(0).message());
-  EXPECT_PRED_FORMAT2(testing::IsSubstring, "my message",
+  EXPECT_PRED_FORMAT2(hawk::IsSubstring, "my message",
                       htest_failures.GetTestPartResult(1).message());
 }
 
@@ -3978,7 +3911,7 @@ enum {
   // On Linux, kCaseB and kCaseA have the same value when truncated to
   // int size.  We want to test whether this will confuse the
   // assertions.
-  kCaseB = testing::internal::kMaxBiggestInt,
+  kCaseB = hawk::internal::kMaxBiggestInt,
 
 #else
 
@@ -4267,7 +4200,7 @@ TEST(AssertionSyntaxTest, WorksWithConst) {
 
 }  // namespace
 
-namespace testing {
+namespace hawk {
 
 // Tests that Hawk Test tracks SUCCEED*.
 TEST(SuccessfulAssertionTest, SUCCEED) {
@@ -4300,7 +4233,7 @@ TEST(SuccessfulAssertionTest, ASSERT_STR) {
   EXPECT_EQ(0, GetUnitTestImpl()->current_test_result()->total_part_count());
 }
 
-}  // namespace testing
+}  // namespace hawk
 
 namespace {
 
@@ -4709,7 +4642,7 @@ TEST(StreamableTest, NullCharPtr) {
 }
 
 // Tests that basic IO manipulators (endl, ends, and flush) can be
-// streamed to testing::Message.
+// streamed to hawk::Message.
 TEST(StreamableTest, BasicIoManip) {
   EXPECT_FATAL_FAILURE(
       {  // NOLINT
@@ -5264,7 +5197,7 @@ TEST(MessageTest, CanStreamUserTypeInUserNameSpaceWithStreamOperatorInGlobal) {
   EXPECT_STREQ("1(1)", msg.GetString().c_str());
 }
 
-// Tests streaming NULL pointers to testing::Message.
+// Tests streaming NULL pointers to hawk::Message.
 TEST(MessageTest, NullPointers) {
   Message msg;
   char* const p1 = nullptr;
@@ -5278,7 +5211,7 @@ TEST(MessageTest, NullPointers) {
   ASSERT_STREQ("(null)(null)(null)(null)(null)(null)", msg.GetString().c_str());
 }
 
-// Tests streaming wide strings to testing::Message.
+// Tests streaming wide strings to hawk::Message.
 TEST(MessageTest, WideStrings) {
   // Streams a NULL of type const wchar_t*.
   const wchar_t* const_wstr = nullptr;
@@ -5299,7 +5232,7 @@ TEST(MessageTest, WideStrings) {
 }
 
 // This line tests that we can define tests in the testing namespace.
-namespace testing {
+namespace hawk {
 
 // Tests the TestInfo class.
 
@@ -5765,8 +5698,8 @@ class ParseFlagsTest : public Test {
   static void TestParsingFlags(int argc1, const CharType** argv1, int argc2,
                                const CharType** argv2, const Flags& expected,
                                bool should_print_help) {
-    const bool saved_help_flag = ::testing::internal::g_help_flag;
-    ::testing::internal::g_help_flag = false;
+    const bool saved_help_flag = ::hawk::internal::g_help_flag;
+    ::hawk::internal::g_help_flag = false;
 
 #if HTEST_HAS_STREAM_REDIRECTION
     CaptureStdout();
@@ -5788,7 +5721,7 @@ class ParseFlagsTest : public Test {
 
     // parse_hawk_test_flags_only should neither set g_help_flag nor print the
     // help message for the flags it recognizes.
-    EXPECT_EQ(should_print_help, ::testing::internal::g_help_flag);
+    EXPECT_EQ(should_print_help, ::hawk::internal::g_help_flag);
 
 #if HTEST_HAS_STREAM_REDIRECTION
     const char* const expected_help_fragment =
@@ -5801,7 +5734,7 @@ class ParseFlagsTest : public Test {
     }
 #endif  // HTEST_HAS_STREAM_REDIRECTION
 
-    ::testing::internal::g_help_flag = saved_help_flag;
+    ::hawk::internal::g_help_flag = saved_help_flag;
   }
 
   // This macro wraps TestParsingFlags s.t. the user doesn't need
@@ -6285,21 +6218,21 @@ class FlagfileTest : public ParseFlagsTest {
     ParseFlagsTest::SetUp();
 
     testdata_path_.Set(internal::FilePath(
-        testing::TempDir() + internal::GetCurrentExecutableName().string() +
+        hawk::TempDir() + internal::GetCurrentExecutableName().string() +
         "_flagfile_test"));
-    testing::internal::posix::RmDir(testdata_path_.c_str());
+    hawk::internal::posix::RmDir(testdata_path_.c_str());
     EXPECT_TRUE(testdata_path_.CreateFolder());
   }
 
   void TearDown() override {
-    testing::internal::posix::RmDir(testdata_path_.c_str());
+    hawk::internal::posix::RmDir(testdata_path_.c_str());
     ParseFlagsTest::TearDown();
   }
 
   internal::FilePath CreateFlagfile(const char* contents) {
     internal::FilePath file_path(internal::FilePath::GenerateUniqueFileName(
         testdata_path_, internal::FilePath("unique"), "txt"));
-    FILE* f = testing::internal::posix::FOpen(file_path.c_str(), "w");
+    FILE* f = hawk::internal::posix::FOpen(file_path.c_str(), "w");
     fprintf(f, "%s", contents);
     fclose(f);
     return file_path;
@@ -6404,24 +6337,24 @@ TEST_F(CurrentTestInfoTest, WorksForSecondTestInATestSuite) {
       << "Expected the name of the currently running test.";
 }
 
-}  // namespace testing
+}  // namespace hawk
 
 // These two lines test that we can define tests in a namespace that
 // has the name "testing" and is nested in another namespace.
 namespace my_namespace {
-namespace testing {
+namespace hawk {
 
-// Makes sure that TEST knows to use ::testing::Test instead of
-// ::my_namespace::testing::Test.
+// Makes sure that TEST knows to use ::hawk::Test instead of
+// ::my_namespace::hawk::Test.
 class Test {};
 
-// Makes sure that an assertion knows to use ::testing::Message instead of
-// ::my_namespace::testing::Message.
+// Makes sure that an assertion knows to use ::hawk::Message instead of
+// ::my_namespace::hawk::Message.
 class Message {};
 
 // Makes sure that an assertion knows to use
-// ::testing::AssertionResult instead of
-// ::my_namespace::testing::AssertionResult.
+// ::hawk::AssertionResult instead of
+// ::my_namespace::hawk::AssertionResult.
 class AssertionResult {};
 
 // Tests that an assertion that should succeed works as expected.
@@ -6435,7 +6368,7 @@ TEST(NestedTestingNamespaceTest, Failure) {
                        "This failure is expected.");
 }
 
-}  // namespace testing
+}  // namespace hawk
 }  // namespace my_namespace
 
 // Tests that one can call superclass SetUp and TearDown methods--
@@ -6640,7 +6573,7 @@ TEST(HasNonfatalFailureTest, ReturnsTrueWhenThereAreFatalAndNonfatalFailures) {
 
 // A wrapper for calling HasNonfatalFailure outside of a test body.
 static bool HasNonfatalFailureHelper() {
-  return testing::Test::HasNonfatalFailure();
+  return hawk::Test::HasNonfatalFailure();
 }
 
 TEST(HasNonfatalFailureTest, WorksOutsideOfTestBody) {
@@ -6681,7 +6614,7 @@ TEST(HasFailureTest, ReturnsTrueWhenThereAreFatalAndNonfatalFailures) {
 }
 
 // A wrapper for calling HasFailure outside of a test body.
-static bool HasFailureHelper() { return testing::Test::HasFailure(); }
+static bool HasFailureHelper() { return hawk::Test::HasFailure(); }
 
 TEST(HasFailureTest, WorksOutsideOfTestBody) {
   EXPECT_FALSE(HasFailureHelper());
@@ -7209,10 +7142,10 @@ struct NotReallyAHashTable {
   typedef void reverse_iterator;
 };
 TEST(IsHashTable, Basic) {
-  EXPECT_TRUE(testing::internal::IsHashTable<AHashTable>::value);
-  EXPECT_FALSE(testing::internal::IsHashTable<NotReallyAHashTable>::value);
-  EXPECT_FALSE(testing::internal::IsHashTable<std::vector<int>>::value);
-  EXPECT_TRUE(testing::internal::IsHashTable<std::unordered_set<int>>::value);
+  EXPECT_TRUE(hawk::internal::IsHashTable<AHashTable>::value);
+  EXPECT_FALSE(hawk::internal::IsHashTable<NotReallyAHashTable>::value);
+  EXPECT_FALSE(hawk::internal::IsHashTable<std::vector<int>>::value);
+  EXPECT_TRUE(hawk::internal::IsHashTable<std::unordered_set<int>>::value);
 }
 
 // Tests ArrayEq().
@@ -7364,7 +7297,7 @@ TEST(NativeArrayTest, WorksForTwoDimensionalArray) {
 
 // ElemFromList
 TEST(ElemFromList, Basic) {
-  using testing::internal::ElemFromList;
+  using hawk::internal::ElemFromList;
   EXPECT_TRUE(
       (std::is_same<int, ElemFromList<0, int, double, char>::type>::value));
   EXPECT_TRUE(
@@ -7378,7 +7311,7 @@ TEST(ElemFromList, Basic) {
 
 // FlatTuple
 TEST(FlatTuple, Basic) {
-  using testing::internal::FlatTuple;
+  using hawk::internal::FlatTuple;
 
   FlatTuple<int, double, const char*> tuple = {};
   EXPECT_EQ(0, tuple.Get<0>());
@@ -7386,7 +7319,7 @@ TEST(FlatTuple, Basic) {
   EXPECT_EQ(nullptr, tuple.Get<2>());
 
   tuple = FlatTuple<int, double, const char*>(
-      testing::internal::FlatTupleConstructTag{}, 7, 3.2, "Foo");
+      hawk::internal::FlatTupleConstructTag{}, 7, 3.2, "Foo");
   EXPECT_EQ(7, tuple.Get<0>());
   EXPECT_EQ(3.2, tuple.Get<1>());
   EXPECT_EQ(std::string("Foo"), tuple.Get<2>());
@@ -7402,9 +7335,9 @@ std::string AddIntToString(int i, const std::string& s) {
 }  // namespace
 
 TEST(FlatTuple, Apply) {
-  using testing::internal::FlatTuple;
+  using hawk::internal::FlatTuple;
 
-  FlatTuple<int, std::string> tuple{testing::internal::FlatTupleConstructTag{},
+  FlatTuple<int, std::string> tuple{hawk::internal::FlatTupleConstructTag{},
                                     5, "Hello"};
 
   // Lambda.
@@ -7463,7 +7396,7 @@ int ConstructionCounting::copy_assignment_calls = 0;
 int ConstructionCounting::move_assignment_calls = 0;
 
 TEST(FlatTuple, ConstructorCalls) {
-  using testing::internal::FlatTuple;
+  using hawk::internal::FlatTuple;
 
   // Default construction.
   ConstructionCounting::Reset();
@@ -7480,7 +7413,7 @@ TEST(FlatTuple, ConstructorCalls) {
   {
     ConstructionCounting elem;
     FlatTuple<ConstructionCounting> tuple{
-        testing::internal::FlatTupleConstructTag{}, elem};
+        hawk::internal::FlatTupleConstructTag{}, elem};
   }
   EXPECT_EQ(ConstructionCounting::default_ctor_calls, 1);
   EXPECT_EQ(ConstructionCounting::dtor_calls, 2);
@@ -7493,7 +7426,7 @@ TEST(FlatTuple, ConstructorCalls) {
   ConstructionCounting::Reset();
   {
     FlatTuple<ConstructionCounting> tuple{
-        testing::internal::FlatTupleConstructTag{}, ConstructionCounting{}};
+        hawk::internal::FlatTupleConstructTag{}, ConstructionCounting{}};
   }
   EXPECT_EQ(ConstructionCounting::default_ctor_calls, 1);
   EXPECT_EQ(ConstructionCounting::dtor_calls, 2);
@@ -7537,7 +7470,7 @@ TEST(FlatTuple, ConstructorCalls) {
 }
 
 TEST(FlatTuple, ManyTypes) {
-  using testing::internal::FlatTuple;
+  using hawk::internal::FlatTuple;
 
   // Instantiate FlatTuple with 257 ints.
   // Tests show that we can do it with thousands of elements, but very long
@@ -7589,23 +7522,23 @@ TEST(SkipPrefixTest, DoesNotSkipWhenPrefixDoesNotMatch) {
 
 // Tests ad_hoc_test_result().
 TEST(AdHocTestResultTest, AdHocTestResultForUnitTestDoesNotShowFailure) {
-  const testing::TestResult& test_result =
-      testing::UnitTest::GetInstance()->ad_hoc_test_result();
+  const hawk::TestResult& test_result =
+      hawk::UnitTest::GetInstance()->ad_hoc_test_result();
   EXPECT_FALSE(test_result.Failed());
 }
 
-class DynamicUnitTestFixture : public testing::Test {};
+class DynamicUnitTestFixture : public hawk::Test {};
 
 class DynamicTest : public DynamicUnitTestFixture {
   void TestBody() override { EXPECT_TRUE(true); }
 };
 
-auto* dynamic_test = testing::RegisterTest(
+auto* dynamic_test = hawk::RegisterTest(
     "DynamicUnitTestFixture", "DynamicTest", "TYPE", "VALUE", __FILE__,
     __LINE__, []() -> DynamicUnitTestFixture* { return new DynamicTest; });
 
 TEST(RegisterTest, WasRegistered) {
-  const auto& unittest = testing::UnitTest::GetInstance();
+  const auto& unittest = hawk::UnitTest::GetInstance();
   for (int i = 0; i < unittest->total_test_suite_count(); ++i) {
     auto* tests = unittest->GetTestSuite(i);
     if (tests->name() != std::string("DynamicUnitTestFixture")) continue;
@@ -7634,21 +7567,21 @@ TEST(PatternGlobbingTest, MatchesFilterLinearRuntime) {
   pattern.push_back('b');
 
   EXPECT_TRUE(
-      testing::internal::UnitTestOptions::MatchesFilter(name, pattern.c_str()));
+      hawk::internal::UnitTestOptions::MatchesFilter(name, pattern.c_str()));
 }
 
 TEST(PatternGlobbingTest, MatchesFilterWithMultiplePatterns) {
   const std::string name = "aaaa";
-  EXPECT_TRUE(testing::internal::UnitTestOptions::MatchesFilter(name, "a*"));
-  EXPECT_TRUE(testing::internal::UnitTestOptions::MatchesFilter(name, "a*:"));
-  EXPECT_FALSE(testing::internal::UnitTestOptions::MatchesFilter(name, "ab"));
-  EXPECT_FALSE(testing::internal::UnitTestOptions::MatchesFilter(name, "ab:"));
-  EXPECT_TRUE(testing::internal::UnitTestOptions::MatchesFilter(name, "ab:a*"));
+  EXPECT_TRUE(hawk::internal::UnitTestOptions::MatchesFilter(name, "a*"));
+  EXPECT_TRUE(hawk::internal::UnitTestOptions::MatchesFilter(name, "a*:"));
+  EXPECT_FALSE(hawk::internal::UnitTestOptions::MatchesFilter(name, "ab"));
+  EXPECT_FALSE(hawk::internal::UnitTestOptions::MatchesFilter(name, "ab:"));
+  EXPECT_TRUE(hawk::internal::UnitTestOptions::MatchesFilter(name, "ab:a*"));
 }
 
 TEST(PatternGlobbingTest, MatchesFilterEdgeCases) {
-  EXPECT_FALSE(testing::internal::UnitTestOptions::MatchesFilter("", "*a"));
-  EXPECT_TRUE(testing::internal::UnitTestOptions::MatchesFilter("", "*"));
-  EXPECT_FALSE(testing::internal::UnitTestOptions::MatchesFilter("a", ""));
-  EXPECT_TRUE(testing::internal::UnitTestOptions::MatchesFilter("", ""));
+  EXPECT_FALSE(hawk::internal::UnitTestOptions::MatchesFilter("", "*a"));
+  EXPECT_TRUE(hawk::internal::UnitTestOptions::MatchesFilter("", "*"));
+  EXPECT_FALSE(hawk::internal::UnitTestOptions::MatchesFilter("a", ""));
+  EXPECT_TRUE(hawk::internal::UnitTestOptions::MatchesFilter("", ""));
 }

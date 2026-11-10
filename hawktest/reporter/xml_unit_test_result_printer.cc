@@ -21,7 +21,7 @@
 #include <hawktest/test/test_suite.h>
 #include <hawktest/test/unit_test.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // Creates a new XmlUnitTestResultPrinter.

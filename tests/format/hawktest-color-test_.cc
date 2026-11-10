@@ -37,7 +37,7 @@ private:
 } // namespace
 
 int main(int argc, char** argv) {
-    testing::init_hawk_test(&argc, argv);
+    hawk::init_hawk_test(&argc, argv);
 
     const ForcedTtySink sink;
     if (hawk::ReportSink::should_use_color(&sink)) {

@@ -42,7 +42,7 @@ extern "C" {
 #endif
 
 void setup() {
-    testing::init_hawk_test();
+    hawk::init_hawk_test();
 }
 
 void loop() {
@@ -58,7 +58,7 @@ void loop() {
 
 HTEST_API_ int main() {
     printf("Running main() from %s\n", __FILE__);
-    testing::init_hawk_test();
+    hawk::init_hawk_test();
     return RUN_ALL_TESTS();
 }
 #else
@@ -66,7 +66,7 @@ HTEST_API_ int main() {
 
 HTEST_API_ int main(int argc, char** argv) {
     printf("Running main() from %s\n", __FILE__);
-    testing::init_hawk_test(&argc, argv);
+    hawk::init_hawk_test(&argc, argv);
     return RUN_ALL_TESTS();
 }
 #endif

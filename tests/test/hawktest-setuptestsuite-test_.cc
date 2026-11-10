@@ -32,14 +32,14 @@
 
 #include <hawktest/test/htest.h>
 
-class SetupFailTest : public ::testing::Test {
+class SetupFailTest : public ::hawk::Test {
  protected:
   static void SetUpTestSuite() { ASSERT_STREQ("", "SET_UP_FAIL"); }
 };
 
 TEST_F(SetupFailTest, NoopPassingTest) {}
 
-class TearDownFailTest : public ::testing::Test {
+class TearDownFailTest : public ::hawk::Test {
  protected:
   static void TearDownTestSuite() { ASSERT_STREQ("", "TEAR_DOWN_FAIL"); }
 };

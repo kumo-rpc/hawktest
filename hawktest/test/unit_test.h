@@ -23,7 +23,7 @@
 #include <hawktest/reporter/listener.h>
 #include <hawktest/test/internal/param-util.h>
 
-namespace testing {
+namespace hawk {
 
 
     // A UnitTest consists of a vector of TestSuites.
@@ -258,8 +258,8 @@ namespace testing {
     // starts for it to take effect.  For example, you can define a global
     // variable like this:
     //
-    //   testing::Environment* const foo_env =
-    //       testing::AddGlobalTestEnvironment(new FooEnvironment);
+    //   hawk::Environment* const foo_env =
+    //       hawk::AddGlobalTestEnvironment(new FooEnvironment);
     //
     // However, we strongly recommend you to write your own main() and
     // call AddGlobalTestEnvironment() there, as relying on initialization
@@ -272,5 +272,5 @@ namespace testing {
         return UnitTest::GetInstance()->AddEnvironment(env);
     }
 
-}  // namespace testing
+}  // namespace hawk
 

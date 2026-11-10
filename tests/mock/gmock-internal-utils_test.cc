@@ -69,7 +69,7 @@ namespace proto2 {
 class Message;
 }  // namespace proto2
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 namespace {
@@ -369,7 +369,7 @@ TEST(ExpectTest, FailsNonfatallyOnFalse) {
 
 // Tests LogIsVisible().
 
-class LogIsVisibleTest : public ::testing::Test {
+class LogIsVisibleTest : public ::hawk::Test {
  protected:
   void SetUp() override { original_verbose_ = GMOCK_FLAG_GET(verbose); }
 
@@ -431,7 +431,7 @@ TEST(LogTest, NoStackTraceWhenStackFramesToSkipIsNegative) {
   GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
-struct MockStackTraceGetter : testing::internal::OsStackTraceGetterInterface {
+struct MockStackTraceGetter : hawk::internal::OsStackTraceGetterInterface {
   std::string CurrentStackTrace(int max_depth, int skip_count) override {
     return (hawk::Message() << max_depth << "::" << skip_count << "\n")
         .GetString();
@@ -767,4 +767,4 @@ TEST(Base64Unescape, LongStringWithWhiteSpaces) {
 
 }  // namespace
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk

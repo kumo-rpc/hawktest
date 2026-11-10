@@ -54,7 +54,7 @@
 #include <hawktest/mock/internal/port.h>
 #include <hawktest/test/htest.h>
 
-namespace testing {
+namespace hawk {
 
 template <typename>
 class Matcher;
@@ -172,8 +172,8 @@ GMOCK_DECLARE_KIND_(long double, kFloatingPoint);
 
 // Evaluates to the kind of 'type'.
 #define GMOCK_KIND_OF_(type)                   \
-  static_cast< ::testing::internal::TypeKind>( \
-      ::testing::internal::KindOf<type>::value)
+  static_cast< ::hawk::internal::TypeKind>( \
+      ::hawk::internal::KindOf<type>::value)
 
 // LosslessArithmeticConvertibleImpl<kFromKind, From, kToKind, To>::value
 // is true if and only if arithmetic type From can be losslessly converted to
@@ -499,6 +499,6 @@ bool Base64Unescape(const std::string& encoded, std::string* decoded);
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100 4805
 
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk
 
 #endif  // GOOGLEMOCK_INCLUDE_GMOCK_INTERNAL_GMOCK_INTERNAL_UTILS_H_

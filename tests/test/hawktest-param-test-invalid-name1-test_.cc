@@ -33,17 +33,17 @@
 #include <hawktest/test/htest.h>
 
 namespace {
-class DummyTest : public ::testing::TestWithParam<const char *> {};
+class DummyTest : public ::hawk::TestWithParam<const char *> {};
 
 TEST_P(DummyTest, Dummy) {}
 
 INSTANTIATE_TEST_SUITE_P(InvalidTestName, DummyTest,
-                         ::testing::Values("InvalidWithQuotes"),
-                         ::testing::PrintToStringParamName());
+                         ::hawk::Values("InvalidWithQuotes"),
+                         ::hawk::PrintToStringParamName());
 
 }  // namespace
 
 int main(int argc, char *argv[]) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
   return RUN_ALL_TESTS();
 }

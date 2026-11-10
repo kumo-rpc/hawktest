@@ -6,7 +6,7 @@
   GMOCK_PP_CAT(GMOCK_TEST_REPLACE_comma_WITH_COMMA_I_, x)
 
 // Static assertions.
-namespace testing {
+namespace hawk {
 namespace internal {
 namespace gmockpp {
 
@@ -82,4 +82,4 @@ static_assert(GMOCK_PP_NARG0() == 0, "");
 
 }  // namespace gmockpp
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk

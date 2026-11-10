@@ -65,7 +65,7 @@
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4800)
 #endif
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 // Protects the mock object registry (in class Mock), all function
@@ -73,7 +73,7 @@ namespace internal {
 HTEST_API_ HTEST_DEFINE_STATIC_MUTEX_(g_gmock_mutex);
 
 // Logs a message including file and line number information.
-HTEST_API_ void LogWithLocation(testing::internal::LogSeverity severity,
+HTEST_API_ void LogWithLocation(hawk::internal::LogSeverity severity,
                                 const char* file, int line,
                                 const std::string& message) {
   ::std::ostringstream s;
@@ -524,7 +524,7 @@ class MockObjectRegistry {
                    "means that its expectations aren't verified, which is "
                    "usually a test bug. If you really intend to leak a mock, "
                    "you can suppress this error using "
-                   "testing::Mock::AllowLeak(mock_object), or you may use a "
+                   "hawk::Mock::AllowLeak(mock_object), or you may use a "
                    "fake or stub instead of a mock.\n";
       std::cout.flush();
       ::std::cerr.flush();
@@ -788,7 +788,7 @@ InSequence::~InSequence() {
   }
 }
 
-}  // namespace testing
+}  // namespace hawk
 
 #if defined(_MSC_VER) && (_MSC_VER == 1900)
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4800

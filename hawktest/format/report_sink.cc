@@ -35,17 +35,17 @@ namespace {
         if (term == nullptr) {
             return false;
         }
-        return testing::internal::String::CStringEquals(term, "xterm")
-            || testing::internal::String::CStringEquals(term, "xterm-color")
-            || testing::internal::String::CStringEquals(term, "xterm-ghostty")
-            || testing::internal::String::CStringEquals(term, "xterm-kitty")
-            || testing::internal::String::CStringEquals(term, "alacritty")
-            || testing::internal::String::CStringEquals(term, "screen")
-            || testing::internal::String::CStringEquals(term, "tmux")
-            || testing::internal::String::CStringEquals(term, "rxvt-unicode")
-            || testing::internal::String::CStringEquals(term, "linux")
-            || testing::internal::String::CStringEquals(term, "cygwin")
-            || testing::internal::String::EndsWithCaseInsensitive(term, std::string("-256color"));
+        return hawk::internal::String::CStringEquals(term, "xterm")
+            || hawk::internal::String::CStringEquals(term, "xterm-color")
+            || hawk::internal::String::CStringEquals(term, "xterm-ghostty")
+            || hawk::internal::String::CStringEquals(term, "xterm-kitty")
+            || hawk::internal::String::CStringEquals(term, "alacritty")
+            || hawk::internal::String::CStringEquals(term, "screen")
+            || hawk::internal::String::CStringEquals(term, "tmux")
+            || hawk::internal::String::CStringEquals(term, "rxvt-unicode")
+            || hawk::internal::String::CStringEquals(term, "linux")
+            || hawk::internal::String::CStringEquals(term, "cygwin")
+            || hawk::internal::String::EndsWithCaseInsensitive(term, std::string("-256color"));
     }
 
     const std::string& term_name() {
@@ -80,13 +80,13 @@ namespace {
 
     bool ReportSink::should_use_color(const ReportSink* sink) {
         const char* const htest_color = FLAGS_htest_color.c_str();
-        if (testing::internal::String::CaseInsensitiveCStringEquals(htest_color, "auto")) {
+        if (hawk::internal::String::CaseInsensitiveCStringEquals(htest_color, "auto")) {
             return sink != nullptr && sink->is_tty() && sink->is_ansi_color();
         }
-        return testing::internal::String::CaseInsensitiveCStringEquals(htest_color, "yes")
-            || testing::internal::String::CaseInsensitiveCStringEquals(htest_color, "true")
-            || testing::internal::String::CaseInsensitiveCStringEquals(htest_color, "t")
-            || testing::internal::String::CStringEquals(htest_color, "1");
+        return hawk::internal::String::CaseInsensitiveCStringEquals(htest_color, "yes")
+            || hawk::internal::String::CaseInsensitiveCStringEquals(htest_color, "true")
+            || hawk::internal::String::CaseInsensitiveCStringEquals(htest_color, "t")
+            || hawk::internal::String::CStringEquals(htest_color, "1");
     }
 
     StdoutSink::StdoutSink() {

@@ -45,7 +45,7 @@ namespace {
 
 // Test HasFixtureTest.
 
-class HasFixtureTest : public testing::Test {};
+class HasFixtureTest : public hawk::Test {};
 
 TEST_F(HasFixtureTest, Test0) {}
 
@@ -115,37 +115,37 @@ TEST(DISABLED_HasDisabledSuite, Test4) { FAIL() << "Expected failure."; }
 
 // Test HasParametersTest
 
-class HasParametersTest : public testing::TestWithParam<int> {};
+class HasParametersTest : public hawk::TestWithParam<int> {};
 
 TEST_P(HasParametersTest, Test1) { FAIL() << "Expected failure."; }
 
 TEST_P(HasParametersTest, Test2) { FAIL() << "Expected failure."; }
 
 INSTANTIATE_TEST_SUITE_P(HasParametersSuite, HasParametersTest,
-                         testing::Values(1, 2));
+                         hawk::Values(1, 2));
 
-class MyTestListener : public ::testing::EmptyTestEventListener {
-  void OnTestSuiteStart(const ::testing::TestSuite& test_suite) override {
+class MyTestListener : public ::hawk::EmptyTestEventListener {
+  void OnTestSuiteStart(const ::hawk::TestSuite& test_suite) override {
     printf("We are in OnTestSuiteStart of %s.\n", test_suite.name());
   }
 
-  void OnTestStart(const ::testing::TestInfo& test_info) override {
+  void OnTestStart(const ::hawk::TestInfo& test_info) override {
     printf("We are in OnTestStart of %s.%s.\n", test_info.test_suite_name(),
            test_info.name());
   }
 
   void OnTestPartResult(
-      const ::testing::TestPartResult& test_part_result) override {
+      const ::hawk::TestPartResult& test_part_result) override {
     printf("We are in OnTestPartResult %s:%d.\n", test_part_result.file_name(),
            test_part_result.line_number());
   }
 
-  void OnTestEnd(const ::testing::TestInfo& test_info) override {
+  void OnTestEnd(const ::hawk::TestInfo& test_info) override {
     printf("We are in OnTestEnd of %s.%s.\n", test_info.test_suite_name(),
            test_info.name());
   }
 
-  void OnTestSuiteEnd(const ::testing::TestSuite& test_suite) override {
+  void OnTestSuiteEnd(const ::hawk::TestSuite& test_suite) override {
     printf("We are in OnTestSuiteEnd of %s.\n", test_suite.name());
   }
 };
@@ -163,7 +163,7 @@ TEST(HasSkipTest, Test4) { FAIL() << "Expected failure."; }
 }  // namespace
 
 int main(int argc, char** argv) {
-  ::testing::init_hawk_test(&argc, argv);
-  ::testing::UnitTest::GetInstance()->listeners().Append(new MyTestListener());
+  ::hawk::init_hawk_test(&argc, argv);
+  ::hawk::UnitTest::GetInstance()->listeners().Append(new MyTestListener());
   return RUN_ALL_TESTS();
 }

@@ -50,7 +50,7 @@
 // possible loss of data and C4100, unreferenced local parameter
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
 
-namespace testing {
+namespace hawk {
 namespace gmock_matchers_test {
 namespace {
 
@@ -1738,7 +1738,7 @@ TEST_P(FieldsAreTestP, CanExplainMatchResultTo) {
 
 #if defined(__cpp_structured_bindings) && __cpp_structured_bindings >= 201606
 TEST(FieldsAreTest, StructuredBindings) {
-  // testing::FieldsAre can also match aggregates and such with C++17 and up.
+  // hawk::FieldsAre can also match aggregates and such with C++17 and up.
   struct MyType {
     int i;
     std::string str;
@@ -2516,6 +2516,6 @@ TEST(PolymorphicMatcherTest, CanAccessImpl) {
 
 }  // namespace
 }  // namespace gmock_matchers_test
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100

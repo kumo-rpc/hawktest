@@ -21,7 +21,7 @@
 #include <hawktest/test/unit_test.h>
 #include <hawktest/reporter/constants.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // Creates a new JsonUnitTestResultPrinter.

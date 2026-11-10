@@ -29,7 +29,7 @@
 #include <hawktest/test/internal/stack.h>
 #include <hawktest/reporter/default_global_reporter.h>
 
-namespace testing::internal {
+namespace hawk::internal {
 
             // The private implementation of the UnitTest class.  We don't protect
         // the methods under a mutex, as this class is not accessible by a
@@ -366,7 +366,7 @@ namespace testing::internal {
                 }
             };
 
-            friend class ::testing::UnitTest;
+            friend class ::hawk::UnitTest;
 
             // Used by UnitTest::Run() to capture the state of
             // FLAGS_htest_catch_exceptions at the moment it starts.
@@ -514,4 +514,4 @@ namespace testing::internal {
     }
 
 
-}  // namespace testing::internal
+}  // namespace hawk::internal

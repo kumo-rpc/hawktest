@@ -29,9 +29,31 @@
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/flags/parser.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
+
+#if HTEST_HAS_FILE_SYSTEM
+        // Reads the HTEST_SHARD_STATUS_FILE environment variable, and creates the file
+        // if the variable is present. If a file already exists at this location, this
+        // function will write over it. If the variable is present, but the file cannot
+        // be created, prints an error and exits.
+        void WriteToShardStatusFileIfNeeded() {
+            const std::optional<std::string> test_shard_file = hawk::get_env(hawk::Constants::kTestShardStatusFile);
+            if (test_shard_file.has_value()) {
+                FILE* const file = posix::FOpen(test_shard_file->c_str(), "w");
+                if (file == nullptr) {
+                    hawk::stdout_printer().fmt_red(
+                        "Could not write to the test shard status file \"{}\" "
+                        "specified by the {} environment variable.\n",
+                        *test_shard_file, hawk::Constants::kTestShardStatusFile);
+                    fflush(stdout);
+                    exit(EXIT_FAILURE);
+                }
+                fclose(file);
+            }
+        }
+#endif // HTEST_HAS_FILE_SYSTEM
 
         UnitTestImpl::UnitTestImpl(UnitTest* parent)
             : parent_(parent)

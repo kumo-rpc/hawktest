@@ -66,7 +66,7 @@
 #include <hawktest/test/spi.h>
 #include <hawktest/test/htest.h>
 
-namespace testing {
+namespace hawk {
 namespace gmock_matchers_test {
 
 using std::greater;
@@ -81,19 +81,19 @@ using std::pair;
 using std::set;
 using std::stringstream;
 using std::vector;
-using testing::internal::DummyMatchResultListener;
-using testing::internal::ElementMatcherPair;
-using testing::internal::ElementMatcherPairs;
-using testing::internal::ElementsAreArrayMatcher;
-using testing::internal::ExplainMatchFailureTupleTo;
-using testing::internal::FloatingEqMatcher;
-using testing::internal::FormatMatcherDescription;
-using testing::internal::IsReadableTypeName;
-using testing::internal::MatchMatrix;
-using testing::internal::PredicateFormatterFromMatcher;
-using testing::internal::RE;
-using testing::internal::StreamMatchResultListener;
-using testing::internal::Strings;
+using hawk::internal::DummyMatchResultListener;
+using hawk::internal::ElementMatcherPair;
+using hawk::internal::ElementMatcherPairs;
+using hawk::internal::ElementsAreArrayMatcher;
+using hawk::internal::ExplainMatchFailureTupleTo;
+using hawk::internal::FloatingEqMatcher;
+using hawk::internal::FormatMatcherDescription;
+using hawk::internal::IsReadableTypeName;
+using hawk::internal::MatchMatrix;
+using hawk::internal::PredicateFormatterFromMatcher;
+using hawk::internal::RE;
+using hawk::internal::StreamMatchResultListener;
+using hawk::internal::Strings;
 
 // Helper for testing container-valued matchers in mock method context. It is
 // important to test matchers in this context, since it requires additional type
@@ -155,7 +155,7 @@ class GreaterThanMatcher : public MatcherInterface<T> {
   INSTANTIATE_TEST_SUITE_P(MatcherInterface, TestSuite##P, Values(false)); \
   INSTANTIATE_TEST_SUITE_P(GtestMatcher, TestSuite##P, Values(true))
 
-class HTestMatcherTestP : public testing::TestWithParam<bool> {
+class HTestMatcherTestP : public hawk::TestWithParam<bool> {
  public:
   template <typename T>
   Matcher<T> GreaterThan(T n) {
@@ -189,6 +189,6 @@ std::string Explain(const MatcherType& m, const Value& x) {
 }
 
 }  // namespace gmock_matchers_test
-}  // namespace testing
+}  // namespace hawk
 
 #endif  // GOOGLEMOCK_TEST_GMOCK_MATCHERS_TEST_H_

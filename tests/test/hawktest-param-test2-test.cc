@@ -37,8 +37,8 @@
 #include <hawktest/test/htest.h>
 #include <tests/test/hawktest-param-test-test.h>
 
-using ::testing::Values;
-using ::testing::internal::ParamGenerator;
+using ::hawk::Values;
+using ::hawk::internal::ParamGenerator;
 
 // Tests that generators defined in a different translation unit
 // are functional. The test using extern_gen is defined

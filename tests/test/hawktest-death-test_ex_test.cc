@@ -88,7 +88,7 @@ TEST(SehExceptionDeasTest, CatchExceptionsDoesNotInterfere) {
 #endif  // HTEST_HAS_DEATH_TEST
 
 int main(int argc, char** argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
   (void)(FLAGS_htest_catch_exceptions = (HTEST_ENABLE_CATCH_EXCEPTIONS_ != 0));
   return RUN_ALL_TESTS();
 }

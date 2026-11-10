@@ -44,7 +44,7 @@
 #include <string>
 #include <vector>
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 // Returns the description for a matcher defined using the MATCHER*()
@@ -478,4 +478,4 @@ bool UnorderedElementsAreMatcherImplBase::FindPairing(
 }
 
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk

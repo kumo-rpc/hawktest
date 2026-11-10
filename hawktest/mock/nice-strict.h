@@ -72,7 +72,7 @@
 #include <hawktest/mock/spec-builders.h>
 #include <hawktest/mock/internal/port.h>
 
-namespace testing {
+namespace hawk {
 template <class MockClass>
 class [[nodiscard]] NiceMock;
 template <class MockClass>
@@ -94,7 +94,7 @@ constexpr bool HasStrictnessModifier() {
   return decltype(StrictnessModifierProbe(std::declval<const T&>()))::value;
 }
 
-// Base classes that register and deregister with testing::Mock to alter the
+// Base classes that register and deregister with hawk::Mock to alter the
 // default behavior around uninteresting calls. Inheriting from one of these
 // classes first and then MockClass ensures the MockClass constructor is run
 // after registration, and that the MockClass destructor runs before
@@ -114,11 +114,11 @@ template <typename Base>
 class [[nodiscard]] NiceMockImpl {
  public:
   NiceMockImpl() {
-    ::testing::Mock::AllowUninterestingCalls(reinterpret_cast<uintptr_t>(this));
+    ::hawk::Mock::AllowUninterestingCalls(reinterpret_cast<uintptr_t>(this));
   }
 
   ~NiceMockImpl() {
-    ::testing::Mock::UnregisterCallReaction(reinterpret_cast<uintptr_t>(this));
+    ::hawk::Mock::UnregisterCallReaction(reinterpret_cast<uintptr_t>(this));
   }
 };
 
@@ -126,11 +126,11 @@ template <typename Base>
 class [[nodiscard]] NaggyMockImpl {
  public:
   NaggyMockImpl() {
-    ::testing::Mock::WarnUninterestingCalls(reinterpret_cast<uintptr_t>(this));
+    ::hawk::Mock::WarnUninterestingCalls(reinterpret_cast<uintptr_t>(this));
   }
 
   ~NaggyMockImpl() {
-    ::testing::Mock::UnregisterCallReaction(reinterpret_cast<uintptr_t>(this));
+    ::hawk::Mock::UnregisterCallReaction(reinterpret_cast<uintptr_t>(this));
   }
 };
 
@@ -138,11 +138,11 @@ template <typename Base>
 class [[nodiscard]] StrictMockImpl {
  public:
   StrictMockImpl() {
-    ::testing::Mock::FailUninterestingCalls(reinterpret_cast<uintptr_t>(this));
+    ::hawk::Mock::FailUninterestingCalls(reinterpret_cast<uintptr_t>(this));
   }
 
   ~StrictMockImpl() {
-    ::testing::Mock::UnregisterCallReaction(reinterpret_cast<uintptr_t>(this));
+    ::hawk::Mock::UnregisterCallReaction(reinterpret_cast<uintptr_t>(this));
   }
 };
 
@@ -275,6 +275,6 @@ class [[nodiscard]] HTEST_INTERNAL_EMPTY_BASE_CLASS StrictMock
 
 #undef HTEST_INTERNAL_EMPTY_BASE_CLASS
 
-}  // namespace testing
+}  // namespace hawk
 
 #endif  // GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_NICE_STRICT_H_

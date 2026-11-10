@@ -19,7 +19,7 @@
 #include <hawktest/test/scoped_trace.h>
 #include <hawktest/test/unit_test.h>
 
-namespace testing {
+namespace hawk {
 
 
     // Pushes the given source file location and message onto a per-thread
@@ -37,4 +37,4 @@ namespace testing {
     ScopedTrace::~ScopedTrace() HTEST_LOCK_EXCLUDED_(&UnitTest::mutex_) {
         UnitTest::GetInstance()->PopHTestTrace();
     }
-}  // namespace testing
+}  // namespace hawk

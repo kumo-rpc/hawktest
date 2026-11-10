@@ -54,7 +54,7 @@
 #include <hawktest/mock/internal/port.h>
 #include <hawktest/test/htest.h>
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 // Joins a vector of strings as if they are fields of a tuple; returns
@@ -185,7 +185,7 @@ HTEST_API_ void Log(LogSeverity severity, const std::string& message,
       std::cout << "\n";
     }
     std::cout << "Stack trace:\n"
-              << ::testing::internal::GetCurrentOsStackTraceExceptTop(
+              << ::hawk::internal::GetCurrentOsStackTraceExceptTop(
                      actual_to_skip);
   }
   std::cout << ::std::flush;
@@ -258,4 +258,4 @@ bool Base64Unescape(const std::string& encoded, std::string* decoded) {
 }
 
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk

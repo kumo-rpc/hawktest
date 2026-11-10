@@ -36,12 +36,12 @@
 
 namespace {
 
-using ::testing::EmptyTestEventListener;
-using ::testing::init_hawk_test;
-using ::testing::Test;
-using ::testing::TestEventListeners;
-using ::testing::TestInfo;
-using ::testing::UnitTest;
+using ::hawk::EmptyTestEventListener;
+using ::hawk::init_hawk_test;
+using ::hawk::Test;
+using ::hawk::TestEventListeners;
+using ::hawk::TestInfo;
+using ::hawk::UnitTest;
 
 // The test methods are empty, as the sole purpose of this program is
 // to print the test names before/after shuffling.

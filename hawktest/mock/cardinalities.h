@@ -53,7 +53,7 @@
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 /* class A needs to have dll-interface to be used by clients of class B */)
 
-namespace testing {
+namespace hawk {
 
 // To implement a cardinality Foo, define:
 //   1. a class FooCardinality that implements the
@@ -155,7 +155,7 @@ inline Cardinality MakeCardinality(const CardinalityInterface* c) {
   return Cardinality(c);
 }
 
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 

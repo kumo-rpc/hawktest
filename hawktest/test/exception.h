@@ -21,7 +21,7 @@
 #include <hawktest/test/fwd.h>
 #include <hawktest/test/internal/unit_test_impl.h>
 
-namespace testing {
+namespace hawk {
 
 #if HTEST_HAS_EXCEPTIONS
     namespace internal {
@@ -154,4 +154,4 @@ namespace testing {
     }
 #endif // HTEST_HAS_EXCEPTIONS
 
-}  // namespace testing
+}  // namespace hawk

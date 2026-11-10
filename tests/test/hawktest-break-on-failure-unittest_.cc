@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
 
 #endif
 #endif  // HTEST_OS_WINDOWS
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
   return RUN_ALL_TESTS();
 }

@@ -27,7 +27,7 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to 
 
 // Ensures that there is at least one operator<< in the global namespace.
 // See Message& operator<<(...) below for why.
-void operator<<(const testing::internal::Secret&, int);
+void operator<<(const hawk::internal::Secret&, int);
 
 namespace hawk {
 
@@ -43,7 +43,7 @@ namespace hawk {
     //
     // For example;
     //
-    //   testing::Message foo;
+    //   hawk::Message foo;
     //   foo << 1 << " != " << 2;
     //   std::cout << foo;
     //
@@ -92,7 +92,7 @@ namespace hawk {
             //
             // To allow STL containers (and other types that has a << operator
             // defined in the global namespace) to be used in Hawk Test
-            // assertions, testing::Message must access the custom << operator
+            // assertions, hawk::Message must access the custom << operator
             // from the global namespace.  With this using declaration,
             // overloads of << defined in the global namespace and those
             // visible via Koenig lookup are both exposed in this function.

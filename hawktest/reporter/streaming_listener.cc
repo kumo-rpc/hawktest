@@ -83,7 +83,7 @@
 
 #include <hawktest/common/string.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 #if HTEST_CAN_STREAM_RESULTS_
 

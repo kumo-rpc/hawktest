@@ -90,7 +90,7 @@
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
 /* class A needs to have dll-interface to be used by clients of class B */)
 
-namespace testing {
+namespace hawk {
 
 // An abstract handle of an expectation.
 class Expectation;
@@ -516,14 +516,14 @@ class HTEST_API_ Expectation {
  private:
   friend class ExpectationSet;
   friend class Sequence;
-  friend class ::testing::internal::ExpectationBase;
-  friend class ::testing::internal::UntypedFunctionMockerBase;
+  friend class ::hawk::internal::ExpectationBase;
+  friend class ::hawk::internal::UntypedFunctionMockerBase;
 
   template <typename F>
-  friend class ::testing::internal::FunctionMocker;
+  friend class ::hawk::internal::FunctionMocker;
 
   template <typename F>
-  friend class ::testing::internal::TypedExpectation;
+  friend class ::hawk::internal::TypedExpectation;
 
   // This comparator is needed for putting Expectation objects into a set.
   class Less {
@@ -720,7 +720,7 @@ class HTEST_API_ ExpectationBase {
   }
 
  protected:
-  friend class ::testing::Expectation;
+  friend class ::hawk::Expectation;
   friend class UntypedFunctionMockerBase;
 
   enum Clause {
@@ -834,8 +834,8 @@ class HTEST_API_ ExpectationBase {
   // few actions.
   void CheckActionCountIfNotDone() const HTEST_LOCK_EXCLUDED_(mutex_);
 
-  friend class ::testing::Sequence;
-  friend class ::testing::internal::ExpectationTester;
+  friend class ::hawk::Sequence;
+  friend class ::hawk::internal::ExpectationTester;
 
   template <typename Function>
   friend class TypedExpectation;
@@ -1272,12 +1272,12 @@ class TypedExpectation<R(Args...)> : public ExpectationBase {
 
 // Note: class MockSpec really belongs to the ::testing namespace.
 // However if we define it in ::testing, MSVC will complain when
-// classes in ::testing::internal declare it as a friend class
+// classes in ::hawk::internal declare it as a friend class
 // template.  To workaround this compiler bug, we define MockSpec in
-// ::testing::internal and import it into ::testing.
+// ::hawk::internal and import it into ::testing.
 
 // Logs a message including file and line number information.
-HTEST_API_ void LogWithLocation(testing::internal::LogSeverity severity,
+HTEST_API_ void LogWithLocation(hawk::internal::LogSeverity severity,
                                 const char* file, int line,
                                 const std::string& message);
 
@@ -1929,7 +1929,7 @@ class MockFunction<R(Args...)> {
   }
 
   MockSpec<R(Args...)> gmock_Call(const WithoutMatchers&, R (*)(Args...)) {
-    return this->gmock_Call(::testing::A<Args>()...);
+    return this->gmock_Call(::hawk::A<Args>()...);
   }
 
  protected:
@@ -2074,7 +2074,7 @@ inline const T& Const(const T& x) {
 inline Expectation::Expectation(internal::ExpectationBase& exp)  // NOLINT
     : expectation_base_(exp.GetHandle().expectation_base()) {}
 
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 
@@ -2141,7 +2141,7 @@ HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 // failure to disambiguate two overloads of this method in the ON_CALL statement
 // is how we block callers from setting expectations on overloaded methods.
 #define GMOCK_ON_CALL_IMPL_(mock_expr, Setter, call)                      \
-  ((mock_expr).gmock_##call)(::testing::internal::WithoutMatchers::Get(), \
+  ((mock_expr).gmock_##call)(::hawk::internal::WithoutMatchers::Get(), \
                              nullptr)                                     \
       .Setter(__FILE__, __LINE__, #mock_expr, #call)
 

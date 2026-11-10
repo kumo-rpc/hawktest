@@ -37,7 +37,7 @@
 
 #include <hawktest/test/htest.h>
 
-class PropertyTwo : public testing::Test {
+class PropertyTwo : public hawk::Test {
  protected:
   void SetUp() override { RecordProperty("SetUpProp", 2); }
   void TearDown() override { RecordProperty("TearDownProp", 2); }

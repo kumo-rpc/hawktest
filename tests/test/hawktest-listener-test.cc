@@ -39,14 +39,14 @@
 #include <hawktest/test/htest.h>
 #include <hawktest/test/internal/custom/htest.h>
 
-using ::testing::AddGlobalTestEnvironment;
-using ::testing::init_hawk_test;
-using ::testing::UnitTest;
+using ::hawk::AddGlobalTestEnvironment;
+using ::hawk::init_hawk_test;
+using ::hawk::UnitTest;
 
 // Used by tests to register their events.
 std::vector<std::string>* g_events = nullptr;
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 class EventRecordingListener : public TestEventListener {
@@ -231,11 +231,11 @@ TEST_F(ListenerTest, DoesBar) {
 
 }  // namespace internal
 
-}  // namespace testing
+}  // namespace hawk
 
-using ::testing::internal::EnvironmentInvocationCatcher;
-using ::testing::internal::EventRecordingListener;
-using ::testing::internal::EventRecordingListener2;
+using ::hawk::internal::EnvironmentInvocationCatcher;
+using ::hawk::internal::EventRecordingListener;
+using ::hawk::internal::EventRecordingListener2;
 
 void VerifyResults(const std::vector<std::string>& data,
                    const char* const* expected_data,

@@ -44,14 +44,14 @@
 #if 0
 
 // To write value-parameterized tests, first you should define a fixture
-// class. It is usually derived from testing::TestWithParam<T> (see below for
+// class. It is usually derived from hawk::TestWithParam<T> (see below for
 // another inheritance scheme that's sometimes useful in more complicated
 // class hierarchies), where the type of your parameter values.
-// TestWithParam<T> is itself derived from testing::Test. T can be any
+// TestWithParam<T> is itself derived from hawk::Test. T can be any
 // copyable type. If it's a raw pointer, you are responsible for managing the
 // lifespan of the pointed values.
 
-class FooTest : public ::testing::TestWithParam<const char*> {
+class FooTest : public ::hawk::TestWithParam<const char*> {
   // You can implement all the usual class fixture members here.
 };
 
@@ -146,19 +146,19 @@ INSTANTIATE_TEST_SUITE_P(AnotherInstantiationName, FooTest, ValuesIn(pets));
 // implementation and is subject to change.
 //
 //
-// A parameterized test fixture must be derived from testing::Test and from
-// testing::WithParamInterface<T>, where T is the type of the parameter
+// A parameterized test fixture must be derived from hawk::Test and from
+// hawk::WithParamInterface<T>, where T is the type of the parameter
 // values. Inheriting from TestWithParam<T> satisfies that requirement because
 // TestWithParam<T> inherits from both Test and WithParamInterface. In more
 // complicated hierarchies, however, it is occasionally useful to inherit
 // separately from Test and WithParamInterface. For example:
 
-class BaseTest : public ::testing::Test {
+class BaseTest : public ::hawk::Test {
   // You can inherit all the usual members for a non-parameterized test
   // fixture here.
 };
 
-class DerivedTest : public BaseTest, public ::testing::WithParamInterface<int> {
+class DerivedTest : public BaseTest, public ::hawk::WithParamInterface<int> {
   // The usual test fixture members go here too.
 };
 
@@ -181,7 +181,7 @@ TEST_P(DerivedTest, DoesBlah) {
 #include <hawktest/common/port.h>
 #include <hawktest/test/internal/param-util.h> // IWYU pragma: export
 
-namespace testing {
+namespace hawk {
 
     // Functions producing parameter generators.
     //
@@ -349,7 +349,7 @@ namespace testing {
     // In the following example all tests in the test suite FlagDependentTest
     // will be instantiated twice with parameters false and true.
     //
-    // class FlagDependentTest : public testing::TestWithParam<bool> {
+    // class FlagDependentTest : public hawk::TestWithParam<bool> {
     //   virtual void SetUp() {
     //     external_flag = GetParam();
     //   }
@@ -379,7 +379,7 @@ namespace testing {
     //
     // enum Color { BLACK, GRAY, WHITE };
     // class AnimalTest
-    //     : public testing::TestWithParam<std::tuple<const char*, Color> > {...};
+    //     : public hawk::TestWithParam<std::tuple<const char*, Color> > {...};
     //
     // TEST_P(AnimalTest, AnimalLooksNice) {...}
     //
@@ -391,7 +391,7 @@ namespace testing {
     // Boolean flags:
     //
     // class FlagDependentTest
-    //     : public testing::TestWithParam<std::tuple<bool, bool> > {
+    //     : public hawk::TestWithParam<std::tuple<bool, bool> > {
     //   virtual void SetUp() {
     //     // Assigns external_flag_1 and external_flag_2 values from the tuple.
     //     std::tie(external_flag_1, external_flag_2) = GetParam();
@@ -435,7 +435,7 @@ namespace testing {
     //   ParamType(TupleT t) : animal(std::get<0>(t)), color(std::get<1>(t)) {}
     // };
     // class AnimalTest
-    //     : public testing::TestWithParam<ParamType> {...};
+    //     : public hawk::TestWithParam<ParamType> {...};
     //
     // TEST_P(AnimalTest, AnimalLooksNice) {...}
     //
@@ -467,7 +467,7 @@ namespace testing {
     //   Color color;
     // };
     // class AnimalTest
-    //     : public testing::TestWithParam<ParamType> {...};
+    //     : public hawk::TestWithParam<ParamType> {...};
     //
     // TEST_P(AnimalTest, AnimalLooksNice) {...}
     //
@@ -507,23 +507,23 @@ namespace testing {
 #define TEST_P(test_suite_name, test_name)                                                                          \
     class HTEST_TEST_CLASS_NAME_(test_suite_name, test_name)                                                        \
         : public test_suite_name                                                                                    \
-        , private ::testing::internal::HTestNonCopyable {                                                           \
+        , private ::hawk::internal::HTestNonCopyable {                                                           \
     public:                                                                                                         \
         HTEST_TEST_CLASS_NAME_(test_suite_name, test_name)() { }                                                    \
         void TestBody() override;                                                                                   \
                                                                                                                     \
     private:                                                                                                        \
         static int AddToRegistry() {                                                                                \
-            ::testing::UnitTest::GetInstance()                                                                      \
+            ::hawk::UnitTest::GetInstance()                                                                      \
                 ->parameterized_test_registry()                                                                     \
                 .GetTestSuitePatternHolder<test_suite_name>(                                                        \
                     HTEST_STRINGIFY_(test_suite_name),                                                              \
-                    ::testing::internal::CodeLocation(__FILE__, __LINE__))                                          \
+                    ::hawk::internal::CodeLocation(__FILE__, __LINE__))                                          \
                 ->AddTestPattern(                                                                                   \
                     HTEST_STRINGIFY_(test_suite_name), HTEST_STRINGIFY_(test_name),                                 \
-                    new ::testing::internal::TestMetaFactory<HTEST_TEST_CLASS_NAME_(                                \
+                    new ::hawk::internal::TestMetaFactory<HTEST_TEST_CLASS_NAME_(                                \
                         test_suite_name, test_name)>(),                                                             \
-                    ::testing::internal::CodeLocation(__FILE__, __LINE__));                                         \
+                    ::hawk::internal::CodeLocation(__FILE__, __LINE__));                                         \
             return 0;                                                                                               \
         }                                                                                                           \
         [[maybe_unused]] static int htest_registering_dummy_;                                                       \
@@ -535,11 +535,11 @@ namespace testing {
     // The last argument to INSTANTIATE_TEST_SUITE_P allows the user to specify
     // generator and an optional function or functor that generates custom test name
     // suffixes based on the test parameters. Such a function or functor should
-    // accept one argument of type testing::TestParamInfo<class ParamType>, and
+    // accept one argument of type hawk::TestParamInfo<class ParamType>, and
     // return std::string.
     //
-    // testing::PrintToStringParamName is a builtin test suffix generator that
-    // returns the value of testing::PrintToString(GetParam()).
+    // hawk::PrintToStringParamName is a builtin test suffix generator that
+    // returns the value of hawk::PrintToString(GetParam()).
     //
     // Note: test names must be non-empty, unique, and may only contain ASCII
     // alphanumeric characters or underscore. Because PrintToString adds quotes
@@ -550,16 +550,16 @@ namespace testing {
 #define HTEST_GET_SECOND_(first, second, ...) second
 
 #define INSTANTIATE_TEST_SUITE_P(prefix, test_suite_name, ...)                                                                                     \
-    static ::testing::internal::ParamGenerator<test_suite_name::ParamType>                                                                         \
+    static ::hawk::internal::ParamGenerator<test_suite_name::ParamType>                                                                         \
     htest_##prefix##test_suite_name##_EvalGenerator_() {                                                                                           \
         return HTEST_EXPAND_(HTEST_GET_FIRST_(__VA_ARGS__, DUMMY_PARAM_));                                                                         \
     }                                                                                                                                              \
     static ::std::string htest_##prefix##test_suite_name##_EvalGenerateName_(                                                                      \
-        const ::testing::TestParamInfo<test_suite_name::ParamType>& info) {                                                                        \
-        if (::testing::internal::AlwaysFalse()) {                                                                                                  \
-            ::testing::internal::TestNotEmpty(HTEST_EXPAND_(HTEST_GET_SECOND_(                                                                     \
+        const ::hawk::TestParamInfo<test_suite_name::ParamType>& info) {                                                                        \
+        if (::hawk::internal::AlwaysFalse()) {                                                                                                  \
+            ::hawk::internal::TestNotEmpty(HTEST_EXPAND_(HTEST_GET_SECOND_(                                                                     \
                 __VA_ARGS__,                                                                                                                       \
-                ::testing::internal::DefaultParamName<test_suite_name::ParamType>,                                                                 \
+                ::hawk::internal::DefaultParamName<test_suite_name::ParamType>,                                                                 \
                 DUMMY_PARAM_)));                                                                                                                   \
             auto t = std::make_tuple(__VA_ARGS__);                                                                                                 \
             static_assert(std::tuple_size<decltype(t)>::value <= 2,                                                                                \
@@ -567,14 +567,14 @@ namespace testing {
         }                                                                                                                                          \
         return ((HTEST_EXPAND_(HTEST_GET_SECOND_(                                                                                                  \
             __VA_ARGS__,                                                                                                                           \
-            ::testing::internal::DefaultParamName<test_suite_name::ParamType>,                                                                     \
+            ::hawk::internal::DefaultParamName<test_suite_name::ParamType>,                                                                     \
             DUMMY_PARAM_))))(info);                                                                                                                \
     }                                                                                                                                              \
-    [[maybe_unused]] static int htest_##prefix##test_suite_name##_dummy_ = ::testing::UnitTest::GetInstance()                                      \
+    [[maybe_unused]] static int htest_##prefix##test_suite_name##_dummy_ = ::hawk::UnitTest::GetInstance()                                      \
                                                                                ->parameterized_test_registry()                                     \
                                                                                .GetTestSuitePatternHolder<test_suite_name>(                        \
                                                                                    HTEST_STRINGIFY_(test_suite_name),                              \
-                                                                                   ::testing::internal::CodeLocation(__FILE__, __LINE__))          \
+                                                                                   ::hawk::internal::CodeLocation(__FILE__, __LINE__))          \
                                                                                ->AddTestSuiteInstantiation(                                        \
                                                                                    HTEST_STRINGIFY_(prefix),                                       \
                                                                                    &htest_##prefix##test_suite_name##_EvalGenerator_,              \
@@ -584,15 +584,15 @@ namespace testing {
 // Allow Marking a Parameterized test class as not needing to be instantiated.
 #define HTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(T)                    \
     namespace htest_do_not_use_outside_namespace_scope { }                  \
-    static const ::testing::internal::MarkAsIgnored htest_allow_ignore_##T( \
+    static const ::hawk::internal::MarkAsIgnored htest_allow_ignore_##T( \
         HTEST_STRINGIFY_(T))
 
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 #define INSTANTIATE_TEST_CASE_P                                              \
-    static_assert(::testing::internal::InstantiateTestCase_P_IsDeprecated(), \
+    static_assert(::hawk::internal::InstantiateTestCase_P_IsDeprecated(), \
         "");                                                                 \
     INSTANTIATE_TEST_SUITE_P
 #endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
-} // namespace testing
+} // namespace hawk

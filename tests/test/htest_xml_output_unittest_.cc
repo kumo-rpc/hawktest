@@ -44,12 +44,12 @@
 
 #include <hawktest/test/htest.h>
 
-using ::testing::init_hawk_test;
-using ::testing::Test;
-using ::testing::TestEventListeners;
-using ::testing::TestWithParam;
-using ::testing::UnitTest;
-using ::testing::Values;
+using ::hawk::init_hawk_test;
+using ::hawk::Test;
+using ::hawk::TestEventListeners;
+using ::hawk::TestWithParam;
+using ::hawk::UnitTest;
+using ::hawk::Values;
 
 class SuccessfulTest : public Test {};
 
@@ -149,12 +149,12 @@ TEST(NoFixtureTest, RecordProperty) {
 }
 
 void ExternalUtilityThatCallsRecordProperty(const std::string& key, int value) {
-  testing::Test::RecordProperty(key, value);
+  hawk::Test::RecordProperty(key, value);
 }
 
 void ExternalUtilityThatCallsRecordProperty(const std::string& key,
                                             const std::string& value) {
-  testing::Test::RecordProperty(key, value);
+  hawk::Test::RecordProperty(key, value);
 }
 
 TEST(NoFixtureTest, ExternalUtilityThatCallsRecordIntValuedProperty) {
@@ -167,14 +167,14 @@ TEST(NoFixtureTest, ExternalUtilityThatCallsRecordStringValuedProperty) {
 
 // Ensures that SetUpTestSuite and TearDownTestSuite failures are reported in
 // the XML output.
-class SetupFailTest : public ::testing::Test {
+class SetupFailTest : public ::hawk::Test {
  protected:
   static void SetUpTestSuite() { ASSERT_EQ(1, 2); }
 };
 
 TEST_F(SetupFailTest, NoopPassingTest) {}
 
-class TearDownFailTest : public ::testing::Test {
+class TearDownFailTest : public ::hawk::Test {
  protected:
   static void TearDownTestSuite() { ASSERT_EQ(1, 2); }
 };
@@ -191,7 +191,7 @@ INSTANTIATE_TEST_SUITE_P(Single, ValueParamTest, Values(33, 42));
 // Verifies that the type parameter name is output in the 'type_param'
 // XML attribute for typed tests.
 template <typename T> class TypedTest : public Test {};
-typedef testing::Types<int, long> TypedTestTypes;
+typedef hawk::Types<int, long> TypedTestTypes;
 TYPED_TEST_SUITE(TypedTest, TypedTestTypes);
 TYPED_TEST(TypedTest, HasTypeParamAttribute) {}
 
@@ -202,7 +202,7 @@ class TypeParameterizedTestSuite : public Test {};
 TYPED_TEST_SUITE_P(TypeParameterizedTestSuite);
 TYPED_TEST_P(TypeParameterizedTestSuite, HasTypeParamAttribute) {}
 REGISTER_TYPED_TEST_SUITE_P(TypeParameterizedTestSuite, HasTypeParamAttribute);
-typedef testing::Types<int, long> TypeParameterizedTestSuiteTypes;  // NOLINT
+typedef hawk::Types<int, long> TypeParameterizedTestSuiteTypes;  // NOLINT
 INSTANTIATE_TYPED_TEST_SUITE_P(Single, TypeParameterizedTestSuite,
                                TypeParameterizedTestSuiteTypes);
 
@@ -213,7 +213,7 @@ int main(int argc, char** argv) {
     TestEventListeners& listeners = UnitTest::GetInstance()->listeners();
     delete listeners.Release(listeners.default_xml_generator());
   }
-  testing::Test::RecordProperty("ad_hoc_property", "42");
+  hawk::Test::RecordProperty("ad_hoc_property", "42");
   return RUN_ALL_TESTS();
 }
 

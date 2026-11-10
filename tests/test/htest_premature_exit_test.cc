@@ -39,10 +39,10 @@
 #include <hawktest/common/environment.h>
 #include <hawktest/test/htest.h>
 
-using ::testing::init_hawk_test;
-using ::testing::Test;
-using ::testing::internal::posix::Stat;
-using ::testing::internal::posix::StatStruct;
+using ::hawk::init_hawk_test;
+using ::hawk::Test;
+using ::hawk::internal::posix::Stat;
+using ::hawk::internal::posix::StatStruct;
 
 namespace {
 

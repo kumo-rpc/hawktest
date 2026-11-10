@@ -23,7 +23,7 @@ class NullReporter : public BenchmarkReporter {
   void ReportRuns(const std::vector<Run>& /* report */) override {}
 };
 
-class BenchmarkTest : public testing::Test {
+class BenchmarkTest : public hawk::Test {
  public:
   Benchmark* bm;
   NullReporter null_reporter;

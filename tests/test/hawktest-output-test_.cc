@@ -49,14 +49,14 @@
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4127 /* conditional expression is constant */)
 
 #ifdef HTEST_IS_THREADSAFE
-using testing::ScopedFakeTestPartResultReporter;
-using testing::TestPartResultArray;
+using hawk::ScopedFakeTestPartResultReporter;
+using hawk::TestPartResultArray;
 
-using testing::internal::Notification;
-using testing::internal::ThreadWithParam;
+using hawk::internal::Notification;
+using hawk::internal::ThreadWithParam;
 #endif
 
-namespace posix = ::testing::internal::posix;
+namespace posix = ::hawk::internal::posix;
 
 // Tests catching fatal failures.
 
@@ -71,9 +71,9 @@ void TryTestSubroutine() {
 
   // Catches the fatal failure and aborts the test.
   //
-  // The testing::Test:: prefix is necessary when calling
+  // The hawk::Test:: prefix is necessary when calling
   // HasFatalFailure() outside of a TEST, TEST_F, or test fixture.
-  if (testing::Test::HasFatalFailure()) return;
+  if (hawk::Test::HasFatalFailure()) return;
 
   // If we get here, something is wrong.
   FAIL() << "This should never be reached.";
@@ -85,22 +85,22 @@ TEST(PassingTest, PassingTest2) {}
 
 // Tests that parameters of failing parameterized tests are printed in the
 // failing test summary.
-class FailingParamTest : public testing::TestWithParam<int> {};
+class FailingParamTest : public hawk::TestWithParam<int> {};
 
 TEST_P(FailingParamTest, Fails) { EXPECT_EQ(1, GetParam()); }
 
 // This generates a test which will fail. Hawk Test is expected to print
 // its parameter when it outputs the list of all failed tests.
 INSTANTIATE_TEST_SUITE_P(PrintingFailingParams, FailingParamTest,
-                         testing::Values(2));
+                         hawk::Values(2));
 
 // Tests that an empty value for the test suite basename yields just
 // the test name without any prior /
-class EmptyBasenameParamInst : public testing::TestWithParam<int> {};
+class EmptyBasenameParamInst : public hawk::TestWithParam<int> {};
 
 TEST_P(EmptyBasenameParamInst, Passes) { EXPECT_EQ(1, GetParam()); }
 
-INSTANTIATE_TEST_SUITE_P(, EmptyBasenameParamInst, testing::Values(1));
+INSTANTIATE_TEST_SUITE_P(, EmptyBasenameParamInst, hawk::Values(1));
 
 static const char kGoldenString[] = "\"Line\0 1\"\nLine 2";
 
@@ -134,7 +134,7 @@ TEST(FatalFailureTest, FatalFailureInNestedSubroutine) {
   // Catches the fatal failure and aborts the test.
   //
   // When calling HasFatalFailure() inside a TEST, TEST_F, or test
-  // fixture, the testing::Test:: prefix is not needed.
+  // fixture, the hawk::Test:: prefix is not needed.
   if (HasFatalFailure()) return;
 
   // If we get here, something is wrong.
@@ -329,7 +329,7 @@ TEST(SCOPED_TRACETest, WorksConcurrently) {
 // Tests basic functionality of the ScopedTrace utility (most of its features
 // are already tested in SCOPED_TRACETest).
 TEST(ScopedTraceTest, WithExplicitFileAndLine) {
-  testing::ScopedTrace trace("explicit_file.cc", 123, "expected trace message");
+  hawk::ScopedTrace trace("explicit_file.cc", 123, "expected trace message");
   ADD_FAILURE() << "Check that the trace is attached to a particular location.";
 }
 
@@ -357,7 +357,7 @@ int RunAllTests() {
 }
 
 // Tests non-fatal failures in the fixture constructor.
-class NonFatalFailureInFixtureConstructorTest : public testing::Test {
+class NonFatalFailureInFixtureConstructorTest : public hawk::Test {
  protected:
   NonFatalFailureInFixtureConstructorTest() {
     printf("(expecting 5 failures)\n");
@@ -380,7 +380,7 @@ TEST_F(NonFatalFailureInFixtureConstructorTest, FailureInConstructor) {
 }
 
 // Tests fatal failures in the fixture constructor.
-class FatalFailureInFixtureConstructorTest : public testing::Test {
+class FatalFailureInFixtureConstructorTest : public hawk::Test {
  protected:
   FatalFailureInFixtureConstructorTest() {
     printf("(expecting 2 failures)\n");
@@ -414,7 +414,7 @@ TEST_F(FatalFailureInFixtureConstructorTest, FailureInConstructor) {
 }
 
 // Tests non-fatal failures in SetUp().
-class NonFatalFailureInSetUpTest : public testing::Test {
+class NonFatalFailureInSetUpTest : public hawk::Test {
  protected:
   ~NonFatalFailureInSetUpTest() override { Deinit(); }
 
@@ -434,7 +434,7 @@ TEST_F(NonFatalFailureInSetUpTest, FailureInSetUp) {
 }
 
 // Tests fatal failures in SetUp().
-class FatalFailureInSetUpTest : public testing::Test {
+class FatalFailureInSetUpTest : public hawk::Test {
  protected:
   ~FatalFailureInSetUpTest() override { Deinit(); }
 
@@ -474,12 +474,12 @@ TEST(GtestFailAtTest, MessageContainsSpecifiedFileAndLineNumber) {
 
 namespace foo {
 
-class MixedUpTestSuiteTest : public testing::Test {};
+class MixedUpTestSuiteTest : public hawk::Test {};
 
 TEST_F(MixedUpTestSuiteTest, FirstTestFromNamespaceFoo) {}
 TEST_F(MixedUpTestSuiteTest, SecondTestFromNamespaceFoo) {}
 
-class MixedUpTestSuiteWithSameTestNameTest : public testing::Test {};
+class MixedUpTestSuiteWithSameTestNameTest : public hawk::Test {};
 
 TEST_F(MixedUpTestSuiteWithSameTestNameTest,
        TheSecondTestWithThisNameShouldFail) {}
@@ -488,14 +488,14 @@ TEST_F(MixedUpTestSuiteWithSameTestNameTest,
 
 namespace bar {
 
-class MixedUpTestSuiteTest : public testing::Test {};
+class MixedUpTestSuiteTest : public hawk::Test {};
 
 // The following two tests are expected to fail.  We rely on the
 // golden file to check that Hawk Test generates the right error message.
 TEST_F(MixedUpTestSuiteTest, ThisShouldFail) {}
 TEST_F(MixedUpTestSuiteTest, ThisShouldFailToo) {}
 
-class MixedUpTestSuiteWithSameTestNameTest : public testing::Test {};
+class MixedUpTestSuiteWithSameTestNameTest : public hawk::Test {};
 
 // Expected to fail.  We rely on the golden file to check that Hawk Test
 // generates the right error message.
@@ -509,7 +509,7 @@ TEST_F(MixedUpTestSuiteWithSameTestNameTest,
 // test case checks the scenario where TEST_F appears before TEST, and
 // the second one checks where TEST appears before TEST_F.
 
-class TEST_F_before_TEST_in_same_test_case : public testing::Test {};
+class TEST_F_before_TEST_in_same_test_case : public hawk::Test {};
 
 TEST_F(TEST_F_before_TEST_in_same_test_case, DefinedUsingTEST_F) {}
 
@@ -517,7 +517,7 @@ TEST_F(TEST_F_before_TEST_in_same_test_case, DefinedUsingTEST_F) {}
 // generates the right error message.
 TEST(TEST_F_before_TEST_in_same_test_case, DefinedUsingTESTAndShouldFail) {}
 
-class TEST_before_TEST_F_in_same_test_case : public testing::Test {};
+class TEST_before_TEST_F_in_same_test_case : public hawk::Test {};
 
 TEST(TEST_before_TEST_F_in_same_test_case, DefinedUsingTEST) {}
 
@@ -676,34 +676,34 @@ TEST(ExpectFatalFailureTest, FailsWhenStatementThrows) {
 
 // This #ifdef block tests the output of value-parameterized tests.
 
-std::string ParamNameFunc(const testing::TestParamInfo<std::string>& info) {
+std::string ParamNameFunc(const hawk::TestParamInfo<std::string>& info) {
   return info.param;
 }
 
-class ParamTest : public testing::TestWithParam<std::string> {};
+class ParamTest : public hawk::TestWithParam<std::string> {};
 
 TEST_P(ParamTest, Success) { EXPECT_EQ("a", GetParam()); }
 
 TEST_P(ParamTest, Failure) { EXPECT_EQ("b", GetParam()) << "Expected failure"; }
 
 INSTANTIATE_TEST_SUITE_P(PrintingStrings, ParamTest,
-                         testing::Values(std::string("a")), ParamNameFunc);
+                         hawk::Values(std::string("a")), ParamNameFunc);
 
 // The case where a suite has INSTANTIATE_TEST_SUITE_P but not TEST_P.
 using NoTests = ParamTest;
-INSTANTIATE_TEST_SUITE_P(ThisIsOdd, NoTests, ::testing::Values("Hello"));
+INSTANTIATE_TEST_SUITE_P(ThisIsOdd, NoTests, ::hawk::Values("Hello"));
 
 // fails under kErrorOnUninstantiatedParameterizedTest=true
-class DetectNotInstantiatedTest : public testing::TestWithParam<int> {};
+class DetectNotInstantiatedTest : public hawk::TestWithParam<int> {};
 TEST_P(DetectNotInstantiatedTest, Used) {}
 
 // This would make the test failure from the above go away.
-// INSTANTIATE_TEST_SUITE_P(Fix, DetectNotInstantiatedTest, testing::Values(1));
+// INSTANTIATE_TEST_SUITE_P(Fix, DetectNotInstantiatedTest, hawk::Values(1));
 
 template <typename T>
-class TypedTest : public testing::Test {};
+class TypedTest : public hawk::Test {};
 
-TYPED_TEST_SUITE(TypedTest, testing::Types<int>);
+TYPED_TEST_SUITE(TypedTest, hawk::Types<int>);
 
 TYPED_TEST(TypedTest, Success) { EXPECT_EQ(0, TypeParam()); }
 
@@ -711,19 +711,19 @@ TYPED_TEST(TypedTest, Failure) {
   EXPECT_EQ(1, TypeParam()) << "Expected failure";
 }
 
-typedef testing::Types<char, int> TypesForTestWithNames;
+typedef hawk::Types<char, int> TypesForTestWithNames;
 
 template <typename T>
-class TypedTestWithNames : public testing::Test {};
+class TypedTestWithNames : public hawk::Test {};
 
 class TypedTestNames {
  public:
   template <typename T>
   static std::string GetName(int i) {
     if (std::is_same<T, char>::value)
-      return std::string("char") + ::testing::PrintToString(i);
+      return std::string("char") + ::hawk::PrintToString(i);
     if (std::is_same<T, int>::value)
-      return std::string("int") + ::testing::PrintToString(i);
+      return std::string("int") + ::hawk::PrintToString(i);
   }
 };
 
@@ -734,7 +734,7 @@ TYPED_TEST(TypedTestWithNames, Success) {}
 TYPED_TEST(TypedTestWithNames, Failure) { FAIL(); }
 
 template <typename T>
-class TypedTestP : public testing::Test {};
+class TypedTestP : public hawk::Test {};
 
 TYPED_TEST_SUITE_P(TypedTestP);
 
@@ -746,7 +746,7 @@ TYPED_TEST_P(TypedTestP, Failure) {
 
 REGISTER_TYPED_TEST_SUITE_P(TypedTestP, Success, Failure);
 
-typedef testing::Types<unsigned char, unsigned int> UnsignedTypes;
+typedef hawk::Types<unsigned char, unsigned int> UnsignedTypes;
 INSTANTIATE_TYPED_TEST_SUITE_P(Unsigned, TypedTestP, UnsignedTypes);
 
 class TypedTestPNames {
@@ -754,10 +754,10 @@ class TypedTestPNames {
   template <typename T>
   static std::string GetName(int i) {
     if (std::is_same<T, unsigned char>::value) {
-      return std::string("unsignedChar") + ::testing::PrintToString(i);
+      return std::string("unsignedChar") + ::hawk::PrintToString(i);
     }
     if (std::is_same<T, unsigned int>::value) {
-      return std::string("unsignedInt") + ::testing::PrintToString(i);
+      return std::string("unsignedInt") + ::hawk::PrintToString(i);
     }
   }
 };
@@ -766,7 +766,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedCustomName, TypedTestP, UnsignedTypes,
                                TypedTestPNames);
 
 template <typename T>
-class DetectNotInstantiatedTypesTest : public testing::Test {};
+class DetectNotInstantiatedTypesTest : public hawk::Test {};
 TYPED_TEST_SUITE_P(DetectNotInstantiatedTypesTest);
 TYPED_TEST_P(DetectNotInstantiatedTypesTest, Used) {
   TypeParam instantiate;
@@ -777,7 +777,7 @@ REGISTER_TYPED_TEST_SUITE_P(DetectNotInstantiatedTypesTest, Used);
 // kErrorOnUninstantiatedTypeParameterizedTest=true would make the above fail.
 // Adding the following would make that test failure go away.
 //
-// typedef ::testing::Types<char, int, unsigned int> MyTypes;
+// typedef ::hawk::Types<char, int, unsigned int> MyTypes;
 // INSTANTIATE_TYPED_TEST_SUITE_P(All, DetectNotInstantiatedTypesTest, MyTypes);
 
 #ifdef HTEST_HAS_DEATH_TEST
@@ -791,9 +791,9 @@ TEST(ADeathTest, ShouldRunFirst) {}
 // case name ends with DeathTest are run first.
 
 template <typename T>
-class ATypedDeathTest : public testing::Test {};
+class ATypedDeathTest : public hawk::Test {};
 
-typedef testing::Types<int, double> NumericTypes;
+typedef hawk::Types<int, double> NumericTypes;
 TYPED_TEST_SUITE(ATypedDeathTest, NumericTypes);
 
 TYPED_TEST(ATypedDeathTest, ShouldRunFirst) {}
@@ -802,7 +802,7 @@ TYPED_TEST(ATypedDeathTest, ShouldRunFirst) {}
 // whose test case name ends with DeathTest are run first.
 
 template <typename T>
-class ATypeParamDeathTest : public testing::Test {};
+class ATypeParamDeathTest : public hawk::Test {};
 
 TYPED_TEST_SUITE_P(ATypeParamDeathTest);
 
@@ -816,7 +816,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, ATypeParamDeathTest, NumericTypes);
 
 // Tests various failure conditions of
 // EXPECT_{,NON}FATAL_FAILURE{,_ON_ALL_THREADS}.
-class ExpectFailureTest : public testing::Test {
+class ExpectFailureTest : public hawk::Test {
  public:  // Must be public and not protected due to a bug in g++ 3.4.2.
   enum FailureMode { FATAL_FAILURE, NONFATAL_FAILURE };
   static void AddFailure(FailureMode failure) {
@@ -932,7 +932,7 @@ TEST_F(ExpectFailureTest, ExpectNonFatalFailureOnAllThreads) {
                                          "Some other non-fatal failure.");
 }
 
-class DynamicFixture : public testing::Test {
+class DynamicFixture : public hawk::Test {
  protected:
   DynamicFixture() { printf("DynamicFixture()\n"); }
   ~DynamicFixture() override { printf("~DynamicFixture()\n"); }
@@ -953,39 +953,39 @@ class DynamicTest : public DynamicFixture {
 
 auto dynamic_test = (
     // Register two tests with the same fixture correctly.
-    testing::RegisterTest(
+    hawk::RegisterTest(
         "DynamicFixture", "DynamicTestPass", nullptr, nullptr, __FILE__,
         __LINE__, []() -> DynamicFixture* { return new DynamicTest<true>; }),
-    testing::RegisterTest(
+    hawk::RegisterTest(
         "DynamicFixture", "DynamicTestFail", nullptr, nullptr, __FILE__,
         __LINE__, []() -> DynamicFixture* { return new DynamicTest<false>; }),
 
     // Register the same fixture with another name. That's fine.
-    testing::RegisterTest(
+    hawk::RegisterTest(
         "DynamicFixtureAnotherName", "DynamicTestPass", nullptr, nullptr,
         __FILE__, __LINE__,
         []() -> DynamicFixture* { return new DynamicTest<true>; }),
 
     // Register two tests with the same fixture incorrectly.
-    testing::RegisterTest(
+    hawk::RegisterTest(
         "BadDynamicFixture1", "FixtureBase", nullptr, nullptr, __FILE__,
         __LINE__, []() -> DynamicFixture* { return new DynamicTest<true>; }),
-    testing::RegisterTest(
+    hawk::RegisterTest(
         "BadDynamicFixture1", "TestBase", nullptr, nullptr, __FILE__, __LINE__,
-        []() -> testing::Test* { return new DynamicTest<true>; }),
+        []() -> hawk::Test* { return new DynamicTest<true>; }),
 
     // Register two tests with the same fixture incorrectly by omitting the
     // return type.
-    testing::RegisterTest(
+    hawk::RegisterTest(
         "BadDynamicFixture2", "FixtureBase", nullptr, nullptr, __FILE__,
         __LINE__, []() -> DynamicFixture* { return new DynamicTest<true>; }),
-    testing::RegisterTest("BadDynamicFixture2", "Derived", nullptr, nullptr,
+    hawk::RegisterTest("BadDynamicFixture2", "Derived", nullptr, nullptr,
                           __FILE__, __LINE__,
                           []() { return new DynamicTest<true>; }));
 
-// Two test environments for testing testing::AddGlobalTestEnvironment().
+// Two test environments for testing hawk::AddGlobalTestEnvironment().
 
-class FooEnvironment : public testing::Environment {
+class FooEnvironment : public hawk::Environment {
  public:
   void SetUp() override { printf("%s", "FooEnvironment::SetUp() called.\n"); }
 
@@ -995,7 +995,7 @@ class FooEnvironment : public testing::Environment {
   }
 };
 
-class BarEnvironment : public testing::Environment {
+class BarEnvironment : public hawk::Environment {
  public:
   void SetUp() override { printf("%s", "BarEnvironment::SetUp() called.\n"); }
 
@@ -1005,13 +1005,13 @@ class BarEnvironment : public testing::Environment {
   }
 };
 
-class TestSuiteThatFailsToSetUp : public testing::Test {
+class TestSuiteThatFailsToSetUp : public hawk::Test {
  public:
   static void SetUpTestSuite() { EXPECT_TRUE(false); }
 };
 TEST_F(TestSuiteThatFailsToSetUp, ShouldNotRun) { std::abort(); }
 
-class TestSuiteThatSkipsInSetUp : public testing::Test {
+class TestSuiteThatSkipsInSetUp : public hawk::Test {
  public:
   static void SetUpTestSuite() { HTEST_SKIP() << "Skip entire test suite"; }
 };
@@ -1032,7 +1032,7 @@ int main(int argc, char** argv) {
   // It's hard to test init_hawk_test() directly, as it has many
   // global side effects.  The following line serves as a test
   // for it.
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
   bool internal_skip_environment_and_ad_hoc_tests =
       std::count(argv, argv + argc,
                  std::string("internal_skip_environment_and_ad_hoc_tests")) > 0;
@@ -1055,8 +1055,8 @@ int main(int argc, char** argv) {
   // Registers two global test environments.
   // The golden file verifies that they are set up in the order they
   // are registered, and torn down in the reverse order.
-  testing::AddGlobalTestEnvironment(new FooEnvironment);
-  testing::AddGlobalTestEnvironment(new BarEnvironment);
+  hawk::AddGlobalTestEnvironment(new FooEnvironment);
+  hawk::AddGlobalTestEnvironment(new BarEnvironment);
   HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4127
   return RunAllTests();
 }

@@ -55,9 +55,9 @@
 #include <hawktest/test/printers.h>
 #include <hawktest/test/test-part.h>
 #include <hawktest/test/test.h>
-#include <hawktest/test/utility.h>
+#include <hawktest/analysis/assert_help.h>
 
-namespace testing {
+namespace hawk {
     // Input to a parameterized test name generator, describing a test parameter.
     // Consists of the parameter value and the integer parameter index.
     template <class ParamType>
@@ -70,7 +70,7 @@ namespace testing {
     };
 
     // A builtin parameterized test name generator which returns the result of
-    // testing::PrintToString.
+    // hawk::PrintToString.
     struct PrintToStringParamName {
         template <class ParamType>
         std::string operator()(const TestParamInfo<ParamType>& info) const {
@@ -1099,4 +1099,4 @@ namespace testing {
             const bool as_error_;
         };
     } // namespace internal
-} // namespace testing
+} // namespace hawk

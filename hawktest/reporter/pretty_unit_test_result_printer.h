@@ -21,7 +21,7 @@
 #include <hawktest/test/fwd.h>
 #include <hawktest/reporter/listener.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // This class implements the TestEventListener interface.

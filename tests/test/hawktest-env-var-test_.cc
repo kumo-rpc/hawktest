@@ -40,7 +40,7 @@
 
 using ::std::cout;
 
-namespace testing {
+namespace hawk {
 
 // The purpose of this is to make the test more realistic by ensuring
 // that the UnitTest singleton is created before main() is entered.
@@ -118,16 +118,16 @@ void PrintFlag(const char* flag) {
   exit(1);
 }
 
-}  // namespace testing
+}  // namespace hawk
 
 int main(int argc, char** argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
   if (argc != 2) {
     cout << "Usage: hawktest-env-var-test_ NAME_OF_FLAG\n";
     return 1;
   }
 
-  testing::PrintFlag(argv[1]);
+  hawk::PrintFlag(argv[1]);
   return 0;
 }

@@ -21,7 +21,7 @@
 #include <hawktest/test/fwd.h>
 #include <hawktest/test/flags_saver.h>
 
-namespace testing {
+namespace hawk {
 
 
     // The abstract class that all tests inherit from.
@@ -36,7 +36,7 @@ namespace testing {
     // The only time you derive from Test is when defining a test fixture
     // to be used in a TEST_F.  For example:
     //
-    //   class FooTest : public testing::Test {
+    //   class FooTest : public hawk::Test {
     //    protected:
     //     void SetUp() override { ... }
     //     void TearDown() override { ... }
@@ -141,7 +141,7 @@ namespace testing {
         // internal method to avoid clashing with names used in user TESTs.
         void DeleteSelf_() { delete this; }
 
-        const std::unique_ptr<::testing::internal::HTestFlagSaver> htest_flag_saver_;
+        const std::unique_ptr<::hawk::internal::HTestFlagSaver> htest_flag_saver_;
 
         // Often a user misspells SetUp() as Setup() and spends a long time
         // wondering why it is never called by Hawk Test.  The declaration of
@@ -329,4 +329,4 @@ namespace testing {
     }; // class TestResult
 
 
-}  // namespace testing
+}  // namespace hawk

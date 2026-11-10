@@ -40,14 +40,14 @@
 namespace {
 
 // An environment that always fails in its SetUp method.
-class FailingEnvironment final : public ::testing::Environment {
+class FailingEnvironment final : public ::hawk::Environment {
  public:
   void SetUp() override { FAIL() << "Canned environment setup error"; }
 };
 
 // Register the environment.
 auto* const g_environment_ =
-    ::testing::AddGlobalTestEnvironment(new FailingEnvironment);
+    ::hawk::AddGlobalTestEnvironment(new FailingEnvironment);
 
 // A test that doesn't actually run.
 TEST(SomeTest, DoesFoo) { FAIL() << "Unexpected call"; }
@@ -55,7 +55,7 @@ TEST(SomeTest, DoesFoo) { FAIL() << "Unexpected call"; }
 }  // namespace
 
 int main(int argc, char** argv) {
-  ::testing::init_hawk_test(&argc, argv);
+  ::hawk::init_hawk_test(&argc, argv);
 
   return RUN_ALL_TESTS();
 }

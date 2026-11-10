@@ -24,7 +24,7 @@
 #include <unordered_set>
 #include <hawktest/reporter/pretty_unit_test_result_printer.h>
 
-namespace testing::internal {
+namespace hawk::internal {
 
 
     // Class UnitTestOptions.
@@ -165,4 +165,4 @@ namespace testing::internal {
                 UnitTestFilter positive_filter_;
                 UnitTestFilter negative_filter_;
             };
-}  // namespace testing::internal
+}  // namespace hawk::internal

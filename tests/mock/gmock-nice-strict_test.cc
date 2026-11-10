@@ -40,7 +40,7 @@
 #include <hawktest/test/htest.h>
 
 // This must not be defined inside the ::testing namespace, or it will
-// clash with ::testing::Mock.
+// clash with ::hawk::Mock.
 class Mock {
  public:
   Mock() = default;
@@ -52,17 +52,17 @@ class Mock {
   Mock& operator=(const Mock&) = delete;
 };
 
-namespace testing {
+namespace hawk {
 namespace gmock_nice_strict_test {
 
-using testing::HasSubstr;
-using testing::NaggyMock;
-using testing::NiceMock;
-using testing::StrictMock;
+using hawk::HasSubstr;
+using hawk::NaggyMock;
+using hawk::NiceMock;
+using hawk::StrictMock;
 
 #if HTEST_HAS_STREAM_REDIRECTION
-using testing::internal::CaptureStdout;
-using testing::internal::GetCapturedStdout;
+using hawk::internal::CaptureStdout;
+using hawk::internal::GetCapturedStdout;
 #endif
 
 // Class without default constructor.
@@ -306,7 +306,7 @@ TEST(NiceMockTest, MoveOnlyConstructor) {
 }
 
 // Tests that NiceMock<Mock> compiles where Mock is a user-defined
-// class (as opposed to ::testing::Mock).
+// class (as opposed to ::hawk::Mock).
 TEST(NiceMockTest, AcceptsClassNamedMock) {
   NiceMock< ::Mock> nice;
   EXPECT_CALL(nice, DoThis());
@@ -416,7 +416,7 @@ TEST(NaggyMockTest, MoveOnlyConstructor) {
 }
 
 // Tests that NaggyMock<Mock> compiles where Mock is a user-defined
-// class (as opposed to ::testing::Mock).
+// class (as opposed to ::hawk::Mock).
 TEST(NaggyMockTest, AcceptsClassNamedMock) {
   NaggyMock< ::Mock> naggy;
   EXPECT_CALL(naggy, DoThis());
@@ -516,7 +516,7 @@ TEST(StrictMockTest, MoveOnlyConstructor) {
 }
 
 // Tests that StrictMock<Mock> compiles where Mock is a user-defined
-// class (as opposed to ::testing::Mock).
+// class (as opposed to ::hawk::Mock).
 TEST(StrictMockTest, AcceptsClassNamedMock) {
   StrictMock< ::Mock> strict;
   EXPECT_CALL(strict, DoThis());
@@ -541,4 +541,4 @@ TEST(StrictMockTest, IsNaggy_IsNice_IsStrict) {
 }
 
 }  // namespace gmock_nice_strict_test
-}  // namespace testing
+}  // namespace hawk

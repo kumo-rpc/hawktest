@@ -93,13 +93,13 @@
 #include <hawktest/common/string.h>
 #include <hawktest/format/message.h>
 
-namespace testing {
+namespace hawk {
 
     // Constants.
 
-} // namespace testing
+} // namespace hawk
 
-namespace testing {
+namespace hawk {
 
 #ifdef HTEST_HAS_DEATH_TEST
 
@@ -276,10 +276,10 @@ namespace testing {
 // fails.
 #define HTEST_DEATH_TEST_CHECK_(expression)                                                                                                                       \
     do {                                                                                                                                                          \
-        if (!::testing::internal::IsTrue(expression)) {                                                                                                           \
+        if (!::hawk::internal::IsTrue(expression)) {                                                                                                           \
             DeathTestAbort(::std::string("CHECK failed: File ") + __FILE__ + ", line " + hawk::internal::StreamableToString(__LINE__) + ": " + #expression); \
         }                                                                                                                                                         \
-    } while (::testing::internal::AlwaysFalse())
+    } while (::hawk::internal::AlwaysFalse())
 
 // This macro is similar to HTEST_DEATH_TEST_CHECK_, but it is meant for
 // evaluating any system call that fulfills two conditions: it must return
@@ -297,7 +297,7 @@ namespace testing {
         if (htest_retval == -1) {                                                                                                                                            \
             DeathTestAbort(::std::string("CHECK failed: File ") + __FILE__ + ", line " + hawk::internal::StreamableToString(__LINE__) + ": " + #expression + " != -1"); \
         }                                                                                                                                                                    \
-    } while (::testing::internal::AlwaysFalse())
+    } while (::hawk::internal::AlwaysFalse())
 
         // Returns the message describing the last system error in errno.
         std::string GetLastErrnoDescription() {
@@ -1489,4 +1489,4 @@ namespace testing {
 
 #endif // HTEST_HAS_DEATH_TEST
 
-} // namespace testing
+} // namespace hawk

@@ -20,7 +20,7 @@
 #include <hawktest/test/htest.h>
 #include <hawktest/test/test.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         void TypeParameterizedTestSuiteRegistry::RegisterInstantiation(

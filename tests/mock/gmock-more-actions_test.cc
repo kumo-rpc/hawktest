@@ -51,23 +51,23 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4577)
 
-namespace testing {
+namespace hawk {
 namespace gmock_more_actions_test {
 
 using ::std::plus;
 using ::std::string;
-using testing::Action;
-using testing::DeleteArg;
-using testing::Invoke;
-using testing::ReturnArg;
-using testing::ReturnPointee;
-using testing::SaveArg;
-using testing::SaveArgByMove;
-using testing::SaveArgPointee;
-using testing::SetArgReferee;
-using testing::Unused;
-using testing::WithArg;
-using testing::WithoutArgs;
+using hawk::Action;
+using hawk::DeleteArg;
+using hawk::Invoke;
+using hawk::ReturnArg;
+using hawk::ReturnPointee;
+using hawk::SaveArg;
+using hawk::SaveArgByMove;
+using hawk::SaveArgPointee;
+using hawk::SetArgReferee;
+using hawk::Unused;
+using hawk::WithArg;
+using hawk::WithoutArgs;
 
 // For suppressing compiler warnings on conversion possibly losing precision.
 inline short Short(short n) { return n; }  // NOLINT
@@ -1613,7 +1613,7 @@ TEST(ActionTemplateTest, CanBeOverloadedOnNumberOfValueParameters) {
 }
 
 }  // namespace gmock_more_actions_test
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100 4503
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4577

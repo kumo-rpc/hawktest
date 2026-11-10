@@ -22,7 +22,7 @@
 #include <hawktest/flags/builtin.h>
 #include <hawktest/common/internal-inl.h>
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
     // Formats a countable noun.  Depending on its quantity, either the
@@ -312,4 +312,4 @@ namespace internal {
         }
 
 }
-} // namespace testing
+} // namespace hawk

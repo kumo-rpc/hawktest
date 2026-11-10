@@ -80,7 +80,7 @@ void TestFailureThrowsRuntimeError() {
 }
 
 int main(int argc, char** argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
   // We want to ensure that people can use Hawk Test assertions in
   // other testing frameworks, as long as they initialize Hawk Test

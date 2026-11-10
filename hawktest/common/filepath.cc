@@ -66,7 +66,7 @@
 
 #if HTEST_HAS_FILE_SYSTEM
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
 #ifdef HTEST_OS_WINDOWS
@@ -435,6 +435,6 @@ namespace testing {
             return fileout;
         }
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 
 #endif // HTEST_HAS_FILE_SYSTEM

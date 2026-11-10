@@ -125,14 +125,14 @@ TEST(ReportorMark, Loads) {
     EXPECT_FALSE(mark_load().suites.empty());
 }
 
-class PrinterMark : public testing::TestWithParam<md_test::RegisteredSuite> { };
+class PrinterMark : public hawk::TestWithParam<md_test::RegisteredSuite> { };
 
 TEST_P(PrinterMark, Case) {
     run_printer(GetParam());
 }
 
-INSTANTIATE_TEST_SUITE_P(Reportor, PrinterMark, testing::ValuesIn(mark_load().suites),
-    [](const testing::TestParamInfo<md_test::RegisteredSuite>& info) {
+INSTANTIATE_TEST_SUITE_P(Reportor, PrinterMark, hawk::ValuesIn(mark_load().suites),
+    [](const hawk::TestParamInfo<md_test::RegisteredSuite>& info) {
         return info.param.gtest_name();
     });
 

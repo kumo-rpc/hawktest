@@ -24,7 +24,7 @@
 #include <hawktest/flags/builtin.h>
 #include <hawktest/test/unit_test.h>
 
-namespace testing::internal {
+namespace hawk::internal {
 
     // Returns the output format, or "" for normal printed output.
     std::string UnitTestOptions::GetOutputFormat() {
@@ -108,7 +108,7 @@ namespace testing::internal {
             TestPartResult::kFatalFailure,
             FormatSehExceptionMessage(seh_code, location) + "\n"
                                                             "Stack trace:\n"
-                + ::testing::internal::GetCurrentOsStackTraceExceptTop(1));
+                + ::hawk::internal::GetCurrentOsStackTraceExceptTop(1));
 
         return EXCEPTION_EXECUTE_HANDLER;
     }
@@ -126,4 +126,4 @@ namespace testing::internal {
     }
 
 
-}  // namespace testing::internal
+}  // namespace hawk::internal

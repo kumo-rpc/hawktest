@@ -98,7 +98,7 @@ void PrintTo(EnumWithPrintTo e, std::ostream* os) {
 // A class implicitly convertible to BiggestInt.
 class BiggestIntConvertible {
  public:
-  operator ::testing::internal::BiggestInt() const { return 42; }
+  operator ::hawk::internal::BiggestInt() const { return 42; }
 };
 
 // A parent class with two child classes. The parent and one of the kids have
@@ -249,7 +249,7 @@ class PathLike {
 
 }  // namespace foo
 
-namespace testing {
+namespace hawk {
 namespace {
 template <typename T>
 class Wrapper {
@@ -287,15 +287,15 @@ using ::std::multiset;
 using ::std::pair;
 using ::std::set;
 using ::std::vector;
-using ::testing::PrintToString;
-using ::testing::internal::FormatForComparisonFailureMessage;
-using ::testing::internal::NativeArray;
-using ::testing::internal::RelationToSourceReference;
-using ::testing::internal::Strings;
-using ::testing::internal::UniversalPrint;
-using ::testing::internal::UniversalPrinter;
-using ::testing::internal::UniversalTersePrint;
-using ::testing::internal::UniversalTersePrintTupleFieldsToStrings;
+using ::hawk::PrintToString;
+using ::hawk::internal::FormatForComparisonFailureMessage;
+using ::hawk::internal::NativeArray;
+using ::hawk::internal::RelationToSourceReference;
+using ::hawk::internal::Strings;
+using ::hawk::internal::UniversalPrint;
+using ::hawk::internal::UniversalPrinter;
+using ::hawk::internal::UniversalTersePrint;
+using ::hawk::internal::UniversalTersePrintTupleFieldsToStrings;
 
 // Prints a value to a string using the universal value printer.  This
 // is a helper for testing UniversalPrinter<T>::Print() for various types.
@@ -1948,7 +1948,7 @@ TEST(UniversalTersePrintTupleFieldsToStringsTestWithStd, PrintsTersely) {
   EXPECT_EQ("\"a\"", result[1]);
 }
 
-class PrintAnyTest : public ::testing::Test {
+class PrintAnyTest : public ::hawk::Test {
  protected:
   template <typename T>
   static std::string ExpectedTypeName() {
@@ -1998,7 +1998,7 @@ TEST(PrintOneofTest, Basic) {
   EXPECT_EQ("('StreamableInGlobal(index = 1)' with value StreamableInGlobal)",
             PrintToString(Type(StreamableInGlobal{})));
   EXPECT_EQ(
-      "('testing::htest_printers_test::NonPrintable(index = 2)' with value "
+      "('hawk::htest_printers_test::NonPrintable(index = 2)' with value "
       "1-byte object <11>)",
       PrintToString(Type(NonPrintable{})));
 }
@@ -2104,4 +2104,4 @@ TEST(string_ref, compare) {
 }  // namespace
 
 }  // namespace htest_printers_test
-}  // namespace testing
+}  // namespace hawk

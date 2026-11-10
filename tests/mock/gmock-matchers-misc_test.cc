@@ -51,7 +51,7 @@
 // possible loss of data and C4100, unreferenced local parameter
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
 
-namespace testing {
+namespace hawk {
 namespace gmock_matchers_test {
 namespace {
 
@@ -217,9 +217,9 @@ TEST(IsTrueTest, IsTrueIsFalse) {
 // different element types.
 
 template <typename T>
-class ContainerEqTest : public testing::Test {};
+class ContainerEqTest : public hawk::Test {};
 
-typedef testing::Types<set<int>, vector<size_t>, multiset<size_t>, list<int>>
+typedef hawk::Types<set<int>, vector<size_t>, multiset<size_t>, list<int>>
     ContainerEqTestTypes;
 
 TYPED_TEST_SUITE(ContainerEqTest, ContainerEqTestTypes);
@@ -409,7 +409,7 @@ TEST(ContainerEqExtraTest, CopiesNativeArrayParameter) {
 namespace {
 
 // Used as a check on the more complex max flow method used in the
-// real testing::internal::FindMaxBipartiteMatching. This method is
+// real hawk::internal::FindMaxBipartiteMatching. This method is
 // compatible but runs in worst-case factorial time, so we only
 // use it in testing for small problem sizes.
 template <typename Graph>
@@ -493,11 +493,11 @@ ElementMatcherPairs FindBacktrackingMaxBPM(const Graph& g) {
   return BacktrackingMaxBPMState<Graph>(&g).Compute();
 }
 
-class BacktrackingBPMTest : public ::testing::Test {};
+class BacktrackingBPMTest : public ::hawk::Test {};
 
 // Tests the MaxBipartiteMatching algorithm with square matrices.
 // The single int param is the # of nodes on each of the left and right sides.
-class BipartiteTest : public ::testing::TestWithParam<size_t> {};
+class BipartiteTest : public ::hawk::TestWithParam<size_t> {};
 
 // Verify all match graphs up to some moderate number of edges.
 TEST_P(BipartiteTest, Exhaustive) {
@@ -525,11 +525,11 @@ TEST_P(BipartiteTest, Exhaustive) {
 }
 
 INSTANTIATE_TEST_SUITE_P(AllGraphs, BipartiteTest,
-                         ::testing::Range(size_t{0}, size_t{5}));
+                         ::hawk::Range(size_t{0}, size_t{5}));
 
 // Parameterized by a pair interpreted as (LhsSize, RhsSize).
 class BipartiteNonSquareTest
-    : public ::testing::TestWithParam<std::pair<size_t, size_t>> {};
+    : public ::hawk::TestWithParam<std::pair<size_t, size_t>> {};
 
 TEST_F(BipartiteNonSquareTest, SimpleBacktracking) {
   //   .......
@@ -567,13 +567,13 @@ TEST_P(BipartiteNonSquareTest, Exhaustive) {
 
 INSTANTIATE_TEST_SUITE_P(
     AllGraphs, BipartiteNonSquareTest,
-    testing::Values(std::make_pair(1, 2), std::make_pair(2, 1),
+    hawk::Values(std::make_pair(1, 2), std::make_pair(2, 1),
                     std::make_pair(3, 2), std::make_pair(2, 3),
                     std::make_pair(4, 1), std::make_pair(1, 4),
                     std::make_pair(4, 3), std::make_pair(3, 4)));
 
 class BipartiteRandomTest
-    : public ::testing::TestWithParam<std::pair<int, int>> {};
+    : public ::hawk::TestWithParam<std::pair<int, int>> {};
 
 // Verifies a large sample of larger graphs.
 TEST_P(BipartiteRandomTest, LargerNets) {
@@ -600,7 +600,7 @@ TEST_P(BipartiteRandomTest, LargerNets) {
 
 // Test argument is a std::pair<int, int> representing (nodes, iters).
 INSTANTIATE_TEST_SUITE_P(Samples, BipartiteRandomTest,
-                         testing::Values(std::make_pair(5, 10000),
+                         hawk::Values(std::make_pair(5, 10000),
                                          std::make_pair(6, 5000),
                                          std::make_pair(7, 2000),
                                          std::make_pair(8, 500),
@@ -716,10 +716,10 @@ class SampleOptionalWithoutBoolConversion {
 };
 
 template <typename T>
-class OptionalTest : public testing::Test {};
+class OptionalTest : public hawk::Test {};
 
 using OptionalTestTypes =
-    testing::Types<SampleOptional<int>,
+    hawk::Types<SampleOptional<int>,
                    SampleOptionalWithoutBoolConversion<int>>;
 
 TYPED_TEST_SUITE(OptionalTest, OptionalTestTypes);
@@ -770,10 +770,10 @@ TYPED_TEST(OptionalTest, ComposesWithMonomorphicMatchersRequiringConversion) {
 }
 
 template <typename T>
-class MoveOnlyOptionalTest : public testing::Test {};
+class MoveOnlyOptionalTest : public hawk::Test {};
 
 using MoveOnlyOptionalTestTypes =
-    testing::Types<SampleOptional<std::unique_ptr<int>>,
+    hawk::Types<SampleOptional<std::unique_ptr<int>>,
                    SampleOptionalWithoutBoolConversion<std::unique_ptr<int>>>;
 
 TYPED_TEST_SUITE(MoveOnlyOptionalTest, MoveOnlyOptionalTestTypes);
@@ -980,7 +980,7 @@ TEST(ArgsTest, CanMatchTupleByReference) {
 }
 
 // Validates that arg is printed as str.
-MATCHER_P(PrintsAs, str, "") { return testing::PrintToString(arg) == str; }
+MATCHER_P(PrintsAs, str, "") { return hawk::PrintToString(arg) == str; }
 
 TEST(ArgsTest, AcceptsTenTemplateArgs) {
   EXPECT_THAT(std::make_tuple(0, 1L, 2, 3L, 4, 5, 6, 7, 8, 9),
@@ -1880,6 +1880,6 @@ TEST(ThrowsPredicateCompilesTest, MessageMatcherAcceptsNonMatcher) {
 
 }  // namespace
 }  // namespace gmock_matchers_test
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100

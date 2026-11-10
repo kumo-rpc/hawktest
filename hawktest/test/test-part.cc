@@ -47,7 +47,7 @@
 #include <hawktest/test/internal/unit_test_impl.h>
 #include <hawktest/reporter/constants.h>
 
-namespace testing {
+namespace hawk {
 
     // Gets the summary of the failure message by omitting the stack trace
     // in it.
@@ -165,4 +165,4 @@ namespace testing {
 
     } // namespace internal
 
-} // namespace testing
+} // namespace hawk

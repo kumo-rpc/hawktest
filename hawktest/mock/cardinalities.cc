@@ -45,7 +45,7 @@
 #include <hawktest/mock/internal/internal-utils.h>
 #include <hawktest/test/htest.h>
 
-namespace testing {
+namespace hawk {
 
 namespace {
 
@@ -155,4 +155,4 @@ HTEST_API_ Cardinality Between(int min, int max) {
 // Creates a cardinality that allows exactly n calls.
 HTEST_API_ Cardinality Exactly(int n) { return Between(n, n); }
 
-}  // namespace testing
+}  // namespace hawk

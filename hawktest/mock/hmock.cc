@@ -40,7 +40,7 @@ GMOCK_DEFINE_bool_(catch_leaked_mocks, true,
                    "true if and only if Google Mock should report leaked "
                    "mock objects as failures.");
 
-GMOCK_DEFINE_string_(verbose, testing::internal::kWarningVerbosity,
+GMOCK_DEFINE_string_(verbose, hawk::internal::kWarningVerbosity,
                      "Controls how verbose Google Mock's output is."
                      "  Valid values:\n"
                      "  info    - prints all messages.\n"
@@ -54,7 +54,7 @@ GMOCK_DEFINE_int32_(default_mock_behavior, 1,
                     "  1 - by default, mocks act as NaggyMocks.\n"
                     "  2 - by default, mocks act as StrictMocks.");
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 // Parses a string as a command line flag.  The string should have the
@@ -225,4 +225,4 @@ HTEST_API_ void InitGoogleMock() {
   internal::InitGoogleMockImpl(&argc, argv);
 }
 
-}  // namespace testing
+}  // namespace hawk

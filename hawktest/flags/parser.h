@@ -10,7 +10,7 @@
 
 #include <hawktest/common/port.h>
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
     // Parses a string for an Int32 flag, in the form of "--flag=value".
@@ -25,4 +25,4 @@ HTEST_API_ void parse_hawk_test_flags_only(int* argc, wchar_t** argv);
     // is specified on the command line.
     HTEST_API_ extern bool g_help_flag;
 } // namespace internal
-} // namespace testing
+} // namespace hawk

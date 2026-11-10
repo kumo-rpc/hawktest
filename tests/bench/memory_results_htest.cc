@@ -63,7 +63,7 @@ class TestReporter : public ConsoleReporter {
   std::vector<MemoryManager::Result> store;
 };
 
-class MemoryResultsTest : public testing::Test {
+class MemoryResultsTest : public hawk::Test {
  public:
   Benchmark* bm;
   TestReporter reporter;

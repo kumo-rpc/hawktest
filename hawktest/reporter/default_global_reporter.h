@@ -20,7 +20,7 @@
 
 #include <hawktest/test/fwd.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // This is the default global test part result reporter used in UnitTestImpl.

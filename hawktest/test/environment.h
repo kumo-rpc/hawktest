@@ -19,7 +19,7 @@
 
 #include <hawktest/test/fwd.h>
 
-namespace testing {
+namespace hawk {
 
 
     // An Environment object is capable of setting up and tearing down an
@@ -55,4 +55,4 @@ namespace testing {
     };
 
 
-}  // namespace testing
+}  // namespace hawk

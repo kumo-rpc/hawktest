@@ -19,9 +19,9 @@ struct MsgHandler {
 using benchmark::internal::PerfCounters;
 using benchmark::internal::PerfCountersMeasurement;
 using benchmark::internal::PerfCounterValues;
-using ::testing::AllOf;
-using ::testing::Gt;
-using ::testing::Lt;
+using ::hawk::AllOf;
+using ::hawk::Gt;
+using ::hawk::Lt;
 
 namespace {
 const char kGenericPerfEvent1[] = "CYCLES";

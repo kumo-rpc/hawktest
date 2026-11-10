@@ -39,7 +39,7 @@
 
 namespace {
 
-using ::testing::Return;
+using ::hawk::Return;
 
 class FooInterface {
  public:

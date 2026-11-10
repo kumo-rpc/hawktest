@@ -25,9 +25,9 @@
 
 #include <string>
 
-namespace testing {
+namespace hawk {
 
     inline std::string benchmark_root() {
         return "/Users/cyclone/github/kumo-rpc/hawktest/benchmark";
     }
-}  // namespace testing
+}  // namespace hawk

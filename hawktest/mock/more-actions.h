@@ -532,11 +532,11 @@
         GMOCK_ACTION_CLASS_(name, value_params)(GMOCK_ACTION_CLASS_(           \
             name, value_params) &&) noexcept GMOCK_INTERNAL_DEFN_COPY_         \
         ##value_params template <typename F>                                   \
-        operator ::testing::Action<F>() const {                                \
+        operator ::hawk::Action<F>() const {                                \
       return GMOCK_PP_IF(                                                      \
           GMOCK_PP_IS_EMPTY(GMOCK_INTERNAL_COUNT_##value_params),              \
-          (::testing::internal::MakeAction<F, gmock_Impl>()),                  \
-          (::testing::internal::MakeAction<F>(impl_)));                        \
+          (::hawk::internal::MakeAction<F, gmock_Impl>()),                  \
+          (::hawk::internal::MakeAction<F>(impl_)));                        \
     }                                                                          \
                                                                                \
    private:                                                                    \
@@ -578,7 +578,7 @@
       gmock_Impl::gmock_PerformImpl(GMOCK_ACTION_ARG_TYPES_AND_NAMES_UNUSED_)  \
           const
 
-namespace testing {
+namespace hawk {
 
 // The ACTION*() macros trigger warning C4100 (unreferenced formal
 // parameter) in MSVC with -W4.  Unfortunately they cannot be fixed in
@@ -657,6 +657,6 @@ InvokeArgument(Params &&...params) {
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
 
-}  // namespace testing
+}  // namespace hawk
 
 #endif  // GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_MORE_ACTIONS_H_

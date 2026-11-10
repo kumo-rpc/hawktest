@@ -19,7 +19,7 @@
 #include <hawktest/reporter/listener.h>
 #include <hawktest/reporter/test_event_repeater.h>
 
-namespace testing {
+namespace hawk {
 
 
     TestEventListeners::TestEventListeners()

@@ -52,7 +52,7 @@ bool tear_down_was_run;
 bool test_was_run;
 
 // For testing using global test environments.
-class MyEnvironment : public testing::Environment {
+class MyEnvironment : public hawk::Environment {
  public:
   // Depending on the value of failure_in_set_up_, SetUp() will
   // generate a non-fatal failure, generate a fatal failure, or
@@ -94,7 +94,7 @@ TEST(FooTest, Bar) { test_was_run = true; }
 void Check(bool condition, const char* msg) {
   if (!condition) {
     printf("FAILED: %s\n", msg);
-    testing::internal::posix::Abort();
+    hawk::internal::posix::Abort();
   }
 }
 
@@ -107,7 +107,7 @@ int RunAllTests(MyEnvironment* env, FailureType failure) {
   tear_down_was_run = false;
   test_was_run = false;
   env->set_failure_in_set_up(failure);
-  testing::internal::GetUnitTestImpl()->ClearAdHocTestResult();
+  hawk::internal::GetUnitTestImpl()->ClearAdHocTestResult();
   return RUN_ALL_TESTS();
 }
 
@@ -115,7 +115,7 @@ int RunAllTests(MyEnvironment* env, FailureType failure) {
 // registration function returns its argument.
 MyEnvironment* RegisterTestEnv() {
   MyEnvironment* const env = new MyEnvironment;
-  Check(testing::AddGlobalTestEnvironment(env) == env,
+  Check(hawk::AddGlobalTestEnvironment(env) == env,
         "AddGlobalTestEnvironment() should return its argument.");
   return env;
 }
@@ -179,7 +179,7 @@ void TestNoTestsSkipsSetUp() {
 }  // namespace
 
 int main(int argc, char** argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
   TestGlobalSetUp();
   TestTestsRun();

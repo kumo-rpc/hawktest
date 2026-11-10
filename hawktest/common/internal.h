@@ -101,7 +101,7 @@ namespace hawk {
     class Message; // Represents a failure message.
 }
 
-namespace testing {
+namespace hawk {
 
     // Forward declarations.
 
@@ -147,56 +147,6 @@ namespace testing {
             IgnoredValue(const T& /* ignored */) { } // NOLINT(runtime/explicit)
         };
 
-        namespace edit_distance {
-            // Returns the optimal edits to go from 'left' to 'right'.
-            // All edits cost the same, with replace having lower priority than
-            // add/remove.
-            // Simple implementation of the Wagner-Fischer algorithm.
-            // See https://en.wikipedia.org/wiki/Wagner-Fischer_algorithm
-            enum EditType { kMatch,
-                kAdd,
-                kRemove,
-                kReplace };
-            HTEST_API_ std::vector<EditType> CalculateOptimalEdits(
-                const std::vector<size_t>& left, const std::vector<size_t>& right);
-
-            // Same as above, but the input is represented as strings.
-            HTEST_API_ std::vector<EditType> CalculateOptimalEdits(
-                const std::vector<std::string>& left,
-                const std::vector<std::string>& right);
-
-            // Create a diff of the input strings in Unified diff format.
-            HTEST_API_ std::string CreateUnifiedDiff(const std::vector<std::string>& left,
-                const std::vector<std::string>& right,
-                size_t context = 2);
-
-        } // namespace edit_distance
-
-        // Constructs and returns the message for an equality assertion
-        // (e.g. ASSERT_EQ, EXPECT_STREQ, etc) failure.
-        //
-        // The first four parameters are the expressions used in the assertion
-        // and their values, as strings.  For example, for ASSERT_EQ(foo, bar)
-        // where foo is 5 and bar is 6, we have:
-        //
-        //   expected_expression: "foo"
-        //   actual_expression:   "bar"
-        //   expected_value:      "5"
-        //   actual_value:        "6"
-        //
-        // The ignoring_case parameter is true if and only if the assertion is a
-        // *_STRCASEEQ*.  When it's true, the string " (ignoring case)" will
-        // be inserted into the message.
-        HTEST_API_ AssertionResult EqFailure(const char* expected_expression,
-            const char* actual_expression,
-            const std::string& expected_value,
-            const std::string& actual_value,
-            bool ignoring_case);
-
-        // Constructs a failure message for Boolean assertions such as EXPECT_TRUE.
-        HTEST_API_ std::string GetBoolAssertionFailureMessage(
-            const AssertionResult& assertion_result, const char* expression_text,
-            const char* actual_predicate_value, const char* expected_predicate_value);
 
         // This template class represents an IEEE floating-point number
         // (either single-precision or double-precision, depending on the
@@ -400,9 +350,9 @@ namespace testing {
             return &(TypeIdHelper<T>::dummy_);
         }
 
-        // Returns the type ID of ::testing::Test.  Always call this instead
-        // of GetTypeId< ::testing::Test>() to get the type ID of
-        // ::testing::Test, as the latter may give the wrong result due to a
+        // Returns the type ID of ::hawk::Test.  Always call this instead
+        // of GetTypeId< ::hawk::Test>() to get the type ID of
+        // ::hawk::Test, as the latter may give the wrong result due to a
         // suspected linker bug when compiling Hawk Test as a Mac OS X
         // framework.
         HTEST_API_ TypeId GetTestTypeId();
@@ -475,10 +425,10 @@ namespace testing {
         //  SetUpTestSuite()/TearDownTestSuite() could be protected. This way
         //  SuiteApiResolver can access them.
         struct SuiteApiResolver : T {
-            // testing::Test is only forward declared at this point. So we make it a
+            // hawk::Test is only forward declared at this point. So we make it a
             // dependent class for the compiler to be OK with it.
             using Test =
-                typename std::conditional<sizeof(T) != 0, ::testing::Test, void>::type;
+                typename std::conditional<sizeof(T) != 0, ::hawk::Test, void>::type;
 
             static SetUpTearDownSuiteFuncType GetSetUpCaseOrSuite(const char* filename,
                 int line_num) {
@@ -1208,7 +1158,7 @@ namespace testing {
         }
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 
 namespace std {
 // Some standard library implementations use `struct tuple_size` and some use
@@ -1219,7 +1169,7 @@ namespace std {
 #pragma clang diagnostic ignored "-Wmismatched-tags"
 #endif
     template <typename... Ts>
-    struct tuple_size<testing::internal::FlatTuple<Ts...>>
+    struct tuple_size<hawk::internal::FlatTuple<Ts...>>
         : std::integral_constant<size_t, sizeof...(Ts)> { };
 #ifdef __clang__
 #pragma clang diagnostic pop
@@ -1227,22 +1177,22 @@ namespace std {
 } // namespace std
 
 #define HTEST_MESSAGE_AT_(file, line, message, result_type) \
-    ::testing::internal::AssertHelper(result_type, file, line, message) = ::hawk::Message()
+    ::hawk::internal::AssertHelper(result_type, file, line, message) = ::hawk::Message()
 
 #define HTEST_MESSAGE_(message, result_type) \
     HTEST_MESSAGE_AT_(__FILE__, __LINE__, message, result_type)
 
 #define HTEST_FATAL_FAILURE_(message) \
-    return HTEST_MESSAGE_(message, ::testing::TestPartResult::kFatalFailure)
+    return HTEST_MESSAGE_(message, ::hawk::TestPartResult::kFatalFailure)
 
 #define HTEST_NONFATAL_FAILURE_(message) \
-    HTEST_MESSAGE_(message, ::testing::TestPartResult::kNonFatalFailure)
+    HTEST_MESSAGE_(message, ::hawk::TestPartResult::kNonFatalFailure)
 
 #define HTEST_SUCCESS_(message) \
-    HTEST_MESSAGE_(message, ::testing::TestPartResult::kSuccess)
+    HTEST_MESSAGE_(message, ::hawk::TestPartResult::kSuccess)
 
 #define HTEST_SKIP_(message) \
-    return HTEST_MESSAGE_(message, ::testing::TestPartResult::kSkip)
+    return HTEST_MESSAGE_(message, ::hawk::TestPartResult::kSkip)
 
 // Suppress MSVC warning 4072 (unreachable code) for the code following
 // statement if it returns or throws (or doesn't return or throw in some
@@ -1250,14 +1200,14 @@ namespace std {
 // NOTE: The "else" is important to keep this expansion to prevent a top-level
 // "else" from attaching to our "if".
 #define HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement) \
-    if (::testing::internal::AlwaysTrue()) {                      \
+    if (::hawk::internal::AlwaysTrue()) {                      \
         statement;                                                \
     } else /* NOLINT */                                           \
         static_assert(true, "") // User must have a semicolon after expansion.
 
 #if HTEST_HAS_EXCEPTIONS
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         class [[nodiscard]] NeverThrown {
@@ -1268,11 +1218,11 @@ namespace testing {
         };
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 
 #if HTEST_HAS_RTTI
 
-#define HTEST_EXCEPTION_TYPE_(e) ::testing::internal::GetTypeName(typeid(e))
+#define HTEST_EXCEPTION_TYPE_(e) ::hawk::internal::GetTypeName(typeid(e))
 
 #else // HTEST_HAS_RTTI
 
@@ -1286,7 +1236,7 @@ namespace testing {
         std::is_same<typename std::remove_cv<typename std::remove_reference<  \
                          expected_exception>::type>::type,                    \
             std::exception>::value,                                           \
-        const ::testing::internal::NeverThrown&, const std::exception&>::type \
+        const ::hawk::internal::NeverThrown&, const std::exception&>::type \
             e) {                                                              \
         htest_msg.value = "Expected: " #statement                             \
                           " throws an exception of type " #expected_exception \
@@ -1306,7 +1256,7 @@ namespace testing {
 
 #define HTEST_TEST_THROW_(statement, expected_exception, fail)                    \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                                 \
-    if (::testing::internal::TrueWithString htest_msg { }) {                      \
+    if (::hawk::internal::TrueWithString htest_msg { }) {                      \
         bool htest_caught_expected = false;                                       \
         try {                                                                     \
             HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement);            \
@@ -1350,7 +1300,7 @@ namespace testing {
 
 #define HTEST_TEST_NO_THROW_(statement, fail)                                \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                            \
-    if (::testing::internal::TrueWithString htest_msg { }) {                 \
+    if (::hawk::internal::TrueWithString htest_msg { }) {                 \
         try {                                                                \
             HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement);       \
         }                                                                    \
@@ -1368,7 +1318,7 @@ namespace testing {
 
 #define HTEST_TEST_ANY_THROW_(statement, fail)                             \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                          \
-    if (::testing::internal::AlwaysTrue()) {                               \
+    if (::hawk::internal::AlwaysTrue()) {                               \
         bool htest_caught_any = false;                                     \
         try {                                                              \
             HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement);     \
@@ -1389,17 +1339,17 @@ namespace testing {
 // representation of expression as it was passed into the EXPECT_TRUE.
 #define HTEST_TEST_BOOLEAN_(expression, text, actual, expected, fail)        \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                            \
-    if (const ::testing::internal::AssertionResultExpectation htest_are_ = { \
-            ::testing::AssertionResult(expression), expected })              \
+    if (const ::hawk::internal::AssertionResultExpectation htest_are_ = { \
+            ::hawk::AssertionResult(expression), expected })              \
         ;                                                                    \
     else /* NOLINT */                                                        \
-        fail(::testing::internal::GetBoolAssertionFailureMessage(            \
+        fail(::hawk::GetBoolAssertionFailureMessage(            \
             htest_are_.assertion_result, text, #actual, #expected))
 
 #define HTEST_TEST_NO_FATAL_FAILURE_(statement, fail)                     \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                         \
-    if (::testing::internal::AlwaysTrue()) {                              \
-        const ::testing::internal::HasNewFatalFailureHelper               \
+    if (::hawk::internal::AlwaysTrue()) {                              \
+        const ::hawk::internal::HasNewFatalFailureHelper               \
             htest_fatal_failure_checker;                                  \
         HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement);        \
         if (htest_fatal_failure_checker.has_new_fatal_failure()) {        \
@@ -1440,16 +1390,16 @@ namespace testing {
                                                                                                                               \
     private:                                                                                                                  \
         void TestBody() override;                                                                                             \
-        [[maybe_unused]] static ::testing::TestInfo* const test_info_;                                                        \
+        [[maybe_unused]] static ::hawk::TestInfo* const test_info_;                                                        \
     };                                                                                                                        \
                                                                                                                               \
-    ::testing::TestInfo* const HTEST_TEST_CLASS_NAME_(test_suite_name,                                                        \
-        test_name)::test_info_ = ::testing::internal::MakeAndRegisterTestInfo(#test_suite_name, #test_name, nullptr, nullptr, \
-        ::testing::internal::CodeLocation(__FILE__, __LINE__), (parent_id),                                                   \
-        ::testing::internal::SuiteApiResolver<                                                                                \
+    ::hawk::TestInfo* const HTEST_TEST_CLASS_NAME_(test_suite_name,                                                        \
+        test_name)::test_info_ = ::hawk::internal::MakeAndRegisterTestInfo(#test_suite_name, #test_name, nullptr, nullptr, \
+        ::hawk::internal::CodeLocation(__FILE__, __LINE__), (parent_id),                                                   \
+        ::hawk::internal::SuiteApiResolver<                                                                                \
             parent_class>::GetSetUpCaseOrSuite(__FILE__, __LINE__),                                                           \
-        ::testing::internal::SuiteApiResolver<                                                                                \
+        ::hawk::internal::SuiteApiResolver<                                                                                \
             parent_class>::GetTearDownCaseOrSuite(__FILE__, __LINE__),                                                        \
-        new ::testing::internal::TestFactoryImpl<HTEST_TEST_CLASS_NAME_(                                                      \
+        new ::hawk::internal::TestFactoryImpl<HTEST_TEST_CLASS_NAME_(                                                      \
             test_suite_name, test_name)>);                                                                                    \
     void HTEST_TEST_CLASS_NAME_(test_suite_name, test_name)::TestBody()

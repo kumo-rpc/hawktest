@@ -48,7 +48,7 @@
 
 #include <hawktest/mock/matchers.h>
 
-namespace testing {
+namespace hawk {
 
 // Silence C4100 (unreferenced formal
 // parameter) for MSVC
@@ -131,6 +131,6 @@ HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4800
 #endif
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100
 
-}  // namespace testing
+}  // namespace hawk
 
 #endif  // GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_MORE_MATCHERS_H_

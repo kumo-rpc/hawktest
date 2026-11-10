@@ -45,7 +45,7 @@ namespace {
 
 // Test case FooTest.
 
-class FooTest : public testing::Test {};
+class FooTest : public hawk::Test {};
 
 TEST_F(FooTest, Abc) {}
 
@@ -91,19 +91,19 @@ TEST(DISABLED_FoobarTest, DISABLED_Test2) { FAIL() << "Expected failure."; }
 
 TEST(DISABLED_FoobarbazTest, TestA) { FAIL() << "Expected failure."; }
 
-class ParamTest : public testing::TestWithParam<int> {};
+class ParamTest : public hawk::TestWithParam<int> {};
 
 TEST_P(ParamTest, TestX) {}
 
 TEST_P(ParamTest, TestY) {}
 
-INSTANTIATE_TEST_SUITE_P(SeqP, ParamTest, testing::Values(1, 2));
-INSTANTIATE_TEST_SUITE_P(SeqQ, ParamTest, testing::Values(5, 6));
+INSTANTIATE_TEST_SUITE_P(SeqP, ParamTest, hawk::Values(1, 2));
+INSTANTIATE_TEST_SUITE_P(SeqQ, ParamTest, hawk::Values(5, 6));
 
 }  // namespace
 
 int main(int argc, char **argv) {
-  ::testing::init_hawk_test(&argc, argv);
+  ::hawk::init_hawk_test(&argc, argv);
 
   return RUN_ALL_TESTS();
 }

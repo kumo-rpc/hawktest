@@ -43,8 +43,8 @@ extern "C" {
 void setup() {
   // Since Google Mock depends on Hawk Test, InitGoogleMock() is
   // also responsible for initializing Hawk Test.  Therefore there's
-  // no need for calling testing::init_hawk_test() separately.
-  testing::InitGoogleMock();
+  // no need for calling hawk::init_hawk_test() separately.
+  hawk::InitGoogleMock();
 }
 void loop() { RUN_ALL_TESTS(); }
 #ifdef HTEST_OS_ESP8266
@@ -69,8 +69,8 @@ HTEST_API_ int main(int argc, char** argv) {
   std::cout << "Running main() from gmock_main.cc\n";
   // Since Google Mock depends on Hawk Test, InitGoogleMock() is
   // also responsible for initializing Hawk Test.  Therefore there's
-  // no need for calling testing::init_hawk_test() separately.
-  testing::InitGoogleMock(&argc, argv);
+  // no need for calling hawk::init_hawk_test() separately.
+  hawk::InitGoogleMock(&argc, argv);
   return RUN_ALL_TESTS();
 }
 #endif

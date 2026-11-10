@@ -19,7 +19,7 @@
 #include <hawktest/test/test_suite.h>
 #include <hawktest/common/internal-inl.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
 

@@ -54,7 +54,7 @@
 using std::make_pair;
 using std::pair;
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 TEST(IsXDigitTest, WorksForNarrowAscii) {
@@ -114,12 +114,12 @@ class Derived : public Base {
 
 TEST(ImplicitCastTest, ConvertsPointers) {
   Derived derived(0);
-  EXPECT_TRUE(&derived == ::testing::internal::ImplicitCast_<Base*>(&derived));
+  EXPECT_TRUE(&derived == ::hawk::internal::ImplicitCast_<Base*>(&derived));
 }
 
 TEST(ImplicitCastTest, CanUseInheritance) {
   Derived derived(1);
-  Base base = ::testing::internal::ImplicitCast_<Base>(derived);
+  Base base = ::hawk::internal::ImplicitCast_<Base>(derived);
   EXPECT_EQ(derived.member(), base.member());
 }
 
@@ -138,7 +138,7 @@ class Castable {
 TEST(ImplicitCastTest, CanUseNonConstCastOperator) {
   bool converted = false;
   Castable castable(&converted);
-  Base base = ::testing::internal::ImplicitCast_<Base>(castable);
+  Base base = ::hawk::internal::ImplicitCast_<Base>(castable);
   EXPECT_TRUE(converted);
 }
 
@@ -157,7 +157,7 @@ class ConstCastable {
 TEST(ImplicitCastTest, CanUseConstCastOperatorOnConstValues) {
   bool converted = false;
   const ConstCastable const_castable(&converted);
-  Base base = ::testing::internal::ImplicitCast_<Base>(const_castable);
+  Base base = ::hawk::internal::ImplicitCast_<Base>(const_castable);
   EXPECT_TRUE(converted);
 }
 
@@ -183,14 +183,14 @@ TEST(ImplicitCastTest, CanSelectBetweenConstAndNonConstCasrAppropriately) {
   bool converted = false;
   bool const_converted = false;
   ConstAndNonConstCastable castable(&converted, &const_converted);
-  Base base = ::testing::internal::ImplicitCast_<Base>(castable);
+  Base base = ::hawk::internal::ImplicitCast_<Base>(castable);
   EXPECT_TRUE(converted);
   EXPECT_FALSE(const_converted);
 
   converted = false;
   const_converted = false;
   const ConstAndNonConstCastable const_castable(&converted, &const_converted);
-  base = ::testing::internal::ImplicitCast_<Base>(const_castable);
+  base = ::hawk::internal::ImplicitCast_<Base>(const_castable);
   EXPECT_FALSE(converted);
   EXPECT_TRUE(const_converted);
 }
@@ -202,7 +202,7 @@ class To {
 
 TEST(ImplicitCastTest, CanUseImplicitConstructor) {
   bool converted = false;
-  To to = ::testing::internal::ImplicitCast_<To>(&converted);
+  To to = ::hawk::internal::ImplicitCast_<To>(&converted);
   (void)to;
   EXPECT_TRUE(converted);
 }
@@ -384,7 +384,7 @@ TEST(GtestCheckDeathTest, LivesSilentlyOnSuccess) {
         ::std::cerr << "Success\n";
         exit(0);
       },
-      ::testing::ExitedWithCode(0), "Success");
+      ::hawk::ExitedWithCode(0), "Success");
 }
 
 #endif  // HTEST_HAS_DEATH_TEST
@@ -404,11 +404,11 @@ TEST(RegexEngineSelectionTest, SelectsCorrectRegexEngine) {
 #ifdef HTEST_USES_POSIX_RE
 
 template <typename Str>
-class RETest : public ::testing::Test {};
+class RETest : public ::hawk::Test {};
 
 // Defines StringTypes as the list of all string types that class RE
 // supports.
-typedef testing::Types< ::std::string, const char*> StringTypes;
+typedef hawk::Types< ::std::string, const char*> StringTypes;
 
 TYPED_TEST_SUITE(RETest, StringTypes);
 
@@ -1302,4 +1302,4 @@ TEST(WindowsTypesTest, CRITICAL_SECTIONIs_RTL_CRITICAL_SECTION) {
 #endif  // HTEST_OS_WINDOWS
 
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk

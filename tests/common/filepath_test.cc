@@ -50,7 +50,7 @@
 #include <direct.h>  // NOLINT
 #endif               // HTEST_OS_WINDOWS_MOBILE
 
-namespace testing {
+namespace hawk {
 namespace internal {
 namespace {
 
@@ -671,4 +671,4 @@ TEST(FilePathTest, IsRootDirectory) {
 
 }  // namespace
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk

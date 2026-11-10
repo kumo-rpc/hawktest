@@ -44,7 +44,7 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
-namespace testing {
+namespace hawk {
 
     // A copyable object representing the result of a test part (i.e. an
     // assertion or an explicit FAIL(), ADD_FAILURE(), or SUCCESS()).
@@ -188,6 +188,6 @@ namespace testing {
         void PrintTestPartResult(const TestPartResult& test_part_result);
     } // namespace internal
 
-} // namespace testing
+} // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251

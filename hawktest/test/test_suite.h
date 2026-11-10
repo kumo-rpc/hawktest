@@ -23,7 +23,7 @@
 #include <hawktest/test/internal/death-test-internal.h>
 #include <hawktest/common/random.h>
 
-namespace testing {
+namespace hawk {
 
 
     // A TestInfo object stores the following information about a test:
@@ -391,5 +391,5 @@ namespace testing {
     namespace internal {
         void PrintFullTestCommentIfPresent(const TestInfo& test_info);
     }
-}  // namespace testing
+}  // namespace hawk
 

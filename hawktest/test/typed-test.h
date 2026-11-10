@@ -42,9 +42,9 @@
 #if 0
 
 // First, define a fixture class template.  It should be parameterized
-// by a type.  Remember to derive it from testing::Test.
+// by a type.  Remember to derive it from hawk::Test.
 template <typename T>
-class [[nodiscard]] FooTest : public testing::Test {
+class [[nodiscard]] FooTest : public hawk::Test {
  public:
   ...
   using List = ::std::list<T>;
@@ -55,7 +55,7 @@ class [[nodiscard]] FooTest : public testing::Test {
 // Next, associate a list of types with the test suite, which will be
 // repeated for each type in the list.  The using-declaration is necessary for
 // the macro to parse correctly.
-using MyTypes = ::testing::Types<char, int, unsigned int>;
+using MyTypes = ::hawk::Types<char, int, unsigned int>;
 TYPED_TEST_SUITE(FooTest, MyTypes);
 
 // If the type list contains only one type, you can write that type
@@ -120,9 +120,9 @@ TYPED_TEST(FooTest, HasPropertyA) { ... }
 #if 0
 
 // First, define a fixture class template.  It should be parameterized
-// by a type.  Remember to derive it from testing::Test.
+// by a type.  Remember to derive it from hawk::Test.
 template <typename T>
-class [[nodiscard]] FooTest : public testing::Test {
+class [[nodiscard]] FooTest : public hawk::Test {
   ...
 };
 
@@ -156,7 +156,7 @@ REGISTER_TYPED_TEST_SUITE_P(FooTest,
 // argument to the INSTANTIATE_* macro is a prefix that will be added
 // to the actual test suite name.  Remember to pick unique prefixes for
 // different instances.
-using MyTypes = ::testing::Types<char, int, unsigned int>;
+using MyTypes = ::hawk::Types<char, int, unsigned int>;
 INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 
 // If the type list contains only one type, you can write that type
@@ -188,9 +188,9 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
     htest_type_params_##TestSuiteName##_NameGenerator
 
 #define TYPED_TEST_SUITE(CaseName, Types, ...)                            \
-    typedef ::testing::internal::GenerateTypeList<Types>::type            \
+    typedef ::hawk::internal::GenerateTypeList<Types>::type            \
         HTEST_TYPE_PARAMS_(CaseName);                                     \
-    typedef ::testing::internal::NameGeneratorSelector<__VA_ARGS__>::type \
+    typedef ::hawk::internal::NameGeneratorSelector<__VA_ARGS__>::type \
     HTEST_NAME_GENERATOR_(CaseName)
 
 #define TYPED_TEST(CaseName, TestName)                                                                                     \
@@ -204,17 +204,17 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
         typedef htest_TypeParam_ TypeParam;                                                                                \
         void TestBody() override;                                                                                          \
     };                                                                                                                     \
-    [[maybe_unused]] static bool htest_##CaseName##_##TestName##_registered_ = ::testing::internal::TypeParameterizedTest< \
+    [[maybe_unused]] static bool htest_##CaseName##_##TestName##_registered_ = ::hawk::internal::TypeParameterizedTest< \
         CaseName,                                                                                                          \
-        ::testing::internal::TemplateSel<HTEST_TEST_CLASS_NAME_(CaseName,                                                  \
+        ::hawk::internal::TemplateSel<HTEST_TEST_CLASS_NAME_(CaseName,                                                  \
             TestName)>,                                                                                                    \
         HTEST_TYPE_PARAMS_(                                                                                                \
             CaseName)>::Register("",                                                                                       \
-        ::testing::internal::CodeLocation(                                                                                 \
+        ::hawk::internal::CodeLocation(                                                                                 \
             __FILE__, __LINE__),                                                                                           \
         HTEST_STRINGIFY_(CaseName),                                                                                        \
         HTEST_STRINGIFY_(TestName), 0,                                                                                     \
-        ::testing::internal::GenerateNames<                                                                                \
+        ::hawk::internal::GenerateNames<                                                                                \
             HTEST_NAME_GENERATOR_(CaseName),                                                                               \
             HTEST_TYPE_PARAMS_(CaseName)>());                                                                              \
     template <typename htest_TypeParam_>                                                                                   \
@@ -224,7 +224,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 #define TYPED_TEST_CASE                                                  \
-    static_assert(::testing::internal::TypedTestCaseIsDeprecated(), ""); \
+    static_assert(::hawk::internal::TypedTestCaseIsDeprecated(), ""); \
     TYPED_TEST_SUITE
 #endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
@@ -255,13 +255,13 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 // static as typically these macros are used in a .h file that can be
 // #included in multiple translation units linked together.
 #define TYPED_TEST_SUITE_P(SuiteName)                \
-    static ::testing::internal::TypedTestSuitePState \
+    static ::hawk::internal::TypedTestSuitePState \
     HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName)
 
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 #define TYPED_TEST_CASE_P                                                   \
-    static_assert(::testing::internal::TypedTestCase_P_IsDeprecated(), ""); \
+    static_assert(::hawk::internal::TypedTestCase_P_IsDeprecated(), ""); \
     TYPED_TEST_SUITE_P
 #endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
@@ -285,7 +285,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 // Note: this won't work correctly if the trailing arguments are macros.
 #define REGISTER_TYPED_TEST_SUITE_P(SuiteName, ...)                          \
     namespace HTEST_SUITE_NAMESPACE_(SuiteName) {                            \
-        typedef ::testing::internal::Templates<__VA_ARGS__> htest_AllTests_; \
+        typedef ::hawk::internal::Templates<__VA_ARGS__> htest_AllTests_; \
     }                                                                        \
     [[maybe_unused]] static const char* const HTEST_REGISTERED_TEST_NAMES_(  \
         SuiteName) = HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName).VerifyRegisteredTestNames(HTEST_STRINGIFY_(SuiteName), __FILE__, __LINE__, #__VA_ARGS__)
@@ -293,7 +293,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 #define REGISTER_TYPED_TEST_CASE_P                                             \
-    static_assert(::testing::internal::RegisterTypedTestCase_P_IsDeprecated(), \
+    static_assert(::hawk::internal::RegisterTypedTestCase_P_IsDeprecated(), \
         "");                                                                   \
     REGISTER_TYPED_TEST_SUITE_P
 #endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
@@ -301,23 +301,23 @@ INSTANTIATE_TYPED_TEST_SUITE_P(My, FooTest, MyTypes);
 #define INSTANTIATE_TYPED_TEST_SUITE_P(Prefix, SuiteName, Types, ...)                                            \
     static_assert(sizeof(HTEST_STRINGIFY_(Prefix)) > 1,                                                          \
         "test-suit-prefix must not be empty");                                                                   \
-    [[maybe_unused]] static bool htest_##Prefix##_##SuiteName = ::testing::internal::TypeParameterizedTestSuite< \
+    [[maybe_unused]] static bool htest_##Prefix##_##SuiteName = ::hawk::internal::TypeParameterizedTestSuite< \
         SuiteName, HTEST_SUITE_NAMESPACE_(SuiteName)::htest_AllTests_,                                           \
-        ::testing::internal::GenerateTypeList<Types>::type>::                                                    \
+        ::hawk::internal::GenerateTypeList<Types>::type>::                                                    \
         Register(HTEST_STRINGIFY_(Prefix),                                                                       \
-            ::testing::internal::CodeLocation(__FILE__, __LINE__),                                               \
+            ::hawk::internal::CodeLocation(__FILE__, __LINE__),                                               \
             &HTEST_TYPED_TEST_SUITE_P_STATE_(SuiteName),                                                         \
             HTEST_STRINGIFY_(SuiteName),                                                                         \
             HTEST_REGISTERED_TEST_NAMES_(SuiteName),                                                             \
-            ::testing::internal::GenerateNames<                                                                  \
-                ::testing::internal::NameGeneratorSelector<                                                      \
+            ::hawk::internal::GenerateNames<                                                                  \
+                ::hawk::internal::NameGeneratorSelector<                                                      \
                     __VA_ARGS__>::type,                                                                          \
-                ::testing::internal::GenerateTypeList<Types>::type>())
+                ::hawk::internal::GenerateTypeList<Types>::type>())
 
 // Legacy API is deprecated but still available
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 #define INSTANTIATE_TYPED_TEST_CASE_P                                        \
     static_assert(                                                           \
-        ::testing::internal::InstantiateTypedTestCase_P_IsDeprecated(), ""); \
+        ::hawk::internal::InstantiateTypedTestCase_P_IsDeprecated(), ""); \
     INSTANTIATE_TYPED_TEST_SUITE_P
 #endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_

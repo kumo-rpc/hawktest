@@ -8,8 +8,8 @@ The custom directory is an injection point for custom user configurations.
 
 *   `HTEST_OS_STACK_TRACE_GETTER_` - The name of an implementation of
     `OsStackTraceGetterInterface`.
-*   `HTEST_CUSTOM_TEMPDIR_FUNCTION_` - An override for `testing::TempDir()`. See
-    `testing::TempDir` for semantics and signature.
+*   `HTEST_CUSTOM_TEMPDIR_FUNCTION_` - An override for `hawk::TempDir()`. See
+    `hawk::TempDir` for semantics and signature.
 
 ## Header `htest-port.h`
 

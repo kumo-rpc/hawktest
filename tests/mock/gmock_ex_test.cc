@@ -40,9 +40,9 @@
 #if HTEST_HAS_EXCEPTIONS
 namespace {
 
-using testing::HasSubstr;
+using hawk::HasSubstr;
 
-using testing::internal::HawkTestFailureException;
+using hawk::internal::HawkTestFailureException;
 
 // A type that cannot be default constructed.
 class NonDefaultConstructible {

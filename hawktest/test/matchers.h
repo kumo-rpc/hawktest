@@ -63,7 +63,7 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(
                               clients of class B */
     /* Symbol involving type with internal linkage not defined */)
 
-namespace testing {
+namespace hawk {
 
     // To implement a matcher Foo for type T, define:
     //   1. a class FooMatcherMatcher that implements the matcher interface:
@@ -997,7 +997,7 @@ namespace testing {
     inline internal::NeMatcher<Rhs> Ne(Rhs x) {
         return internal::NeMatcher<Rhs>(x);
     }
-} // namespace testing
+} // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251 5046
 

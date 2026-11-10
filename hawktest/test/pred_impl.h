@@ -34,12 +34,11 @@
 
 #pragma once
 
-
+#include <hawktest/analysis/assertion_result.h>
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
-#include <hawktest/test/assertion-result.h>
 
-namespace testing {
+namespace hawk {
 
     // This header implements a family of generic predicate assertion
     // macros:
@@ -50,7 +49,7 @@ namespace testing {
     //
     // where pred_format is a function or functor that takes n (in the
     // case of ASSERT_PRED_FORMATn) values and their source expression
-    // text, and returns a testing::AssertionResult.  See the definition
+    // text, and returns a hawk::AssertionResult.  See the definition
     // of ASSERT_EQ in htest.h for an example.
     //
     // If you don't care about formatting, you can use the more
@@ -72,7 +71,7 @@ namespace testing {
 
 #define HTEST_ASSERT_(expression, on_failure)                     \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                 \
-    if (const ::testing::AssertionResult htest_ar = (expression)) \
+    if (const ::hawk::AssertionResult htest_ar = (expression)) \
         ;                                                         \
     else                                                          \
         on_failure(htest_ar.failure_message())
@@ -88,7 +87,7 @@ namespace testing {
         return AssertionFailure()
             << pred_text << "(" << e1 << ") evaluates to false, where"
             << "\n"
-            << e1 << " evaluates to " << ::testing::PrintToString(v1);
+            << e1 << " evaluates to " << ::hawk::PrintToString(v1);
     }
 
 // Internal macro for implementing {EXPECT|ASSERT}_PRED_FORMAT1.
@@ -99,7 +98,7 @@ namespace testing {
 // Internal macro for implementing {EXPECT|ASSERT}_PRED1.  Don't use
 // this in your code.
 #define HTEST_PRED1_(pred, v1, on_failure) \
-    HTEST_ASSERT_(::testing::AssertPred1Helper(#pred, #v1, pred, v1), on_failure)
+    HTEST_ASSERT_(::hawk::AssertPred1Helper(#pred, #v1, pred, v1), on_failure)
 
 // Unary predicate assertion macros.
 #define EXPECT_PRED_FORMAT1(pred_format, v1) \
@@ -122,8 +121,8 @@ namespace testing {
             << pred_text << "(" << e1 << ", " << e2
             << ") evaluates to false, where"
             << "\n"
-            << e1 << " evaluates to " << ::testing::PrintToString(v1) << "\n"
-            << e2 << " evaluates to " << ::testing::PrintToString(v2);
+            << e1 << " evaluates to " << ::hawk::PrintToString(v1) << "\n"
+            << e2 << " evaluates to " << ::hawk::PrintToString(v2);
     }
 
 // Internal macro for implementing {EXPECT|ASSERT}_PRED_FORMAT2.
@@ -134,7 +133,7 @@ namespace testing {
 // Internal macro for implementing {EXPECT|ASSERT}_PRED2.  Don't use
 // this in your code.
 #define HTEST_PRED2_(pred, v1, v2, on_failure)                                 \
-    HTEST_ASSERT_(::testing::AssertPred2Helper(#pred, #v1, #v2, pred, v1, v2), \
+    HTEST_ASSERT_(::hawk::AssertPred2Helper(#pred, #v1, #v2, pred, v1, v2), \
         on_failure)
 
 // Binary predicate assertion macros.
@@ -160,9 +159,9 @@ namespace testing {
             << pred_text << "(" << e1 << ", " << e2 << ", " << e3
             << ") evaluates to false, where"
             << "\n"
-            << e1 << " evaluates to " << ::testing::PrintToString(v1) << "\n"
-            << e2 << " evaluates to " << ::testing::PrintToString(v2) << "\n"
-            << e3 << " evaluates to " << ::testing::PrintToString(v3);
+            << e1 << " evaluates to " << ::hawk::PrintToString(v1) << "\n"
+            << e2 << " evaluates to " << ::hawk::PrintToString(v2) << "\n"
+            << e3 << " evaluates to " << ::hawk::PrintToString(v3);
     }
 
 // Internal macro for implementing {EXPECT|ASSERT}_PRED_FORMAT3.
@@ -174,7 +173,7 @@ namespace testing {
 // this in your code.
 #define HTEST_PRED3_(pred, v1, v2, v3, on_failure)                            \
     HTEST_ASSERT_(                                                            \
-        ::testing::AssertPred3Helper(#pred, #v1, #v2, #v3, pred, v1, v2, v3), \
+        ::hawk::AssertPred3Helper(#pred, #v1, #v2, #v3, pred, v1, v2, v3), \
         on_failure)
 
 // Ternary predicate assertion macros.
@@ -201,10 +200,10 @@ namespace testing {
             << pred_text << "(" << e1 << ", " << e2 << ", " << e3 << ", " << e4
             << ") evaluates to false, where"
             << "\n"
-            << e1 << " evaluates to " << ::testing::PrintToString(v1) << "\n"
-            << e2 << " evaluates to " << ::testing::PrintToString(v2) << "\n"
-            << e3 << " evaluates to " << ::testing::PrintToString(v3) << "\n"
-            << e4 << " evaluates to " << ::testing::PrintToString(v4);
+            << e1 << " evaluates to " << ::hawk::PrintToString(v1) << "\n"
+            << e2 << " evaluates to " << ::hawk::PrintToString(v2) << "\n"
+            << e3 << " evaluates to " << ::hawk::PrintToString(v3) << "\n"
+            << e4 << " evaluates to " << ::hawk::PrintToString(v4);
     }
 
 // Internal macro for implementing {EXPECT|ASSERT}_PRED_FORMAT4.
@@ -215,7 +214,7 @@ namespace testing {
 // Internal macro for implementing {EXPECT|ASSERT}_PRED4.  Don't use
 // this in your code.
 #define HTEST_PRED4_(pred, v1, v2, v3, v4, on_failure)                          \
-    HTEST_ASSERT_(::testing::AssertPred4Helper(#pred, #v1, #v2, #v3, #v4, pred, \
+    HTEST_ASSERT_(::hawk::AssertPred4Helper(#pred, #v1, #v2, #v3, #v4, pred, \
                       v1, v2, v3, v4),                                          \
         on_failure)
 
@@ -245,11 +244,11 @@ namespace testing {
             << pred_text << "(" << e1 << ", " << e2 << ", " << e3 << ", " << e4
             << ", " << e5 << ") evaluates to false, where"
             << "\n"
-            << e1 << " evaluates to " << ::testing::PrintToString(v1) << "\n"
-            << e2 << " evaluates to " << ::testing::PrintToString(v2) << "\n"
-            << e3 << " evaluates to " << ::testing::PrintToString(v3) << "\n"
-            << e4 << " evaluates to " << ::testing::PrintToString(v4) << "\n"
-            << e5 << " evaluates to " << ::testing::PrintToString(v5);
+            << e1 << " evaluates to " << ::hawk::PrintToString(v1) << "\n"
+            << e2 << " evaluates to " << ::hawk::PrintToString(v2) << "\n"
+            << e3 << " evaluates to " << ::hawk::PrintToString(v3) << "\n"
+            << e4 << " evaluates to " << ::hawk::PrintToString(v4) << "\n"
+            << e5 << " evaluates to " << ::hawk::PrintToString(v5);
     }
 
 // Internal macro for implementing {EXPECT|ASSERT}_PRED_FORMAT5.
@@ -261,7 +260,7 @@ namespace testing {
 // Internal macro for implementing {EXPECT|ASSERT}_PRED5.  Don't use
 // this in your code.
 #define HTEST_PRED5_(pred, v1, v2, v3, v4, v5, on_failure)                     \
-    HTEST_ASSERT_(::testing::AssertPred5Helper(#pred, #v1, #v2, #v3, #v4, #v5, \
+    HTEST_ASSERT_(::hawk::AssertPred5Helper(#pred, #v1, #v2, #v3, #v4, #v5, \
                       pred, v1, v2, v3, v4, v5),                               \
         on_failure)
 
@@ -275,4 +274,4 @@ namespace testing {
 #define ASSERT_PRED5(pred, v1, v2, v3, v4, v5) \
     HTEST_PRED5_(pred, v1, v2, v3, v4, v5, HTEST_FATAL_FAILURE_)
 
-} // namespace testing
+} // namespace hawk

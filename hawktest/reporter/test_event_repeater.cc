@@ -19,7 +19,7 @@
 #include <hawktest/reporter/test_event_repeater.h>
 #include <hawktest/common/internal-inl.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
 

@@ -43,7 +43,7 @@
 
 #if !defined(HTEST_CUSTOM_INIT_GOOGLE_TEST_FUNCTION_)
 
-using testing::InitGoogleMock;
+using hawk::InitGoogleMock;
 
 // Verifies that calling InitGoogleMock() on argv results in new_argv,
 // and the gmock_verbose flag's value is set to expected_gmock_verbose.

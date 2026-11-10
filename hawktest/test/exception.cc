@@ -19,7 +19,7 @@
 #include <hawktest/test/exception.h>
 
 #if HTEST_HAS_EXCEPTIONS
-namespace testing {
+namespace hawk {
     namespace internal {
 
         void ReportFailureInUnknownLocation(TestPartResult::Type result_type,

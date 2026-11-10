@@ -17,9 +17,33 @@
 //
 
 #include <hawktest/reporter/default_global_reporter.h>
+#include <hawktest/test/unit_test.h>
+#include <hawktest/test/internal/unit_test_impl.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
+
+
+        DefaultGlobalTestPartResultReporter::DefaultGlobalTestPartResultReporter(
+            UnitTestImpl* unit_test)
+            : unit_test_(unit_test) { }
+
+        void DefaultGlobalTestPartResultReporter::ReportTestPartResult(
+            const TestPartResult& result) {
+            unit_test_->current_test_result()->AddTestPartResult(result);
+            unit_test_->listeners()->repeater()->OnTestPartResult(result);
+        }
+
+
+
+        DefaultPerThreadTestPartResultReporter::DefaultPerThreadTestPartResultReporter(
+            UnitTestImpl* unit_test)
+            : unit_test_(unit_test) { }
+
+        void DefaultPerThreadTestPartResultReporter::ReportTestPartResult(
+            const TestPartResult& result) {
+            unit_test_->GetGlobalTestPartResultReporter()->ReportTestPartResult(result);
+        }
 
     }
 }

@@ -18,12 +18,13 @@
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/common/port_internal.h>
 #include <hawktest/flags/gflags.h>
+#include <hawktest/numeric/parse.h>
 
 #include <cstdio>
 #include <cstring>
 #include <string>
 
-namespace testing {
+namespace hawk {
 
     static const char kUniversalFilter[] = "*";
     static const char kTestShardIndex[] = "HTEST_SHARD_INDEX";
@@ -111,45 +112,45 @@ namespace testing {
 
     } // namespace internal
 
-} // namespace testing
+} // namespace hawk
 
 DEFINE_bool(htest_fail_fast,
-    testing::internal::BoolFromHTestEnv("fail_fast", testing::GetDefaultFailFast()),
+    hawk::internal::BoolFromHTestEnv("fail_fast", hawk::GetDefaultFailFast()),
     "True if and only if a test failure should stop further test execution.");
 
 DEFINE_bool(htest_fail_if_no_test_linked,
-    testing::internal::BoolFromHTestEnv("fail_if_no_test_linked", false),
+    hawk::internal::BoolFromHTestEnv("fail_if_no_test_linked", false),
     "True if and only if the test should fail if no test case (including "
     "disabled test cases) is linked.");
 
 DEFINE_bool(htest_fail_if_no_test_selected,
-    testing::internal::BoolFromHTestEnv("fail_if_no_test_selected", false),
+    hawk::internal::BoolFromHTestEnv("fail_if_no_test_selected", false),
     "True if and only if the test should fail if no test case is selected to "
     "run. A test case is selected to run if it is not disabled and is matched "
     "by the filter flag so that it starts executing.");
 
 DEFINE_bool(htest_also_run_disabled_tests,
-    testing::internal::BoolFromHTestEnv("also_run_disabled_tests", false),
+    hawk::internal::BoolFromHTestEnv("also_run_disabled_tests", false),
     "Run disabled tests too, in addition to the tests normally being run.");
 
 DEFINE_bool(htest_break_on_failure,
-    testing::internal::BoolFromHTestEnv("break_on_failure", false),
+    hawk::internal::BoolFromHTestEnv("break_on_failure", false),
     "True if and only if a failed assertion should be a debugger "
     "break-point.");
 
 DEFINE_bool(htest_catch_exceptions,
-    testing::internal::BoolFromHTestEnv("catch_exceptions", true),
+    hawk::internal::BoolFromHTestEnv("catch_exceptions", true),
     "True if and only if " HTEST_NAME_ " should catch exceptions and treat them as test failures.");
 
 DEFINE_string(htest_color,
-    testing::internal::StringFromHTestEnv("color", "auto"),
+    hawk::internal::StringFromHTestEnv("color", "auto"),
     "Whether to use colors in the output.  Valid values: yes, no, "
     "and auto.  'auto' means to use colors if the output is "
     "being sent to a terminal and the TERM environment variable "
     "is set to a terminal type that supports colors.");
 
 DEFINE_string(htest_filter,
-    testing::internal::StringFromHTestEnv("filter", testing::GetDefaultFilter().c_str()),
+    hawk::internal::StringFromHTestEnv("filter", hawk::GetDefaultFilter().c_str()),
     "A colon-separated list of glob (not regex) patterns "
     "for filtering the tests to run, optionally followed by a "
     "'-' and a : separated list of negative patterns (tests to "
@@ -157,7 +158,7 @@ DEFINE_string(htest_filter,
     "patterns and does not match any of the negative patterns.");
 
 DEFINE_bool(htest_install_failure_signal_handler,
-    testing::internal::BoolFromHTestEnv("install_failure_signal_handler", false),
+    hawk::internal::BoolFromHTestEnv("install_failure_signal_handler", false),
     "If true and supported on the current platform, " HTEST_NAME_ " should "
     "install a signal handler that dumps debugging information when fatal "
     "signals are raised.");
@@ -165,7 +166,7 @@ DEFINE_bool(htest_install_failure_signal_handler,
 DEFINE_bool(htest_list_tests, false, "List all tests without running them.");
 
 DEFINE_string(htest_output,
-    testing::internal::StringFromHTestEnv("output", testing::internal::OutputFlagAlsoCheckEnvVar().c_str()),
+    hawk::internal::StringFromHTestEnv("output", hawk::internal::OutputFlagAlsoCheckEnvVar().c_str()),
     "A format (defaults to \"xml\" but can be specified to be \"json\"), "
     "optionally followed by a colon and an output file name or directory. "
     "A directory is indicated by a trailing pathname separator. "
@@ -176,29 +177,29 @@ DEFINE_string(htest_output,
     "digits.");
 
 DEFINE_bool(htest_brief,
-    testing::internal::BoolFromHTestEnv("brief", false),
+    hawk::internal::BoolFromHTestEnv("brief", false),
     "True if only test failures should be displayed in text output.");
 
 DEFINE_bool(htest_print_time,
-    testing::internal::BoolFromHTestEnv("print_time", true),
+    hawk::internal::BoolFromHTestEnv("print_time", true),
     "True if and only if " HTEST_NAME_ " should display elapsed time in text output.");
 
 DEFINE_bool(htest_print_utf8,
-    testing::internal::BoolFromHTestEnv("print_utf8", true),
+    hawk::internal::BoolFromHTestEnv("print_utf8", true),
     "True if and only if " HTEST_NAME_ " prints UTF8 characters as text.");
 
 DEFINE_int32(htest_random_seed,
-    testing::internal::Int32FromHTestEnv("random_seed", 0),
+    hawk::internal::Int32FromHTestEnv("random_seed", 0),
     "Random number seed to use when shuffling test orders.  Must be in range "
     "[1, 99999], or 0 to use a seed based on the current time.");
 
 DEFINE_int32(htest_repeat,
-    testing::internal::Int32FromHTestEnv("repeat", 1),
+    hawk::internal::Int32FromHTestEnv("repeat", 1),
     "How many times to repeat each test.  Specify a negative number "
     "for repeating forever.  Useful for shaking out flaky tests.");
 
 DEFINE_bool(htest_recreate_environments_when_repeating,
-    testing::internal::BoolFromHTestEnv("recreate_environments_when_repeating", false),
+    hawk::internal::BoolFromHTestEnv("recreate_environments_when_repeating", false),
     "Controls whether global test environments are recreated for each repeat "
     "of the tests. If set to false the global test environments are only set "
     "up once, for the first iteration, and only torn down once, for the last. "
@@ -212,42 +213,42 @@ DEFINE_bool(htest_show_internal_stack_frames, false,
     "printing test failure stack traces.");
 
 DEFINE_bool(htest_shuffle,
-    testing::internal::BoolFromHTestEnv("shuffle", false),
+    hawk::internal::BoolFromHTestEnv("shuffle", false),
     "True if and only if " HTEST_NAME_ " should randomize tests' order on every run.");
 
 DEFINE_int32(htest_stack_trace_depth,
-    testing::internal::Int32FromHTestEnv("stack_trace_depth", testing::kMaxStackTraceDepth),
+    hawk::internal::Int32FromHTestEnv("stack_trace_depth", hawk::kMaxStackTraceDepth),
     "The maximum number of stack frames to print when an "
     "assertion fails.  The valid range is 0 through 100, inclusive.");
 
 DEFINE_string(htest_stream_result_to,
-    testing::internal::StringFromHTestEnv("stream_result_to", ""),
+    hawk::internal::StringFromHTestEnv("stream_result_to", ""),
     "This flag specifies the host name and the port number on which to stream "
     "test results. Example: \"localhost:555\". The flag is effective only on "
     "Linux and macOS.");
 
 DEFINE_bool(htest_throw_on_failure,
-    testing::internal::BoolFromHTestEnv("throw_on_failure", false),
+    hawk::internal::BoolFromHTestEnv("throw_on_failure", false),
     "When this flag is specified, a failed assertion will throw an exception "
     "if exceptions are enabled or exit the program with a non-zero code "
     "otherwise. For use with an external test framework.");
 
 DEFINE_int32(htest_shard_index,
-    testing::internal::Int32FromEnvOrDie(testing::kTestShardIndex, -1),
+    hawk::get_int32_from_env_or_die(hawk::kTestShardIndex, -1),
     "The zero-based index of the shard to run. A value of -1 "
     "(the default) indicates that sharding is disabled.");
 
 DEFINE_int32(htest_total_shards,
-    testing::internal::Int32FromEnvOrDie(testing::kTestTotalShards, -1),
+    hawk::get_int32_from_env_or_die(hawk::kTestTotalShards, -1),
     "The total number of shards to use when running tests in parallel. "
     "A value of -1 (the default) indicates that sharding is disabled.");
 
 DEFINE_string(htest_flagfile,
-    testing::internal::StringFromHTestEnv("flagfile", ""),
+    hawk::internal::StringFromHTestEnv("flagfile", ""),
     "This flag specifies the flagfile to read command-line flags from.");
 
 DEFINE_string(htest_death_test_style,
-    testing::internal::StringFromHTestEnv("death_test_style", testing::kDefaultDeathTestStyle),
+    hawk::internal::StringFromHTestEnv("death_test_style", hawk::kDefaultDeathTestStyle),
     "Indicates how to run a death test in a forked child process: "
     "\"threadsafe\" (child process re-executes the test binary "
     "from the beginning, running only the specific death test) or "
@@ -255,7 +256,7 @@ DEFINE_string(htest_death_test_style,
     "after forking).");
 
 DEFINE_bool(htest_death_test_use_fork,
-    testing::internal::BoolFromHTestEnv("death_test_use_fork", false),
+    hawk::internal::BoolFromHTestEnv("death_test_use_fork", false),
     "Instructs to use fork()/_Exit() instead of clone() in death tests. "
     "Ignored and always uses fork() on POSIX systems where clone() is not "
     "implemented. Useful when running under valgrind or similar tools if "

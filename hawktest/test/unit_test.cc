@@ -31,7 +31,7 @@
 #define HTEST_HAS_BUILTIN(x) 0
 #endif // defined(__has_builtin)
 
-namespace testing {
+namespace hawk {
 
     // Destructor of UnitTest.
     UnitTest::~UnitTest() {

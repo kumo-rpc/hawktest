@@ -20,7 +20,7 @@
 
 #include <hawktest/common/port.h>
 
-namespace testing::internal {
+namespace hawk::internal {
 
     // The role interface for getting the OS stack trace as a string.
     class OsStackTraceGetterInterface {
@@ -76,4 +76,4 @@ namespace testing::internal {
     // the trace but Bar() and GetCurrentOsStackTraceExceptTop() won't.
     HTEST_API_ std::string GetCurrentOsStackTraceExceptTop(int skip_count);
 
-}  // namespace testing::internal
+}  // namespace hawk::internal

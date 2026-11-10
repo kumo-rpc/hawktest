@@ -48,7 +48,7 @@
 #include <hawktest/test/matchers.h>
 #include <hawktest/flags/builtin.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // Name of the flag (needed for parsing Hawk Test flag).
@@ -58,7 +58,7 @@ namespace testing {
         // and interpreted as a regex (rather than an Eq matcher) for legacy
         // compatibility.
         inline Matcher<const ::std::string&> MakeDeathTestMatcher(
-            ::testing::internal::RE regex) {
+            ::hawk::internal::RE regex) {
             return ContainsRegex(regex.pattern());
         }
         inline Matcher<const ::std::string&> MakeDeathTestMatcher(
@@ -205,12 +205,12 @@ namespace testing {
             stderr,                                                              \
             "\n%s: Caught std::exception-derived exception escaping the "        \
             "death test statement. Exception message: %s\n",                     \
-            ::testing::internal::FormatFileLocation(__FILE__, __LINE__).c_str(), \
+            ::hawk::internal::FormatFileLocation(__FILE__, __LINE__).c_str(), \
             htest_exception.what());                                             \
         fflush(stderr);                                                          \
-        death_test->Abort(::testing::internal::DeathTest::TEST_THREW_EXCEPTION); \
+        death_test->Abort(::hawk::internal::DeathTest::TEST_THREW_EXCEPTION); \
     } catch (...) {                                                              \
-        death_test->Abort(::testing::internal::DeathTest::TEST_THREW_EXCEPTION); \
+        death_test->Abort(::hawk::internal::DeathTest::TEST_THREW_EXCEPTION); \
     }
 
 #else
@@ -223,35 +223,35 @@ namespace testing {
 // ASSERT_EXIT*, and EXPECT_EXIT*.
 #define HTEST_DEATH_TEST_(statement, predicate, regex_or_matcher, fail)              \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                                    \
-    if (::testing::internal::AlwaysTrue()) {                                         \
-        ::testing::internal::DeathTest* htest_dt;                                    \
-        if (!::testing::internal::DeathTest::Create(                                 \
+    if (::hawk::internal::AlwaysTrue()) {                                         \
+        ::hawk::internal::DeathTest* htest_dt;                                    \
+        if (!::hawk::internal::DeathTest::Create(                                 \
                 #statement,                                                          \
-                ::testing::internal::MakeDeathTestMatcher(regex_or_matcher),         \
+                ::hawk::internal::MakeDeathTestMatcher(regex_or_matcher),         \
                 __FILE__, __LINE__, &htest_dt)) {                                    \
             goto HTEST_CONCAT_TOKEN_(htest_label_, __LINE__);                        \
         }                                                                            \
         if (htest_dt != nullptr) {                                                   \
-            const std::unique_ptr<::testing::internal::DeathTest> htest_dt_ptr(      \
+            const std::unique_ptr<::hawk::internal::DeathTest> htest_dt_ptr(      \
                 htest_dt);                                                           \
             switch (htest_dt->AssumeRole()) {                                        \
-            case ::testing::internal::DeathTest::OVERSEE_TEST:                       \
+            case ::hawk::internal::DeathTest::OVERSEE_TEST:                       \
                 if (!htest_dt->Passed(predicate(htest_dt->Wait()))) {                \
                     goto HTEST_CONCAT_TOKEN_(htest_label_, __LINE__);                \
                 }                                                                    \
                 break;                                                               \
-            case ::testing::internal::DeathTest::EXECUTE_TEST: {                     \
-                const ::testing::internal::DeathTest::ReturnSentinel htest_sentinel( \
+            case ::hawk::internal::DeathTest::EXECUTE_TEST: {                     \
+                const ::hawk::internal::DeathTest::ReturnSentinel htest_sentinel( \
                     htest_dt);                                                       \
                 HTEST_EXECUTE_DEATH_TEST_STATEMENT_(statement, htest_dt);            \
-                htest_dt->Abort(::testing::internal::DeathTest::TEST_DID_NOT_DIE);   \
+                htest_dt->Abort(::hawk::internal::DeathTest::TEST_DID_NOT_DIE);   \
                 break;                                                               \
             }                                                                        \
             }                                                                        \
         }                                                                            \
     } else                                                                           \
         HTEST_CONCAT_TOKEN_(htest_label_, __LINE__)                                  \
-            : fail(::testing::internal::DeathTest::LastMessage())
+            : fail(::hawk::internal::DeathTest::LastMessage())
 // The symbol "fail" here expands to something into which a message
 // can be streamed.
 
@@ -262,10 +262,10 @@ namespace testing {
 // warnings and to avoid an expression that doesn't compile in debug mode.
 #define HTEST_EXECUTE_STATEMENT_(statement, regex_or_matcher)              \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_                                          \
-    if (::testing::internal::AlwaysTrue()) {                               \
+    if (::hawk::internal::AlwaysTrue()) {                               \
         HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement);         \
-    } else if (!::testing::internal::AlwaysTrue()) {                       \
-        (void)::testing::internal::MakeDeathTestMatcher(regex_or_matcher); \
+    } else if (!::hawk::internal::AlwaysTrue()) {                       \
+        (void)::hawk::internal::MakeDeathTestMatcher(regex_or_matcher); \
     } else                                                                 \
         ::hawk::Message()
 
@@ -309,4 +309,4 @@ namespace testing {
 #endif // HTEST_HAS_DEATH_TEST
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk

@@ -55,7 +55,7 @@
 // possible loss of data and C4100, unreferenced local parameter
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
 
-namespace testing {
+namespace hawk {
 namespace gmock_matchers_test {
 namespace {
 
@@ -2216,7 +2216,7 @@ TEST(UnorderedElementsAreArrayTest, WorksWithMoveOnly) {
   helper.Call(MakeUniquePtrs({2, 1}));
 }
 
-class UnorderedElementsAreTest : public testing::Test {
+class UnorderedElementsAreTest : public hawk::Test {
  protected:
   typedef std::vector<int> IntVec;
 };
@@ -2668,8 +2668,8 @@ TEST(PointwiseTest, AllowsMonomorphicInnerMatcher) {
 }
 
 MATCHER(PointeeEquals, "Points to an equal value") {
-  return ExplainMatchResult(::testing::Pointee(::testing::get<1>(arg)),
-                            ::testing::get<0>(arg), result_listener);
+  return ExplainMatchResult(::hawk::Pointee(::hawk::get<1>(arg)),
+                            ::hawk::get<0>(arg), result_listener);
 }
 
 TEST(PointwiseTest, WorksWithMoveOnly) {
@@ -2802,7 +2802,7 @@ TEST(PointeeTest, WorksOnMoveOnlyType) {
   EXPECT_THAT(p, Not(Pointee(Eq(2))));
 }
 
-class PredicateFormatterFromMatcherTest : public ::testing::Test {
+class PredicateFormatterFromMatcherTest : public ::hawk::Test {
  protected:
   enum Behavior { kInitialSuccess, kAlwaysFail, kFlaky };
 
@@ -3155,7 +3155,7 @@ TEST(ElementsAreTest, MakesCopyOfArguments) {
   int x = 1;
   int y = 2;
   // This should make a copy of x and y.
-  ::testing::internal::ElementsAreMatcher<std::tuple<int, int>>
+  ::hawk::internal::ElementsAreMatcher<std::tuple<int, int>>
       polymorphic_matcher = ElementsAre(x, y);
   // Changing x and y now shouldn't affect the meaning of the above matcher.
   x = y = 0;
@@ -3514,6 +3514,6 @@ TEST(ContainsSubsequenceTest, ExplainsMismatchCorrectlyForMultipleMatchers) {
 
 }  // namespace
 }  // namespace gmock_matchers_test
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100

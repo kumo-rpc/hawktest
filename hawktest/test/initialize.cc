@@ -21,7 +21,7 @@
 #include <hawktest/test/unit_test.h>
 #include <hawktest/test/internal/unit_test_impl.h>
 
-namespace testing {
+namespace hawk {
 
     namespace internal {
         // HTestIsInitialized() returns true if and only if the user has initialized
@@ -116,4 +116,4 @@ namespace testing {
         internal::init_hawk_test_impl(&argc, argv);
 #endif // defined(HTEST_CUSTOM_INIT_GOOGLE_TEST_FUNCTION_)
     }
-}  // namespace testing
+}  // namespace hawk

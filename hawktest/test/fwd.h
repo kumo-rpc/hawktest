@@ -23,7 +23,7 @@
 #include <hawktest/test/test-part.h>
 #include <set>
 
-namespace testing {
+namespace hawk {
 
     // The upper limit for valid stack trace depths.
     const int kMaxStackTraceDepth = 100;
@@ -79,5 +79,5 @@ namespace testing {
 
     typedef hawk::TimeInMillis TimeInMillis;
 
-}  // namespace testing
+}  // namespace hawk
 

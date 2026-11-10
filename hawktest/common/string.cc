@@ -27,7 +27,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // Compares two C strings.  Returns true if and only if they have the same
@@ -339,7 +339,7 @@ namespace testing {
          ::std::vector<::std::string>* dest) {
             ::std::vector<::std::string> parsed;
             ::std::string::size_type pos = 0;
-            while (::testing::internal::AlwaysTrue()) {
+            while (::hawk::internal::AlwaysTrue()) {
                 const ::std::string::size_type colon = str.find(delimiter, pos);
                 if (colon == ::std::string::npos) {
                     parsed.push_back(str.substr(pos));

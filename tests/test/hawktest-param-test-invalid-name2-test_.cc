@@ -35,21 +35,21 @@
 #include <hawktest/test/htest.h>
 
 namespace {
-class DummyTest : public ::testing::TestWithParam<const char *> {};
+class DummyTest : public ::hawk::TestWithParam<const char *> {};
 
 std::string StringParamTestSuffix(
-    const testing::TestParamInfo<const char *> &info) {
+    const hawk::TestParamInfo<const char *> &info) {
   return std::string(info.param);
 }
 
 TEST_P(DummyTest, Dummy) {}
 
 INSTANTIATE_TEST_SUITE_P(DuplicateTestNames, DummyTest,
-                         ::testing::Values("a", "b", "a", "c"),
+                         ::hawk::Values("a", "b", "a", "c"),
                          StringParamTestSuffix);
 }  // namespace
 
 int main(int argc, char *argv[]) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
   return RUN_ALL_TESTS();
 }

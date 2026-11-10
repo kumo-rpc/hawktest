@@ -78,7 +78,7 @@ namespace hawk {
         if (!PortableLocaltime(static_cast<time_t>(ms / 1000), &time_struct))
             return "";
         // YYYY-MM-DDThh:mm:ss.sss
-        return hawk::internal::StreamableToString(time_struct.tm_year + 1900) + "-" + testing::internal::String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" + testing::internal::String::FormatIntWidth2(time_struct.tm_mday) + "T" + testing::internal::String::FormatIntWidth2(time_struct.tm_hour) + ":" + testing::internal::String::FormatIntWidth2(time_struct.tm_min) + ":" + testing::internal::String::FormatIntWidth2(time_struct.tm_sec) + "." + testing::internal::String::FormatIntWidthN(static_cast<int>(ms % 1000), 3);
+        return hawk::internal::StreamableToString(time_struct.tm_year + 1900) + "-" + hawk::internal::String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" + hawk::internal::String::FormatIntWidth2(time_struct.tm_mday) + "T" + hawk::internal::String::FormatIntWidth2(time_struct.tm_hour) + ":" + hawk::internal::String::FormatIntWidth2(time_struct.tm_min) + ":" + hawk::internal::String::FormatIntWidth2(time_struct.tm_sec) + "." + hawk::internal::String::FormatIntWidthN(static_cast<int>(ms % 1000), 3);
     }
 
     // Formats the given time in milliseconds as seconds.
@@ -96,10 +96,10 @@ namespace hawk {
             return "";
         // YYYY-MM-DDThh:mm:ss
         return hawk::internal::StreamableToString(time_struct.tm_year + 1900) + "-" +
-            testing::internal::String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" +
-            testing::internal::String::FormatIntWidth2(time_struct.tm_mday) + "T" +
-                testing::internal::String::FormatIntWidth2(time_struct.tm_hour) + ":" +
-                   testing::internal::String::FormatIntWidth2(time_struct.tm_min) + ":" +
-                testing::internal::String::FormatIntWidth2(time_struct.tm_sec) + "Z";
+            hawk::internal::String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" +
+            hawk::internal::String::FormatIntWidth2(time_struct.tm_mday) + "T" +
+                hawk::internal::String::FormatIntWidth2(time_struct.tm_hour) + ":" +
+                   hawk::internal::String::FormatIntWidth2(time_struct.tm_min) + ":" +
+                hawk::internal::String::FormatIntWidth2(time_struct.tm_sec) + "Z";
     }
 }

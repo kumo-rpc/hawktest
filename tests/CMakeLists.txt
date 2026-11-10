@@ -76,4 +76,5 @@ add_subdirectory(mock)
 add_subdirectory(bench)
 add_subdirectory(flags)
 add_subdirectory(format)
+add_subdirectory(numeric)
 

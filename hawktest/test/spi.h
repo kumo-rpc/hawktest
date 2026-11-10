@@ -39,7 +39,7 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to be used by clients of class B */)
 
-namespace testing {
+namespace hawk {
 
     // This helper class can be used to mock out Hawk Test failure reporting
     // so that we can test Hawk Test or code that builds on Hawk Test.
@@ -116,7 +116,7 @@ namespace testing {
 
     } // namespace internal
 
-} // namespace testing
+} // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
 
@@ -150,17 +150,17 @@ HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
         public:                                                                   \
             static void Execute() { statement; }                                  \
         };                                                                        \
-        ::testing::TestPartResultArray htest_failures;                            \
-        ::testing::internal::SingleFailureChecker htest_checker(                  \
-            &htest_failures, ::testing::TestPartResult::kFatalFailure, (substr)); \
+        ::hawk::TestPartResultArray htest_failures;                            \
+        ::hawk::internal::SingleFailureChecker htest_checker(                  \
+            &htest_failures, ::hawk::TestPartResult::kFatalFailure, (substr)); \
         {                                                                         \
-            ::testing::ScopedFakeTestPartResultReporter htest_reporter(           \
-                ::testing::ScopedFakeTestPartResultReporter::                     \
+            ::hawk::ScopedFakeTestPartResultReporter htest_reporter(           \
+                ::hawk::ScopedFakeTestPartResultReporter::                     \
                     INTERCEPT_ONLY_CURRENT_THREAD,                                \
                 &htest_failures);                                                 \
             HTestExpectFatalFailureHelper::Execute();                             \
         }                                                                         \
-    } while (::testing::internal::AlwaysFalse())
+    } while (::hawk::internal::AlwaysFalse())
 
 #define EXPECT_FATAL_FAILURE_ON_ALL_THREADS(statement, substr)                      \
     do {                                                                            \
@@ -168,16 +168,16 @@ HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
         public:                                                                     \
             static void Execute() { statement; }                                    \
         };                                                                          \
-        ::testing::TestPartResultArray htest_failures;                              \
-        ::testing::internal::SingleFailureChecker htest_checker(                    \
-            &htest_failures, ::testing::TestPartResult::kFatalFailure, (substr));   \
+        ::hawk::TestPartResultArray htest_failures;                              \
+        ::hawk::internal::SingleFailureChecker htest_checker(                    \
+            &htest_failures, ::hawk::TestPartResult::kFatalFailure, (substr));   \
         {                                                                           \
-            ::testing::ScopedFakeTestPartResultReporter htest_reporter(             \
-                ::testing::ScopedFakeTestPartResultReporter::INTERCEPT_ALL_THREADS, \
+            ::hawk::ScopedFakeTestPartResultReporter htest_reporter(             \
+                ::hawk::ScopedFakeTestPartResultReporter::INTERCEPT_ALL_THREADS, \
                 &htest_failures);                                                   \
             HTestExpectFatalFailureHelper::Execute();                               \
         }                                                                           \
-    } while (::testing::internal::AlwaysFalse())
+    } while (::hawk::internal::AlwaysFalse())
 
 // A macro for testing Hawk Test assertions or code that's expected to
 // generate Hawk Test non-fatal failures (e.g. a failure from an EXPECT_EQ,
@@ -208,39 +208,39 @@ HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
 // catches that.
 //
 // For the same reason, we have to write
-//   if (::testing::internal::AlwaysTrue()) { statement; }
+//   if (::hawk::internal::AlwaysTrue()) { statement; }
 // instead of
 //   HTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement)
 // to avoid an MSVC warning on unreachable code.
 #define EXPECT_NONFATAL_FAILURE(statement, substr)                        \
     do {                                                                  \
-        ::testing::TestPartResultArray htest_failures;                    \
-        ::testing::internal::SingleFailureChecker htest_checker(          \
-            &htest_failures, ::testing::TestPartResult::kNonFatalFailure, \
+        ::hawk::TestPartResultArray htest_failures;                    \
+        ::hawk::internal::SingleFailureChecker htest_checker(          \
+            &htest_failures, ::hawk::TestPartResult::kNonFatalFailure, \
             (substr));                                                    \
         {                                                                 \
-            ::testing::ScopedFakeTestPartResultReporter htest_reporter(   \
-                ::testing::ScopedFakeTestPartResultReporter::             \
+            ::hawk::ScopedFakeTestPartResultReporter htest_reporter(   \
+                ::hawk::ScopedFakeTestPartResultReporter::             \
                     INTERCEPT_ONLY_CURRENT_THREAD,                        \
                 &htest_failures);                                         \
-            if (::testing::internal::AlwaysTrue()) {                      \
+            if (::hawk::internal::AlwaysTrue()) {                      \
                 statement;                                                \
             }                                                             \
         }                                                                 \
-    } while (::testing::internal::AlwaysFalse())
+    } while (::hawk::internal::AlwaysFalse())
 
 #define EXPECT_NONFATAL_FAILURE_ON_ALL_THREADS(statement, substr)                   \
     do {                                                                            \
-        ::testing::TestPartResultArray htest_failures;                              \
-        ::testing::internal::SingleFailureChecker htest_checker(                    \
-            &htest_failures, ::testing::TestPartResult::kNonFatalFailure,           \
+        ::hawk::TestPartResultArray htest_failures;                              \
+        ::hawk::internal::SingleFailureChecker htest_checker(                    \
+            &htest_failures, ::hawk::TestPartResult::kNonFatalFailure,           \
             (substr));                                                              \
         {                                                                           \
-            ::testing::ScopedFakeTestPartResultReporter htest_reporter(             \
-                ::testing::ScopedFakeTestPartResultReporter::INTERCEPT_ALL_THREADS, \
+            ::hawk::ScopedFakeTestPartResultReporter htest_reporter(             \
+                ::hawk::ScopedFakeTestPartResultReporter::INTERCEPT_ALL_THREADS, \
                 &htest_failures);                                                   \
-            if (::testing::internal::AlwaysTrue()) {                                \
+            if (::hawk::internal::AlwaysTrue()) {                                \
                 statement;                                                          \
             }                                                                       \
         }                                                                           \
-    } while (::testing::internal::AlwaysFalse())
+    } while (::hawk::internal::AlwaysFalse())

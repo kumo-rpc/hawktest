@@ -35,7 +35,7 @@
 
 #include <hawktest/test/htest.h>
 
-using ::testing::Test;
+using ::hawk::Test;
 
 TEST(SkipTest, DoesSkip) {
   HTEST_SKIP() << "skipping single test";

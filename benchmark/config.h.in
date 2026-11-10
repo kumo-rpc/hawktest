@@ -25,9 +25,9 @@
 
 #include <string>
 
-namespace testing {
+namespace hawk {
 
     inline std::string benchmark_root() {
         return "@PROJECT_SOURCE_DIR@/benchmark";
     }
-}  // namespace testing
+}  // namespace hawk

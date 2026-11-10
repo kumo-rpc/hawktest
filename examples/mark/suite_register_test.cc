@@ -51,7 +51,7 @@ TEST(MarkSuite, Plain) {
     expect_suite_ok(*suite);
 }
 
-class MarkFile : public testing::Test {
+class MarkFile : public hawk::Test {
 protected:
     void SetUp() override {
         suite_ = find_suite("Identity-pass.subcase1");
@@ -65,7 +65,7 @@ TEST_F(MarkFile, Subcase) {
     expect_suite_ok(*suite_);
 }
 
-class MarkSuiteTest : public testing::TestWithParam<md_test::RegisteredSuite> {};
+class MarkSuiteTest : public hawk::TestWithParam<md_test::RegisteredSuite> {};
 
 TEST_P(MarkSuiteTest, Registered) {
     const md_test::MarkRunResult result = md_test::run_registered_suite(GetParam(), hawk::label_registry());
@@ -75,8 +75,8 @@ TEST_P(MarkSuiteTest, Registered) {
     EXPECT_TRUE(result.ok) << result.error;
 }
 
-INSTANTIATE_TEST_SUITE_P(Grammar, MarkSuiteTest, testing::ValuesIn(grammar_load().suites),
-                         [](const testing::TestParamInfo<md_test::RegisteredSuite> &info) {
+INSTANTIATE_TEST_SUITE_P(Grammar, MarkSuiteTest, hawk::ValuesIn(grammar_load().suites),
+                         [](const hawk::TestParamInfo<md_test::RegisteredSuite> &info) {
                              return info.param.gtest_name();
                          });
 

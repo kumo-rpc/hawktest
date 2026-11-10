@@ -35,7 +35,7 @@
 // This file implements a universal value printer that can print a
 // value of any type T:
 //
-//   void ::testing::internal::UniversalPrinter<T>::Print(value, ostream_ptr);
+//   void ::hawk::internal::UniversalPrinter<T>::Print(value, ostream_ptr);
 //
 // A user can teach this function how to print a class type T by
 // defining either operator<<() or PrintTo() in the namespace that
@@ -65,18 +65,18 @@
 //   // Prints a value to a string.  For a (const or not) char
 //   // pointer, the NUL-terminated string (but not the pointer) is
 //   // printed.
-//   std::string ::testing::PrintToString(const T& value);
+//   std::string ::hawk::PrintToString(const T& value);
 //
 //   // Prints a value tersely: for a reference type, the referenced
 //   // value (but not the address) is printed; for a (const or not) char
 //   // pointer, the NUL-terminated string (but not the pointer) is
 //   // printed.
-//   void ::testing::internal::UniversalTersePrint(const T& value, ostream*);
+//   void ::hawk::internal::UniversalTersePrint(const T& value, ostream*);
 //
 //   // Prints value using the type inferred by the compiler.  The difference
 //   // from UniversalTersePrint() is that this function prints both the
 //   // pointer and the NUL-terminated string for a (const or not) char pointer.
-//   void ::testing::internal::UniversalPrint(const T& value, ostream*);
+//   void ::hawk::internal::UniversalPrint(const T& value, ostream*);
 //
 //   // Prints the fields of a tuple tersely to a string vector, one
 //   // element for each field. Tuple support must be enabled in
@@ -126,7 +126,7 @@
 #include <compare> // NOLINT
 #endif // HTEST_INTERNAL_HAS_COMPARE_LIB
 
-namespace testing {
+namespace hawk {
 
     // Definitions in the internal* namespaces are subject to change without notice.
     // DO NOT USE THEM IN USER CODE!
@@ -358,7 +358,7 @@ namespace testing {
         class [[nodiscard]] FormatForComparison {
         public:
             static ::std::string Format(const ToPrint& value) {
-                return ::testing::PrintToString(value);
+                return ::hawk::PrintToString(value);
             }
         };
 
@@ -379,7 +379,7 @@ namespace testing {
     class FormatForComparison<CharType*, OtherOperand> {                      \
     public:                                                                   \
         static ::std::string Format(CharType* value) {                        \
-            return ::testing::PrintToString(static_cast<const void*>(value)); \
+            return ::hawk::PrintToString(static_cast<const void*>(value)); \
         }                                                                     \
     }
 
@@ -406,7 +406,7 @@ namespace testing {
     class FormatForComparison<CharType*, OtherStringType> {              \
     public:                                                              \
         static ::std::string Format(CharType* value) {                   \
-            return ::testing::PrintToString(value);                      \
+            return ::hawk::PrintToString(value);                      \
         }                                                                \
     }
 
@@ -864,16 +864,16 @@ namespace testing {
             HTEST_DISABLE_MSC_WARNINGS_PUSH_(4180)
 
             // Note: we deliberately don't call this PrintTo(), as that name
-            // conflicts with ::testing::internal::PrintTo in the body of the
+            // conflicts with ::hawk::internal::PrintTo in the body of the
             // function.
             static void Print(const T& value, ::std::ostream* os) {
-                // By default, ::testing::internal::PrintTo() is used for printing
+                // By default, ::hawk::internal::PrintTo() is used for printing
                 // the value.
                 //
                 // Thanks to Koenig look-up, if T is a class and has its own
                 // PrintTo() function defined in its namespace, that function will
                 // be visible here.  Since it is more specific than the generic ones
-                // in ::testing::internal, it will be picked by the compiler in the
+                // in ::hawk::internal, it will be picked by the compiler in the
                 // following statement - exactly what we want.
                 PrintTo(value, os);
             }
@@ -1211,7 +1211,7 @@ namespace testing {
         return ss.str();
     }
 
-} // namespace testing
+} // namespace hawk
 
 // Include any custom printer added by the local installation.
 // We must include this header at the end to make sure it can use the

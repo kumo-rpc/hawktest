@@ -226,6 +226,18 @@ namespace hawk {
         return static_cast<float>(*wide);
     }
 
+    // Unset: return default_val. Set but not a valid value: print an error and abort.
+    std::int8_t get_int8_from_env_or_die(const char* var, std::int8_t default_val);
+    std::int16_t get_int16_from_env_or_die(const char* var, std::int16_t default_val);
+    std::int32_t get_int32_from_env_or_die(const char* var, std::int32_t default_val);
+    std::int64_t get_int64_from_env_or_die(const char* var, std::int64_t default_val);
+    std::uint8_t get_uint8_from_env_or_die(const char* var, std::uint8_t default_val);
+    std::uint16_t get_uint16_from_env_or_die(const char* var, std::uint16_t default_val);
+    std::uint32_t get_uint32_from_env_or_die(const char* var, std::uint32_t default_val);
+    std::uint64_t get_uint64_from_env_or_die(const char* var, std::uint64_t default_val);
+    float get_float_from_env_or_die(const char* var, float default_val);
+    double get_double_from_env_or_die(const char* var, double default_val);
+
     template<typename T>
     std::optional<T> get_numeric_form_env(const std::string& key, Message& err) {
         const std::optional<std::string> value = get_env(key);

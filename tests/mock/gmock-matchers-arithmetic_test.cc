@@ -48,7 +48,7 @@
 // possible loss of data and C4100, unreferenced local parameter
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
 
-namespace testing {
+namespace hawk {
 namespace gmock_matchers_test {
 namespace {
 
@@ -855,7 +855,7 @@ TEST(AnyOfTest, MatchesWhenAnyMatches) {
 TEST(AnyOfTest, VariadicMatchesWhenAnyMatches) {
   // Also make sure AnyOf is defined in the right namespace and does not depend
   // on ADL.
-  Matcher<int> m = ::testing::AnyOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+  Matcher<int> m = ::hawk::AnyOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
   EXPECT_THAT(Describe(m), EndsWith("or (is equal to 11)"));
   AnyOfMatches(11, m);
@@ -1200,9 +1200,9 @@ TEST(AllArgsTest, WorksWithoutMatchers) {
 
 // Tests floating-point matchers.
 template <typename RawType>
-class FloatingPointTest : public testing::Test {
+class FloatingPointTest : public hawk::Test {
  protected:
-  typedef testing::internal::FloatingPoint<RawType> Floating;
+  typedef hawk::internal::FloatingPoint<RawType> Floating;
   typedef typename Floating::Bits Bits;
 
   FloatingPointTest()
@@ -1232,7 +1232,7 @@ class FloatingPointTest : public testing::Test {
   // A battery of tests for FloatingEqMatcher::Matches.
   // matcher_maker is a pointer to a function which creates a FloatingEqMatcher.
   void TestMatches(
-      testing::internal::FloatingEqMatcher<RawType> (*matcher_maker)(RawType)) {
+      hawk::internal::FloatingEqMatcher<RawType> (*matcher_maker)(RawType)) {
     Matcher<RawType> m1 = matcher_maker(0.0);
     EXPECT_TRUE(m1.Matches(-0.0));
     EXPECT_TRUE(m1.Matches(close_to_positive_zero_));
@@ -1313,7 +1313,7 @@ class FloatingPointNearTest : public FloatingPointTest<RawType> {
 
   // A battery of tests for FloatingEqMatcher::Matches with a fixed epsilon.
   // matcher_maker is a pointer to a function which creates a FloatingEqMatcher.
-  void TestNearMatches(testing::internal::FloatingEqMatcher<RawType> (
+  void TestNearMatches(hawk::internal::FloatingEqMatcher<RawType> (
       *matcher_maker)(RawType, RawType)) {
     Matcher<RawType> m1 = matcher_maker(0.0, 0.0);
     EXPECT_TRUE(m1.Matches(0.0));
@@ -1635,20 +1635,20 @@ TEST(NotTest, WorksOnMoveOnlyType) {
 TEST(AllOfTest, HugeMatcher) {
   // Verify that using AllOf with many arguments doesn't cause
   // the compiler to exceed template instantiation depth limit.
-  EXPECT_THAT(0, testing::AllOf(_, _, _, _, _, _, _, _, _,
-                                testing::AllOf(_, _, _, _, _, _, _, _, _, _)));
+  EXPECT_THAT(0, hawk::AllOf(_, _, _, _, _, _, _, _, _,
+                                hawk::AllOf(_, _, _, _, _, _, _, _, _, _)));
 }
 
 TEST(AnyOfTest, HugeMatcher) {
   // Verify that using AnyOf with many arguments doesn't cause
   // the compiler to exceed template instantiation depth limit.
-  EXPECT_THAT(0, testing::AnyOf(_, _, _, _, _, _, _, _, _,
-                                testing::AnyOf(_, _, _, _, _, _, _, _, _, _)));
+  EXPECT_THAT(0, hawk::AnyOf(_, _, _, _, _, _, _, _, _,
+                                hawk::AnyOf(_, _, _, _, _, _, _, _, _, _)));
 }
 
 namespace adl_test {
 
-// Verifies that the implementation of ::testing::AllOf and ::testing::AnyOf
+// Verifies that the implementation of ::hawk::AllOf and ::hawk::AnyOf
 // don't issue unqualified recursive calls.  If they do, the argument dependent
 // name lookup will cause AllOf/AnyOf in the 'adl_test' namespace to be found
 // as a candidate and the compilation will break due to an ambiguous overload.
@@ -1667,7 +1667,7 @@ bool AllOf(const T1& /*t1*/, const T2& /*t2*/) {
 
 TEST(AllOfTest, DoesNotCallAllOfUnqualified) {
   EXPECT_THAT(42,
-              testing::AllOf(M(), M(), M(), M(), M(), M(), M(), M(), M(), M()));
+              hawk::AllOf(M(), M(), M(), M(), M(), M(), M(), M(), M(), M()));
 }
 
 template <typename T1, typename T2>
@@ -1677,7 +1677,7 @@ bool AnyOf(const T1&, const T2&) {
 
 TEST(AnyOfTest, DoesNotCallAnyOfUnqualified) {
   EXPECT_THAT(42,
-              testing::AnyOf(M(), M(), M(), M(), M(), M(), M(), M(), M(), M()));
+              hawk::AnyOf(M(), M(), M(), M(), M(), M(), M(), M(), M(), M()));
 }
 
 }  // namespace adl_test
@@ -1696,6 +1696,6 @@ TEST(AnyOfTest, WorksOnMoveOnlyType) {
 
 }  // namespace
 }  // namespace gmock_matchers_test
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4244 4100

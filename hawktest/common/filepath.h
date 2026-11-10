@@ -51,7 +51,7 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 /* class A needs to have dll-interface to 
 
 #if HTEST_HAS_FILE_SYSTEM
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // FilePath - a class for file and directory pathname manipulation which
@@ -234,7 +234,7 @@ namespace testing {
 
         FILE* OpenFileForWriting(const std::string& output_file);
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_() //  4251
 

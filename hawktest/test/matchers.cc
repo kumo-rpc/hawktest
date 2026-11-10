@@ -42,7 +42,7 @@
 #include <hawktest/common/internal.h>
 #include <hawktest/common/port.h>
 
-namespace testing {
+namespace hawk {
 
     // Constructs a matcher that matches a const std::string& whose value is
     // equal to s.
@@ -104,4 +104,4 @@ namespace testing {
         *this = Eq(std::string(s));
     }
 
-} // namespace testing
+} // namespace hawk

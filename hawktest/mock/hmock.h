@@ -72,7 +72,7 @@ GMOCK_DECLARE_bool_(catch_leaked_mocks);
 GMOCK_DECLARE_string_(verbose);
 GMOCK_DECLARE_int32_(default_mock_behavior);
 
-namespace testing {
+namespace hawk {
 
 // Initializes Google Mock.  This must be called before running the
 // tests.  In particular, it parses the command line for the flags
@@ -95,6 +95,6 @@ HTEST_API_ void InitGoogleMock(int* argc, wchar_t** argv);
 // there is no argc/argv.
 HTEST_API_ void InitGoogleMock();
 
-}  // namespace testing
+}  // namespace hawk
 
 #endif  // GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_H_

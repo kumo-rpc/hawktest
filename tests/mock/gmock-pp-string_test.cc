@@ -38,18 +38,18 @@
 #include <hawktest/mock/hmock.h>
 #include <hawktest/mock/internal/pp.h>
 
-namespace testing {
+namespace hawk {
 namespace {
 
 // Matcher to verify that to strings are identical up to whitespace
 // Not 100% correct, because it treats "AB" as equal to "A B".
-::testing::Matcher<const std::string&> SameExceptSpaces(const std::string& s) {
+::hawk::Matcher<const std::string&> SameExceptSpaces(const std::string& s) {
   auto remove_spaces = [](std::string to_split) {
     to_split.erase(std::remove(to_split.begin(), to_split.end(), ' '),
                    to_split.end());
     return to_split;
   };
-  return ::testing::ResultOf(remove_spaces, remove_spaces(s));
+  return ::hawk::ResultOf(remove_spaces, remove_spaces(s));
 }
 
 // Verify that a macro expands to a given text. Ignores whitespace difference.
@@ -205,4 +205,4 @@ TEST(Macros, ForEach) {
 }
 
 }  // namespace
-}  // namespace testing
+}  // namespace hawk

@@ -34,7 +34,7 @@
 
 #include <hawktest/test/htest.h>
 
-class SetupEnvironment : public testing::Environment {
+class SetupEnvironment : public hawk::Environment {
  public:
   void SetUp() override { HTEST_SKIP() << "Skipping the entire environment"; }
 };
@@ -42,9 +42,9 @@ class SetupEnvironment : public testing::Environment {
 TEST(Test, AlwaysFails) { EXPECT_EQ(true, false); }
 
 int main(int argc, char **argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
-  testing::AddGlobalTestEnvironment(new SetupEnvironment());
+  hawk::AddGlobalTestEnvironment(new SetupEnvironment());
 
   return RUN_ALL_TESTS();
 }

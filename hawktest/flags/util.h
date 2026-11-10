@@ -205,7 +205,7 @@ template <> struct CompileAssert<true> {};
   void Test_##a##_##b::RunTest()
 
 // This is a dummy class that eases the google->opensource transition.
-namespace testing {
+namespace hawk {
 class Test {};
 }
 

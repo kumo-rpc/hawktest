@@ -165,12 +165,12 @@ TEST(StringUtilTest, StrSplit) {
             std::vector<std::string>({"hello", "there", "is", "more"}));
 }
 
-using HumanReadableFixture = ::testing::TestWithParam<
+using HumanReadableFixture = ::hawk::TestWithParam<
     std::tuple<double, benchmark::Counter::OneK, std::string>>;
 
 INSTANTIATE_TEST_SUITE_P(
     HumanReadableTests, HumanReadableFixture,
-    ::testing::Values(
+    ::hawk::Values(
         std::make_tuple(0.0, benchmark::Counter::kIs1024, "0"),
         std::make_tuple(999.0, benchmark::Counter::kIs1024, "999"),
         std::make_tuple(1000.0, benchmark::Counter::kIs1024, "1000"),
@@ -197,15 +197,15 @@ INSTANTIATE_TEST_SUITE_P(
 TEST_P(HumanReadableFixture, HumanReadableNumber) {
   std::string str = benchmark::HumanReadableNumber(std::get<0>(GetParam()),
                                                    std::get<1>(GetParam()));
-  ASSERT_THAT(str, ::testing::MatchesRegex(std::get<2>(GetParam())));
+  ASSERT_THAT(str, ::hawk::MatchesRegex(std::get<2>(GetParam())));
 }
 
-using HumanReadableStringifyExponentFixture = ::testing::TestWithParam<
+using HumanReadableStringifyExponentFixture = ::hawk::TestWithParam<
     std::tuple<double, benchmark::Counter::OneK, std::string>>;
 
 INSTANTIATE_TEST_SUITE_P(
     HumanReadableStringifyExponentTests, HumanReadableStringifyExponentFixture,
-    ::testing::Values(
+    ::hawk::Values(
         // Base 1024 positive powers
         std::make_tuple(0.0, benchmark::Counter::kIs1024, "0*2^0"),
         std::make_tuple(999.0, benchmark::Counter::kIs1024, "999*2^0"),

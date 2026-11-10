@@ -20,7 +20,7 @@
 
 #include <hawktest/common/port.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // Returns the i-th element of the vector, or default_value if i is not

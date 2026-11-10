@@ -24,7 +24,7 @@
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/test/internal/unit_test_impl.h>
 
-namespace testing {
+namespace hawk {
 
     // class TestInfo
 
@@ -365,4 +365,4 @@ namespace testing {
 
         UnitTest::GetInstance()->set_current_test_suite(nullptr);
     }
-}  // namespace testing
+}  // namespace hawk

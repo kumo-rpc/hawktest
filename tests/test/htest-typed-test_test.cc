@@ -41,7 +41,7 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4127 /* conditional expression is constant */)
 
-using testing::Test;
+using hawk::Test;
 
 // Used for testing that SetUpTestSuite()/TearDownTestSuite(), fixture
 // ctor/dtor, and SetUp()/TearDown() work correctly in typed tests and
@@ -87,7 +87,7 @@ class CommonTest : public Test {
 template <typename T>
 T* CommonTest<T>::shared_ = nullptr;
 
-using testing::Types;
+using hawk::Types;
 
 // Tests that SetUpTestSuite()/TearDownTestSuite(), fixture ctor/dtor,
 // and SetUp()/TearDown() work correctly in typed tests
@@ -170,10 +170,10 @@ class TypedTestNames {
   template <typename T>
   static std::string GetName(int i) {
     if (std::is_same<T, char>::value) {
-      return std::string("char") + ::testing::PrintToString(i);
+      return std::string("char") + ::hawk::PrintToString(i);
     }
     if (std::is_same<T, int>::value) {
-      return std::string("int") + ::testing::PrintToString(i);
+      return std::string("int") + ::hawk::PrintToString(i);
     }
   }
 };
@@ -182,21 +182,21 @@ TYPED_TEST_SUITE(TypedTestWithNames, TwoTypes, TypedTestNames);
 
 TYPED_TEST(TypedTestWithNames, TestSuiteName) {
   if (std::is_same<TypeParam, char>::value) {
-    EXPECT_STREQ(::testing::UnitTest::GetInstance()
+    EXPECT_STREQ(::hawk::UnitTest::GetInstance()
                      ->current_test_info()
                      ->test_suite_name(),
                  "TypedTestWithNames/char0");
   }
   if (std::is_same<TypeParam, int>::value) {
-    EXPECT_STREQ(::testing::UnitTest::GetInstance()
+    EXPECT_STREQ(::hawk::UnitTest::GetInstance()
                      ->current_test_info()
                      ->test_suite_name(),
                  "TypedTestWithNames/int1");
   }
 }
 
-using testing::Types;
-using testing::internal::TypedTestSuitePState;
+using hawk::Types;
+using hawk::internal::TypedTestSuitePState;
 
 // Tests TypedTestSuitePState.
 
@@ -298,13 +298,13 @@ TYPED_TEST_SUITE_P(TypeParametrizedTestWithNames);
 
 TYPED_TEST_P(TypeParametrizedTestWithNames, TestSuiteName) {
   if (std::is_same<TypeParam, char>::value) {
-    EXPECT_STREQ(::testing::UnitTest::GetInstance()
+    EXPECT_STREQ(::hawk::UnitTest::GetInstance()
                      ->current_test_info()
                      ->test_suite_name(),
                  "CustomName/TypeParametrizedTestWithNames/parChar0");
   }
   if (std::is_same<TypeParam, int>::value) {
-    EXPECT_STREQ(::testing::UnitTest::GetInstance()
+    EXPECT_STREQ(::hawk::UnitTest::GetInstance()
                      ->current_test_info()
                      ->test_suite_name(),
                  "CustomName/TypeParametrizedTestWithNames/parInt1");
@@ -318,10 +318,10 @@ class TypeParametrizedTestNames {
   template <typename T>
   static std::string GetName(int i) {
     if (std::is_same<T, char>::value) {
-      return std::string("parChar") + ::testing::PrintToString(i);
+      return std::string("parChar") + ::hawk::PrintToString(i);
     }
     if (std::is_same<T, int>::value) {
-      return std::string("parInt") + ::testing::PrintToString(i);
+      return std::string("parInt") + ::hawk::PrintToString(i);
     }
   }
 };
@@ -402,7 +402,7 @@ typedef Types<int, double> NumericTypes;
 INSTANTIATE_TYPED_TEST_SUITE_P(My, NumericTest, NumericTypes);
 
 static const char* GetTestName() {
-  return testing::UnitTest::GetInstance()->current_test_info()->name();
+  return hawk::UnitTest::GetInstance()->current_test_info()->name();
 }
 // Test the stripping of space from test names
 template <typename T>

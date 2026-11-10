@@ -38,9 +38,9 @@
 
 #include <hawktest/test/htest.h>
 
-using ::testing::init_hawk_test;
+using ::hawk::init_hawk_test;
 
-namespace testing {
+namespace hawk {
 namespace internal {
 
 template <typename T>
@@ -131,7 +131,7 @@ TEST(ApiTest, UnitTestImmutableAccessorsWork) {
 
 AssertionResult IsNull(const char* str) {
   if (str != nullptr) {
-    return testing::AssertionFailure() << "argument is " << str;
+    return hawk::AssertionFailure() << "argument is " << str;
   }
   return AssertionSuccess();
 }
@@ -317,12 +317,12 @@ class FinalSuccessChecker : public Environment {
 };
 
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk
 
 int main(int argc, char** argv) {
   init_hawk_test(&argc, argv);
 
-  AddGlobalTestEnvironment(new testing::internal::FinalSuccessChecker());
+  AddGlobalTestEnvironment(new hawk::internal::FinalSuccessChecker());
 
   return RUN_ALL_TESTS();
 }

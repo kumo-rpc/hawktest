@@ -40,10 +40,10 @@
 
 #include <hawktest/test/htest.h>
 
-class ThrowListener : public testing::EmptyTestEventListener {
-  void OnTestPartResult(const testing::TestPartResult& result) override {
-    if (result.type() == testing::TestPartResult::kFatalFailure) {
-      throw testing::AssertionException(result);
+class ThrowListener : public hawk::EmptyTestEventListener {
+  void OnTestPartResult(const hawk::TestPartResult& result) override {
+    if (result.type() == hawk::TestPartResult::kFatalFailure) {
+      throw hawk::AssertionException(result);
     }
   }
 };
@@ -80,7 +80,7 @@ TEST(Test, Test) {
   // A failed assertion should throw.
   try {
     AssertFalse();
-  } catch (const testing::AssertionException& e) {
+  } catch (const hawk::AssertionException& e) {
     if (strstr(e.what(), "Expected failure") != nullptr) throw;
 
     printf("%s",
@@ -99,8 +99,8 @@ int kTestForContinuingTest = 0;
 TEST(Test, Test2) { kTestForContinuingTest = 1; }
 
 int main(int argc, char** argv) {
-  testing::init_hawk_test(&argc, argv);
-  testing::UnitTest::GetInstance()->listeners().Append(new ThrowListener);
+  hawk::init_hawk_test(&argc, argv);
+  hawk::UnitTest::GetInstance()->listeners().Append(new ThrowListener);
 
   int result = RUN_ALL_TESTS();
   if (result == 0) {

@@ -311,7 +311,7 @@
 #endif // !defined(HTEST_DEV_EMAIL_)
 
 #if !defined(HTEST_INIT_GOOGLE_TEST_NAME_)
-#define HTEST_INIT_GOOGLE_TEST_NAME_ "testing::init_hawk_test"
+#define HTEST_INIT_GOOGLE_TEST_NAME_ "hawk::init_hawk_test"
 #endif // !defined(HTEST_INIT_GOOGLE_TEST_NAME_)
 
 // Determines the version of gcc that is used to compile this.
@@ -356,7 +356,7 @@
 #define HTEST_DISABLE_DEPRECATED_POP_()
 #endif
 
-// Brings in definitions for functions used in the testing::internal::posix
+// Brings in definitions for functions used in the hawk::internal::posix
 // namespace (read, write, close, chdir, isatty, stat). We do not currently
 // use them on Windows Mobile.
 #ifdef HTEST_OS_WINDOWS
@@ -852,7 +852,7 @@ typedef struct _RTL_CRITICAL_SECTION HTEST_CRITICAL_SECTION;
 namespace hawk {
     class Message;
 }
-namespace testing {
+namespace hawk {
 
 
 
@@ -959,7 +959,7 @@ namespace testing {
 #endif
         };
         HTEST_DISABLE_MSC_WARNINGS_POP_() // 4251
-#endif // ::testing::internal::RE implementation
+#endif // ::hawk::internal::RE implementation
 
         // Formats a source file path and a line number as they would appear
         // in an error message from the compiler used to compile this code.
@@ -1004,7 +1004,7 @@ namespace testing {
 #if !defined(HTEST_LOG_)
 
 #define HTEST_LOG_(severity)                                             \
-    ::testing::internal::HTestLog(::testing::internal::HTEST_##severity, \
+    ::hawk::internal::HTestLog(::hawk::internal::HTEST_##severity, \
         __FILE__, __LINE__)                                              \
         .GetStream()
 
@@ -1032,7 +1032,7 @@ namespace testing {
 //    whether it is built in the debug mode or not.
 #define HTEST_CHECK_(condition)                 \
     HTEST_AMBIGUOUS_ELSE_BLOCKER_               \
-    if (::testing::internal::IsTrue(condition)) \
+    if (::hawk::internal::IsTrue(condition)) \
         ;                                       \
     else                                        \
         HTEST_LOG_(FATAL) << "Condition " #condition " failed. "
@@ -1069,7 +1069,7 @@ namespace testing {
 
 // The argument T must depend on some template parameters.
 #define HTEST_REFERENCE_TO_CONST_(T) \
-    typename ::testing::internal::ConstRef<T>::type
+    typename ::hawk::internal::ConstRef<T>::type
 
         // INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
         //
@@ -1401,10 +1401,10 @@ namespace testing {
         };
 
 #define HTEST_DECLARE_STATIC_MUTEX_(mutex) \
-    extern ::testing::internal::Mutex mutex
+    extern ::hawk::internal::Mutex mutex
 
 #define HTEST_DEFINE_STATIC_MUTEX_(mutex) \
-    ::testing::internal::Mutex mutex(::testing::internal::Mutex::kStaticMutex)
+    ::hawk::internal::Mutex mutex(::hawk::internal::Mutex::kStaticMutex)
 
         // We cannot name this class MutexLock because the ctor declaration would
         // conflict with a macro named MutexLock, which is defined on some
@@ -1676,7 +1676,7 @@ namespace testing {
 
 // Forward-declares a static mutex.
 #define HTEST_DECLARE_STATIC_MUTEX_(mutex) \
-    extern ::testing::internal::MutexBase mutex
+    extern ::hawk::internal::MutexBase mutex
 
 // Defines and statically (i.e. at link time) initializes a static mutex.
 // The initialization list here does not explicitly initialize each field,
@@ -1685,7 +1685,7 @@ namespace testing {
 // This allows initialization to work whether pthread_t is a scalar or struct.
 // The flag -Wmissing-field-initializers must not be specified for this to work.
 #define HTEST_DEFINE_STATIC_MUTEX_(mutex) \
-    ::testing::internal::MutexBase mutex = { PTHREAD_MUTEX_INITIALIZER, false, 0 }
+    ::hawk::internal::MutexBase mutex = { PTHREAD_MUTEX_INITIALIZER, false, 0 }
 
         // The Mutex class can only be used for mutexes created at runtime. It
         // shares its API with MutexBase otherwise.
@@ -1864,9 +1864,9 @@ namespace testing {
         };
 
 #define HTEST_DECLARE_STATIC_MUTEX_(mutex) \
-    extern ::testing::internal::Mutex mutex
+    extern ::hawk::internal::Mutex mutex
 
-#define HTEST_DEFINE_STATIC_MUTEX_(mutex) ::testing::internal::Mutex mutex
+#define HTEST_DEFINE_STATIC_MUTEX_(mutex) ::hawk::internal::Mutex mutex
 
         // We cannot name this class MutexLock because the ctor declaration would
         // conflict with a macro named MutexLock, which is defined on some
@@ -1970,7 +1970,7 @@ namespace testing {
             return str;
         }
 
-        // The testing::internal::posix namespace holds wrappers for common
+        // The hawk::internal::posix namespace holds wrappers for common
         // POSIX functions.  These wrappers hide the differences between
         // Windows/MSVC and POSIX systems.  Since some compilers define these
         // standard functions as macros, the wrapper cannot have the same name
@@ -2252,7 +2252,7 @@ namespace testing {
             int32_t* value);
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 
 #if HTEST_INTERNAL_HAVE_CPP_ATTRIBUTE(clang::annotate)
 #define HTEST_INTERNAL_DEPRECATE_AND_INLINE(msg) \
@@ -2271,11 +2271,11 @@ namespace testing {
 
 // Otherwise for C++17 and higher use std::string_view for Matcher<>
 // specializations.
-namespace testing {
+namespace hawk {
     namespace internal {
         using StringView = std::string_view;
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 
 #define HTEST_INTERNAL_HAS_STRING_VIEW 1
 

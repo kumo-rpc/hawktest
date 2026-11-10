@@ -60,22 +60,22 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(4503)
 #include <hawktest/mock/hmock.h>
 #include <hawktest/test/htest.h>
 
-namespace testing {
+namespace hawk {
 namespace gmock_function_mocker_test {
 
-using testing::_;
-using testing::A;
-using testing::An;
-using testing::AnyNumber;
-using testing::Const;
-using testing::DoDefault;
-using testing::Eq;
-using testing::Lt;
-using testing::MockFunction;
-using testing::Ref;
-using testing::Return;
-using testing::ReturnRef;
-using testing::TypedEq;
+using hawk::_;
+using hawk::A;
+using hawk::An;
+using hawk::AnyNumber;
+using hawk::Const;
+using hawk::DoDefault;
+using hawk::Eq;
+using hawk::Lt;
+using hawk::MockFunction;
+using hawk::Ref;
+using hawk::Return;
+using hawk::ReturnRef;
+using hawk::TypedEq;
 
 template <typename T>
 class TemplatedCopyable {
@@ -292,14 +292,14 @@ class LegacyMockFoo : public FooInterface {
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4373
 
 template <class T>
-class FunctionMockerTest : public testing::Test {
+class FunctionMockerTest : public hawk::Test {
  protected:
   FunctionMockerTest() : foo_(&mock_foo_) {}
 
   FooInterface* const foo_;
   T mock_foo_;
 };
-using FunctionMockerTestTypes = ::testing::Types<MockFoo, LegacyMockFoo>;
+using FunctionMockerTestTypes = ::hawk::Types<MockFoo, LegacyMockFoo>;
 TYPED_TEST_SUITE(FunctionMockerTest, FunctionMockerTestTypes);
 
 // Tests mocking a void-returning function.
@@ -599,8 +599,8 @@ class LegacyMockB {
 };
 
 template <typename T>
-class ExpectCallTest : public ::testing::Test {};
-using ExpectCallTestTypes = ::testing::Types<MockB, LegacyMockB>;
+class ExpectCallTest : public ::hawk::Test {};
+using ExpectCallTestTypes = ::hawk::Types<MockB, LegacyMockB>;
 TYPED_TEST_SUITE(ExpectCallTest, ExpectCallTestTypes);
 
 // Tests that functions with no EXPECT_CALL() rules can be called any
@@ -674,9 +674,9 @@ class LegacyMockStack : public StackInterface<T> {
 };
 
 template <typename T>
-class TemplateMockTest : public ::testing::Test {};
+class TemplateMockTest : public ::hawk::Test {};
 using TemplateMockTestTypes =
-    ::testing::Types<MockStack<int>, LegacyMockStack<int>>;
+    ::hawk::Types<MockStack<int>, LegacyMockStack<int>>;
 TYPED_TEST_SUITE(TemplateMockTest, TemplateMockTestTypes);
 
 // Tests that template mock works.
@@ -761,9 +761,9 @@ class LegacyMockStackWithCallType : public StackInterfaceWithCallType<T> {
 };
 
 template <typename T>
-class TemplateMockTestWithCallType : public ::testing::Test {};
+class TemplateMockTestWithCallType : public ::hawk::Test {};
 using TemplateMockTestWithCallTypeTypes =
-    ::testing::Types<MockStackWithCallType<int>,
+    ::hawk::Types<MockStackWithCallType<int>,
                      LegacyMockStackWithCallType<int>>;
 TYPED_TEST_SUITE(TemplateMockTestWithCallType,
                  TemplateMockTestWithCallTypeTypes);
@@ -826,9 +826,9 @@ class LegacyMockOverloadedOnArgNumber {
 };
 
 template <typename T>
-class OverloadedMockMethodTest : public ::testing::Test {};
+class OverloadedMockMethodTest : public ::hawk::Test {};
 using OverloadedMockMethodTestTypes =
-    ::testing::Types<MockOverloadedOnArgNumber,
+    ::hawk::Types<MockOverloadedOnArgNumber,
                      LegacyMockOverloadedOnArgNumber>;
 TYPED_TEST_SUITE(OverloadedMockMethodTest, OverloadedMockMethodTestTypes);
 
@@ -1136,6 +1136,6 @@ TEST(MockMethodMockFunctionTest, NoexceptSpecifierPreserved) {
 }
 
 }  // namespace gmock_function_mocker_test
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4503

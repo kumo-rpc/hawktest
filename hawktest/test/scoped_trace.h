@@ -20,7 +20,7 @@
 
 #include <hawktest/test/fwd.h>
 
-namespace testing {
+namespace hawk {
 
     namespace internal {
         // Information about a Hawk Test trace point.
@@ -38,7 +38,7 @@ namespace testing {
     // The message argument can be anything streamable to std::ostream.
     //
     // Example:
-    //   testing::ScopedTrace trace("file.cc", 123, "message");
+    //   hawk::ScopedTrace trace("file.cc", 123, "message");
     //
     class HTEST_API_ [[nodiscard]] ScopedTrace {
         public:
@@ -73,4 +73,4 @@ namespace testing {
         ScopedTrace(const ScopedTrace&) = delete;
         ScopedTrace& operator=(const ScopedTrace&) = delete;
     };
-}  // namespace testing
+}  // namespace hawk

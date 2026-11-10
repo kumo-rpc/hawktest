@@ -37,7 +37,7 @@
 
 #include <hawktest/common/port.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // Converts a Unicode code point to a narrow string in UTF-8 encoding.
@@ -177,5 +177,5 @@ namespace testing {
             const char* pattern, const char* pattern_end);
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk
 

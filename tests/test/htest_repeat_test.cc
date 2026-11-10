@@ -47,14 +47,14 @@ namespace {
   do {                                                             \
     const int expected_val = (expected);                           \
     const int actual_val = (actual);                               \
-    if (::testing::internal::IsTrue(expected_val != actual_val)) { \
+    if (::hawk::internal::IsTrue(expected_val != actual_val)) { \
       ::std::cout << "Value of: " #actual "\n"                     \
                   << "  Actual: " << actual_val << "\n"            \
                   << "Expected: " #expected "\n"                   \
                   << "Which is: " << expected_val << "\n";         \
-      ::testing::internal::posix::Abort();                         \
+      ::hawk::internal::posix::Abort();                         \
     }                                                              \
-  } while (::testing::internal::AlwaysFalse())
+  } while (::hawk::internal::AlwaysFalse())
 
 // Used for verifying that global environment set-up and tear-down are
 // inside the --htest_repeat loop.
@@ -62,7 +62,7 @@ namespace {
 int g_environment_set_up_count = 0;
 int g_environment_tear_down_count = 0;
 
-class MyEnvironment : public testing::Environment {
+class MyEnvironment : public hawk::Environment {
  public:
   void SetUp() override { g_environment_set_up_count++; }
   void TearDown() override { g_environment_tear_down_count++; }
@@ -92,24 +92,24 @@ TEST(BarDeathTest, ThreadSafeAndFast) {
   g_death_test_count++;
 
   (void)(FLAGS_htest_death_test_style = ("threadsafe"));
-  EXPECT_DEATH_IF_SUPPORTED(::testing::internal::posix::Abort(), "");
+  EXPECT_DEATH_IF_SUPPORTED(::hawk::internal::posix::Abort(), "");
 
   (void)(FLAGS_htest_death_test_style = ("fast"));
-  EXPECT_DEATH_IF_SUPPORTED(::testing::internal::posix::Abort(), "");
+  EXPECT_DEATH_IF_SUPPORTED(::hawk::internal::posix::Abort(), "");
 }
 
 int g_param_test_count = 0;
 
 const int kNumberOfParamTests = 10;
 
-class MyParamTest : public testing::TestWithParam<int> {};
+class MyParamTest : public hawk::TestWithParam<int> {};
 
 TEST_P(MyParamTest, ShouldPass) {
   HTEST_CHECK_INT_EQ_(g_param_test_count % kNumberOfParamTests, GetParam());
   g_param_test_count++;
 }
 INSTANTIATE_TEST_SUITE_P(MyParamSequence, MyParamTest,
-                         testing::Range(0, kNumberOfParamTests));
+                         hawk::Range(0, kNumberOfParamTests));
 
 // Resets the count for each test.
 void ResetCounts() {
@@ -119,7 +119,7 @@ void ResetCounts() {
   g_should_pass_count = 0;
   g_death_test_count = 0;
   g_param_test_count = 0;
-  testing::AddGlobalTestEnvironment(new MyEnvironment);
+  hawk::AddGlobalTestEnvironment(new MyEnvironment);
 }
 
 // Checks that the count for each test is expected.
@@ -198,7 +198,7 @@ void TestRepeatWithFilterForFailedTests(int repeat) {
 }  // namespace
 
 int main(int argc, char **argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
   TestRepeatUnspecified();
   TestRepeat(0);

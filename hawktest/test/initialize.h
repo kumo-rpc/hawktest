@@ -20,7 +20,7 @@
 
 #include <hawktest/test/fwd.h>
 
-namespace testing {
+namespace hawk {
 
     namespace internal {
         // All command line arguments.
@@ -49,4 +49,4 @@ namespace testing {
     // there is no argc/argv.
     HTEST_API_ void init_hawk_test();
 
-}  // namespace testing
+}  // namespace hawk

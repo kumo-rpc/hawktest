@@ -134,7 +134,7 @@
 // otherwise it should evaluate to the description of the negation of
 // the matcher.  For example,
 //
-//   using testing::PrintToString;
+//   using hawk::PrintToString;
 //
 //   MATCHER_P2(InClosedRange, low, hi,
 //       std::string(negation ? "is not" : "is") + " in range [" +
@@ -324,7 +324,7 @@ HTEST_DISABLE_MSC_WARNINGS_PUSH_(
                               clients of class B */
     /* Symbol involving type with internal linkage not defined */)
 
-namespace testing {
+namespace hawk {
 
 // To implement a matcher Foo for type T, define:
 //   1. a class FooMatcherImpl that implements the
@@ -516,8 +516,8 @@ class [[nodiscard]] MatcherBaseImpl {
   MatcherBaseImpl() = default;
 
   template <typename T>
-  operator ::testing::Matcher<T>() const {  // NOLINT(runtime/explicit)
-    return ::testing::Matcher<T>(new
+  operator ::hawk::Matcher<T>() const {  // NOLINT(runtime/explicit)
+    return ::hawk::Matcher<T>(new
                                  typename Derived::template gmock_Impl<T>());
   }
 };
@@ -538,14 +538,14 @@ class [[nodiscard]] MatcherBaseImpl<Derived<Ts...>> {
       : params_(std::forward<Ts>(params)...) {}
 
   template <typename F>
-  operator ::testing::Matcher<F>() const {  // NOLINT(runtime/explicit)
+  operator ::hawk::Matcher<F>() const {  // NOLINT(runtime/explicit)
     return Apply<F>(std::make_index_sequence<sizeof...(Ts)>{});
   }
 
  private:
   template <typename F, std::size_t... tuple_ids>
-  ::testing::Matcher<F> Apply(std::index_sequence<tuple_ids...>) const {
-    return ::testing::Matcher<F>(
+  ::hawk::Matcher<F> Apply(std::index_sequence<tuple_ids...>) const {
+    return ::hawk::Matcher<F>(
         new typename Derived<Ts...>::template gmock_Impl<F>(
             std::get<tuple_ids>(params_)...));
   }
@@ -2847,7 +2847,7 @@ class [[nodiscard]] QuantifierMatcherImpl : public MatcherInterface<Container> {
   template <typename InnerMatcher>
   explicit QuantifierMatcherImpl(InnerMatcher inner_matcher)
       : inner_matcher_(
-            testing::SafeMatcherCast<const Element&>(inner_matcher)) {}
+            hawk::SafeMatcherCast<const Element&>(inner_matcher)) {}
 
   // Checks whether:
   // * All elements in the container match, if all_elements_should_match.
@@ -3193,7 +3193,7 @@ class [[nodiscard]] KeyMatcherImpl : public MatcherInterface<PairType> {
   template <typename InnerMatcher>
   explicit KeyMatcherImpl(InnerMatcher inner_matcher)
       : inner_matcher_(
-            testing::SafeMatcherCast<const KeyType&>(inner_matcher)) {}
+            hawk::SafeMatcherCast<const KeyType&>(inner_matcher)) {}
 
   // Returns true if and only if 'key_value.first' (the key) matches the inner
   // matcher.
@@ -3296,9 +3296,9 @@ class [[nodiscard]] PairMatcherImpl : public MatcherInterface<PairType> {
   template <typename FirstMatcher, typename SecondMatcher>
   PairMatcherImpl(FirstMatcher first_matcher, SecondMatcher second_matcher)
       : first_matcher_(
-            testing::SafeMatcherCast<const FirstType&>(first_matcher)),
+            hawk::SafeMatcherCast<const FirstType&>(first_matcher)),
         second_matcher_(
-            testing::SafeMatcherCast<const SecondType&>(second_matcher)) {}
+            hawk::SafeMatcherCast<const SecondType&>(second_matcher)) {}
 
   // Describes what this matcher does.
   void DescribeTo(::std::ostream* os) const override {
@@ -3567,7 +3567,7 @@ class [[nodiscard]] FieldsAreMatcherImpl<Struct, std::index_sequence<I...>>
  public:
   template <typename Inner>
   explicit FieldsAreMatcherImpl(const Inner& matchers)
-      : matchers_(testing::SafeMatcherCast<
+      : matchers_(hawk::SafeMatcherCast<
                   const typename std::tuple_element<I, UnpackedType>::type&>(
             std::get<I>(matchers))...) {}
 
@@ -4408,12 +4408,12 @@ void get() {}
 template <typename T>
 class [[nodiscard]] VariantMatcher {
  public:
-  explicit VariantMatcher(::testing::Matcher<const T&> matcher)
+  explicit VariantMatcher(::hawk::Matcher<const T&> matcher)
       : matcher_(std::move(matcher)) {}
 
   template <typename Variant>
   bool MatchAndExplain(const Variant& value,
-                       ::testing::MatchResultListener* listener) const {
+                       ::hawk::MatchResultListener* listener) const {
     using std::get;
     if (!listener->IsInterested()) {
       return holds_alternative<T>(value) && matcher_.Matches(get<T>(value));
@@ -4454,7 +4454,7 @@ class [[nodiscard]] VariantMatcher {
     return "the element type";
   }
 
-  const ::testing::Matcher<const T&> matcher_;
+  const ::hawk::Matcher<const T&> matcher_;
 };
 
 }  // namespace variant_matcher
@@ -4469,12 +4469,12 @@ void any_cast() {}
 template <typename T>
 class [[nodiscard]] AnyCastMatcher {
  public:
-  explicit AnyCastMatcher(const ::testing::Matcher<const T&>& matcher)
+  explicit AnyCastMatcher(const ::hawk::Matcher<const T&>& matcher)
       : matcher_(matcher) {}
 
   template <typename AnyType>
   bool MatchAndExplain(const AnyType& value,
-                       ::testing::MatchResultListener* listener) const {
+                       ::hawk::MatchResultListener* listener) const {
     if (!listener->IsInterested()) {
       const T* ptr = any_cast<T>(&value);
       return ptr != nullptr && matcher_.Matches(*ptr);
@@ -4515,7 +4515,7 @@ class [[nodiscard]] AnyCastMatcher {
     return "the element type";
   }
 
-  const ::testing::Matcher<const T&> matcher_;
+  const ::hawk::Matcher<const T&> matcher_;
 };
 
 }  // namespace any_cast_matcher
@@ -5512,7 +5512,7 @@ inline internal::MatcherAsPredicate<M> Matches(M matcher) {
 // Returns true if and only if the value matches the matcher.
 template <typename T, typename M>
 inline bool Value(const T& value, M matcher) {
-  return testing::Matches(matcher)(value);
+  return hawk::Matches(matcher)(value);
 }
 
 // Matches the value against the given matcher and explains the match
@@ -5905,23 +5905,23 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
 // fails, the value and the description of the matcher will be printed.
 #define ASSERT_THAT(value, matcher) \
   ASSERT_PRED_FORMAT1(              \
-      ::testing::internal::MakePredicateFormatterFromMatcher(matcher), value)
+      ::hawk::internal::MakePredicateFormatterFromMatcher(matcher), value)
 #define EXPECT_THAT(value, matcher) \
   EXPECT_PRED_FORMAT1(              \
-      ::testing::internal::MakePredicateFormatterFromMatcher(matcher), value)
+      ::hawk::internal::MakePredicateFormatterFromMatcher(matcher), value)
 
 // MATCHER* macros itself are listed below.
 #define MATCHER(name, description)                                            \
   class name##Matcher                                                         \
-      : public ::testing::internal::MatcherBaseImpl<name##Matcher> {          \
+      : public ::hawk::internal::MatcherBaseImpl<name##Matcher> {          \
    public:                                                                    \
     template <typename arg_type>                                              \
-    class gmock_Impl : public ::testing::MatcherInterface<const arg_type&> {  \
+    class gmock_Impl : public ::hawk::MatcherInterface<const arg_type&> {  \
      public:                                                                  \
       gmock_Impl() {}                                                         \
       bool MatchAndExplain(                                                   \
           const arg_type& arg,                                                \
-          ::testing::MatchResultListener* result_listener) const override;    \
+          ::hawk::MatchResultListener* result_listener) const override;    \
       void DescribeTo(::std::ostream* gmock_os) const override {              \
         *gmock_os << FormatDescription(false);                                \
       }                                                                       \
@@ -5936,7 +5936,7 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
         if (!gmock_description.empty()) {                                     \
           return gmock_description;                                           \
         }                                                                     \
-        return ::testing::internal::FormatMatcherDescription(negation, #name, \
+        return ::hawk::internal::FormatMatcherDescription(negation, #name, \
                                                              {}, {});         \
       }                                                                       \
     };                                                                        \
@@ -5950,7 +5950,7 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
   template <typename arg_type>                                                \
   bool name##Matcher::gmock_Impl<arg_type>::MatchAndExplain(                  \
       const arg_type& arg,                                                    \
-      [[maybe_unused]] ::testing::MatchResultListener* result_listener) const
+      [[maybe_unused]] ::hawk::MatchResultListener* result_listener) const
 
 #define MATCHER_P(name, p0, description) \
   GMOCK_INTERNAL_MATCHER(name, name##MatcherP, description, (#p0), (p0))
@@ -5989,18 +5989,18 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
 
 #define GMOCK_INTERNAL_MATCHER(name, full_name, description, arg_names, args)  \
   template <GMOCK_INTERNAL_MATCHER_TEMPLATE_PARAMS(args)>                      \
-  class full_name : public ::testing::internal::MatcherBaseImpl<               \
+  class full_name : public ::hawk::internal::MatcherBaseImpl<               \
                         full_name<GMOCK_INTERNAL_MATCHER_TYPE_PARAMS(args)>> { \
    public:                                                                     \
     using full_name::MatcherBaseImpl::MatcherBaseImpl;                         \
     template <typename arg_type>                                               \
-    class gmock_Impl : public ::testing::MatcherInterface<const arg_type&> {   \
+    class gmock_Impl : public ::hawk::MatcherInterface<const arg_type&> {   \
      public:                                                                   \
       explicit gmock_Impl(GMOCK_INTERNAL_MATCHER_FUNCTION_ARGS(args))          \
           : GMOCK_INTERNAL_MATCHER_FORWARD_ARGS(args) {}                       \
       bool MatchAndExplain(                                                    \
           const arg_type& arg,                                                 \
-          ::testing::MatchResultListener* result_listener) const override;     \
+          ::hawk::MatchResultListener* result_listener) const override;     \
       void DescribeTo(::std::ostream* gmock_os) const override {               \
         *gmock_os << FormatDescription(false);                                 \
       }                                                                        \
@@ -6016,9 +6016,9 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
         if (!gmock_description.empty()) {                                      \
           return gmock_description;                                            \
         }                                                                      \
-        return ::testing::internal::FormatMatcherDescription(                  \
+        return ::hawk::internal::FormatMatcherDescription(                  \
             negation, #name, {GMOCK_PP_REMOVE_PARENS(arg_names)},              \
-            ::testing::internal::UniversalTersePrintTupleFieldsToStrings(      \
+            ::hawk::internal::UniversalTersePrintTupleFieldsToStrings(      \
                 ::std::tuple<GMOCK_INTERNAL_MATCHER_TYPE_PARAMS(args)>(        \
                     GMOCK_INTERNAL_MATCHER_MEMBERS_USAGE(args))));             \
       }                                                                        \
@@ -6035,7 +6035,7 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
   bool full_name<GMOCK_INTERNAL_MATCHER_TYPE_PARAMS(args)>::                   \
       gmock_Impl<arg_type>::MatchAndExplain(                                   \
           const arg_type& arg,                                                 \
-          [[maybe_unused]] ::testing::MatchResultListener* result_listener)    \
+          [[maybe_unused]] ::hawk::MatchResultListener* result_listener)    \
           const
 
 #define GMOCK_INTERNAL_MATCHER_TEMPLATE_PARAMS(args) \
@@ -6077,7 +6077,7 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
 // To prevent ADL on certain functions we put them on a separate namespace.
 using namespace no_adl;  // NOLINT
 
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251 5046
 

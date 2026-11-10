@@ -74,12 +74,12 @@ TEST(TempDirTest, InEnvironment) {
   // specify are actually valid.
   MakeTempDir temp_dir("TempDirTest_InEnvironment");
   SetEnv set_env("TEST_TMPDIR", temp_dir.DirName());
-  EXPECT_TRUE(StartsWith(testing::TempDir(), temp_dir.DirName()));
+  EXPECT_TRUE(StartsWith(hawk::TempDir(), temp_dir.DirName()));
 }
 
 TEST(TempDirTest, NotInEnvironment) {
   SetEnv set_env("TEST_TMPDIR", nullptr);
-  EXPECT_NE(testing::TempDir(), "");
+  EXPECT_NE(hawk::TempDir(), "");
 }
 
 TEST(SrcDirTest, InEnvironment) {
@@ -88,12 +88,12 @@ TEST(SrcDirTest, InEnvironment) {
   // specify are actually valid.
   MakeTempDir temp_dir("SrcDirTest_InEnvironment");
   SetEnv set_env("TEST_SRCDIR", temp_dir.DirName());
-  EXPECT_TRUE(StartsWith(testing::SrcDir(), temp_dir.DirName()));
+  EXPECT_TRUE(StartsWith(hawk::SrcDir(), temp_dir.DirName()));
 }
 
 TEST(SrcDirTest, NotInEnvironment) {
   SetEnv set_env("TEST_SRCDIR", nullptr);
-  EXPECT_NE(testing::SrcDir(), "");
+  EXPECT_NE(hawk::SrcDir(), "");
 }
 
 #endif  // HTEST_HAS_FILE_SYSTEM

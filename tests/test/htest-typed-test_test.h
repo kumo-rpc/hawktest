@@ -35,7 +35,7 @@
 
 #include <hawktest/test/htest.h>
 
-using testing::Test;
+using hawk::Test;
 
 // For testing that the same type-parameterized test case can be
 // instantiated in different translation units linked together.

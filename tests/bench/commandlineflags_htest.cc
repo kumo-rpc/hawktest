@@ -199,28 +199,28 @@ TEST(StringFromEnv, Valid) {
 TEST(KvPairsFromEnv, Default) {
   ASSERT_EQ(unsetenv("NOT_IN_ENV"), 0);
   EXPECT_THAT(KvPairsFromEnv("not_in_env", {{"foo", "bar"}}),
-              testing::ElementsAre(testing::Pair("foo", "bar")));
+              hawk::ElementsAre(hawk::Pair("foo", "bar")));
 }
 
 TEST(KvPairsFromEnv, MalformedReturnsDefault) {
   ASSERT_EQ(setenv("IN_ENV", "foo", 1), 0);
   EXPECT_THAT(KvPairsFromEnv("in_env", {{"foo", "bar"}}),
-              testing::ElementsAre(testing::Pair("foo", "bar")));
+              hawk::ElementsAre(hawk::Pair("foo", "bar")));
   unsetenv("IN_ENV");
 }
 
 TEST(KvPairsFromEnv, Single) {
   ASSERT_EQ(setenv("IN_ENV", "foo=bar", 1), 0);
   EXPECT_THAT(KvPairsFromEnv("in_env", {}),
-              testing::ElementsAre(testing::Pair("foo", "bar")));
+              hawk::ElementsAre(hawk::Pair("foo", "bar")));
   unsetenv("IN_ENV");
 }
 
 TEST(KvPairsFromEnv, Multiple) {
   ASSERT_EQ(setenv("IN_ENV", "foo=bar,baz=qux", 1), 0);
   EXPECT_THAT(KvPairsFromEnv("in_env", {}),
-              testing::UnorderedElementsAre(testing::Pair("foo", "bar"),
-                                            testing::Pair("baz", "qux")));
+              hawk::UnorderedElementsAre(hawk::Pair("foo", "bar"),
+                                            hawk::Pair("baz", "qux")));
   unsetenv("IN_ENV");
 }
 

@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 #if HTEST_HAS_EXCEPTIONS
   std::set_terminate(&TerminateHandler);
 #endif
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
   // We want to ensure that people can use Hawk Test assertions in
   // other testing frameworks, as long as they initialize Hawk Test

@@ -18,7 +18,7 @@
 #include <hawktest/test/internal/stack.h>
 #include <hawktest/test/internal/unit_test_impl.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // Returns the current OS stack trace as an std::string.

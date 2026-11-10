@@ -179,6 +179,9 @@ kmcmake_cc_library(
         NAMESPACE ${PROJECT_NAME}
         NAME hawktest
         SOURCES
+        analysis/failure_reason.cc
+        analysis/assertion_result.cc
+        analysis/assert_help.cc
         common/ascii.cc
         common/filepath.cc
         common/random.cc
@@ -191,14 +194,15 @@ kmcmake_cc_library(
         reporter/json_unit_test_result_printer.cc
         reporter/xml_unit_test_result_printer.cc
         reporter/streaming_listener.cc
+        reporter/default_global_reporter.cc
         reporter/pretty_unit_test_result_printer.cc
         reporter/test_event_repeater.cc
         format/color.cc
         format/printer.cc
         format/report_sink.cc
         format/message.cc
+        matcher/compare.cc
         numeric/parse.cc
-        test/assertion-result.cc
         test/death-test.cc
         test/matchers.cc
         test/exception.cc
@@ -217,7 +221,6 @@ kmcmake_cc_library(
         test/test-part.cc
         test/typed-test.cc
         test/htest.cc
-        test/utility.cc
         mock/cardinalities.cc
         mock/internal-utils.cc
         mock/matchers.cc

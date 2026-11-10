@@ -146,7 +146,7 @@
 
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
 
-namespace testing {
+namespace hawk {
 
 // To implement an action Foo, define:
 //   1. a class FooAction that implements the ActionInterface interface, and
@@ -2188,7 +2188,7 @@ namespace internal {
 // arguments than it needs.  The ExcessiveArg type is used to
 // represent those excessive arguments.  In order to keep the compiler
 // error messages tractable, we define it in the testing namespace
-// instead of testing::internal.  However, this is an INTERNAL TYPE
+// instead of hawk::internal.  However, this is an INTERNAL TYPE
 // and subject to change without notice, so a user MUST NOT USE THIS
 // TYPE DIRECTLY.
 struct ExcessiveArg {};
@@ -2249,14 +2249,14 @@ struct ActionImpl<R(Args...), Impl> : ImplBase<Impl>::type {
 // Stores a default-constructed Impl as part of the Action<>'s
 // std::function<>. The Impl should be trivial to copy.
 template <typename F, typename Impl>
-::testing::Action<F> MakeAction() {
-  return ::testing::Action<F>(ActionImpl<F, Impl>());
+::hawk::Action<F> MakeAction() {
+  return ::hawk::Action<F>(ActionImpl<F, Impl>());
 }
 
 // Stores just the one given instance of Impl.
 template <typename F, typename Impl>
-::testing::Action<F> MakeAction(std::shared_ptr<Impl> impl) {
-  return ::testing::Action<F>(ActionImpl<F, Impl>(std::move(impl)));
+::hawk::Action<F> MakeAction(std::shared_ptr<Impl> impl) {
+  return ::hawk::Action<F>(ActionImpl<F, Impl>(std::move(impl)));
 }
 
 #define GMOCK_INTERNAL_ARG_UNUSED(i, data, el) \
@@ -2310,8 +2310,8 @@ template <typename F, typename Impl>
     full_name(const full_name&) = default;                                     \
     full_name(full_name&&) noexcept = default;                                 \
     template <typename F>                                                      \
-    operator ::testing::Action<F>() const {                                    \
-      return ::testing::internal::MakeAction<F>(impl_);                        \
+    operator ::hawk::Action<F>() const {                                    \
+      return ::hawk::internal::MakeAction<F>(impl_);                        \
     }                                                                          \
                                                                                \
    private:                                                                    \
@@ -2351,8 +2351,8 @@ template <typename F, typename Impl>
     explicit name##Action() noexcept {}                                       \
     name##Action(const name##Action&) noexcept {}                             \
     template <typename F>                                                     \
-    operator ::testing::Action<F>() const {                                   \
-      return ::testing::internal::MakeAction<F, gmock_Impl>();                \
+    operator ::hawk::Action<F>() const {                                   \
+      return ::hawk::internal::MakeAction<F, gmock_Impl>();                \
     }                                                                         \
                                                                               \
    private:                                                                   \
@@ -2400,6 +2400,6 @@ template <typename F, typename Impl>
 #define ACTION_P10(name, ...) \
   GMOCK_INTERNAL_ACTION(name, name##ActionP10, (__VA_ARGS__))
 
-}  // namespace testing
+}  // namespace hawk
 
 HTEST_DISABLE_MSC_WARNINGS_POP_()  // 4100

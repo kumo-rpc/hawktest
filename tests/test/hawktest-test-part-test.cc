@@ -36,9 +36,9 @@
 #include <hawktest/test/test-part.h>
 
 using hawk::Message;
-using testing::Test;
-using testing::TestPartResult;
-using testing::TestPartResultArray;
+using hawk::Test;
+using hawk::TestPartResult;
+using hawk::TestPartResultArray;
 
 namespace {
 

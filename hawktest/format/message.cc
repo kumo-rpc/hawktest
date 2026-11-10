@@ -34,10 +34,10 @@ namespace hawk {
     // These two overloads allow streaming a wide C string to a Message
     // using the UTF-8 encoding.
     Message& Message::operator<<(const wchar_t* wide_c_str) {
-        return *this << testing::internal::String::ShowWideCString(wide_c_str);
+        return *this << hawk::internal::String::ShowWideCString(wide_c_str);
     }
     Message& Message::operator<<(wchar_t* wide_c_str) {
-        return *this << testing::internal::String::ShowWideCString(wide_c_str);
+        return *this << hawk::internal::String::ShowWideCString(wide_c_str);
     }
 
     namespace internal {
@@ -50,7 +50,7 @@ namespace hawk {
             Message* msg) {
             for (size_t i = 0; i != length;) { // NOLINT
                 if (wstr[i] != L'\0') {
-                    *msg << testing::internal::WideStringToUtf8(wstr + i, static_cast<int>(length - i));
+                    *msg << hawk::internal::WideStringToUtf8(wstr + i, static_cast<int>(length - i));
                     while (i != length && wstr[i] != L'\0')
                         i++;
                 } else {
@@ -89,6 +89,6 @@ namespace hawk {
     // Gets the text streamed to this object so far as an std::string.
     // Each '\0' character in the buffer is replaced with "\\0".
     std::string Message::GetString() const {
-        return testing::internal::StringStreamToString(ss_.get());
+        return hawk::internal::StringStreamToString(ss_.get());
     }
 }  // namespace hawk

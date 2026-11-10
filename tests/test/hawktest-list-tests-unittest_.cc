@@ -57,7 +57,7 @@ TEST(Abc, Def) {}
 
 TEST(FooBar, Baz) {}
 
-class FooTest : public testing::Test {};
+class FooTest : public hawk::Test {};
 
 TEST_F(FooTest, Test1) {}
 
@@ -82,7 +82,7 @@ class MyType {
 // Teaches Hawk Test how to print a MyType.
 void PrintTo(const MyType& x, std::ostream* os) { *os << x.value(); }
 
-class ValueParamTest : public testing::TestWithParam<MyType> {};
+class ValueParamTest : public hawk::TestWithParam<MyType> {};
 
 TEST_P(ValueParamTest, TestA) {}
 
@@ -90,7 +90,7 @@ TEST_P(ValueParamTest, TestB) {}
 
 INSTANTIATE_TEST_SUITE_P(
     MyInstantiation, ValueParamTest,
-    testing::Values(
+    hawk::Values(
         MyType("one line"), MyType("two\nlines"),
         MyType("a "
                "very\nloooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
@@ -108,12 +108,12 @@ class
 };
 
 template <typename T>
-class TypedTest : public testing::Test {};
+class TypedTest : public hawk::Test {};
 
 template <typename T, int kSize>
 class MyArray {};
 
-typedef testing::Types<
+typedef hawk::Types<
     VeryLoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogName,  // NOLINT
     int*, MyArray<bool, 42> >
     MyTypes;
@@ -127,7 +127,7 @@ TYPED_TEST(TypedTest, TestB) {}
 // A group of type-parameterized tests.
 
 template <typename T>
-class TypeParamTest : public testing::Test {};
+class TypeParamTest : public hawk::Test {};
 
 TYPED_TEST_SUITE_P(TypeParamTest);
 
@@ -140,7 +140,7 @@ REGISTER_TYPED_TEST_SUITE_P(TypeParamTest, TestA, TestB);
 INSTANTIATE_TYPED_TEST_SUITE_P(My, TypeParamTest, MyTypes);
 
 int main(int argc, char** argv) {
-  ::testing::init_hawk_test(&argc, argv);
+  ::hawk::init_hawk_test(&argc, argv);
 
   return RUN_ALL_TESTS();
 }

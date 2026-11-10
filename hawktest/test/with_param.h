@@ -20,12 +20,12 @@
 
 #include <hawktest/test/fwd.h>
 
-namespace testing {
+namespace hawk {
 
     // The pure interface class that all value-parameterized tests inherit from.
-    // A value-parameterized class must inherit from both ::testing::Test and
-    // ::testing::WithParamInterface. In most cases that just means inheriting
-    // from ::testing::TestWithParam, but more complicated test hierarchies
+    // A value-parameterized class must inherit from both ::hawk::Test and
+    // ::hawk::WithParamInterface. In most cases that just means inheriting
+    // from ::hawk::TestWithParam, but more complicated test hierarchies
     // may need to inherit from Test and WithParamInterface at different levels.
     //
     // This interface has support for accessing the test parameter value via
@@ -34,7 +34,7 @@ namespace testing {
     // Use it with one of the parameter generator defining functions, like Range(),
     // Values(), ValuesIn(), Bool(), Combine(), and ConvertGenerator<T>().
     //
-    // class FooTest : public ::testing::TestWithParam<int> {
+    // class FooTest : public ::hawk::TestWithParam<int> {
     //  protected:
     //   FooTest() {
     //     // Can use GetParam() here.
@@ -54,7 +54,7 @@ namespace testing {
     //   Foo foo;
     //   ASSERT_TRUE(foo.DoesBar(GetParam()));
     // }
-    // INSTANTIATE_TEST_SUITE_P(OneToTenRange, FooTest, ::testing::Range(1, 10));
+    // INSTANTIATE_TEST_SUITE_P(OneToTenRange, FooTest, ::hawk::Range(1, 10));
 
     template <typename T>
     class [[nodiscard]] WithParamInterface {
@@ -88,9 +88,9 @@ namespace testing {
     const T* WithParamInterface<T>::parameter_ = nullptr;
 
     // Most value-parameterized classes can ignore the existence of
-    // WithParamInterface, and can just inherit from ::testing::TestWithParam.
+    // WithParamInterface, and can just inherit from ::hawk::TestWithParam.
 
     template <typename T>
     class [[nodiscard]] TestWithParam : public Test,
                                         public WithParamInterface<T> { };
-}  // namespace testing
+}  // namespace hawk

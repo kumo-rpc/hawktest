@@ -94,7 +94,7 @@
 #include <hawktest/format/message.h>
 #include <hawktest/test/spi.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
 #if defined(HTEST_OS_LINUX) || defined(HTEST_OS_GNU_HURD)
@@ -1379,4 +1379,4 @@ namespace testing {
         }
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk

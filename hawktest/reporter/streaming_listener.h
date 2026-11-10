@@ -23,7 +23,7 @@
 #include <hawktest/test/test_suite.h>
 #include <hawktest/test/unit_test.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
 #if HTEST_CAN_STREAM_RESULTS_

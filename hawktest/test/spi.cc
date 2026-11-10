@@ -19,7 +19,7 @@
 #include <hawktest/test/internal/unit_test_impl.h>
 #include <hawktest/test/spi.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // This predicate-formatter checks that 'results' contains a test part
@@ -130,4 +130,4 @@ namespace testing {
         result_->Append(result);
     }
 
-} // namespace testing
+} // namespace hawk

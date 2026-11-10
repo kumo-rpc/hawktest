@@ -35,7 +35,7 @@
 // This file implements a universal value printer that can print a
 // value of any type T:
 //
-//   void ::testing::internal::UniversalPrinter<T>::Print(value, ostream_ptr);
+//   void ::hawk::internal::UniversalPrinter<T>::Print(value, ostream_ptr);
 //
 // It uses the << operator when possible, and prints the bytes in the
 // object otherwise.  A user can override its behavior for a class
@@ -59,7 +59,7 @@
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/common/port.h>
 
-namespace testing {
+namespace hawk {
 
     namespace {
 
@@ -127,7 +127,7 @@ namespace testing {
         // Delegates to PrintBytesInObjectToImpl() to print the bytes in the
         // given object.  The delegation simplifies the implementation, which
         // uses the << operator and thus is easier done outside of the
-        // ::testing::internal namespace, which contains a << operator that
+        // ::hawk::internal namespace, which contains a << operator that
         // sometimes conflicts with the one in STL.
         void PrintBytesInObjectTo(const unsigned char* obj_bytes, size_t count,
             ostream* os) {
@@ -585,4 +585,4 @@ namespace testing {
 
     } // namespace internal
 
-} // namespace testing
+} // namespace hawk

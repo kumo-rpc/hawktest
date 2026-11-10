@@ -43,15 +43,15 @@
 // Silence C4100 (unreferenced formal parameter)
 HTEST_DISABLE_MSC_WARNINGS_PUSH_(4100)
 
-using testing::_;
-using testing::AnyNumber;
-using testing::Ge;
-using testing::InSequence;
-using testing::NaggyMock;
-using testing::Ref;
-using testing::Return;
-using testing::Sequence;
-using testing::Value;
+using hawk::_;
+using hawk::AnyNumber;
+using hawk::Ge;
+using hawk::InSequence;
+using hawk::NaggyMock;
+using hawk::Ref;
+using hawk::Return;
+using hawk::Sequence;
+using hawk::Value;
 
 class MockFoo {
  public:
@@ -66,7 +66,7 @@ class MockFoo {
   MockFoo& operator=(const MockFoo&) = delete;
 };
 
-class GMockOutputTest : public testing::Test {
+class GMockOutputTest : public hawk::Test {
  protected:
   NaggyMock<MockFoo> foo_;
 };
@@ -261,7 +261,7 @@ MATCHER_P2(IsPair, first, second, "") {
 }
 
 TEST_F(GMockOutputTest, PrintsMatcher) {
-  const testing::Matcher<int> m1 = Ge(48);
+  const hawk::Matcher<int> m1 = Ge(48);
   EXPECT_THAT((std::pair<int, bool>(42, true)), IsPair(m1, true));
 }
 
@@ -276,7 +276,7 @@ void TestCatchesLeakedMocksInAdHocTests() {
 }
 
 int main(int argc, char** argv) {
-  testing::InitGoogleMock(&argc, argv);
+  hawk::InitGoogleMock(&argc, argv);
   // Ensures that the tests pass no matter what value of
   // --gmock_catch_leaked_mocks and --gmock_verbose the user specifies.
   GMOCK_FLAG_SET(catch_leaked_mocks, true);

@@ -43,15 +43,15 @@
 namespace {
 
 using std::stringstream;
-using testing::AnyNumber;
-using testing::AtLeast;
-using testing::AtMost;
-using testing::Between;
-using testing::Cardinality;
-using testing::CardinalityInterface;
-using testing::Exactly;
-using testing::IsSubstring;
-using testing::MakeCardinality;
+using hawk::AnyNumber;
+using hawk::AtLeast;
+using hawk::AtMost;
+using hawk::Between;
+using hawk::Cardinality;
+using hawk::CardinalityInterface;
+using hawk::Exactly;
+using hawk::IsSubstring;
+using hawk::MakeCardinality;
 
 class MockFoo {
  public:

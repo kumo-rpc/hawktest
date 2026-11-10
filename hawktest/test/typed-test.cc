@@ -38,7 +38,7 @@
 
 #include <hawktest/test/htest.h>
 
-namespace testing {
+namespace hawk {
     namespace internal {
 
         // Skips to the first non-space char in str. Returns an empty string if str
@@ -109,4 +109,4 @@ namespace testing {
         }
 
     } // namespace internal
-} // namespace testing
+} // namespace hawk

@@ -54,7 +54,7 @@
 
 #include <hawktest/common/internal-inl.h>
 
-namespace testing {
+namespace hawk {
 namespace internal {
 namespace {
 
@@ -225,4 +225,4 @@ TEST_F(XmlOutputChangeDirTest, PreserveOriginalWorkingDirWithAbsolutePath) {
 
 }  // namespace
 }  // namespace internal
-}  // namespace testing
+}  // namespace hawk

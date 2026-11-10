@@ -43,7 +43,7 @@
 
 #ifdef HTEST_IS_THREADSAFE
 
-namespace testing {
+namespace hawk {
 namespace {
 
 using internal::Notification;
@@ -225,10 +225,10 @@ TEST(NonFatalFailureOnAllThreadsTest, ExpectNonFatalFailureOnAllThreads) {
 }
 
 }  // namespace
-}  // namespace testing
+}  // namespace hawk
 
 int main(int argc, char** argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
 
   const int result = RUN_ALL_TESTS();  // Expected to fail.
   HTEST_CHECK_(result == 1) << "RUN_ALL_TESTS() did not fail as expected";
@@ -242,7 +242,7 @@ TEST(StressTest,
      DISABLED_ThreadSafetyTestsAreSkippedWhenHawkTestIsNotThreadSafe) {}
 
 int main(int argc, char **argv) {
-  testing::init_hawk_test(&argc, argv);
+  hawk::init_hawk_test(&argc, argv);
   return RUN_ALL_TESTS();
 }
 #endif  // HTEST_IS_THREADSAFE

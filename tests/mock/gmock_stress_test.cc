@@ -38,11 +38,11 @@
 #include <hawktest/mock/hmock.h>
 #include <hawktest/test/htest.h>
 
-namespace testing {
+namespace hawk {
 namespace {
 
 // From htest-port.h.
-using ::testing::internal::ThreadWithParam;
+using ::hawk::internal::ThreadWithParam;
 
 // The maximum number of test threads (not including helper threads)
 // to create.
@@ -219,10 +219,10 @@ TEST(StressTest, CanUseGMockWithThreads) {
 }
 
 }  // namespace
-}  // namespace testing
+}  // namespace hawk
 
 int main(int argc, char** argv) {
-  testing::InitGoogleMock(&argc, argv);
+  hawk::InitGoogleMock(&argc, argv);
 
   const int exit_code = RUN_ALL_TESTS();  // Expected to fail.
   HTEST_CHECK_(exit_code != 0) << "RUN_ALL_TESTS() did not fail as expected";

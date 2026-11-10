@@ -20,7 +20,7 @@
 
 #include <hawktest/flags/builtin.h>
 
-namespace testing {
+namespace hawk {
 
     namespace internal {
                 // This class saves the values of all Hawk Test flags in its c'tor, and
@@ -102,4 +102,4 @@ namespace testing {
             bool throw_on_failure_;
         };
     }  // namespace internal
-}  // namespace testing
+}  // namespace hawk
