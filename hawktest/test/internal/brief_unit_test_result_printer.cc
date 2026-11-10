@@ -12,6 +12,7 @@
 //
 
 #include <hawktest/test/internal/brief_unit_test_result_printer.h>
+#include <hawktest/reportor/printer.h>
 #include <hawktest/test/internal/pretty_unit_test_result_printer.h>
 #include <hawktest/test/listener.h>
 #include <hawktest/flags/builtin.h>
@@ -39,7 +40,7 @@ namespace testing {
 
         void BriefUnitTestResultPrinter::OnTestEnd(const TestInfo& test_info) {
             if (test_info.result()->Failed()) {
-                ColoredPrintf(HTestColor::kRed, "[  FAILED  ] ");
+                hawk::stdout_printer().print_red("[  FAILED  ] ");
                 PrintTestName(test_info.test_suite_name(), test_info.name());
                 PrintFullTestCommentIfPresent(test_info);
 
@@ -56,7 +57,7 @@ namespace testing {
 
         void BriefUnitTestResultPrinter::OnTestIterationEnd(const UnitTest& unit_test,
             int /*iteration*/) {
-            ColoredPrintf(HTestColor::kGreen, "[==========] ");
+            hawk::stdout_printer().print_green("[==========] ");
             printf("%s from %s ran.",
                 FormatTestCount(unit_test.test_to_run_count()).c_str(),
                 FormatTestSuiteCount(unit_test.test_suite_to_run_count()).c_str());
@@ -65,12 +66,12 @@ namespace testing {
                     internal::StreamableToString(unit_test.elapsed_time()).c_str());
             }
             printf("\n");
-            ColoredPrintf(HTestColor::kGreen, "[  PASSED  ] ");
+            hawk::stdout_printer().print_green("[  PASSED  ] ");
             printf("%s.\n", FormatTestCount(unit_test.successful_test_count()).c_str());
 
             const int skipped_test_count = unit_test.skipped_test_count();
             if (skipped_test_count > 0) {
-                ColoredPrintf(HTestColor::kGreen, "[  SKIPPED ] ");
+                hawk::stdout_printer().print_green("[  SKIPPED ] ");
                 printf("%s.\n", FormatTestCount(skipped_test_count).c_str());
             }
 
@@ -79,7 +80,7 @@ namespace testing {
                 if (unit_test.Passed()) {
                     printf("\n"); // Add a spacer if no FAILURE banner is displayed.
                 }
-                ColoredPrintf(HTestColor::kYellow, "  YOU HAVE %d DISABLED %s\n\n",
+                hawk::stdout_printer().fmt_yellow("  YOU HAVE {} DISABLED {}\n\n",
                     num_disabled, num_disabled == 1 ? "TEST" : "TESTS");
             }
             // Ensure that Hawk Test output is printed before, e.g., heapchecker output.

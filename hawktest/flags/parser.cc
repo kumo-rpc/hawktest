@@ -7,6 +7,7 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 
 #include <hawktest/flags/parser.h>
+#include <hawktest/reportor/printer.h>
 #include <hawktest/common/internal-inl.h>
 #include <hawktest/flags/builtin.h>
 
@@ -147,6 +148,24 @@ namespace internal {
         //   @Y    changes the color to yellow.
         //   @D    changes to the default terminal text color.
         //
+        static void print_segment(HTestColor color, const char* text) {
+            hawk::Printer& out = hawk::stdout_printer();
+            switch (color) {
+            case HTestColor::kRed:
+                out.print_red(text);
+                break;
+            case HTestColor::kGreen:
+                out.print_green(text);
+                break;
+            case HTestColor::kYellow:
+                out.print_yellow(text);
+                break;
+            default:
+                out.fmt("{}", text);
+                break;
+            }
+        }
+
         static void PrintColorEncoded(const char* str) {
             HTestColor color = HTestColor::kDefault; // The current color.
 
@@ -157,16 +176,16 @@ namespace internal {
             for (;;) {
                 const char* p = strchr(str, '@');
                 if (p == nullptr) {
-                    ColoredPrintf(color, "%s", str);
+                    print_segment(color, str);
                     return;
                 }
 
-                ColoredPrintf(color, "%s", std::string(str, p).c_str());
+                print_segment(color, std::string(str, p).c_str());
 
                 const char ch = p[1];
                 str = p + 2;
                 if (ch == '@') {
-                    ColoredPrintf(color, "@");
+                    print_segment(color, "@");
                 } else if (ch == 'D') {
                     color = HTestColor::kDefault;
                 } else if (ch == 'R') {

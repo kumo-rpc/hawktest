@@ -17,6 +17,7 @@
 //
 
 #include <hawktest/test/internal/unit_test_impl.h>
+#include <hawktest/reportor/printer.h>
 #include <hawktest/test/internal/unit_test_option.h>
 #include <hawktest/test/internal/pretty_unit_test_result_printer.h>
 #include <hawktest/test/internal/xml_unit_test_result_printer.h>
@@ -678,8 +679,7 @@ namespace testing {
                 constexpr char kNoTestLinkedFatal[] = "This is INVALID. Please make sure to link in at least one test case.";
                 constexpr char kNoTestLinkedWarning[] = "Please make sure this is intended.";
                 const bool fail_if_no_test_linked = FLAGS_htest_fail_if_no_test_linked;
-                ColoredPrintf(
-                    HTestColor::kRed, "%s %s\n", kNoTestLinkedMessage,
+                hawk::stdout_printer().fmt_red("{} {}\n", kNoTestLinkedMessage,
                     fail_if_no_test_linked ? kNoTestLinkedFatal : kNoTestLinkedWarning);
                 if (fail_if_no_test_linked) {
                     return false;
@@ -833,7 +833,7 @@ namespace testing {
                                                                "To permit empty shards (e.g., when debugging with a filter), "
                                                                "specify \n"
                                                                "--htest_fail_if_no_test_selected=false.";
-                    ColoredPrintf(HTestColor::kRed, "%s\n", kNoTestsSelectedMessage);
+                    hawk::stdout_printer().fmt_red("{}\n", kNoTestsSelectedMessage);
                     return false;
                 }
 
@@ -872,15 +872,14 @@ namespace testing {
             // Try to warn the user if no tests matched the test filter.
             if (ShouldWarnIfNoTestsMatchFilter()) {
                 const std::string filter_warning = std::string("filter \"") + FLAGS_htest_filter + "\" did not match any test; no tests were run\n";
-                ColoredPrintf(HTestColor::kRed, "WARNING: %s", filter_warning.c_str());
+                hawk::stdout_printer().fmt_red("WARNING: {}", filter_warning);
 #if HTEST_HAS_FILE_SYSTEM
                 AppendToTestWarningsOutputFile(filter_warning);
 #endif // HTEST_HAS_FILE_SYSTEM
             }
 
             if (!htest_is_initialized_before_run_all_tests) {
-                ColoredPrintf(
-                    HTestColor::kRed,
+                hawk::stdout_printer().print_red(
                     "\nIMPORTANT NOTICE - DO NOT IGNORE:\n"
                     "This test program did NOT call " HTEST_INIT_GOOGLE_TEST_NAME_
                     "() before calling RUN_ALL_TESTS(). This is INVALID. Soon " HTEST_NAME_

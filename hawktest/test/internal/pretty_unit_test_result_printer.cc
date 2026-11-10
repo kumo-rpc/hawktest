@@ -18,6 +18,7 @@
 
 
 #include <hawktest/test/internal/pretty_unit_test_result_printer.h>
+#include <hawktest/reportor/printer.h>
 #include <hawktest/flags/builtin.h>
 #include <hawktest/common/internal-inl.h>
 
@@ -57,24 +58,24 @@ namespace internal {
         // Prints the filter if it's not *.  This reminds the user that some
         // tests may be skipped.
         if (!String::CStringEquals(filter, kUniversalFilter)) {
-            ColoredPrintf(HTestColor::kYellow, "Note: %s filter = %s\n", HTEST_NAME_,
+            hawk::stdout_printer().fmt_yellow("Note: {} filter = {}\n", HTEST_NAME_,
                 filter);
         }
 
         if (internal::ShouldShard(false)) {
             const int32_t shard_index = FLAGS_htest_shard_index;
-            ColoredPrintf(HTestColor::kYellow, "Note: This is test shard %d of %d.\n",
+            hawk::stdout_printer().fmt_yellow("Note: This is test shard {} of {}.\n",
                 static_cast<int>(shard_index) + 1,
                 FLAGS_htest_total_shards);
         }
 
         if (FLAGS_htest_shuffle) {
-            ColoredPrintf(HTestColor::kYellow,
-                "Note: Randomizing tests' orders with a seed of %d .\n",
+            hawk::stdout_printer().fmt_yellow(
+                "Note: Randomizing tests' orders with a seed of {} .\n",
                 unit_test.random_seed());
         }
 
-        ColoredPrintf(HTestColor::kGreen, "[==========] ");
+        hawk::stdout_printer().print_green("[==========] ");
         printf("Running %s from %s.\n",
             FormatTestCount(unit_test.test_to_run_count()).c_str(),
             FormatTestSuiteCount(unit_test.test_suite_to_run_count()).c_str());
@@ -83,7 +84,7 @@ namespace internal {
 
     void PrettyUnitTestResultPrinter::OnEnvironmentsSetUpStart(
     const UnitTest& /*unit_test*/) {
-        ColoredPrintf(HTestColor::kGreen, "[----------] ");
+        hawk::stdout_printer().print_green("[----------] ");
         printf("Global test environment set-up.\n");
         fflush(stdout);
     }
@@ -94,7 +95,7 @@ namespace internal {
 #ifndef HTEST_REMOVE_LEGACY_TEST_CASEAPI_
     void PrettyUnitTestResultPrinter::OnTestCaseStart(const TestCase& test_case) {
         const std::string counts = FormatCountableNoun(test_case.test_to_run_count(), "test", "tests");
-        ColoredPrintf(HTestColor::kGreen, "[----------] ");
+        hawk::stdout_printer().print_green("[----------] ");
         printf("%s from %s", counts.c_str(), test_case.name());
         if (test_case.type_param() == nullptr) {
             printf("\n");
@@ -107,7 +108,7 @@ namespace internal {
     void PrettyUnitTestResultPrinter::OnTestSuiteStart(
         const TestSuite& test_suite) {
         const std::string counts = FormatCountableNoun(test_suite.test_to_run_count(), "test", "tests");
-        ColoredPrintf(HTestColor::kGreen, "[----------] ");
+        hawk::stdout_printer().print_green("[----------] ");
         printf("%s from %s", counts.c_str(), test_suite.name());
         if (test_suite.type_param() == nullptr) {
             printf("\n");
@@ -119,14 +120,14 @@ namespace internal {
 #endif // HTEST_REMOVE_LEGACY_TEST_CASEAPI_
 
     void PrettyUnitTestResultPrinter::OnTestStart(const TestInfo& test_info) {
-            ColoredPrintf(HTestColor::kGreen, "[ RUN      ] ");
+            hawk::stdout_printer().print_green("[ RUN      ] ");
             PrintTestName(test_info.test_suite_name(), test_info.name());
             printf("\n");
             fflush(stdout);
         }
 
         void PrettyUnitTestResultPrinter::OnTestDisabled(const TestInfo& test_info) {
-            ColoredPrintf(HTestColor::kYellow, "[ DISABLED ] ");
+            hawk::stdout_printer().print_yellow("[ DISABLED ] ");
             PrintTestName(test_info.test_suite_name(), test_info.name());
             printf("\n");
             fflush(stdout);
@@ -149,11 +150,11 @@ namespace internal {
 
         void PrettyUnitTestResultPrinter::OnTestEnd(const TestInfo& test_info) {
             if (test_info.result()->Passed()) {
-                ColoredPrintf(HTestColor::kGreen, "[       OK ] ");
+                hawk::stdout_printer().print_green("[       OK ] ");
             } else if (test_info.result()->Skipped()) {
-                ColoredPrintf(HTestColor::kGreen, "[  SKIPPED ] ");
+                hawk::stdout_printer().print_green("[  SKIPPED ] ");
             } else {
-                ColoredPrintf(HTestColor::kRed, "[  FAILED  ] ");
+                hawk::stdout_printer().print_red("[  FAILED  ] ");
             }
             PrintTestName(test_info.test_suite_name(), test_info.name());
             if (test_info.result()->Failed())
@@ -175,7 +176,7 @@ namespace internal {
                 return;
 
             const std::string counts = FormatCountableNoun(test_case.test_to_run_count(), "test", "tests");
-            ColoredPrintf(HTestColor::kGreen, "[----------] ");
+            hawk::stdout_printer().print_green("[----------] ");
             printf("%s from %s (%s ms total)\n\n", counts.c_str(), test_case.name(),
                 internal::StreamableToString(test_case.elapsed_time()).c_str());
             fflush(stdout);
@@ -186,7 +187,7 @@ namespace internal {
                 return;
 
             const std::string counts = FormatCountableNoun(test_suite.test_to_run_count(), "test", "tests");
-            ColoredPrintf(HTestColor::kGreen, "[----------] ");
+            hawk::stdout_printer().print_green("[----------] ");
             printf("%s from %s (%s ms total)\n\n", counts.c_str(), test_suite.name(),
                 internal::StreamableToString(test_suite.elapsed_time()).c_str());
             fflush(stdout);
@@ -195,7 +196,7 @@ namespace internal {
 
         void PrettyUnitTestResultPrinter::OnEnvironmentsTearDownStart(
             const UnitTest& /*unit_test*/) {
-            ColoredPrintf(HTestColor::kGreen, "[----------] ");
+            hawk::stdout_printer().print_green("[----------] ");
             printf("Global test environment tear-down\n");
             fflush(stdout);
         }
@@ -203,7 +204,7 @@ namespace internal {
         // Internal helper for printing the list of failed tests.
         void PrettyUnitTestResultPrinter::PrintFailedTests(const UnitTest& unit_test) {
             const int failed_test_count = unit_test.failed_test_count();
-            ColoredPrintf(HTestColor::kRed, "[  FAILED  ] ");
+                    hawk::stdout_printer().print_red("[  FAILED  ] ");
             printf("%s, listed below:\n", FormatTestCount(failed_test_count).c_str());
 
             for (int i = 0; i < unit_test.total_test_suite_count(); ++i) {
@@ -216,7 +217,7 @@ namespace internal {
                     if (!test_info.should_run() || !test_info.result()->Failed()) {
                         continue;
                     }
-                    ColoredPrintf(HTestColor::kRed, "[  FAILED  ] ");
+                    hawk::stdout_printer().print_red("[  FAILED  ] ");
                     printf("%s.%s", test_suite.name(), test_info.name());
                     PrintFullTestCommentIfPresent(test_info);
                     printf("\n");
@@ -237,7 +238,7 @@ namespace internal {
                     continue;
                 }
                 if (test_suite.ad_hoc_test_result().Failed()) {
-                    ColoredPrintf(HTestColor::kRed, "[  FAILED  ] ");
+                    hawk::stdout_printer().print_red("[  FAILED  ] ");
                     printf("%s: SetUpTestSuite or TearDownTestSuite\n", test_suite.name());
                     ++suite_failure_count;
                 }
@@ -265,7 +266,7 @@ namespace internal {
                     if (!test_info.should_run() || !test_info.result()->Skipped()) {
                         continue;
                     }
-                    ColoredPrintf(HTestColor::kGreen, "[  SKIPPED ] ");
+                    hawk::stdout_printer().print_green("[  SKIPPED ] ");
                     printf("%s.%s", test_suite.name(), test_info.name());
                     printf("\n");
                 }
@@ -274,7 +275,7 @@ namespace internal {
 
         void PrettyUnitTestResultPrinter::OnTestIterationEnd(const UnitTest& unit_test,
             int /*iteration*/) {
-            ColoredPrintf(HTestColor::kGreen, "[==========] ");
+            hawk::stdout_printer().print_green("[==========] ");
             printf("%s from %s ran.",
                 FormatTestCount(unit_test.test_to_run_count()).c_str(),
                 FormatTestSuiteCount(unit_test.test_suite_to_run_count()).c_str());
@@ -283,12 +284,12 @@ namespace internal {
                     internal::StreamableToString(unit_test.elapsed_time()).c_str());
             }
             printf("\n");
-            ColoredPrintf(HTestColor::kGreen, "[  PASSED  ] ");
+            hawk::stdout_printer().print_green("[  PASSED  ] ");
             printf("%s.\n", FormatTestCount(unit_test.successful_test_count()).c_str());
 
             const int skipped_test_count = unit_test.skipped_test_count();
             if (skipped_test_count > 0) {
-                ColoredPrintf(HTestColor::kGreen, "[  SKIPPED ] ");
+                hawk::stdout_printer().print_green("[  SKIPPED ] ");
                 printf("%s, listed below:\n", FormatTestCount(skipped_test_count).c_str());
                 PrintSkippedTests(unit_test);
             }
@@ -303,7 +304,7 @@ namespace internal {
                 if (unit_test.Passed()) {
                     printf("\n"); // Add a spacer if no FAILURE banner is displayed.
                 }
-                ColoredPrintf(HTestColor::kYellow, "  YOU HAVE %d DISABLED %s\n\n",
+                hawk::stdout_printer().fmt_yellow("  YOU HAVE {} DISABLED {}\n\n",
                     num_disabled, num_disabled == 1 ? "TEST" : "TESTS");
             }
             // Ensure that Hawk Test output is printed before, e.g., heapchecker output.

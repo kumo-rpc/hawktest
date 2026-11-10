@@ -34,6 +34,7 @@
 // The Google C++ Testing and Mocking Framework (Hawk Test)
 
 #include <hawktest/test/htest.h>
+#include <hawktest/reportor/printer.h>
 #include <hawktest/flags/parser.h>
 
 #include <ctype.h>
@@ -779,9 +780,9 @@ namespace testing {
             if (test_shard_file != nullptr) {
                 FILE* const file = posix::FOpen(test_shard_file, "w");
                 if (file == nullptr) {
-                    ColoredPrintf(HTestColor::kRed,
-                        "Could not write to the test shard status file \"%s\" "
-                        "specified by the %s environment variable.\n",
+                    hawk::stdout_printer().fmt_red(
+                        "Could not write to the test shard status file \"{}\" "
+                        "specified by the {} environment variable.\n",
                         test_shard_file, kTestShardStatusFile);
                     fflush(stdout);
                     exit(EXIT_FAILURE);
@@ -812,7 +813,7 @@ namespace testing {
                     << "Invalid sharding: you have " << kTestShardIndex
                     << " = " << shard_index << ", but have left "
                     << kTestTotalShards << " unset.\n";
-                ColoredPrintf(HTestColor::kRed, "%s", msg.GetString().c_str());
+                hawk::stdout_printer().fmt_red("{}", msg.GetString());
                 fflush(stdout);
                 exit(EXIT_FAILURE);
             } else if (total_shards != -1 && shard_index == -1) {
@@ -820,7 +821,7 @@ namespace testing {
                     << "Invalid sharding: you have " << kTestTotalShards
                     << " = " << total_shards << ", but have left "
                     << kTestShardIndex << " unset.\n";
-                ColoredPrintf(HTestColor::kRed, "%s", msg.GetString().c_str());
+                hawk::stdout_printer().fmt_red("{}", msg.GetString());
                 fflush(stdout);
                 exit(EXIT_FAILURE);
             } else if (shard_index < 0 || shard_index >= total_shards) {
@@ -828,7 +829,7 @@ namespace testing {
                                               << " < " << kTestTotalShards << ", but you have "
                                               << kTestShardIndex << "=" << shard_index << ", "
                                               << kTestTotalShards << "=" << total_shards << ".\n";
-                ColoredPrintf(HTestColor::kRed, "%s", msg.GetString().c_str());
+                hawk::stdout_printer().fmt_red("{}", msg.GetString());
                 fflush(stdout);
                 exit(EXIT_FAILURE);
             }
